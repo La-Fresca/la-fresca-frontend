@@ -26,8 +26,9 @@ function App() {
     <Routes>
       <Route path="/" element={<><PageTitle title="La Fresca | Home" /><Home /> </>} />
       <Route path="/login" element={<><PageTitle title="La Fresca | Log In"/><LoginPage /> </>} />
-      <Route path="/branch-manager" element={<BranchManagerLayout />}>
-        <Route index element={<><PageTitle title="Dashboard" /><Dashboard /></>} />
+      <Route path="/branch-manager/*" element={<BranchManagerLayout />}>
+        <Route index element={<><PageTitle title="Branch Manager | Dashboard" /><Dashboard /></>} />
+        <Route path="orders" element={<><PageTitle title="Branch Manager | Orders" /></>} />
       </Route>
     </Routes>
   );
