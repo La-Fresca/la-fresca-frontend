@@ -3,9 +3,10 @@ import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '../../../images/logo/la-fresca.png';
 import { Bars3Icon } from '@heroicons/react/24/outline';
-import  { Squares2X2Icon } from '@heroicons/react/24/outline';
+import { Squares2X2Icon } from '@heroicons/react/24/outline';
 import { CakeIcon } from '@heroicons/react/24/outline';
 import { QueueListIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -74,7 +75,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             alt="Logo"
             style={{ width: '55px', height: '55px' }}
           />
-          <span className="ml-2 text-3xl text-black dark:text-white font-bold">La Fresca</span>
+          <span className="ml-2 text-3xl text-black dark:text-white font-bold">
+            La Fresca
+          </span>
         </NavLink>
 
         <button
@@ -99,7 +102,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <NavLink
                   to="/branch-manager"
                   className={`group relative flex items-center gap-2.5 rounded-xl px-4 py-2 font-medium text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    (pathname === '/branch-manager' || pathname.includes('dashboard')) &&
+                    (pathname === '/branch-manager' ||
+                      pathname.includes('dashboard')) &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
@@ -111,7 +115,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <NavLink
                   to="/branch-manager/orders"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('calendar') &&
+                    pathname.includes('/branch-manager/orders') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
@@ -121,7 +125,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <SidebarLinkGroup
                 activeCondition={
-                  pathname === '/branch-manager/forms' || pathname.includes('/branch-manager/forms')
+                  pathname === '/branch-manager/forms' ||
+                  pathname.includes('/branch-manager/forms')
                 }
               >
                 {(handleClick, open) => {
@@ -131,7 +136,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         to="#"
                         className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
                           (pathname === '/branch-manager/forms' ||
-                            pathname.includes('/branch-manager/forms')) &&
+                            pathname.includes('forms')) &&
                           'bg-yellow-100 dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
@@ -143,6 +148,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       >
                         <QueueListIcon className="w-6 h-6" />
                         Forms
+                        <span className="ml-auto">
+                          {open ? (
+                            <ChevronUpIcon className="w-4 h-4" />
+                          ) : (
+                            <ChevronDownIcon className="w-4 h-4" />
+                          )}
+                        </span>
                       </NavLink>
                       {/* <!-- Dropdown Menu Start --> */}
                       <div
@@ -156,7 +168,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               to="/branch-manager/forms/form-elements"
                               className={({ isActive }) =>
                                 'group relative flex items-center h-10 gap-2.5 rounded-lg px-4 font-medium hover:bg-yellow-100 hover:dark:bg-meta-4 text-black dark:text-white duration-300 ease-in-out' +
-                                (isActive)
+                                isActive
                               }
                             >
                               Form Elements
@@ -167,7 +179,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               to="/branch-manager/forms/form-layout"
                               className={({ isActive }) =>
                                 'group relative flex items-center h-10 gap-2.5 rounded-lg px-4 font-medium hover:bg-yellow-100 hover:dark:bg-meta-4 text-black dark:text-white duration-600 ease-in-out ' +
-                                (isActive)
+                                isActive
                               }
                             >
                               Form Layout
