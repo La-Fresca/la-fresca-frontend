@@ -8,6 +8,7 @@ import Dashboard from './pages/BranchManager/Dashboard';
 import BranchManagerLayout from './layouts/BranchManagerLayout';
 import LoginPage from './pages/User/LogIn';
 import UserLayout from './layouts/UserLayout';
+import Foods from './pages/BranchManager/Foods';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -17,7 +18,7 @@ const routes = createRoutesFromElements(
     </Route>
     <Route path="branch-manager/*" element={<BranchManagerLayout />}>
       <Route index element={<><PageTitle title="Branch Manager | Dashboard" /><Dashboard /></>} />
-      <Route path="orders" element={<><PageTitle title="Branch Manager | Orders" /></>} />
+      <Route path="foods" element={<><PageTitle title="Branch Manager | Foods" /><Foods /></>} />
     </Route>
   </Route>
 );
