@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
-import Logo from '../../../images/logo/la-fresca.png';
+import Logo from '@images/logo/la-fresca.png';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
 import { CakeIcon } from '@heroicons/react/24/outline';
@@ -113,14 +113,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <NavLink
-                  to="/branch-manager/orders"
+                  to="/branch-manager/Foods"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/orders') &&
+                    pathname.includes('/branch-manager/Foods') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
                   <CakeIcon className="w-6 h-6" />
-                  Orders
+                  Foods
                 </NavLink>
               </li>
               <SidebarLinkGroup

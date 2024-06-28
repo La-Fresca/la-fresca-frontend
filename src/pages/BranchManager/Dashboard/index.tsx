@@ -1,8 +1,8 @@
 import React from 'react';
-import CardDataStats from '../../../components/BranchManager/CardDataStats';
-import ChartOne from '../../../components/BranchManager/Charts/ChartOne';
-import ChartThree from '../../../components/BranchManager/Charts/ChartThree';
-import ChartTwo from '../../../components/BranchManager/Charts/ChartTwo';
+import CardDataStats from '@components/BranchManager/CardDataStats';
+import ChartOne from '@components/BranchManager/Charts/ChartOne';
+import ChartThree from '@components/BranchManager/Charts/ChartThree';
+import ChartTwo from '@components/BranchManager/Charts/ChartTwo';
 
 const Dashboard: React.FC = () => {
   return (

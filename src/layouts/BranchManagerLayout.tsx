@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from '../components/BranchManager/Header/index';
-import Sidebar from '../components/BranchManager/Sidebar/index';
+import Header from '@components/BranchManager/Header/index';
+import Sidebar from '@components/BranchManager/Sidebar/index';
 
 const BranchManagerLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
