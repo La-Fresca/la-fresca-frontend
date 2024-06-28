@@ -1,4 +1,4 @@
-import FoodPicker from '../../../components/BranchManager/Forms/FoodPicker';
+import FoodPicker from '@components/BranchManager/Forms/FoodPicker';
 
 const Foods: React.FC = () => {
   return (

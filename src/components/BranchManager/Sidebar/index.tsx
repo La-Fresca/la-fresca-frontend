@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
-import Logo from '../../../images/logo/la-fresca.png';
+import Logo from '@images/logo/la-fresca.png';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
 import { CakeIcon } from '@heroicons/react/24/outline';

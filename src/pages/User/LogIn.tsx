@@ -1,15 +1,12 @@
-import LoginForm from '../../components/User/LoginForm';
-import backgroundImage from '../../images/cover/cover-02.jpg';
+import LoginForm from '@components/User/LoginForm';
+import backgroundImage from '@images/cover/cover-02.jpg';
 
 const LoginPage = () => {
   return (
     <div className="relative h-screen overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
-        <img
-          src={backgroundImage}
-          alt="Background"
-        />
+        <img src={backgroundImage} alt="Background" />
       </div>
 
       {/* Content */}

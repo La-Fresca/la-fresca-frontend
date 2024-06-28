@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
-import LogoIcon from '../../../images/logo/la-fresca.png';
+import LogoIcon from '@images/logo/la-fresca.png';
 import DarkModeSwitcher from './DarkModeSwitcher';
 
 const Header = (props: {
