@@ -1,22 +1,36 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
+import { UseFormRegister } from 'react-hook-form';
 
-const SwitcherThree = () => {
-  const [enabled, setEnabled] = useState(false);
+interface SwitcherThreeProps {
+  fieldName: string;
+  register: UseFormRegister<any>;
+  defaultValue?: boolean;
+}
 
+const SwitcherThree: FC<SwitcherThreeProps> = ({
+  fieldName,
+  register,
+  defaultValue = false,
+}) => {
+  const [enabled, setEnabled] = useState<boolean>(defaultValue);
+
+  const handleSwitch = () => {
+    setEnabled(!enabled);
+  };
   return (
     <div>
       <label
-        htmlFor="toggle3"
+        htmlFor={fieldName}
         className="flex cursor-pointer select-none items-center"
       >
         <div className="relative">
           <input
             type="checkbox"
-            id="toggle3"
+            id={fieldName}
             className="sr-only"
-            onChange={() => {
-              setEnabled(!enabled);
-            }}
+            {...register(fieldName)}
+            defaultChecked={defaultValue}
+            onChange={handleSwitch}
           />
           <div className="block h-8 w-14 rounded-full bg-meta-9 dark:bg-[#5A616B]"></div>
           <div
