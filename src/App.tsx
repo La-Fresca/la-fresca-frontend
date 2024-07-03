@@ -27,6 +27,15 @@ const routes = createRoutesFromElements(
           </>
         }
       />
+      <Route path="foodItem"
+        index
+        element={
+          <>
+            <PageTitle title="La Fresca | Food Item" />
+            <Home />
+          </>
+        }
+      />
       <Route
         path="login"
         element={
