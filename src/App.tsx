@@ -8,13 +8,16 @@ import Dashboard from './pages/BranchManager/Dashboard';
 import BranchManagerLayout from './layouts/BranchManagerLayout';
 import LoginPage from './pages/User/LogIn';
 import UserLayout from './layouts/UserLayout';
+import HomeLayout from './layouts/HomeLayout';
 
 const routes = createRoutesFromElements(
   <Route>
-    <Route path='/' element={< UserLayout />} >
-      <Route index element={<><PageTitle title="La Fresca | Home" /><Home /></>} />
-      <Route path="login" element={<><PageTitle title="La Fresca | Log In"/><LoginPage /> </>} />
+    <Route path='/' element={< HomeLayout />} >
+      <Route index element={<><PageTitle title="La Fresca | Home" /><Home /></>} />     
     </Route>
+  
+    <Route path="login" element={<><PageTitle title="La Fresca | Log In"/><LoginPage /></> } />
+
     <Route path="branch-manager/*" element={<BranchManagerLayout />}>
       <Route index element={<><PageTitle title="Branch Manager | Dashboard" /><Dashboard /></>} />
       <Route path="orders" element={<><PageTitle title="Branch Manager | Orders" /></>} />
