@@ -2,7 +2,11 @@ import React from 'react';
 import Food from '@images/product/pizza.png';
 import Star from './Star';
 
-function index() {
+interface Props {
+  id: String;
+}
+
+function index({id}: Props) {
   return (
     <div className="flex items-center h-110vh md:h-[calc(100vh-120px)]">
       <div
