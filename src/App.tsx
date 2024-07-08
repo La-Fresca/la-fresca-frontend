@@ -14,6 +14,7 @@ import BranchManagerLayout from '@layouts/BranchManagerLayout';
 import LoginPage from '@pages/User/LogIn';
 import UserLayout from '@layouts/UserLayout';
 import Foods from '@pages/BranchManager/Foods';
+import FoodItem from './pages/FoodItem';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -32,7 +33,7 @@ const routes = createRoutesFromElements(
         element={
           <>
             <PageTitle title="La Fresca | Food Item" />
-            <Home />
+            <FoodItem />
           </>
         }
       />
