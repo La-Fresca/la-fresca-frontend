@@ -6,7 +6,6 @@ const Home: React.FC = () => {
         <div className="dark:bg-black bg-white">
             <h1>Home</h1>
             <Gallery />
-            <Gallery />
         </div>
     );
 }
