@@ -3,6 +3,7 @@ import { Container } from '../../components/User/Container';
 import HeroImg from '../../images/Landing/Hero.png';
 import ChefImg from '../../images/Landing/chef.png';
 import ContactUs from '../../images/Landing/contact.png';
+import Gallery from '@/components/Landing/Gallery';
 
 const HomePage: React.FC = () => {
   return (
@@ -92,6 +93,10 @@ const HomePage: React.FC = () => {
         <div className="flex items-center justify-center lg:w-1/2">
           <img src={HeroImg} alt="Hero Image" width={425} height={425} />
         </div>
+      </Container>
+
+      <Container>
+        <Gallery />
       </Container>
 
       <Container className="flex flex-wrap bg-black p-10">

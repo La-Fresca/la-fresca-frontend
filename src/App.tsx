@@ -19,7 +19,7 @@ import HomeLayout from './layouts/HomeLayout';
 
 const routes = createRoutesFromElements(
   <Route>
-    <Route path="/" element={<HomeLayout />}>
+    <Route path="/" element={<UserLayout />}>
       <Route
         index
         element={
