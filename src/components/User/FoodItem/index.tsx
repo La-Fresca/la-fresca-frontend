@@ -1,0 +1,79 @@
+import { useEffect, useState } from 'react';
+import Food from '@images/product/pizza.png';
+import Star from './Star';
+
+import TextButtonGroup from './TextButtonGroup';
+import TextButton from './TextButton';
+
+import QtySelector from './QtySelector';
+
+interface Props {
+  id: string;
+}
+
+function index({ id }: Props) {
+  const [items, setItems] = useState([]);
+
+  const fetchItems = async () => {
+    const data = await fetch(`http://localhost:8080/lafresca/food/${id}`);
+    const items = await data.json();
+
+    console.log(items);
+
+    setItems(items);
+  };
+
+  return (
+    <div className="flex items-center h-110vh md:h-[calc(100vh-120px)]">
+      <div
+        className="ml-[10%] flex flex-col md:flex-row flex-grow items-center justify-between px-4 py-4 rounded-2xl border border-foodbg bg-foodbg  backdrop-blur-md"
+        style={{
+          marginLeft: '10%',
+          marginRight: '10%',
+          backgroundColor: 'rgba(255, 255, 255, 0.01)',
+        }}
+      >
+        <div>
+          <img src={Food} alt="" className="w-[100%]" />
+        </div>
+
+        <div className="w-[70%]">
+          <div className="text-4xl font-bold text-white ">{item.name}</div>
+          <div className="pt-3">{item.description}</div>
+
+          <div className="flex items-center pt-3">
+            {Array.from({ length: 5 }).map((_, i) => {
+              return <Star key={`star-${i}`} highlight={i !== 4} />;
+            })}
+          </div>
+
+          <div className="font-bold text-white pt-5 text-2xl">
+            <span className="pr-2 text-orange-500">Rs.</span>
+            {item.price}
+          </div>
+
+          <div>
+            <QtySelector />
+
+            <div className="mt-8">
+              {item.features.map((feature: any, index: number) => (
+                <TextButtonGroup
+                  key={index}
+                  name={feature.name}
+                  levels={feature.levels}
+                />
+              ))}
+            </div>
+
+            <div className="flex justify-between items-center w-100 mt-2">
+              <TextButton value="Add to Cart" />
+              <TextButton value="Buy Now" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default index;
