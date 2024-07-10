@@ -8,7 +8,7 @@ import Gallery from '@/components/Landing/Gallery';
 const HomePage: React.FC = () => {
   return (
     <>
-      <Container className="flex flex-wrap bg-black p-10">
+      <Container className="flex flex-wrap bg-transparent p-10">
         <div className="flex items-center lg:w-1/2">
           <div className="max-w-2xl mx-15 my-25">
             <h1 className="text-2xl py-4 font-bold leading-snug tracking-tight text-gray-800 lg:text-4xl lg:leading-tight xl:text-6xl xl:leading-tight text-yellow-500">
@@ -36,7 +36,7 @@ const HomePage: React.FC = () => {
           <img src={HeroImg} alt="Hero Image" width={425} height={425} />
         </div>
       </Container>
-      <Container className="flex flex-wrap bg-black p-5">
+      <Container className="flex flex-wrap bg-transparent p-5">
         <div className="flex items-center justify-center lg:w-1/2">
           <img src={ChefImg} alt="Chef Image" width={500} height={500} />
         </div>
@@ -66,7 +66,7 @@ const HomePage: React.FC = () => {
         </div>
       </Container>
 
-      <Container className="flex flex-wrap bg-black p-10">
+      <Container className="flex flex-wrap bg-transparent p-10">
         <div className="flex items-center lg:w-1/2">
           <div className="max-w-2xl mx-15 my-25">
             <h1 className="text-2xl py-4 font-bold leading-snug tracking-tight text-gray-800 lg:text-4xl lg:leading-tight xl:text-6xl xl:leading-tight text-yellow-500">
@@ -99,7 +99,7 @@ const HomePage: React.FC = () => {
         <Gallery />
       </Container>
 
-      <Container className="flex flex-wrap bg-black p-10">
+      <Container className="flex flex-wrap bg-transparent p-10">
         <div className="flex items-center justify-center lg:w-1/2">
           <img src={ContactUs} alt="contact us" width={650} height={650} />
         </div>
