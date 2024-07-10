@@ -52,7 +52,8 @@ module.exports = {
         danger: '#D34053',
         warning: '#FFA70B',
         green: '#10B981',
-        foodbg: '#5A5A5A'
+        foodbg: '#5A5A5A',
+        gray: '#64748B',
       },
       fontSize: {
         'title-xxl': ['44px', '55px'],

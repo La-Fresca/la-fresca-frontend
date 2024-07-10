@@ -2,21 +2,46 @@ import { useEffect, useState } from 'react';
 import Food from '@images/product/pizza.png';
 import Star from './Star';
 
+import TextButtonGroup from './TextButtonGroup';
+import TextButton from './TextButton';
+
+import QtySelector from './QtySelector';
+
 interface Props {
-  id: String;
+  id: string;
 }
 
-function index({id}: Props) {
-  const [items, setItems] = useState([]);
+function index({ id }: Props) {
+  const [item, setItem] = useState<any>(null); // Adjusted initial state to null
 
   const fetchItems = async () => {
-    const data = await fetch(`https://localhost:8080/lafresca/food/${id}`);
-    const items = await data.json();
-
-    console.log(items);
-
-    setItems(items);
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/lafresca/food/${id}`,
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch item');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching item:', error);
+    }
   };
+
+  const getItem = async () => {
+    const item = await fetchItems();
+    setItem(item);
+    console.log(item);
+  };
+
+  useEffect(() => {
+    getItem();
+  }, [id]);
+
+  if (!item) {
+    return <div>Loading...</div>; // Placeholder for loading state
+  }
 
   return (
     <div className="flex items-center h-110vh md:h-[calc(100vh-120px)]">
@@ -29,24 +54,41 @@ function index({id}: Props) {
         }}
       >
         <div>
-          <img src={Food} alt="" />
+          <img src={Food} alt="" className="w-[100%]" />
         </div>
-        <div className="">
-          <div className="text-4xl font-bold text-white ">Cheese Pizza</div>
-          <div className="pt-3">
-            A delicious sandwich with a juicy patty, fresh bun, and customizable
-            toppings like lettuce, tomato, cheese, and sauces.
+        
+        <div className="w-[70%]">
+          <div className="text-4xl font-bold text-white ">{item.name}</div>
+          <div className="pt-3">{item.description}</div>
+
+          <div className="flex items-center pt-3">
+            {Array.from({ length: 5 }).map((_, i) => {
+              return <Star key={`star-${i}`} highlight={i !== 4} />;
+            })}
           </div>
+
+          <div className="font-bold text-white pt-5 text-2xl">
+            <span className="pr-2 text-orange-500">Rs.</span>
+            {item.price}
+          </div>
+
           <div>
-            <div className="flex items-center pt-3">
-              {Array.from({ length: 5 }).map((_, i) => {
-                return <Star key={`star-${i}`} highlight={i !== 4} />;
-              })}
+            <QtySelector />
+
+            <div className='mt-8'>
+              {item.features.map((feature: any, index: number) => (
+                <TextButtonGroup 
+                  key={index}
+                  name={feature.name} 
+                  levels={feature.levels}
+                />
+              ))}
             </div>
-            <div className="font-bold text-white pt-5">
-              <span className="pr-2 text-orange-500">Rs.</span>3500.00
+
+            <div className='flex justify-between items-center w-100 mt-2'>
+              <TextButton value='Add to Cart' />
+              <TextButton value='Buy Now' />
             </div>
-            <div></div>
           </div>
         </div>
       </div>
