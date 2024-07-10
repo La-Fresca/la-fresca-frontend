@@ -14,6 +14,7 @@ import BranchManagerLayout from '@layouts/BranchManagerLayout';
 import LoginPage from '@pages/User/LogIn';
 import UserLayout from '@layouts/UserLayout';
 import Foods from '@pages/BranchManager/Foods';
+import { Gallery } from './components/Gallery/Gallery';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -27,6 +28,15 @@ const routes = createRoutesFromElements(
           </>
         }
       />
+      <Route
+        path="gallery"
+        element={
+          <>
+            <PageTitle title="La Fresca | Gallery" />
+            <Gallery />
+          </>
+        }
+      />  
       <Route
         path="login"
         element={
