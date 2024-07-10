@@ -8,7 +8,7 @@ import TextButton from './TextButton';
 import QtySelector from './QtySelector';
 
 interface Props {
-  id: string;
+  id: string | undefined;
 }
 
 function index({ id }: Props) {

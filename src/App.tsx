@@ -15,7 +15,6 @@ import LoginPage from '@pages/User/LogIn';
 import UserLayout from '@layouts/UserLayout';
 import Foods from '@pages/BranchManager/Foods';
 import FoodItem from './pages/FoodItem';
-import HomeLayout from './layouts/HomeLayout';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -30,17 +29,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        index
-        element={
-          <>
-            <PageTitle title="La Fresca | Home" />
-            <Home />
-          </>
-        }
-      />
-      <Route
-        path="foodItem"
-        index
+        path="foodItem/:itemId"
         element={
           <>
             <PageTitle title="La Fresca | Food Item" />
@@ -53,21 +42,11 @@ const routes = createRoutesFromElements(
         element={
           <>
             <PageTitle title="La Fresca | Log In" />
-            <LoginPage />{' '}
+            <LoginPage />
           </>
         }
       />
     </Route>
-
-    <Route
-      path="login"
-      element={
-        <>
-          <PageTitle title="La Fresca | Log In" />
-          <LoginPage />
-        </>
-      }
-    />
 
     <Route path="branch-manager/*" element={<BranchManagerLayout />}>
       <Route
