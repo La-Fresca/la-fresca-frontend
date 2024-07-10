@@ -10,7 +10,10 @@ const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
   description: z.string().optional(),
   price: z.coerce.number().min(0, { message: 'Price must be at least 0' }),
-  image: z.coerce.string({ message: 'Should be a string' }).optional(), // Zod doesn't validate file inputs directly
+  image: z.coerce
+    .string({ message: 'Should be a string' })
+    .optional()
+    .default('test'), // Zod doesn't validate file inputs directly
   available: z.boolean(),
   features: z
     .array(
