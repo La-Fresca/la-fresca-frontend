@@ -14,9 +14,8 @@ import BranchManagerLayout from '@layouts/BranchManagerLayout';
 import LoginPage from '@pages/User/LogIn';
 import UserLayout from '@layouts/UserLayout';
 import Foods from '@pages/BranchManager/Foods';
-import FoodItem from './pages/FoodItem';
-import AllFoodItems from './pages/AllFoodItems';
-import HomeLayout from './layouts/HomeLayout';
+import FoodItem from '@pages/FoodItem';
+import AllFoodItems from '@pages/AllFoodItems';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -30,36 +29,37 @@ const routes = createRoutesFromElements(
           </>
         }
       />
-      <Route
-        index
-        element={
-          <>
-            <PageTitle title="La Fresca | Home" />
-            <Home />
-          </>
-        }
-      />
+      <Route path="fooditems">
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="La Fresca | Food Items" />
+              <AllFoodItems />
+            </>
+          }
+        />
+        <Route
+          path="viewfood/:itemId"
+          element={
+            <>
+              <PageTitle title="La Fresca | Food Item" />
+              <FoodItem />
+            </>
+          }
+        />
+      </Route>
 
       <Route
         path="login"
         element={
           <>
             <PageTitle title="La Fresca | Log In" />
-            <LoginPage />{' '}
+            <LoginPage />
           </>
         }
       />
     </Route>
-
-    <Route
-      path="login"
-      element={
-        <>
-          <PageTitle title="La Fresca | Log In" />
-          <LoginPage />
-        </>
-      }
-    />
 
     <Route path="branch-manager/*" element={<BranchManagerLayout />}>
       <Route
@@ -81,30 +81,6 @@ const routes = createRoutesFromElements(
         }
       />
     </Route>
-
-    {/* Customer Food item routes start */}
-    <Route path="fooditems/*" element={<UserLayout />}>
-      <Route
-        index
-        element={
-          <>
-            <PageTitle title="La Fresca | Food Items" />
-            <AllFoodItems />
-          </>
-        }
-      />
-      <Route
-        path="viewfood"
-        element={
-          <>
-            <PageTitle title="La Fresca | Food Item" />
-            <FoodItem />
-          </>
-        }
-      />
-    </Route>
-    {/* Customer Food item routes end */}
-
   </Route>,
 );
 
