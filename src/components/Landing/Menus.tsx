@@ -12,7 +12,7 @@ const Menus = () => {
   style={{ width: "100vw", height: "100vh", objectFit: "cover", position: "absolute", top: 0, left: 0, filter: "brightness(50%)" }}
 />
 
-            <TitleBox title={"find our Menus"} subtitle={"la Fresca cafe"} button={"eXPLORE Now"} ClassName={"absolute right-0 top-20 right-20 w-[50%] h-[50%]"} URLLink="/gallery" />
+            <TitleBox title={"find our Menus"} subtitle={"la Fresca cafe"} button={"eXPLORE Now"} ClassName={"absolute right-0 top-20 right-20 w-[50%] h-[50%] bg-yellow-500 "} URLLink="/gallery" />
             <TitleBox
                 title={""}
                 subtitle={""}

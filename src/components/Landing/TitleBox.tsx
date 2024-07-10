@@ -11,7 +11,7 @@ interface TitleBoxProps {
 }
 
 export const TitleBox: React.FC<TitleBoxProps> = ({ title, subtitle, button, ClassName, URLLink }) => {
-  const boxClass = `${ClassName} bg-yellow-500 flex flex-col items-center justify-center tracking-widest p-4`;
+  const boxClass = `${ClassName} flex flex-col items-center justify-center tracking-widest p-4`;
 
   return (
     <div className={boxClass}>
