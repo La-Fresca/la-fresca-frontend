@@ -12,16 +12,36 @@ interface Props {
 }
 
 function index({ id }: Props) {
-  const [items, setItems] = useState([]);
+  const [item, setItem] = useState<any>(null); // Adjusted initial state to null
 
   const fetchItems = async () => {
-    const data = await fetch(`http://localhost:8080/lafresca/food/${id}`);
-    const items = await data.json();
-
-    console.log(items);
-
-    setItems(items);
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/lafresca/food/${id}`,
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch item');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching item:', error);
+    }
   };
+
+  const getItem = async () => {
+    const item = await fetchItems();
+    setItem(item);
+    console.log(item);
+  };
+
+  useEffect(() => {
+    getItem();
+  }, [id]);
+
+  if (!item) {
+    return <div>Loading...</div>; // Placeholder for loading state
+  }
 
   return (
     <div className="flex items-center h-110vh md:h-[calc(100vh-120px)]">
