@@ -1,7 +1,5 @@
-import { Link } from 'react-router-dom';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
-import LogoIcon from '@images/logo/la-fresca.png';
 import DarkModeSwitcher from './DarkModeSwitcher';
 
 const Header = (props: {
@@ -9,18 +7,17 @@ const Header = (props: {
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
   const links = [
-    { name: 'Home', href: '#', showOnLarge: true },
+    { name: 'Home', href: '/', showOnLarge: true },
     { name: 'About Us', href: '#', showOnLarge: true },
     { name: 'Meet Chefs', href: '#', showOnLarge: true },
-    { name: 'Menus', href: '#', showOnLarge: true },
+    { name: 'Foods', href: '#', showOnLarge: true },
     { name: 'Gallery', href: '#', showOnLarge: true },
     { name: 'Contact Us', href: '#', showOnLarge: true },
   ];
 
   return (
     <header
-      className="sticky top-0 z-999 flex w-full drop-shadow-none dark:bg-boxdark dark:drop-shadow-none"
-      style={{ backgroundColor: 'transparent' }}
+      className="sticky top-0 z-999 flex w-full drop-shadow-none dark:drop-shadow-none backdrop-blur-xl"
     >
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
         {/* <!-- Hamburger Toggle BTN --> */}

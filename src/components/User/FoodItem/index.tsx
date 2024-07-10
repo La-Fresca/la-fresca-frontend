@@ -44,9 +44,9 @@ function index({ id }: Props) {
   }
 
   return (
-    <div className="flex items-center h-110vh md:h-[calc(100vh-120px)]">
+    <div className="flex items-center h-110vh lg:h-[calc(100vh-120px)]">
       <div
-        className="ml-[10%] flex flex-col md:flex-row flex-grow items-center justify-between px-4 py-4 rounded-2xl border border-foodbg bg-foodbg  backdrop-blur-md"
+        className="ml-[10%] flex flex-col lg:flex-row flex-grow items-center justify-between px-4 py-4 rounded-2xl border border-foodbg bg-foodbg  backdrop-blur-md"
         style={{
           marginLeft: '10%',
           marginRight: '10%',
@@ -85,7 +85,7 @@ function index({ id }: Props) {
               ))}
             </div>
 
-            <div className="flex justify-between items-center w-100 mt-2">
+            <div className="flex justify-between items-center w-80 md:w-90 mt-2">
               <TextButton value="Add to Cart" />
               <TextButton value="Buy Now" />
             </div>
