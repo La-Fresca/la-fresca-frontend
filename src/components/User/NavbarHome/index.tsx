@@ -2,6 +2,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Button } from "flowbite-react";
 import LogoIcon from '../../../images/logo/la-fresca.png';
+import BackgroundImage from '../../../images/Landing/background.png';
 
 const navigation = [
   { name: 'Home', href: '#', current: false },
@@ -16,7 +17,14 @@ function classNames(...classes: string[]) {
 
  const NavBar = () =>{
   return (
-    <Disclosure as="nav" className="bg-black">
+    <Disclosure 
+    as="nav" 
+    style={{
+            backgroundImage: `url(${BackgroundImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+    >
       {({ open }) => (
         <>
           <div className="mx-auto max-w-full sm:px-6 lg:px-8">
