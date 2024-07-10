@@ -18,27 +18,27 @@ function QtySelector() {
     };
 
     return (
-        <div className="flex items-center justify-between w-60">
+        <div className="flex items-center justify-between w-80">
             <div className='text-white mt-2'>
-            <b>Quantity:</b>
+                <b>Quantity:</b>
             </div>
-            <div className="">
-            <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg w-7 h-8"
-            onClick={handleDecrement}
-            >
-                <b>-</b>
-            </Button>
-            <input
-                type="text"
-                value={count}
-                readOnly
-                className="text-center w-16 ml-2 mr-2 py-1 bg-transparent border border-white text-white rounded-md"
-            />
-            <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg w-7 h-8 mt-3"
-                onClick={handleIncrement}
-            >
-                <b>+</b>
-            </Button>
+            <div className="mt-3">
+                <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg w-2 h-8"
+                onClick={handleDecrement}
+                >
+                    <b>-</b>
+                </Button>
+                <input
+                    type="text"
+                    value={count}
+                    readOnly
+                    className="text-center w-16 ml-2 mr-2 py-1 bg-transparent border border-white text-white rounded-md"
+                />
+                <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg w-7 h-8"
+                    onClick={handleIncrement}
+                >
+                    <b>+</b>
+                </Button>
             </div>
         </div>
     )

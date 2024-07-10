@@ -13,7 +13,7 @@ export default function TextButtonGroup({ name, levels }: Props) {
       </div>
       <ButtonGroup className='ml-5'>
         {levels.map((level, index) => {
-          let buttonClass = 'border duration-300 hover:text-white';
+          let buttonClass = 'border duration-300 hover:bg-gray';
 
           if (index === 0) {
             buttonClass += ' rounded-l-lg';

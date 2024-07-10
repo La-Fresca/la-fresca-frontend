@@ -59,7 +59,7 @@ module.exports = {
         warning: '#FFA70B',
         green: '#10B981',
         foodbg: '#5A5A5A',
-        gray: '#64748B',
+        gray: '#292929',
       },
       fontSize: {
         'title-xxl': ['44px', '55px'],
