@@ -23,7 +23,7 @@ function QtySelector() {
                 <b>Quantity:</b>
             </div>
             <div className="mt-3">
-                <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg w-2 h-8"
+                <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg w-7 h-8"
                 onClick={handleDecrement}
                 >
                     <b>-</b>
