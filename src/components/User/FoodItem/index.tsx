@@ -56,7 +56,7 @@ function index({ id }: Props) {
         <div>
           <img src={Food} alt="" className="w-[100%]" />
         </div>
-        
+
         <div className="w-[70%]">
           <div className="text-4xl font-bold text-white ">{item.name}</div>
           <div className="pt-3">{item.description}</div>
@@ -75,19 +75,19 @@ function index({ id }: Props) {
           <div>
             <QtySelector />
 
-            <div className='mt-8'>
+            <div className="mt-8">
               {item.features.map((feature: any, index: number) => (
-                <TextButtonGroup 
+                <TextButtonGroup
                   key={index}
-                  name={feature.name} 
+                  name={feature.name}
                   levels={feature.levels}
                 />
               ))}
             </div>
 
-            <div className='flex justify-between items-center w-80 md:w-90 mt-2'>
-              <TextButton value='Add to Cart' />
-              <TextButton value='Buy Now' />
+            <div className="flex justify-between items-center w-80 md:w-90 mt-2">
+              <TextButton value="Add to Cart" />
+              <TextButton value="Buy Now" />
             </div>
           </div>
         </div>

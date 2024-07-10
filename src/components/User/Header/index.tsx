@@ -10,7 +10,7 @@ const Header = (props: {
     { name: 'Home', href: '/', showOnLarge: true },
     { name: 'About Us', href: '#', showOnLarge: true },
     { name: 'Meet Chefs', href: '#', showOnLarge: true },
-    { name: 'Foods', href: '#', showOnLarge: true },
+    { name: 'Foods', href: '/foodItems', showOnLarge: true },
     { name: 'Gallery', href: '#', showOnLarge: true },
     { name: 'Contact Us', href: '#', showOnLarge: true },
   ];
