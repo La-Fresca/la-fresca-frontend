@@ -44,7 +44,7 @@ const Gallery = () => {
                     </motion.p>
                 </motion.div>
             </ImagesSlider>
-            <TitleBox title={"gallery"} subtitle={"la Fresca cafe"} button={"view more"} ClassName={"absolute bottom-0 right-0 w-[40%] h-[30%]"} URLLink="/gallery" />
+            <TitleBox title={"gallery"} subtitle={"la Fresca cafe"} button={"view more"} ClassName={"absolute bottom-0 right-0 w-fit h-[40%] px-20 bg-yellow-500 "} URLLink="/gallery" />
         </div>
     );
 }
