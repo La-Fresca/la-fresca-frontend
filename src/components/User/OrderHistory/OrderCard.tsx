@@ -6,7 +6,7 @@ export const OrderCard = () => {
     return (
         <div className="">
             <div
-                className="w-[40%] flex flex-col lg:flex-col flex-grow items-left align-middle justify-between px-4 py-4 rounded-2xl border border-foodbg bg-foodbg  backdrop-blur-md"
+                className="w-[100%] flex flex-col lg:flex-col flex-grow items-left align-middle justify-between my-2 px-4 py-4 rounded-2xl border border-foodbg bg-foodbg  backdrop-blur-md"
                 style={{
                     backgroundColor: 'rgba(255, 255, 255, 0.01)',
                 }}
