@@ -1,35 +1,42 @@
 import { useEffect, useState } from 'react';
 import Food from '@images/product/pizza.png';
 import Star from '../FoodItem/Star';
+import { Button } from "@nextui-org/react";
 
 function index() {
   const TrendingFoods = [
     {
+      id: '01',
       name: 'Cheese Pizza',
       rating: 4,
       price: 3500,
     },
     {
+      id: '02',
       name: 'Saussage Pizza',
       rating: 5,
       price: 4500,
     },
     {
+      id: '03',
       name: 'Margherita Pizza',
       rating: 3,
       price: 3000,
     },
     {
+      id: '04',
       name: 'BBQ Chicken Pizza',
       rating: 3,
       price: 4000,
     },
     {
+      id: '05',
       name: 'Black Chicken Pizza',
       rating: 3,
       price: 4000,
     },
     {
+      id: '06',
       name: 'Hot & Spicy Chicken Pizza',
       rating: 3,
       price: 4000,
@@ -40,9 +47,14 @@ function index() {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5">
       {TrendingFoods.map((_, i) => {
         return (
-          <a href="fooditems/viewfood">
+          <a href={`fooditems/viewfood/${_.id}`} className='hover:scale-105 transition-transform duration-300 hover:cursor-pointer'>
+            <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-3xl min-w-5"
+            style={{position: 'relative', left: '210px', top: '45px', zIndex: '1'}}
+            >
+                <b>+</b>
+            </Button>
             <div
-              className="border rounded-2xl border-foodbg bg-foodbg  backdrop-blur-md w-55 h-850 p-2 py-2 hover:scale-105 transition-transform duration-300 hover:cursor-pointer"
+              className="border rounded-2xl border-foodbg bg-foodbg  backdrop-blur-md w-55 h-850 p-2 py-2"
               style={{
                 marginLeft: '10%',
                 marginRight: '10%',
