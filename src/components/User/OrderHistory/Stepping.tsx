@@ -103,8 +103,8 @@ const ColorlibStepIconRoot = styled('div')<{
   backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
   zIndex: 1,
   color: '#fff',
-  width: 35,  // Reduced size
-  height: 35,  // Reduced size
+  width: 40,  // Reduced size
+  height: 40,  // Reduced size
   display: 'flex',
   borderRadius: '50%',
   justifyContent: 'center',
@@ -149,22 +149,26 @@ const WhiteStepLabel = styled(StepLabel)(({ theme }) => ({
   },
 }));
 
+const LightGrayTime = styled('div')({
+  color: '#d3d3d3', // Light gray color
+  fontSize: '0.75rem', // Small font size
+  textAlign: 'center',
+  marginTop: '4px',
+});
+
 const steps = ['Order Confirmed', 'Cooking', 'Delivering', 'Delivered'];
+const completionTimes = ['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM']; // Example times
 
 export default function CustomizedSteppers() {
   return (
     <Stack sx={{ width: '100%' }} spacing={4}>
-      {/* <Stepper alternativeLabel activeStep={1} connector={<QontoConnector />}>
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper> */}
       <Stepper alternativeLabel activeStep={1} connector={<ColorlibConnector />}>
         {steps.map((label, index) => (
           <Step key={label}>
-            <WhiteStepLabel StepIconComponent={ColorlibStepIcon}>{label}</WhiteStepLabel>
+            <WhiteStepLabel StepIconComponent={ColorlibStepIcon}>
+              {label}
+              {index < 1 && <LightGrayTime>{completionTimes[index]}</LightGrayTime>}
+            </WhiteStepLabel>
           </Step>
         ))}
       </Stepper>
