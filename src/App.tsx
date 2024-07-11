@@ -16,6 +16,7 @@ import UserLayout from '@layouts/UserLayout';
 import Foods from '@pages/BranchManager/Foods';
 import FoodItem from '@pages/FoodItem';
 import AllFoodItems from '@pages/AllFoodItems';
+import { Gallery } from '@components/Gallery/Gallery';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -26,6 +27,15 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="La Fresca | Home" />
             <Home />
+          </>
+        }
+      />
+      <Route
+        path="gallery"
+        element={
+          <>
+            <PageTitle title="La Fresca | Gallery" />
+            <Gallery />
           </>
         }
       />
