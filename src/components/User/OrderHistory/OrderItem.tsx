@@ -1,6 +1,13 @@
 import React from 'react';
 
-export const OrderItem = () => {
+interface OrderItemProps {
+    name: string;
+    description: string;
+    price: number;
+    quantity: number;
+  }
+  
+  export const OrderItem: React.FC<OrderItemProps> = ({ name, description, price, quantity }) => {
     return (
         <div className='w-full flex flex-row justify-between items-center p-4 bg-gray-800'>
             <div className='w-1/6 border rounded-md border-white' style={{ aspectRatio: '1 / 1' }}>
@@ -8,12 +15,12 @@ export const OrderItem = () => {
             </div>
 
             <div className='w-3/6 mx-5 flex-grow'>
-                <p className='text-white text-xl font-bold'>Food Name</p>
-                <p className='text-white'>Food Description</p>
+                <p className='text-white text-xl font-bold'>{name}</p>
+                <p className='text-white'>{description}</p>
             </div>
             <div className='w-2/6 flex flex-col items-end'>
-                <p className='text-white text-xl font-semibold'>Price</p>
-                <p className='text-white text-base font-normal'>Quantity</p>
+                <p className='text-white text-xl font-semibold'>{price}</p>
+                <p className='text-white text-base font-normal'>{quantity}</p>
             </div>
         </div>
     );

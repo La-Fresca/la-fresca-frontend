@@ -31,16 +31,16 @@ export const OrderDetails = () => {
           <TbTruckDelivery className='text-white text-2xl' />
           <p className='text-white'>Estimated delivery: May 16, 2022</p>
         </div>
-        <CustomizedSteppers />
+        {/* <CustomizedSteppers /> */}
         <div className='flex flex-col gap-2 mx-20 mt-10'>
           {/* <div className='flex flex-row justify-between'>
             <p className='text-white'>Items</p>
             <p className='text-white'>Price</p>
           </div> */}
           <div className=' w-full flex flex-col'>
-            <OrderItem />
-            <OrderItem />
-            <OrderItem />
+            <OrderItem name='Chocolate MilkShake' description='Lormdknkane knkejnne ked' price={3900} quantity={30}/>
+            <OrderItem name='Chocolate MilkShake' description='Lormdknkane knkejnne ked' price={3900} quantity={30}/>
+            <OrderItem name='Chocolate MilkShake' description='Lormdknkane knkejnne ked' price={3900} quantity={30}/>
           </div>
 
           <div className='flex flex-row justify-between'>

@@ -157,17 +157,19 @@ const LightGrayTime = styled('div')({
 });
 
 const steps = ['Order Confirmed', 'Cooking', 'Delivering', 'Delivered'];
-const completionTimes = ['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM']; // Example times
+// var completionTimes = ['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM']; // Example times
 
-export default function CustomizedSteppers() {
+export default function CustomizedSteppers({stage, completionTimesArray}:{stage:number, completionTimesArray:string[]}) {
+  console.log("stage",stage);
+
   return (
     <Stack sx={{ width: '100%' }} spacing={4}>
-      <Stepper alternativeLabel activeStep={1} connector={<ColorlibConnector />}>
+      <Stepper alternativeLabel activeStep={stage-1} connector={<ColorlibConnector />}>
         {steps.map((label, index) => (
           <Step key={label}>
             <WhiteStepLabel StepIconComponent={ColorlibStepIcon}>
               {label}
-              {index < 1 && <LightGrayTime>{completionTimes[index]}</LightGrayTime>}
+              {index < stage && <LightGrayTime>{completionTimesArray[index]}</LightGrayTime>}
             </WhiteStepLabel>
           </Step>
         ))}
