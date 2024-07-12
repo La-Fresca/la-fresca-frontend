@@ -12,7 +12,7 @@ interface Props {
 }
 
 function index({ id }: Props) {
-  const [item, setItem] = useState<any>(null); // Adjusted initial state to null
+  const [item, setItem] = useState<any>(null);
 
   const fetchItems = async () => {
     try {
