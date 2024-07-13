@@ -5,7 +5,7 @@ import  HeroImg  from "../../images/Landing/Hero.png"
 import  ChefImg from "../../images/Landing/chef.png"
 import  ContactUs from "../../images/Landing/contact.png"
 import BackgroundImage from '../../images/Landing/background.png';
-import AboutUsImage from '../../images/Landing/aboutuss.jpg';
+import AboutUsImage from '../../images/Landing/AboutUs.jpg';
 
 const HomePage: React.FC = () => {
     return (
@@ -54,11 +54,16 @@ const HomePage: React.FC = () => {
               </div>
               </Container>
 
-              <Container className="flex flex-wrap p-2 bg-black">
+              <Container className="flex flex-wrap p-2 bg-white">
+                    <header className="w-full text-center py-8">
+                        <h1 className="text-xsm lg:text-2xl font-normal ">WELCOME TO</h1>
+                        <h2 className="text-4xl lg:text-8xl font-bold">LA FRESCA CAFE</h2>
+                    </header>
                   
 
-                <div className="flex items-center lg:w-230 bg-black pl-10 ml-2">
-                  <div className="max-w-2xl mx-15 my-15">
+                <div className="flex items-center lg:w-200 bg-black pl-10 ml-2 my-15">
+                    
+                  <div className="max-w-2xl mx-15 my-15 ">
                     <h1 className="text-2xl py-4 font-bold leading-snug tracking-tight text-gray-800 lg:text-4xl lg:leading-tight xl:text-6xl xl:leading-tight text-white">
                     About Us
                     </h1>
@@ -70,19 +75,7 @@ const HomePage: React.FC = () => {
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, 
                             illum quaerat eaque illo dolor officiis. Temporibus odit, pariatur corporis ipsa odio officia tenetur? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
                             Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, illum quaerat eaque illo dolor officiis. Temporibus odit, pariatur corporis ipsa odio officia tenetur? 
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, illum quaerat eaque illo dolor officiis
-                            illum quaerat eaque illo dolor officiis. Temporibus odit, pariatur corporis ipsa odio officia tenetur? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                            Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, illum quaerat eaque illo dolor officiis. Temporibus odit, pariatur corporis ipsa odio officia tenetur? 
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, illum quaerat eaque illo dolor officiis
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, 
-                            illum quaerat eaque illo dolor officiis. Temporibus odit, pariatur corporis ipsa odio officia tenetur? 
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, 
-                            illum quaerat eaque illo dolor officiis. Temporibus odit, pariatur corporis ipsa odio officia tenetur? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                            Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, illum quaerat eaque illo dolor officiis. Temporibus odit, pariatur corporis ipsa odio officia tenetur? 
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, illum quaerat eaque illo dolor officiis
-                            illum quaerat eaque illo dolor officiis. Temporibus odit, pariatur corporis ipsa odio officia tenetur? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                            Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, illum quaerat eaque illo dolor officiis. Temporibus odit, pariatur corporis ipsa odio officia tenetur? 
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, illum quaerat eaque illo dolor officiis" 
+                            tetur adipisicing elit. Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, illum quaerat eaque illo dolor officiis" 
                             
                             />
                     </div>
@@ -92,8 +85,8 @@ const HomePage: React.FC = () => {
                   <img
                     src={AboutUsImage}
                     alt="Aboutus Image"
-                    width={600}
-                    height={500}
+                    width={700}
+                    height={600}
                  />
 
                 </div>
