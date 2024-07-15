@@ -14,8 +14,38 @@ function App() {
 
 export default App;
 
+const steps = ['Order Confirmed', 'Cooking', 'Delivering', 'Delivered'];
 
-export const OrderDetails = () => {
+export const OrderDetails = ({order}:{order:any}) => {
+  console.log("order1234",order);
+  let stageIndex = 1;
+          if (order.orderStatus === 'Cooking') {
+            stageIndex = 2;
+          } else if (order.orderStatus === 'Delivering') {
+            stageIndex = 3;
+          } else if (order.orderStatus === 'Delivered') {
+            stageIndex = 4;
+          }
+
+          let completionTimesArray = []
+
+          for(let i = 0; i<steps.length; i++){
+            if(i<stageIndex){
+              completionTimesArray[i] = order.completionTimes[i]
+            }
+            else{
+              completionTimesArray[i] = ''
+            }
+          }
+
+      console.log("stageIndex",stageIndex);
+      console.log("Completion Times Array",completionTimesArray);
+
+      var addressParts = order.delivery.address ? order.delivery.address.split(',') : [];
+
+      
+
+
   return (
     <div className="">
       <div
@@ -24,13 +54,17 @@ export const OrderDetails = () => {
           backgroundColor: 'rgba(255, 255, 255, 0.01)',
         }}
       >
-        <h1 className='text-2xl text-white'>Order No : #3222110</h1>
+        <h1 className='text-2xl text-white'>Order No : #{order.orderId}</h1>
         <div className='flex justify-left gap-2 flex-row mb-5'>
-          <p className='text-white'>Order Date : July 11, 2024</p>
+          <p className='text-white'>Order Date : {order.orderDate}</p>
           <p className='text-white'>|</p>
           <TbTruckDelivery className='text-white text-2xl' />
-          <p className='text-white'>Estimated delivery: May 16, 2022</p>
+          <p className='text-white'>Estimated delivery: {order.deliveryDate}</p>
         </div>
+
+
+
+        <CustomizedSteppers stage={stageIndex} completionTimesArray={completionTimesArray} />
         {/* <CustomizedSteppers /> */}
         <div className='flex flex-col gap-2 mx-20 mt-10'>
           {/* <div className='flex flex-row justify-between'>
@@ -47,7 +81,7 @@ export const OrderDetails = () => {
             <div className='flex flex-col gap-2'>
               <p className='text-white text-xl'>Payment</p>
               <div className='flex flex-row gap-5'>
-                <p className='text-white text-xs'>Visa ****9056</p>
+                <p className='text-white text-xs'>{order.payment.method} {order.payment.cardNumber}</p>
                 <FaCcVisa color="white" size={15} />
               </div>
 
@@ -55,9 +89,12 @@ export const OrderDetails = () => {
             <div className='flex flex-col gap-2'>
               <p className='text-white text-xl'>Delivery</p>
               <p className='text-white text-xs font-light'>Address</p>
-              <p className='text-white text-sm'>847 Jewess Bridge Apt. 174,</p>
-              <p className='text-white text-sm'>London, UK,</p>
-              <p className='text-white text-sm'>474-769-3919</p>
+              {/* <p className='text-white text-sm'>{order.delivery.address}</p> */}
+              {addressParts.map((part: string, index: React.Key | null | undefined) => (
+                <p key={index} className='text-white text-sm'>{part.trim()}</p>
+              ))}
+              {/* <p className='text-white text-sm'>London, UK,</p>
+              <p className='text-white text-sm'>474-769-3919</p> */}
             </div>
           </div>
 

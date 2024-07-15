@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { OrderCard } from './OrderCard'
 import { OrderDetails } from './OrderDetails'
+import { set } from 'zod';
+
 
 var Orders = [
   {
@@ -31,7 +33,7 @@ var Orders = [
     ],
     payment: {
       method: 'Visa',
-      cardNumber: '****9056'
+      cardNumber: '****1156'
     },
     delivery: {
       address: '847 Jewess Bridge Apt. 174, London, UK, 474-769-3919'
@@ -71,7 +73,7 @@ var Orders = [
     ],
     payment: {
       method: 'Visa',
-      cardNumber: '****9056'
+      cardNumber: '****9016'
     },
     delivery: {
       address: '847 Jewess Bridge Apt. 174, London, UK, 474-769-3919'
@@ -125,15 +127,23 @@ var Orders = [
   }
 ];
 
+var selectedOrder = Orders[0];
+
 const steps = ['Order Confirmed', 'Cooking', 'Delivering', 'Delivered'];
 // var completionTimes = ['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM']; // Example times
 
 export const OrderHistory = () => {
+  const [item, setItem] = useState(0);
+
+  const clickFunction = (order: number) => {
+    setItem(order);
+    // console.log("Item",order);
+  }
   
   return (
     <div className='flex flex-row w-screen px-10'>
       <div className='w-[40%] flex flex-col mx-10'>
-        {Orders.map((order) => {
+        {Orders.map((order,index) => {
           let stageIndex = 1;
           if (order.orderStatus === 'Cooking') {
             stageIndex = 2;
@@ -159,14 +169,21 @@ export const OrderHistory = () => {
           //   completionTimesArray[i] = '';
           // }
 
-          console.log("stageIndex",stageIndex);
-          console.log("Completion Times Array",completionTimesArray);
+          // console.log("stageIndex",stageIndex);
+          // console.log("Completion Times Array",completionTimesArray);
 
-          return <OrderCard key={order.orderId} order={{ order, completionTimesArray , stageIndex }} />;
+          return(
+            <div onClick={() => clickFunction(index)}>
+              <OrderCard key={order.orderId} order={{ order, completionTimesArray , stageIndex }} />
+            </div>
+          );
+          // return <OrderCard key={order.orderId} order={{ order, completionTimesArray , stageIndex }} />;
+          // return <OrderCard key={order.orderId} order={{ order, completionTimesArray , stageIndex }} onClick={clickFunction(index)} />;
+          
         })}
       </div>
       <div className='w-[60%] flex flex-col mx-10'>
-        <OrderDetails />
+        <OrderDetails order={Orders[item]} />
       </div>
     </div>
   );

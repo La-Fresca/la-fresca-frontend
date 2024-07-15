@@ -3,7 +3,7 @@ import { TbTruckDelivery } from "react-icons/tb";
 import CustomizedSteppers from './Stepping';
 
 export const OrderCard = ({ order }:{order:any}) => {
-    console.log("order",order);
+    // console.log("order",order);
     return (
         <div className="">
             <div

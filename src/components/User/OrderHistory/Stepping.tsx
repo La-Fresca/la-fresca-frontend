@@ -160,7 +160,7 @@ const steps = ['Order Confirmed', 'Cooking', 'Delivering', 'Delivered'];
 // var completionTimes = ['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM']; // Example times
 
 export default function CustomizedSteppers({stage, completionTimesArray}:{stage:number, completionTimesArray:string[]}) {
-  console.log("stage",stage);
+  // console.log("stage",stage);
 
   return (
     <Stack sx={{ width: '100%' }} spacing={4}>
