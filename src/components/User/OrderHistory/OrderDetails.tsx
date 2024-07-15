@@ -41,9 +41,7 @@ export const OrderDetails = ({order}:{order:any}) => {
       console.log("stageIndex",stageIndex);
       console.log("Completion Times Array",completionTimesArray);
 
-      var addressParts = order.delivery.address ? order.delivery.address.split(',') : [];
-
-      
+      var addressParts = order.delivery.address ? order.delivery.address.split(',') : [];  
 
 
   return (
@@ -72,9 +70,12 @@ export const OrderDetails = ({order}:{order:any}) => {
             <p className='text-white'>Price</p>
           </div> */}
           <div className=' w-full flex flex-col'>
+            {order.orderItems.map((item: any, index: React.Key | null | undefined) => (
+              <OrderItem key={index} name={item.name} description={item.description} price={item.price.toFixed(2)} quantity={item.quantity} image={item.image} />
+            ))}
+            {/* <OrderItem name='Chocolate MilkShake' description='Lormdknkane knkejnne ked' price={3900} quantity={30}/>
             <OrderItem name='Chocolate MilkShake' description='Lormdknkane knkejnne ked' price={3900} quantity={30}/>
-            <OrderItem name='Chocolate MilkShake' description='Lormdknkane knkejnne ked' price={3900} quantity={30}/>
-            <OrderItem name='Chocolate MilkShake' description='Lormdknkane knkejnne ked' price={3900} quantity={30}/>
+            <OrderItem name='Chocolate MilkShake' description='Lormdknkane knkejnne ked' price={3900} quantity={30}/> */}
           </div>
 
           <div className='flex flex-row justify-between'>
@@ -110,9 +111,9 @@ export const OrderDetails = ({order}:{order:any}) => {
     </div>
     
     <div className='flex flex-col gap-2 items-end'>
-      <p className='text-white text-lg'>$5554.00</p>
-      <p className='text-white text-lg'>$0.00</p>
-      <p className='text-white text-lg'>(20%) - $1109.40</p>
+      <p className='text-white text-lg'>${order.orderSummary.subtotal.toFixed(2)}</p>
+      <p className='text-white text-lg'>${order.orderSummary.shipping.toFixed(2)}</p>
+      <p className='text-white text-lg'>({order.orderSummary.discount.toFixed(2)})</p>
       {/* <hr className='my-2 border-t border-white' /> */}
       {/* <p className='text-white text-lg'>$4443.60</p> */}
     </div>
@@ -124,7 +125,7 @@ export const OrderDetails = ({order}:{order:any}) => {
     </div>
     
     <div className='flex flex-col gap-2'>
-      <p className='text-white text-lg'>$4443.60</p>
+      <p className='text-white text-lg'>${order.orderSummary.total.toFixed(2)}</p>
     </div>
   </div>
 </div>
