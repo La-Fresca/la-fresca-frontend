@@ -4,6 +4,8 @@ import CustomizedSteppers from './Stepping';
 import { OrderItem } from './OrderItem';
 import { FaCcVisa } from 'react-icons/fa';
 import {Chip} from "@nextui-org/react";
+import GoogleMap from './trackOrder';
+import { useState } from 'react';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ const steps = ['Order Confirmed', 'Cooking', 'Delivering', 'Delivered'];
 
 export const OrderDetails = ({order}:{order:any}) => {
   console.log("order1234",order);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   let stageIndex = 1;
           if (order.orderStatus === 'Cooking') {
             stageIndex = 2;
@@ -46,6 +50,7 @@ export const OrderDetails = ({order}:{order:any}) => {
 
       var col: "default" | "success" | "warning" | "primary" | "secondary" | "danger" | undefined = "default";
       var btn;
+      var map;
     if(order.orderStatus == 'Delivered'){
         col = "success";
         btn = <Chip color={col} variant="flat">{order.orderStatus}</Chip>
@@ -56,7 +61,10 @@ export const OrderDetails = ({order}:{order:any}) => {
     }
     if(order.orderStatus == 'Delivering'){
         col = "warning";
-        btn = <button className='bg-primary text-white rounded-md px-4'>Track Order</button>
+        // btn = <button className='bg-primary text-white rounded-md px-4'>Track Order</button>
+        btn = <button onClick={() => setIsDialogOpen(true)} className='bg-primary text-white rounded-md px-4'>Track Order</button>;
+        map = <GoogleMap />;
+
     }
     if(order.orderStatus == 'Order Confirmed'){
         col = "default";
@@ -93,6 +101,7 @@ export const OrderDetails = ({order}:{order:any}) => {
 
 
         <CustomizedSteppers stage={stageIndex} completionTimesArray={completionTimesArray} />
+        {map}
         {/* <CustomizedSteppers /> */}
         <div className='flex flex-col gap-2 mx-20 mt-10'>
           {/* <div className='flex flex-row justify-between'>
