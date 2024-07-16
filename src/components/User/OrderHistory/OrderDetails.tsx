@@ -3,6 +3,7 @@ import { TbTruckDelivery } from "react-icons/tb";
 import CustomizedSteppers from './Stepping';
 import { OrderItem } from './OrderItem';
 import { FaCcVisa } from 'react-icons/fa';
+import {Chip} from "@nextui-org/react";
 
 function App() {
   return (
@@ -43,6 +44,25 @@ export const OrderDetails = ({order}:{order:any}) => {
 
       var addressParts = order.delivery.address ? order.delivery.address.split(',') : [];  
 
+      var col: "default" | "success" | "warning" | "primary" | "secondary" | "danger" | undefined = "default";
+      var btn;
+    if(order.orderStatus == 'Delivered'){
+        col = "success";
+        btn = <Chip color={col} variant="flat">{order.orderStatus}</Chip>
+    }
+    if(order.orderStatus == 'Cooking'){
+        col = "default";
+        btn = <Chip color={col} variant="flat">{order.orderStatus}</Chip>
+    }
+    if(order.orderStatus == 'Delivering'){
+        col = "warning";
+        btn = <button className='bg-primary text-white rounded-md px-4'>Track Order</button>
+    }
+    if(order.orderStatus == 'Order Confirmed'){
+        col = "default";
+        btn = <Chip color={col} variant="flat">{order.orderStatus}</Chip>
+    }
+
 
   return (
     <div className="">
@@ -52,7 +72,17 @@ export const OrderDetails = ({order}:{order:any}) => {
           backgroundColor: 'rgba(255, 255, 255, 0.01)',
         }}
       >
-        <h1 className='text-2xl text-white'>Order No : #{order.orderId}</h1>
+        <div className='flex flex-row justify-between'>
+          
+
+                <h1 className='text-2xl text-white'>Order No: #{order.orderId}</h1>
+                <div className='flex flex-row gap-2'>
+                {btn}
+                
+                {/* <Chip color="warning" variant="shadow">Shadow</Chip> */}
+                {/* <Chip color={col} variant="flat">{order.orderStatus}</Chip> */}
+                </div>
+                </div>
         <div className='flex justify-left gap-2 flex-row mb-5'>
           <p className='text-white'>Order Date : {order.orderDate}</p>
           <p className='text-white'>|</p>

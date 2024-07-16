@@ -95,7 +95,7 @@ var Orders = [
     orderId: 3,
     orderDate: '2021-10-10',
     deliveryDate: '2021-10-11',
-    orderStatus: 'Delivered',
+    orderStatus: 'Delivering',
     completionTimes: ['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM'],
     orderItems: [
       {
