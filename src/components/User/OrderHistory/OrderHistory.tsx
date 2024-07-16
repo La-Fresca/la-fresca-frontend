@@ -152,9 +152,11 @@ export const OrderHistory = () => {
   }
   
   return (
-    <div className='flex flex-row w-screen px-10'>
-      <div className='w-[40%] flex flex-col mx-10'>
-        {Orders.map((order,index) => {
+    // Use flex-row for larger screens and flex-col for smaller screens
+    <div className='flex flex-col lg:flex-row w-screen px-4 lg:px-10 '>
+      {/* For smaller screens, set the width to 100% and for larger screens, use 40% width */}
+      <div className='w-full lg:w-[40%] flex flex-col mx-4 lg:mx-10'>
+        {Orders.map((order, index) => {
           let stageIndex = 1;
           if (order.orderStatus === 'Cooking') {
             stageIndex = 2;
@@ -163,39 +165,30 @@ export const OrderHistory = () => {
           } else if (order.orderStatus === 'Delivered') {
             stageIndex = 4;
           }
-
+  
           let completionTimesArray = []
-
-          for(let i = 0; i<steps.length; i++){
-            if(i<stageIndex){
+  
+          for (let i = 0; i < steps.length; i++) {
+            if (i < stageIndex) {
               completionTimesArray[i] = order.completionTimes[i]
             }
-            else{
+            else {
               completionTimesArray[i] = ''
             }
           }
-
-          // let completionTimesArray = [...order.completionTimes];
-          // for (let i = stageIndex; i < steps.length+1; i++) {
-          //   completionTimesArray[i] = '';
-          // }
-
-          // console.log("stageIndex",stageIndex);
-          // console.log("Completion Times Array",completionTimesArray);
-
-          return(
-            <div onClick={() => clickFunction(index)}>
-              <OrderCard key={order.orderId} order={{ order, completionTimesArray , stageIndex }} />
+  
+          return (
+            <div onClick={() => clickFunction(index)} key={order.orderId}>
+              <OrderCard order={{ order, completionTimesArray, stageIndex }} />
             </div>
           );
-          // return <OrderCard key={order.orderId} order={{ order, completionTimesArray , stageIndex }} />;
-          // return <OrderCard key={order.orderId} order={{ order, completionTimesArray , stageIndex }} onClick={clickFunction(index)} />;
-          
         })}
       </div>
-      <div className='w-[60%] flex flex-col mx-10'>
+      {/* For smaller screens, set the width to 100% and for larger screens, use 60% width */}
+      <div className='w-full lg:w-[60%] flex flex-col mx-4 lg:mx-10'>
         <OrderDetails order={Orders[item]} />
       </div>
     </div>
   );
+  
 };
