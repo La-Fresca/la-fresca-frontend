@@ -6,7 +6,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { TrashIcon } from '@heroicons/react/24/solid';
 import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
-import MultiSelect from '../MultiSelect';
+import MultiSelect from '@components/BranchManager/Forms/MultiSelect';
 import { Category } from '@/types/category';
 import { toast } from 'react-toastify';
 
@@ -119,7 +119,6 @@ const DynamicForm: FC = () => {
 
       if (response.ok) {
         toast('Food item added successfully', { type: 'success' });
-        // Optionally reset form values or handle navigation
       } else {
         toast('Failed to add food item', { type: 'error' });
         console.error('Failed to add food item:', response.statusText);
@@ -131,9 +130,9 @@ const DynamicForm: FC = () => {
   };
 
   const [categories] = useState<Category[]>([
-    { key: 'Dog', label: 'Dog' },
-    { key: 'Cat', label: 'Cat' },
-    { key: 'Bird', label: 'Bird' },
+    { key: 'Non-Vegetarian', label: 'Non-Vegetarian' },
+    { key: 'Vegetarian', label: 'Vegetarian' },
+    { key: 'Other', label: 'Other' },
   ]);
 
   return (
