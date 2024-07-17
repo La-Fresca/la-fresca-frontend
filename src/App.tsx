@@ -48,8 +48,8 @@ const routes = createRoutesFromElements(
             <PageTitle title="La Fresca | Cart" />
             <Cart />
           </>
-        }
-      />
+          }
+        />
       <Route
         path="orderhistory"
         element={
