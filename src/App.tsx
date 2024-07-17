@@ -50,8 +50,8 @@ const routes = createRoutesFromElements(
             <PageTitle title="La Fresca | Cart" />
             <Cart />
           </>
-          }
-        />
+        }
+      />
       <Route
         path="orderhistory"
         element={
@@ -103,33 +103,35 @@ const routes = createRoutesFromElements(
           </>
         }
       />
-      <Route
-        path="foods"
-        element={
-          <>
-            <PageTitle title="Branch Manager | Foods" />
-            <Foods />
-          </>
-        }
-      />
-      <Route
-        path="foodlist"
-        element={
-          <>
-            <PageTitle title="Branch Manager | Foods List" />
-            <FoodList />
-          </>
-        }
-      />
-      <Route
-        path="discountlist"
-        element={
-          <>
-            <PageTitle title="Branch Manager | Discount List" />
-            <DiscountList />
-          </>
-        }
-      />
+      <Route path="foods">
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="La Fresca | Food List" />
+              <FoodList />
+            </>
+          }
+        />
+        <Route
+          path="add"
+          element={
+            <>
+              <PageTitle title="Branch Manager | Add Food" />
+              <Foods />
+            </>
+          }
+        />
+        <Route
+          path="discountlist"
+          element={
+            <>
+              <PageTitle title="Branch Manager | Discount List" />
+              <DiscountList />
+            </>
+          }
+        />
+      </Route>
     </Route>
   </Route>,
 );
