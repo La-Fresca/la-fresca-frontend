@@ -125,15 +125,6 @@ const routes = createRoutesFromElements(
             </>
           }
         />
-        <Route
-          path="discountlist"
-          element={
-            <>
-              <PageTitle title="Branch Manager | Discount List" />
-              <DiscountList />
-            </>
-          }
-        />
       </Route>
       <Route path="users">
         <Route
@@ -164,6 +155,15 @@ const routes = createRoutesFromElements(
           }
         />
       </Route>
+      <Route
+        path="discountlist"
+        element={
+          <>
+            <PageTitle title="Branch Manager | Discount List" />
+            <DiscountList />
+          </>
+        }
+      />
     </Route>
   </Route>,
 );
