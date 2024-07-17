@@ -341,12 +341,8 @@ export default function App() {
             onClear={() => setFilterValue("")}
             onValueChange={onSearchChange}
           />
-          <Button
-            className="bg-primary text-background rounded-md px-10 py-2"
-            endContent={<PlusIcon />}
-            size="sm"
-          >
-            Add New
+          <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 mt-8 px-10">
+            Add New Discount
           </Button>
         </div>
         <div className="flex justify-between items-center">
