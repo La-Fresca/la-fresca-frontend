@@ -1,20 +1,28 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { z } from 'zod';
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import SwitcherThree from '@components/BranchManager/Switchers/SwitcherThree';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { BackspaceIcon } from '@heroicons/react/24/solid';
+import { TrashIcon } from '@heroicons/react/24/solid';
+import ImageInput from '@components/BranchManager/Inputs/ImageInput';
+import { Button } from '@nextui-org/react';
+import MultiSelect from '@components/BranchManager/Forms/MultiSelect';
+import { Category } from '@/types/category';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
+  category: z.string().min(1, { message: 'Category is required' }),
   description: z.string().optional(),
-  price: z.coerce.number().min(0, { message: 'Price must be at least 0' }),
+  price: z.coerce
+    .number()
+    .multipleOf(0.01)
+    .min(0, { message: 'Price must be at least 0' }),
   image: z.coerce
     .string({ message: 'Should be a string' })
     .optional()
-    .default('test'), // Zod doesn't validate file inputs directly
-  available: z.boolean(),
+    .default('test'),
   features: z
     .array(
       z.object({
@@ -35,7 +43,8 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 const DynamicForm: FC = () => {
-  const { register, control, handleSubmit, formState } =
+  const Navigate = useNavigate();
+  const { register, control, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
       resolver: zodResolver(FormSchema),
     });
@@ -47,15 +56,53 @@ const DynamicForm: FC = () => {
 
   const { errors } = formState;
 
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
   useEffect(() => {
     if (Object.keys(errors).length) {
       console.log('Form errors:', errors);
     }
   }, [errors]);
 
-  const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
+  const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
+    let imageUrl = data.image;
+
+    if (imageFile) {
+      const formData = new FormData();
+      formData.append('file', imageFile);
+
+      try {
+        const uploadUrl = (import.meta as any).env.VITE_UPLOAD_URL;
+        const response = await fetch(`${uploadUrl}`, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+          },
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          imageUrl = result.fileUrl;
+          setValue('image', imageUrl);
+        } else {
+          console.error('Image upload failed');
+          return;
+        }
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        return;
+      }
+    }
+
     const transformedData = {
+      cafeId: 'cafe 1',
+      available: 0,
+      deleted: 0,
       ...data,
+      image: imageUrl,
       features:
         data.features?.map((feature) => ({
           name: feature.name,
@@ -63,25 +110,57 @@ const DynamicForm: FC = () => {
           additionalPrices: feature.subCategories.map((sub) => sub.price),
         })) || [],
     };
-    const jsonStr = JSON.stringify(transformedData, null, 2);
-    console.log(jsonStr);
+
+    try {
+      const apiUrl = (import.meta as any).env.VITE_API_URL;
+      const response = await fetch(`${apiUrl}/food`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(transformedData),
+      });
+
+      if (response.ok) {
+        toast('Food item added successfully', { type: 'success' });
+        Navigate('/branch-manager/foods');
+      } else {
+        toast('Failed to add food item', { type: 'error' });
+        console.error('Failed to add food item:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error adding food item:', error);
+      toast('Failed to add food item', { type: 'error' });
+    }
   };
 
+  const [categories] = useState<Category[]>([
+    { key: 'Non-Vegetarian', label: 'Non-Vegetarian' },
+    { key: 'Vegetarian', label: 'Vegetarian' },
+    { key: 'Other', label: 'Other' },
+  ]);
+
   return (
-    <div className="flex flex-col gap-9">
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="flex flex-col gap-4">
+      <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#000000]">
         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-          <h3 className="font-medium text-black dark:text-white">
+          <h3
+            className="font-medium text-xl
+           text-black dark:text-white"
+          >
             Add Food Item
           </h3>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="p-6.5">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col md:flex-row gap-6 max-h-full"
+        >
+          <div className="w-full md:w-3/7 space-y-4 p-6.5">
             <div className="w-full">
               <label className="mb-3 block text-black dark:text-white">
                 <span className="block mb-1 text-gray-600">Item name</span>
                 <input
-                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                   type="text"
                   {...register('name')}
                 />
@@ -90,9 +169,19 @@ const DynamicForm: FC = () => {
                 )}
               </label>
               <label className="mb-3 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Description</span>
+                <span className="block mb-1 text-gray-600">Category</span>
+                <MultiSelect
+                  categories={categories}
+                  register={register}
+                  fieldname="category"
+                />
+              </label>
+
+              <label className="mb-3 block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">Describe food</span>
                 <textarea
-                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
+                  placeholder="Tell us about your food..."
                   {...register('description')}
                 />
                 {errors.description && (
@@ -101,10 +190,10 @@ const DynamicForm: FC = () => {
                   </p>
                 )}
               </label>
-              <label className="mb-3 block text-black dark:text-white">
+              <label className="mb-6 block text-black dark:text-white">
                 <span className="block mb-1 text-gray-600">Price</span>
                 <input
-                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                   type="number"
                   {...register('price')}
                 />
@@ -112,36 +201,21 @@ const DynamicForm: FC = () => {
                   <p className="text-red-600">{errors.price.message}</p>
                 )}
               </label>
-
-              <label className="mb-3 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Image</span>
-                <input
-                  type="file"
-                  className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
-                  {...register('image')}
-                />
-                {errors.image && (
-                  <p className="text-red-600">{errors.image.message}</p>
-                )}
-              </label>
-
-              <label className="mb-3 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Available</span>
-                <SwitcherThree
-                  fieldName="available"
-                  register={register}
-                  defaultValue={true}
-                />
-              </label>
-              {errors.available && (
-                <p className="text-red-600">{errors.available.message}</p>
-              )}
             </div>
+            <Button
+              type="button"
+              className="flex w-full mb-3 justify-center rounded-lg border-solid border-2 border-[#ffffff] bg-blue-200 dark:bg-[#000000] p-3 font-medium text-black dark:text-white hover:bg-opacity-90 "
+              onClick={() =>
+                append({ name: '', subCategories: [{ name: '', price: 0 }] })
+              }
+            >
+              Add Feature
+            </Button>
             <div className="mt-6">
               {fields.map((field, index) => (
                 <div
                   key={field.id}
-                  className="relative mt-4 mb-4 border border-gray-300 dark:border-gray-700 rounded-lg p-4"
+                  className="relative mt-8 mb-4 border-dashed border-2 border-gray-300 dark:border-gray-700 rounded-lg p-4"
                 >
                   <button
                     type="button"
@@ -155,7 +229,7 @@ const DynamicForm: FC = () => {
                       Feature Name
                     </span>
                     <input
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                       type="text"
                       {...register(`features.${index}.name`)}
                     />
@@ -172,7 +246,7 @@ const DynamicForm: FC = () => {
                           Sub Category
                         </span>
                         <input
-                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                           type="text"
                           {...register(
                             `features.${index}.subCategories.${subIndex}.name`,
@@ -194,7 +268,7 @@ const DynamicForm: FC = () => {
                       <label className="block w-full ml-4">
                         <span className="block mb-3 text-gray-600">Price</span>
                         <input
-                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                           type="number"
                           {...register(
                             `features.${index}.subCategories.${subIndex}.price`,
@@ -225,13 +299,13 @@ const DynamicForm: FC = () => {
                           })
                         }
                       >
-                        <BackspaceIcon className="h-9 w-9 text-red-500 dark:text-red-800" />
+                        <TrashIcon className="h-9 w-9 text-red-500 dark:text-[#ffffff]" />
                       </button>
                     </div>
                   ))}
-                  <button
+                  <Button
                     type="button"
-                    className="flex w-full mt-3 mb-3 justify-center rounded-lg bg-yellow-200 dark:bg-yellow-600 text-black p-3 font-medium dark:text-white hover:bg-opacity-90"
+                    className="flex w-full mt-3 mb-3 justify-center rounded-lg border-2 border-solid text-black p-3 font-medium dark:text-white hover:bg-opacity-90"
                     onClick={() =>
                       update(index, {
                         ...fields[index],
@@ -243,22 +317,33 @@ const DynamicForm: FC = () => {
                     }
                   >
                     Add Sub Category
-                  </button>
+                  </Button>
                 </div>
               ))}
-              <button
-                type="button"
-                className="flex w-full mb-3 justify-center rounded-lg bg-blue-200 dark:bg-strokedark p-3 font-medium text-black dark:text-gray hover:bg-opacity-90"
-                onClick={() =>
-                  append({ name: '', subCategories: [{ name: '', price: 0 }] })
-                }
-              >
-                Add Feature
-              </button>
             </div>
-            <button className="flex w-full justify-center rounded-lg bg-yellow-300 dark:bg-yellow-900 p-3 font-medium text-black dark:text-gray hover:bg-opacity-90">
-              Add Food Item
-            </button>
+          </div>
+          <div className="w-full md:w-4/7 flex p-6.5">
+            <div className="w-full">
+              <label className="block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">Upload Image</span>
+                <ImageInput
+                  fieldname="image"
+                  register={register}
+                  setImageFile={setImageFile}
+                />
+              </label>
+              <div className="flex justify-center gap-12 mt-16">
+                <Button className="flex w-full justify-center rounded-lg bg-[#b1bfd0] text-white shadow-lg min-w-0 h-16">
+                  Cancel
+                </Button>
+                <Button
+                  className="flex w-full justify-center rounded-lg bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg min-w-0 h-16"
+                  type="submit"
+                >
+                  Add Food Item
+                </Button>
+              </div>
+            </div>
           </div>
         </form>
       </div>

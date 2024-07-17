@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '@images/logo/la-fresca.png';
-import { Bars3Icon } from '@heroicons/react/24/outline';
+import { Bars3Icon, UserIcon } from '@heroicons/react/24/outline';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
 import { CakeIcon } from '@heroicons/react/24/outline';
 import { QueueListIcon } from '@heroicons/react/24/outline';
@@ -121,6 +121,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   <CakeIcon className="w-6 h-6" />
                   Foods
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/branch-manager/users"
+                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    pathname.includes('/branch-manager/users') &&
+                    'bg-yellow-100 dark:bg-meta-4'
+                  }`}
+                >
+                  <UserIcon className="w-6 h-6" />
+                  Manage Users
                 </NavLink>
               </li>
               <SidebarLinkGroup

@@ -13,13 +13,18 @@ import Dashboard from '@pages/BranchManager/Dashboard';
 import BranchManagerLayout from '@layouts/BranchManagerLayout';
 import LoginPage from '@pages/User/LogIn';
 import UserLayout from '@layouts/UserLayout';
-import Foods from '@pages/BranchManager/Foods';
+import AddFoods from '@pages/BranchManager/Foods/AddFood';
 import FoodItem from '@pages/FoodItem';
 import AllFoodItems from '@pages/AllFoodItems';
+import FoodList from '@pages/BranchManager/FoodList';
 import { Gallery } from '@components/Gallery/Gallery';
+import DiscountList from './pages/BranchManager/FoodList/DiscountList';
 import Cart from '@pages/Cart';
 import Checkout from '@pages/Checkout';
 import { OrderHistory } from './components/User/OrderHistory/OrderHistory';
+import User from '@pages/BranchManager/Users';
+import UserAdd from '@pages/BranchManager/Users/AddUser';
+import UserEdit from '@pages/BranchManager/Users/EditUser';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -49,8 +54,8 @@ const routes = createRoutesFromElements(
             <PageTitle title="La Fresca | Cart" />
             <Cart />
           </>
-          }
-        />
+        }
+      />
       <Route
         path="orderhistory"
         element={
@@ -112,12 +117,61 @@ const routes = createRoutesFromElements(
           </>
         }
       />
+      <Route path="foods">
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="La Fresca | Food List" />
+              <FoodList />
+            </>
+          }
+        />
+        <Route
+          path="add"
+          element={
+            <>
+              <PageTitle title="Branch Manager | Add Food" />
+              <AddFoods />
+            </>
+          }
+        />
+      </Route>
+      <Route path="users">
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="Branch Manager | Users" />
+              <User />
+            </>
+          }
+        />
+        <Route
+          path="add"
+          element={
+            <>
+              <PageTitle title="Branch Manager | Add User" />
+              <UserAdd />
+            </>
+          }
+        />
+        <Route
+          path="edit/:userId"
+          element={
+            <>
+              <PageTitle title="Branch Manager | Edit User" />
+              <UserEdit />
+            </>
+          }
+        />
+      </Route>
       <Route
-        path="foods"
+        path="discountlist"
         element={
           <>
-            <PageTitle title="Branch Manager | Foods" />
-            <Foods />
+            <PageTitle title="Branch Manager | Discount List" />
+            <DiscountList />
           </>
         }
       />
