@@ -9,6 +9,7 @@ import { Button } from '@nextui-org/react';
 import MultiSelect from '@components/BranchManager/Forms/MultiSelect';
 import { Category } from '@/types/category';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
@@ -42,6 +43,7 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 const DynamicForm: FC = () => {
+  const Navigate = useNavigate();
   const { register, control, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
       resolver: zodResolver(FormSchema),
@@ -122,6 +124,7 @@ const DynamicForm: FC = () => {
 
       if (response.ok) {
         toast('Food item added successfully', { type: 'success' });
+        Navigate('/branch-manager/foods');
       } else {
         toast('Failed to add food item', { type: 'error' });
         console.error('Failed to add food item:', response.statusText);
