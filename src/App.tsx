@@ -16,7 +16,9 @@ import UserLayout from '@layouts/UserLayout';
 import Foods from '@pages/BranchManager/Foods';
 import FoodItem from '@pages/FoodItem';
 import AllFoodItems from '@pages/AllFoodItems';
+import FoodList from '@pages/BranchManager/FoodList';
 import { Gallery } from '@components/Gallery/Gallery';
+import DiscountList from './pages/BranchManager/FoodList/DiscountList';
 import Cart from '@pages/Cart';
 import { OrderHistory } from './components/User/OrderHistory/OrderHistory';
 import User from '@pages/BranchManager/Users';
@@ -49,8 +51,8 @@ const routes = createRoutesFromElements(
             <PageTitle title="La Fresca | Cart" />
             <Cart />
           </>
-          }
-        />
+        }
+      />
       <Route
         path="orderhistory"
         element={
@@ -102,24 +104,35 @@ const routes = createRoutesFromElements(
           </>
         }
       />
-      <Route
-        path="foods"
-        element={
-          <>
-            <PageTitle title="Branch Manager | Foods" />
-            <Foods />
-          </>
-        }
-      />
-      <Route
-        path="users"
-        element={
-          <>
-            <PageTitle title="Branch Manager | user-management" />
-            <User />
-          </>
-        }
-      />
+      <Route path="foods">
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="La Fresca | Food List" />
+              <FoodList />
+            </>
+          }
+        />
+        <Route
+          path="add"
+          element={
+            <>
+              <PageTitle title="Branch Manager | Add Food" />
+              <Foods />
+            </>
+          }
+        />
+        <Route
+          path="discountlist"
+          element={
+            <>
+              <PageTitle title="Branch Manager | Discount List" />
+              <DiscountList />
+            </>
+          }
+        />
+      </Route>
     </Route>
   </Route>,
 );
