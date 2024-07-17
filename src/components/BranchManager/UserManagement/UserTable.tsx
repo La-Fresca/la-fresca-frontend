@@ -12,9 +12,8 @@ interface User {
 }
 
 interface UserTableProps {
-  searchTerm: string;
   filterStatus: string;
-  toggleEditModal: (user: User) => void;
+  toggleEditModal: (user: User | null) => void;
 }
 
 const users: User[] = [
@@ -24,27 +23,23 @@ const users: User[] = [
   // Add more users as needed
 ];
 
-const UserTable: React.FC<UserTableProps> = ({ searchTerm, filterStatus, toggleEditModal }) => {
-  const filteredUsers = users.filter(user => {
-    const matchesSearchTerm = user.name.toLowerCase().includes(searchTerm.toLowerCase()) || user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilterStatus = filterStatus === 'All' || user.status === filterStatus;
-    return matchesSearchTerm && matchesFilterStatus;
-  });
+const UserTable: React.FC<UserTableProps> = ({ filterStatus, toggleEditModal }) => {
+  const filteredUsers = users.filter(user => filterStatus === 'All' || user.status === filterStatus);
 
   return (
-    <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-            <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-            <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-            <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Group</th>
+    <div className="bg-gray text-white shadow overflow-hidden sm:rounded-lg">
+      <table className="min-w-full divide-y divide-gray-700">
+        <thead className="bg-gray-2">
+          <tr className='font-noto-serif'>
+            <th className="px-2 py-3 text-left text-sm font-bold text-gray uppercase tracking-wider">User</th>
+            <th className="px-2 py-3 text-left text-sm font-bold text-gray uppercase tracking-wider">Status</th>
+            <th className="px-2 py-3 text-left text-sm font-bold text-gray uppercase tracking-wider">Location</th>
+            <th className="px-2 py-3 text-left text-sm font-bold text-gray uppercase tracking-wider">Phone</th>
+            <th className="px-2 py-3 text-left text-sm font-bold text-gray uppercase tracking-wider">Role</th>
             <th className="px-2 py-3"></th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="bg-gray-800 divide-y divide-gray-700">
           {filteredUsers.map(user => (
             <UserRow key={user.id} user={user} toggleEditModal={toggleEditModal} />
           ))}

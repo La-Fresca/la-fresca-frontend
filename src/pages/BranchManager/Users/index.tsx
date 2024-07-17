@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import UserTable from '@components/BranchManager/UserManagement/UserTable';
-import AddUserModal from '@components/BranchManager/UserManagement/AddUser';
-import EditUserModal from '@components/BranchManager/UserManagement/EditUser';
 
 interface User {
   id: number;
@@ -13,58 +12,44 @@ interface User {
   group: string;
 }
 
-const User: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+const UserManagement: React.FC = () => {
   const [filterStatus, setFilterStatus] = useState('All');
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const navigate = useNavigate();
 
-  const toggleAddModal = () => setIsAddModalOpen(!isAddModalOpen);
-  const toggleEditModal = (user: User | null = null) => {
-    setEditingUser(user);
-    setIsEditModalOpen(!isEditModalOpen);
+  const handleAddUser = () => {
+    navigate('/branch-manager/users/add-user');
+  };
+
+  const handleEditUser = (user: User | null) => {
+    if (user) {
+      navigate(`/branch-manager/users/edit-user/${user.id}`);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="container mx-auto p-4">
+    <div className="min-h-screen bg-gray-900 text-white p-4">
+      <div className="container mx-auto">
         <div className="flex flex-col md:flex-row justify-between mb-4">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="mb-2 md:mb-0 md:mr-2 p-2 border border-gray-300 rounded"
-          />
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="p-2 border border-gray-300 rounded"
+            className="p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300"
           >
             <option value="All">All</option>
             <option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
           </select>
           <button
-            onClick={toggleAddModal}
-            className="bg-orange-500 text-white px-4 py-2 rounded mt-2 md:mt-0"
+            onClick={handleAddUser}
+            className="bg-yellow-600 hover:bg-orange-700 text-white px-4 py-2 rounded mt-2 md:mt-0 transition duration-300"
           >
             Add User
           </button>
         </div>
-        <UserTable
-          searchTerm={searchTerm}
-          filterStatus={filterStatus}
-          toggleEditModal={toggleEditModal}
-        />
-        {isAddModalOpen && <AddUserModal toggleModal={toggleAddModal} />}
-        {isEditModalOpen && editingUser && (
-          <EditUserModal toggleModal={toggleEditModal} user={editingUser} />
-        )}
+        <UserTable filterStatus={filterStatus} toggleEditModal={handleEditUser} />
       </div>
     </div>
   );
 };
 
-export default User;
+export default UserManagement;
