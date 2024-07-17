@@ -16,7 +16,9 @@ import UserLayout from '@layouts/UserLayout';
 import Foods from '@pages/BranchManager/Foods';
 import FoodItem from '@pages/FoodItem';
 import AllFoodItems from '@pages/AllFoodItems';
+import FoodList from '@pages/BranchManager/FoodList';
 import { Gallery } from '@components/Gallery/Gallery';
+import DiscountList from './pages/BranchManager/FoodList/DiscountList';
 import Cart from '@pages/Cart';
 import { OrderHistory } from './components/User/OrderHistory/OrderHistory';
 
@@ -107,6 +109,24 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="Branch Manager | Foods" />
             <Foods />
+          </>
+        }
+      />
+      <Route
+        path="foodlist"
+        element={
+          <>
+            <PageTitle title="Branch Manager | Foods List" />
+            <FoodList />
+          </>
+        }
+      />
+      <Route
+        path="discountlist"
+        element={
+          <>
+            <PageTitle title="Branch Manager | Discount List" />
+            <DiscountList />
           </>
         }
       />
