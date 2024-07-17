@@ -39,7 +39,7 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 const DynamicForm: FC = () => {
-  const { register, control, handleSubmit, formState, setValue, getValues } =
+  const { register, control, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
       resolver: zodResolver(FormSchema),
     });
