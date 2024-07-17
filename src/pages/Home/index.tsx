@@ -4,6 +4,7 @@ import HeroImg from '../../images/Landing/Hero.png';
 import ChefImg from '../../images/Landing/chef.png';
 import ContactUs from '../../images/Landing/contact.png';
 import Gallery from '@/components/Landing/Gallery';
+import Menus from '@/components/Landing/Menus';
 
 const HomePage: React.FC = () => {
   return (
@@ -93,6 +94,10 @@ const HomePage: React.FC = () => {
         <div className="flex items-center justify-center lg:w-1/2">
           <img src={HeroImg} alt="Hero Image" width={425} height={425} />
         </div>
+      </Container>
+
+      <Container >
+        <Menus/>
       </Container>
 
       <Container>
