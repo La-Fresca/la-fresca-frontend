@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from "@nextui-org/react";
 
 function index() {
   return (
@@ -1075,12 +1077,20 @@ function index() {
             </div>
 
             <div className="space-y-3">
-              <button
+                <Link
+                  to="/checkout"
+                  className='hover:text-white transition duration-300 ease-in-out'
+                >
+                  <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 px-10 inline-flex w-full items-center justify-center focus:outline-none focus:ring-4 focus:ring-primary-300 mt-2">
+                    Proceed to Payment
+                  </Button>
+                </Link>
+              {/* <button
                 type="submit"
                 className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
                 Proceed to Payment
-              </button>
+              </button> */}
 
               <p className="text-sm font-normal text-gray-500 dark:text-gray-400">
                 One or more items in your cart require an account.{' '}

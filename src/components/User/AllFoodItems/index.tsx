@@ -101,7 +101,7 @@ function index() {
               }}
             >
               <div>
-                <img src={Food} alt="" className="w-[100%]" />
+                <img src={_.image} alt="" className="w-[100%]" />
               </div>
 
               <div className="px-3 mt-2">

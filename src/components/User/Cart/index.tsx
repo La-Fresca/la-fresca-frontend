@@ -2,7 +2,8 @@ import React from 'react';
 import Food from '@images/product/pizza.png';
 import { Checkbox } from '@nextui-org/react';
 import QtySelector from './QtySelector';
-import { Link } from '@nextui-org/react';
+// import { Link } from '@nextui-org/react';
+import { Link } from 'react-router-dom';
 import { Button } from "@nextui-org/react";
 
 function index() {
@@ -77,7 +78,7 @@ function index() {
 
                         <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
                           <Link
-                            href="#"
+                            to="#"
                             color="foreground"
                             className="text-xl text-white"
                           >
@@ -179,7 +180,7 @@ function index() {
 
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <dl className="flex items-center justify-between gap-4">
+                    <dl className="flex items-center justify-between gap-4 pt-3">
                       <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
                         Original price
                       </dt>
@@ -188,7 +189,7 @@ function index() {
                       </dd>
                     </dl>
 
-                    <dl className="flex items-center justify-between gap-4">
+                    <dl className="flex items-center justify-between gap-4 pt-3">
                       <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
                         Savings
                       </dt>
@@ -197,7 +198,7 @@ function index() {
                       </dd>
                     </dl>
 
-                    <dl className="flex items-center justify-between gap-4">
+                    <dl className="flex items-center justify-between gap-4 pt-3">
                       <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
                         Store Pickup
                       </dt>
@@ -206,7 +207,7 @@ function index() {
                       </dd>
                     </dl>
 
-                    <dl className="flex items-center justify-between gap-4">
+                    <dl className="flex items-center justify-between gap-4 pt-3">
                       <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
                         Tax
                       </dt>
@@ -216,7 +217,7 @@ function index() {
                     </dl>
                   </div>
 
-                  <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
+                  <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-5 dark:border-gray-700">
                     <dt className="text-base font-bold text-gray-900 dark:text-white">
                       Total
                     </dt>
@@ -226,9 +227,14 @@ function index() {
                   </dl>
                 </div>
 
-                <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 px-10 inline-flex w-full items-center justify-center focus:outline-none focus:ring-4 focus:ring-primary-300">
-                  Proceed to Checkout
-                </Button>
+                <Link
+                  to="/checkout"
+                  className='hover:text-white transition duration-300 ease-in-out'
+                >
+                  <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 px-10 inline-flex w-full items-center justify-center focus:outline-none focus:ring-4 focus:ring-primary-300 mt-8">
+                    Proceed to Checkout
+                  </Button>
+                </Link>
 
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
