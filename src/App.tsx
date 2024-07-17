@@ -22,6 +22,8 @@ import DiscountList from './pages/BranchManager/FoodList/DiscountList';
 import Cart from '@pages/Cart';
 import { OrderHistory } from './components/User/OrderHistory/OrderHistory';
 import User from '@pages/BranchManager/Users';
+import UserAdd from '@pages/BranchManager/Users/AddUser';
+import UserEdit from '@pages/BranchManager/Users/EditUser';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -129,6 +131,35 @@ const routes = createRoutesFromElements(
             <>
               <PageTitle title="Branch Manager | Discount List" />
               <DiscountList />
+            </>
+          }
+        />
+      </Route>
+      <Route path="users">
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="Branch Manager | Users" />
+              <User />
+            </>
+          }
+        />
+        <Route
+          path="add"
+          element={
+            <>
+              <PageTitle title="Branch Manager | Add User" />
+              <UserAdd />
+            </>
+          }
+        />
+        <Route
+          path="edit/:userId"
+          element={
+            <>
+              <PageTitle title="Branch Manager | Edit User" />
+              <UserEdit />
             </>
           }
         />

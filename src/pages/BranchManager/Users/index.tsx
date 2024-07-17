@@ -17,12 +17,12 @@ const UserManagement: React.FC = () => {
   const navigate = useNavigate();
 
   const handleAddUser = () => {
-    navigate('/branch-manager/users/add-user');
+    navigate('add');
   };
 
   const handleEditUser = (user: User | null) => {
     if (user) {
-      navigate(`/branch-manager/users/edit-user/${user.id}`);
+      navigate(`edit/${user.id}`);
     }
   };
 
@@ -46,7 +46,10 @@ const UserManagement: React.FC = () => {
             Add User
           </button>
         </div>
-        <UserTable filterStatus={filterStatus} toggleEditModal={handleEditUser} />
+        <UserTable
+          filterStatus={filterStatus}
+          toggleEditModal={handleEditUser}
+        />
       </div>
     </div>
   );
