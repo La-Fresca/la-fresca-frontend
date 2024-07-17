@@ -522,7 +522,7 @@ export default function FoodList() {
     const hasSearchFilter = Boolean(filterValue);
 
     const headerColumns = React.useMemo(() => {
-        if (visibleColumns === 'all') return columns;
+        // if (visibleColumns === 'all') return columns;
 
         return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
     }, [visibleColumns]);
@@ -558,7 +558,7 @@ export default function FoodList() {
         });
     }, [sortDescriptor, items]);
 
-    const renderCell = React.useCallback((food, columnKey) => {
+    const renderCell = React.useCallback((food:any, columnKey:any) => {
         const cellValue = food[columnKey as keyof typeof food];
 
         switch (columnKey) {
@@ -604,12 +604,12 @@ export default function FoodList() {
         }
     }, [page]);
 
-    const onRowsPerPageChange = React.useCallback((e) => {
+    const onRowsPerPageChange = React.useCallback((e:any) => {
         setRowsPerPage(Number(e.target.value));
         setPage(1);
     }, []);
 
-    const onSearchChange = React.useCallback((value) => {
+    const onSearchChange = React.useCallback((value:any) => {
         if (value) {
             setFilterValue(value);
             setPage(1);
@@ -626,6 +626,7 @@ export default function FoodList() {
     const topContent = React.useMemo(() => {
         return (
             <div className="flex flex-col gap-4">
+                <h1 className="text-2xl text-white font-bold">Food List</h1>
                 <div className="flex justify-between gap-3 items-end">
                     <Input
                         isClearable
@@ -636,7 +637,7 @@ export default function FoodList() {
                         onClear={() => onClear()}
                         onValueChange={onSearchChange}
                     />
-                    <Button color="primary" endContent={<PlusIcon />}>
+                    <Button color="primary" endContent={<PlusIcon />} className="rounded">
                         Add New
                     </Button>
                 </div>
@@ -662,13 +663,13 @@ export default function FoodList() {
         return (
             <div className="py-2 px-2 flex justify-center items-center">
 
-                <div className="hidden sm:flex w-[30%] justify-center gap-5">
+                <div className="hidden sm:flex w-[50%] justify-center gap-5">
                     <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
                         Previous
                     </Button>
                     <Pagination
                         isCompact
-                        showControls
+                        // showControls
                         showShadow
                         color="primary"
                         page={page}
@@ -692,12 +693,12 @@ export default function FoodList() {
             classNames={{
                 wrapper: 'max-h-[382px]',
             }}
-            sortDescriptor={sortDescriptor}
+            // sortDescriptor={sortDescriptor}
             topContent={topContent}
             topContentPlacement="outside"
-            onSortChange={setSortDescriptor}
+            // onSortChange={setSortDescriptor}
         >
-            <TableHeader columns={headerColumns} className="bg-black">
+            <TableHeader columns={headerColumns} className="bg-gray">
                 {(column) => (
                     <TableColumn
                         key={column.uid}

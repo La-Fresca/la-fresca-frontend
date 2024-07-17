@@ -18,6 +18,7 @@ import FoodItem from '@pages/FoodItem';
 import AllFoodItems from '@pages/AllFoodItems';
 import FoodList from '@pages/BranchManager/FoodList';
 import { Gallery } from '@components/Gallery/Gallery';
+import DiscountList from './pages/BranchManager/FoodList/DiscountList';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -97,6 +98,15 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="Branch Manager | Foods List" />
             <FoodList />
+          </>
+        }
+      />
+      <Route
+        path="discountlist"
+        element={
+          <>
+            <PageTitle title="Branch Manager | Discount List" />
+            <DiscountList />
           </>
         }
       />
