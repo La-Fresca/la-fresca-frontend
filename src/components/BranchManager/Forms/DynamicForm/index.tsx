@@ -14,11 +14,14 @@ const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
   category: z.string().min(1, { message: 'Category is required' }),
   description: z.string().optional(),
-  price: z.coerce.number().min(0, { message: 'Price must be at least 0' }),
+  price: z.coerce
+    .number()
+    .multipleOf(0.01)
+    .min(0, { message: 'Price must be at least 0' }),
   image: z.coerce
     .string({ message: 'Should be a string' })
     .optional()
-    .default('test'), // Zod doesn't validate file inputs directly
+    .default('test'),
   features: z
     .array(
       z.object({
