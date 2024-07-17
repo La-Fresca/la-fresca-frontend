@@ -72,18 +72,16 @@ const DynamicForm: FC = () => {
       formData.append('file', imageFile);
 
       try {
-        const response = await fetch(
-          'https://simple-uploadddddddddd.iamtrazy.eu.org/upload',
-          {
-            method: 'POST',
-            body: formData,
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-              'Access-Control-Allow-Headers': 'Content-Type',
-            },
+        const uploadUrl = (import.meta as any).env.VITE_UPLOAD_URL;
+        const response = await fetch(`${uploadUrl}`, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
           },
-        );
+        });
 
         if (response.ok) {
           const result = await response.json();
@@ -114,7 +112,8 @@ const DynamicForm: FC = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/api/lafresca/food', {
+      const apiUrl = (import.meta as any).env.VITE_API_URL;
+      const response = await fetch(`${apiUrl}/food`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

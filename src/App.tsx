@@ -13,7 +13,7 @@ import Dashboard from '@pages/BranchManager/Dashboard';
 import BranchManagerLayout from '@layouts/BranchManagerLayout';
 import LoginPage from '@pages/User/LogIn';
 import UserLayout from '@layouts/UserLayout';
-import Foods from '@pages/BranchManager/Foods';
+import AddFoods from '@pages/BranchManager/Foods/AddFood';
 import FoodItem from '@pages/FoodItem';
 import AllFoodItems from '@pages/AllFoodItems';
 import FoodList from '@pages/BranchManager/FoodList';
@@ -121,7 +121,7 @@ const routes = createRoutesFromElements(
           element={
             <>
               <PageTitle title="Branch Manager | Add Food" />
-              <Foods />
+              <AddFoods />
             </>
           }
         />
