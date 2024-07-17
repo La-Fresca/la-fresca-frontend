@@ -325,6 +325,7 @@ export default function App() {
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
+        <h1 className="text-2xl text-white font-bold">Discount List</h1>
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable
