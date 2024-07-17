@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import Food from '@images/product/pizza.png';
 import Star from '../FoodItem/Star';
-import { Button } from "@nextui-org/react";
+import { Button } from '@nextui-org/react';
+import { Link } from 'react-router-dom';
 
 function index() {
   const [item, setItem] = useState<any>(null); // Adjusted initial state to null
@@ -32,7 +33,6 @@ function index() {
   if (!item) {
     return <div>Loading...</div>;
   }
-
 
   // const TrendingFoods = [
   //   {
@@ -77,11 +77,20 @@ function index() {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5">
       {item.map((_: any) => {
         return (
-          <a href={`fooditems/viewfood/${_.id}`} className='hover:scale-105 transition-transform duration-300 hover:cursor-pointer'>
-            <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-3xl min-w-5"
-            style={{position: 'relative', left: '210px', top: '45px', zIndex: '1'}}
+          <Link
+            to={`viewfood/${_.id}`}
+            className="hover:scale-105 transition-transform duration-300 hover:cursor-pointer"
+          >
+            <Button
+              className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-3xl min-w-5"
+              style={{
+                position: 'relative',
+                left: '210px',
+                top: '45px',
+                zIndex: '1',
+              }}
             >
-                <b>+</b>
+              <b>+</b>
             </Button>
             <div
               className="border rounded-2xl border-foodbg bg-foodbg  backdrop-blur-md w-55 h-850 p-2 py-2"
@@ -110,7 +119,7 @@ function index() {
                 </div>
               </div>
             </div>
-          </a>
+          </Link>
         );
       })}
     </div>
