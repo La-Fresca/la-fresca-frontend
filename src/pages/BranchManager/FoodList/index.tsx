@@ -654,15 +654,8 @@ export default function FoodList() {
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
-          <Button
-            color="primary"
-            endContent={<PlusIcon />}
-            className="rounded"
-            onClick={() => {
-              navigate('add');
-            }}
-          >
-            Add New
+          <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 mt-8 px-10">
+            Add New Item
           </Button>
         </div>
         <div className="flex justify-between items-center">
