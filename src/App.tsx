@@ -18,6 +18,7 @@ import FoodItem from '@pages/FoodItem';
 import AllFoodItems from '@pages/AllFoodItems';
 import { Gallery } from '@components/Gallery/Gallery';
 import Cart from '@pages/Cart';
+import Checkout from '@pages/Checkout';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -46,6 +47,16 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="La Fresca | Cart" />
             <Cart />
+          </>
+        }
+      />
+
+      <Route
+        path="checkout"
+        element={
+          <>
+            <PageTitle title="La Fresca | Checkout" />
+            <Checkout />  
           </>
         }
       />
