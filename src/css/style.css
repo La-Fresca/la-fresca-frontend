@@ -215,3 +215,17 @@ span.flatpickr-weekday,
 [x-cloak] {
   display: none !important;
 }
+
+.border-dashed-custom {
+  border-style: dashed;
+  border-width: 2px; /* Adjust border width if needed */
+  border-color: currentColor;
+  border-image: repeating-linear-gradient(
+      90deg,
+      currentColor,
+      currentColor 10px,
+      transparent 10px,
+      transparent 20px
+    )
+    1;
+}
