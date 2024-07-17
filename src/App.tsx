@@ -15,6 +15,7 @@ import LoginPage from '@pages/User/LogIn';
 import UserLayout from '@layouts/UserLayout';
 import Foods from '@pages/BranchManager/Foods';
 import FoodItem from './pages/FoodItem';
+import usermanagement from '@/pages/BranchManager/UserManagement';
 import HomeLayout from './layouts/HomeLayout';
 
 const routes = createRoutesFromElements(
@@ -88,7 +89,17 @@ const routes = createRoutesFromElements(
           </>
         }
       />
+      <Route
+        path="user-management"
+        element={
+          <>
+            <PageTitle title="Branch Manager | user-management" />
+            {usermanagement}
+          </>
+        }
+      />
     </Route>
+
   </Route>,
 );
 
@@ -107,5 +118,8 @@ function App() {
 
   return loading ? <Loader /> : <RouterProvider router={router} />;
 }
+
+
+
 
 export default App;
