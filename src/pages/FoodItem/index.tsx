@@ -1,8 +1,8 @@
 import FoodItemCard from '@/components/User/FoodItem/index.tsx';
+import { useParams } from 'react-router-dom';
 
 const FoodItem: React.FC = () => {
-    return (
-        <FoodItemCard id={'66818dfdf03a193946df8a01'} />
-    );
-}
+  const { itemId } = useParams<{ itemId?: string }>();
+  return <FoodItemCard id={itemId} />;
+};
 export default FoodItem;

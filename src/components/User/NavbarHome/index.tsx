@@ -1,20 +1,25 @@
-import { Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Button } from "flowbite-react";
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Button } from 'flowbite-react';
 import LogoIcon from '../../../images/logo/la-fresca.png';
+import { Link } from 'react-router-dom';
 
 const navigation = [
   { name: 'Home', href: '#', current: false },
   { name: 'About Us', href: '#', current: false },
   { name: 'Projects', href: '#', current: false },
   { name: 'Contact Us', href: '#', current: false },
-]
+];
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
- const NavBar = () =>{
+const NavBar = () => {
   return (
     <Disclosure as="nav" className="bg-black">
       {({ open }) => (
@@ -42,32 +47,36 @@ function classNames(...classes: string[]) {
                   />
                 </div>
 
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                
-                <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current ? ' text-white' : 'text-white hover:bg-gray-700 hover:text-yellow-500',
-                          'rounded-md px-3 py-2 text-sm font-medium',
-                        )}
-                        aria-current={item.current ? 'page' : undefined}
-                      >
-                        {item.name}
-                      </a>
-                    ))}
+                <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                  <div className="hidden sm:ml-6 sm:block">
+                    <div className="flex space-x-4">
+                      {navigation.map((item) => (
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          className={classNames(
+                            item.current
+                              ? ' text-white'
+                              : 'text-white hover:bg-gray-700 hover:text-yellow-500',
+                            'rounded-md px-3 py-2 text-sm font-medium',
+                          )}
+                          aria-current={item.current ? 'page' : undefined}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-              </div>
               <div className="flex flex-shrink-0 items-center">
-                  <div className="flex flex-wrap gap-3 ">
-                    <Button className="bg-yellow-500 hover:bg-yellow-200"> Log in </Button>
-                    <Button className=" hover:text-yellow-500"> Sign in </Button>
-                  </div>
+                <div className="flex flex-wrap gap-3 ">
+                  <Button className="bg-yellow-500 hover:bg-yellow-200">
+                    {' '}
+                    Log in{' '}
+                  </Button>
+                  <Button className=" hover:text-yellow-500"> Sign in </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -80,7 +89,9 @@ function classNames(...classes: string[]) {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-yellow-500',
+                    item.current
+                      ? 'bg-gray-900 text-white'
+                      : 'text-gray-300 hover:bg-gray-700 hover:text-yellow-500',
                     'block rounded-md px-3 py-2 text-base font-medium',
                   )}
                   aria-current={item.current ? 'page' : undefined}
@@ -93,7 +104,7 @@ function classNames(...classes: string[]) {
         </>
       )}
     </Disclosure>
-  )
-}
+  );
+};
 
 export default NavBar;

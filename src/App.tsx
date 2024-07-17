@@ -14,9 +14,10 @@ import BranchManagerLayout from '@layouts/BranchManagerLayout';
 import LoginPage from '@pages/User/LogIn';
 import UserLayout from '@layouts/UserLayout';
 import Foods from '@pages/BranchManager/Foods';
-import FoodItem from './pages/FoodItem';
-import usermanagement from '@/pages/BranchManager/UserManagement';
-import HomeLayout from './layouts/HomeLayout';
+import FoodItem from '@pages/FoodItem';
+import AllFoodItems from '@pages/AllFoodItems';
+import { Gallery } from '@components/Gallery/Gallery';
+import { OrderHistory } from './components/User/OrderHistory/OrderHistory';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -31,44 +32,54 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        index
+        path="gallery"
         element={
           <>
-            <PageTitle title="La Fresca | Home" />
-            <Home />
+            <PageTitle title="La Fresca | Gallery" />
+            <Gallery />
           </>
         }
       />
       <Route
-        path="foodItem"
-        index
+        path="orderhistory"
         element={
           <>
-            <PageTitle title="La Fresca | Food Item" />
-            <FoodItem />
+            <PageTitle title="La Fresca | Order History" />
+            <OrderHistory />
           </>
         }
       />
+      <Route path="fooditems">
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="La Fresca | Food Items" />
+              <AllFoodItems />
+            </>
+          }
+        />
+        <Route
+          path="viewfood/:itemId"
+          element={
+            <>
+              <PageTitle title="La Fresca | Food Item" />
+              <FoodItem />
+            </>
+          }
+        />
+      </Route>
+
       <Route
         path="login"
         element={
           <>
             <PageTitle title="La Fresca | Log In" />
-            <LoginPage />{' '}
+            <LoginPage />
           </>
         }
       />
     </Route>
-
-    <Route
-      path="login"
-      element={
-        <>
-          <PageTitle title="La Fresca | Log In" />
-          <LoginPage />
-        </>
-      }
-    />
 
     <Route path="branch-manager/*" element={<BranchManagerLayout />}>
       <Route
@@ -99,7 +110,6 @@ const routes = createRoutesFromElements(
         }
       />
     </Route>
-
   </Route>,
 );
 
@@ -118,8 +128,5 @@ function App() {
 
   return loading ? <Loader /> : <RouterProvider router={router} />;
 }
-
-
-
 
 export default App;
