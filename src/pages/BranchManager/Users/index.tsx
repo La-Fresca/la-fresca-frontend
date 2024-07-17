@@ -13,7 +13,7 @@ interface User {
   group: string;
 }
 
-const UserManagement: React.FC = () => {
+const User: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -46,14 +46,25 @@ const UserManagement: React.FC = () => {
             <option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
           </select>
-          <button onClick={toggleAddModal} className="bg-orange-500 text-white px-4 py-2 rounded mt-2 md:mt-0">Add User</button>
+          <button
+            onClick={toggleAddModal}
+            className="bg-orange-500 text-white px-4 py-2 rounded mt-2 md:mt-0"
+          >
+            Add User
+          </button>
         </div>
-        <UserTable searchTerm={searchTerm} filterStatus={filterStatus} toggleEditModal={toggleEditModal} />
+        <UserTable
+          searchTerm={searchTerm}
+          filterStatus={filterStatus}
+          toggleEditModal={toggleEditModal}
+        />
         {isAddModalOpen && <AddUserModal toggleModal={toggleAddModal} />}
-        {isEditModalOpen && editingUser && <EditUserModal toggleModal={toggleEditModal} user={editingUser} />}
+        {isEditModalOpen && editingUser && (
+          <EditUserModal toggleModal={toggleEditModal} user={editingUser} />
+        )}
       </div>
     </div>
   );
 };
 
-export default UserManagement;
+export default User;

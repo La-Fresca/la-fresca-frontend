@@ -18,6 +18,7 @@ import FoodItem from '@pages/FoodItem';
 import AllFoodItems from '@pages/AllFoodItems';
 import { Gallery } from '@components/Gallery/Gallery';
 import { OrderHistory } from './components/User/OrderHistory/OrderHistory';
+import User from '@pages/BranchManager/Users';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -101,11 +102,11 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="user-management"
+        path="users"
         element={
           <>
             <PageTitle title="Branch Manager | user-management" />
-            {usermanagement}
+            <User />
           </>
         }
       />

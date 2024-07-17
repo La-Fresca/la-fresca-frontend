@@ -125,9 +125,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <NavLink
-                  to="/branch-manager/user-management"
+                  to="/branch-manager/users"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/user-management') &&
+                    pathname.includes('/branch-manager/users') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
