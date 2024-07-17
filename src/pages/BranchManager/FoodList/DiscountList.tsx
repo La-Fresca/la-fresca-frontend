@@ -436,7 +436,7 @@ export default function App() {
       </TableHeader>
       <TableBody items={sortedItems}>
         {(item) => (
-          <TableRow key={item.DiscountId}>
+          <TableRow key={item.DiscountId} className="hover:bg-gray cursor-pointer">
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}
