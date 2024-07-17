@@ -19,6 +19,7 @@ import AllFoodItems from '@pages/AllFoodItems';
 import { Gallery } from '@components/Gallery/Gallery';
 import Cart from '@pages/Cart';
 import Checkout from '@pages/Checkout';
+import { OrderHistory } from './components/User/OrderHistory/OrderHistory';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -47,6 +48,15 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="La Fresca | Cart" />
             <Cart />
+          </>
+          }
+        />
+      <Route
+        path="orderhistory"
+        element={
+          <>
+            <PageTitle title="La Fresca | Order History" />
+            <OrderHistory />
           </>
         }
       />

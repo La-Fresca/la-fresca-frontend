@@ -168,7 +168,7 @@ function index() {
               </div>
             </div>
 
-            <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full sticky">
+            <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full sticky leading-normal">
               <div
                 className="space-y-4 rounded-lg border border-gray-200 dark:border-foodbg dark:bg-foodbg p-4 shadow-sm sm:p-6 backdrop-blur-md"
                 style={{ backgroundColor: 'rgba(255, 255, 255, 0.01)' }}
@@ -226,12 +226,9 @@ function index() {
                   </dl>
                 </div>
 
-                <a
-                  href="#"
-                  className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                >
+                <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 px-10 inline-flex w-full items-center justify-center focus:outline-none focus:ring-4 focus:ring-primary-300">
                   Proceed to Checkout
-                </a>
+                </Button>
 
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
@@ -239,7 +236,7 @@ function index() {
                     or{' '}
                   </span>
                   <a
-                    href="#"
+                    href="/foodItems"
                     title=""
                     className="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500"
                   >
