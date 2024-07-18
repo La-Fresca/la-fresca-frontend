@@ -34,6 +34,27 @@ function CategoryForm() {
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     console.log('Form data:', data);
+    try {
+      const apiUrl = (import.meta as any).env.VITE_API_URL;
+      const response = await fetch(`${apiUrl}/category`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        toast('Food item added successfully', { type: 'success' });
+        Navigate('/branch-manager/food-list');
+      } else {
+        toast('Failed to add food item', { type: 'error' });
+        console.error('Failed to add food item:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error adding food item:', error);
+      toast('Failed to add food item', { type: 'error' });
+    }
   };
 
   return (
