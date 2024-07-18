@@ -2,6 +2,7 @@ import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
 import DarkModeSwitcher from './DarkModeSwitcher';
 import { Link } from 'react-router-dom';
+import Cart from './Cart';
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -101,6 +102,7 @@ const Header = (props: {
           <ul className="flex items-center gap-3 2xsm:gap-7">
             <DropdownUser />
             <DarkModeSwitcher />
+            <Cart />
             <DropdownNotification />
           </ul>
           {/* <!-- User Area --> */}
