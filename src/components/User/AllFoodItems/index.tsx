@@ -9,7 +9,8 @@ function index() {
 
   const fetchItems = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/lafresca/food');
+      let apiUrl = (import.meta as any).env.VITE_API_URL;
+      const response = await fetch(`${apiUrl}/food`);
       if (!response.ok) {
         throw new Error('Failed to fetch item');
       }
