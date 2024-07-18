@@ -27,15 +27,15 @@ const UserTable: React.FC<UserTableProps> = ({ filterStatus, toggleEditModal }) 
   const filteredUsers = users.filter(user => filterStatus === 'All' || user.status === filterStatus);
 
   return (
-    <div className="bg-gray text-white shadow overflow-hidden sm:rounded-lg">
+    <div className="bg-transparent text-white shadow overflow-hidden sm:rounded-lg">
       <table className="min-w-full divide-y divide-gray-700">
-        <thead className="bg-gray-2">
+        <thead className="bg-transparent">
           <tr className='font-noto-serif'>
-            <th className="px-2 py-3 text-left text-sm font-bold text-gray uppercase tracking-wider">User</th>
-            <th className="px-2 py-3 text-left text-sm font-bold text-gray uppercase tracking-wider">Status</th>
-            <th className="px-2 py-3 text-left text-sm font-bold text-gray uppercase tracking-wider">Location</th>
-            <th className="px-2 py-3 text-left text-sm font-bold text-gray uppercase tracking-wider">Phone</th>
-            <th className="px-2 py-3 text-left text-sm font-bold text-gray uppercase tracking-wider">Role</th>
+            <th className="px-2 py-3 text-left text-sm font-bold text-white uppercase tracking-wider">User</th>
+            <th className="px-2 py-3 text-left text-sm font-bold text-white uppercase tracking-wider">Status</th>
+            <th className="px-2 py-3 text-left text-sm font-bold text-white uppercase tracking-wider">Location</th>
+            <th className="px-2 py-3 text-left text-sm font-bold text-white uppercase tracking-wider">Phone</th>
+            <th className="px-2 py-3 text-left text-sm font-bold text-white uppercase tracking-wider">Role</th>
             <th className="px-2 py-3"></th>
           </tr>
         </thead>
