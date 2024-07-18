@@ -1,34 +1,23 @@
-name: Vite Build
+name: La Fresca Frontend Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 5
     steps:
-    - uses: actions/checkout@v4
-
-    # Set up Node.js environment
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18' # Using LTS version of Node.js
-
-    # Install pnpm package manager
-    - name: Install pnpm
-      run: npm install -g pnpm
-
-    # Install dependencies using pnpm
-    - name: Install frontend dependencies
-      run: pnpm install --no-frozen-lockfile
-
-    # Build the project using pnpm
-    - name: Build frontend
-      env:
-        NODE_OPTIONS: "--max_old_space_size=4096"
-      run: pnpm build
+      - name: print out example job
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ inputs.hostname }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          command_timeout: 30m
+          script: |
+            ./lafresca-frontend-action.sh
