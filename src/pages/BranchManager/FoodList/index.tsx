@@ -155,6 +155,10 @@ export default function FoodList() {
         return `$${cellValue}`;
       case 'availability':
         return cellValue === 1 ? 'Available' : 'Not Available';
+      case 'discountStatus':
+        return cellValue === 1 ? 'Discounted' : 'Not Discounted';
+      case 'discountId':
+        return cellValue ? cellValue : 'N/A';
       case 'features':
         return (
           <div>
