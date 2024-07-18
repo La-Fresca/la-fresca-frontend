@@ -175,7 +175,11 @@ export default function FoodList() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu className="bg-black text-white">
-                <DropdownItem>View</DropdownItem>
+                <DropdownItem
+                  onClick={() => navigate(`/foodItems/viewfood/${food.id}`)}
+                >
+                  View
+                </DropdownItem>
                 <DropdownItem onClick={() => navigate(`edit/${food.id}`)}>
                   Edit
                 </DropdownItem>

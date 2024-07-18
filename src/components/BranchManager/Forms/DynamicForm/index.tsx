@@ -222,7 +222,7 @@ const DynamicForm: FC = () => {
                     className="absolute top-1 mt-4 right-2 border-red-500 flex justify-center rounded-lg bg-red-500 dark:bg-red-800 p-2 font-medium text-white hover:bg-opacity-90"
                     onClick={() => remove(index)}
                   >
-                    <XMarkIcon className="h-6 w-6" />
+                    <XMarkIcon className="h-4 w-4" />
                   </button>
                   <label className="block">
                     <span className="block mt-8 mb-1 text-gray-600">
@@ -299,7 +299,7 @@ const DynamicForm: FC = () => {
                           })
                         }
                       >
-                        <TrashIcon className="h-9 w-9 text-red-500 dark:text-[#ffffff]" />
+                        <TrashIcon className="h-7 w-7 text-red-500 dark:text-[#ffffff]" />
                       </button>
                     </div>
                   ))}
