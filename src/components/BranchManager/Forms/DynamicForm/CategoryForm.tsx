@@ -46,7 +46,7 @@ function CategoryForm() {
 
       if (response.ok) {
         toast('Food item added successfully', { type: 'success' });
-        Navigate('/branch-manager/food-list');
+        Navigate('/branch-manager/foods');
       } else {
         toast('Failed to add food item', { type: 'error' });
         console.error('Failed to add food item:', response.statusText);
