@@ -24,6 +24,7 @@ import { OrderHistory } from './components/User/OrderHistory/OrderHistory';
 import User from '@pages/BranchManager/Users';
 import UserAdd from '@pages/BranchManager/Users/AddUser';
 import UserEdit from '@pages/BranchManager/Users/EditUser';
+import EditFoods from '@pages/BranchManager/Foods/EditFood';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -122,6 +123,15 @@ const routes = createRoutesFromElements(
             <>
               <PageTitle title="Branch Manager | Add Food" />
               <AddFoods />
+            </>
+          }
+        />
+        <Route
+          path="edit/:foodId"
+          element={
+            <>
+              <PageTitle title="Branch Manager | Edit Food" />
+              <EditFoods />
             </>
           }
         />

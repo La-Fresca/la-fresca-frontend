@@ -6,15 +6,16 @@ interface ImageInputProps {
   fieldname: string;
   register: UseFormRegister<any>;
   setImageFile: (file: File | null) => void;
+  urlPreview?: string | undefined;
 }
 
 const ImageInput: FC<ImageInputProps> = ({
   fieldname,
   register,
   setImageFile,
+  urlPreview,
 }) => {
-  const [preview, setPreview] = useState<string | null>(null);
-
+  const [preview, setPreview] = useState<string | null>(urlPreview || null);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
