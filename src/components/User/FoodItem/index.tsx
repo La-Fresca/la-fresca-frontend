@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Food from '@images/product/pizza.png';
 import Star from './Star';
 
 import TextButtonGroup from './TextButtonGroup';
@@ -54,7 +53,7 @@ function index({ id }: Props) {
         }}
       >
         <div>
-          <img src={Food} alt="" className="w-[100%]" />
+          <img src={item.image} alt="" className="w-[100%]" />
         </div>
 
         <div className="w-[70%]">

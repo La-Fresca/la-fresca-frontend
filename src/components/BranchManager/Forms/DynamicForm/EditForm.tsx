@@ -42,7 +42,11 @@ const FormSchema = z.object({
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-const DynamicForm: FC = () => {
+interface Props {
+  id: string | undefined;
+}
+
+function EditForm({ id }: Props) {
   const Navigate = useNavigate();
   const { register, control, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
@@ -103,6 +107,7 @@ const DynamicForm: FC = () => {
       deleted: 0,
       ...data,
       image: imageUrl,
+      rating: 0,
       features:
         data.features?.map((feature) => ({
           name: feature.name,
@@ -113,8 +118,8 @@ const DynamicForm: FC = () => {
 
     try {
       const apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/food`, {
-        method: 'POST',
+      const response = await fetch(`${apiUrl}/food/${id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -140,6 +145,53 @@ const DynamicForm: FC = () => {
     { key: 'Other', label: 'Other' },
   ]);
 
+  const [item, setItem] = useState<any>(null);
+
+  const fetchItems = async () => {
+    try {
+      const apiUrl = (import.meta as any).env.VITE_API_URL;
+      const response = await fetch(`${apiUrl}/food/${id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch item');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching item:', error);
+    }
+  };
+
+  const getItem = async () => {
+    const item = await fetchItems();
+    console.log('Item:', item);
+    if (item) {
+      setItem(item);
+      setValue('name', item.name);
+      setValue('category', item.category || []);
+      setValue('description', item.description || '');
+      setValue('price', item.price);
+      setValue('image', item.image);
+      if (item.features) {
+        const features = item.features.map((feature: any) => ({
+          name: feature.name,
+          subCategories: feature.levels.map((level: any, idx: number) => ({
+            name: level,
+            price: feature.additionalPrices[idx],
+          })),
+        }));
+        setValue('features', features);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getItem();
+  }, [id]);
+
+  if (!item) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#000000]">
@@ -148,7 +200,7 @@ const DynamicForm: FC = () => {
             className="font-medium text-xl
            text-black dark:text-white"
           >
-            Add Food Item
+            Edit Food Item
           </h3>
         </div>
         <form
@@ -331,6 +383,7 @@ const DynamicForm: FC = () => {
                   fieldname="image"
                   register={register}
                   setImageFile={setImageFile}
+                  urlPreview={item.image}
                 />
               </label>
               <div className="flex justify-center gap-12 mt-16">
@@ -341,7 +394,7 @@ const DynamicForm: FC = () => {
                   className="flex w-full justify-center rounded-lg bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg min-w-0 h-16"
                   type="submit"
                 >
-                  Add Food Item
+                  Edit Food Item
                 </Button>
               </div>
             </div>
@@ -350,6 +403,6 @@ const DynamicForm: FC = () => {
       </div>
     </div>
   );
-};
+}
 
-export default DynamicForm;
+export default EditForm;

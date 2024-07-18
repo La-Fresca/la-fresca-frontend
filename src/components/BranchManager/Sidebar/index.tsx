@@ -7,6 +7,7 @@ import { Squares2X2Icon } from '@heroicons/react/24/outline';
 import { CakeIcon } from '@heroicons/react/24/outline';
 import { QueueListIcon } from '@heroicons/react/24/outline';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
+import { TagIcon } from '@heroicons/react/24/solid';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -113,9 +114,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <NavLink
-                  to="/branch-manager/Foods"
+                  to="/branch-manager/categories"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/Foods') &&
+                    pathname.includes('/branch-manager/categories') &&
+                    'bg-yellow-100 dark:bg-meta-4'
+                  }`}
+                >
+                  <TagIcon className="w-6 h-6" />
+                  Categories
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/branch-manager/foods"
+                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    pathname.includes('/branch-manager/foods') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >

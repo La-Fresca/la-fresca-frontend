@@ -49,467 +49,28 @@ type Food = {
   foodId: string;
   name: string;
   price: number;
-  availability: string;
+  availability: number;
   cafeId: string;
   category: string;
   discountStatus: string;
   discountId: string;
-  features: { feature: string; amount: string }[];
+  features: { name: string; levels: string[]; additionalPrices: number[] }[];
 };
 
-const foods: Food[] = [
-  {
-    id: 1,
-    foodId: 'F001',
-    name: 'Pizza',
-    price: 12.99,
-    availability: 'Available',
-    cafeId: 'C001',
-    category: 'Fast Food',
-    discountStatus: 'Active',
-    discountId: 'D001',
-    features: [
-      { feature: 'Cheese', amount: 'Extra' },
-      { feature: 'Size', amount: 'Large' },
-    ],
-  },
-  {
-    id: 2,
-    foodId: 'F002',
-    name: 'Burger',
-    price: 8.99,
-    availability: 'Available',
-    cafeId: 'C002',
-    category: 'Fast Food',
-    discountStatus: 'Paused',
-    discountId: 'D002',
-    features: [
-      { feature: 'Sauce', amount: 'Regular' },
-      { feature: 'Size', amount: 'Medium' },
-    ],
-  },
-  {
-    id: 3,
-    foodId: 'F003',
-    name: 'Salad',
-    price: 6.49,
-    availability: 'Available',
-    cafeId: 'C003',
-    category: 'Healthy',
-    discountStatus: 'Vacation',
-    discountId: 'D003',
-    features: [
-      { feature: 'Greens', amount: 'Fresh' },
-      { feature: 'Dressing', amount: 'Light' },
-    ],
-  },
-  {
-    id: 4,
-    foodId: 'F004',
-    name: 'Pasta',
-    price: 10.99,
-    availability: 'Available',
-    cafeId: 'C002',
-    category: 'Italian',
-    discountStatus: 'Active',
-    discountId: 'D004',
-    features: [
-      { feature: 'Sauce', amount: 'Tomato' },
-      { feature: 'Cheese', amount: 'Parmesan' },
-    ],
-  },
-  {
-    id: 5,
-    foodId: 'F005',
-    name: 'Sandwich',
-    price: 5.99,
-    availability: 'Available',
-    cafeId: 'C001',
-    category: 'Snack',
-    discountStatus: 'Active',
-    discountId: 'D005',
-    features: [
-      { feature: 'Bread', amount: 'Whole Wheat' },
-      { feature: 'Fillings', amount: 'Ham, Cheese, Lettuce' },
-    ],
-  },
-  {
-    id: 6,
-    foodId: 'F006',
-    name: 'Sushi',
-    price: 14.99,
-    availability: 'Available',
-    cafeId: 'C003',
-    category: 'Japanese',
-    discountStatus: 'Active',
-    discountId: 'D006',
-    features: [
-      { feature: 'Fish', amount: 'Salmon' },
-      { feature: 'Rice', amount: 'Sushi Rice' },
-    ],
-  },
-  {
-    id: 7,
-    foodId: 'F007',
-    name: 'Steak',
-    price: 19.99,
-    availability: 'Available',
-    cafeId: 'C002',
-    category: 'Grill',
-    discountStatus: 'Active',
-    discountId: 'D007',
-    features: [
-      { feature: 'Cut', amount: 'Ribeye' },
-      { feature: 'Cook', amount: 'Medium Rare' },
-    ],
-  },
-  {
-    id: 8,
-    foodId: 'F008',
-    name: 'Curry',
-    price: 11.49,
-    availability: 'Available',
-    cafeId: 'C001',
-    category: 'Indian',
-    discountStatus: 'Paused',
-    discountId: 'D008',
-    features: [
-      { feature: 'Spice Level', amount: 'Medium' },
-      { feature: 'Type', amount: 'Vegetarian' },
-    ],
-  },
-  {
-    id: 9,
-    foodId: 'F009',
-    name: 'Fish and Chips',
-    price: 9.99,
-    availability: 'Available',
-    cafeId: 'C002',
-    category: 'British',
-    discountStatus: 'Active',
-    discountId: 'D009',
-    features: [
-      { feature: 'Fish', amount: 'Cod' },
-      { feature: 'Side', amount: 'Chips' },
-    ],
-  },
-  {
-    id: 10,
-    foodId: 'F010',
-    name: 'Tacos',
-    price: 7.99,
-    availability: 'Available',
-    cafeId: 'C003',
-    category: 'Mexican',
-    discountStatus: 'Active',
-    discountId: 'D010',
-    features: [
-      { feature: 'Meat', amount: 'Beef' },
-      { feature: 'Tortilla', amount: 'Corn' },
-    ],
-  },
-  {
-    id: 11,
-    foodId: 'F011',
-    name: 'Ramen',
-    price: 10.49,
-    availability: 'Available',
-    cafeId: 'C001',
-    category: 'Japanese',
-    discountStatus: 'Active',
-    discountId: 'D011',
-    features: [
-      { feature: 'Broth', amount: 'Tonkotsu' },
-      { feature: 'Toppings', amount: 'Egg, Pork, Bamboo Shoots' },
-    ],
-  },
-  {
-    id: 12,
-    foodId: 'F012',
-    name: 'Pho',
-    price: 8.99,
-    availability: 'Available',
-    cafeId: 'C002',
-    category: 'Vietnamese',
-    discountStatus: 'Active',
-    discountId: 'D012',
-    features: [
-      { feature: 'Noodles', amount: 'Rice Noodles' },
-      { feature: 'Broth', amount: 'Beef' },
-    ],
-  },
-  {
-    id: 13,
-    foodId: 'F013',
-    name: 'Lasagna',
-    price: 12.99,
-    availability: 'Available',
-    cafeId: 'C001',
-    category: 'Italian',
-    discountStatus: 'Active',
-    discountId: 'D013',
-    features: [
-      { feature: 'Layers', amount: 'Cheese, Meat, Pasta' },
-      { feature: 'Sauce', amount: 'Tomato' },
-    ],
-  },
-  {
-    id: 14,
-    foodId: 'F014',
-    name: 'Chicken Wings',
-    price: 9.49,
-    availability: 'Available',
-    cafeId: 'C003',
-    category: 'Appetizer',
-    discountStatus: 'Paused',
-    discountId: 'D014',
-    features: [
-      { feature: 'Flavor', amount: 'Buffalo' },
-      { feature: 'Side', amount: 'Blue Cheese Dressing' },
-    ],
-  },
-  {
-    id: 15,
-    foodId: 'F015',
-    name: 'Fish Tacos',
-    price: 8.99,
-    availability: 'Available',
-    cafeId: 'C002',
-    category: 'Mexican',
-    discountStatus: 'Active',
-    discountId: 'D015',
-    features: [
-      { feature: 'Fish', amount: 'Mahi Mahi' },
-      { feature: 'Tortilla', amount: 'Flour' },
-    ],
-  },
-  {
-    id: 16,
-    foodId: 'F016',
-    name: 'Caesar Salad',
-    price: 7.49,
-    availability: 'Available',
-    cafeId: 'C001',
-    category: 'Salad',
-    discountStatus: 'Active',
-    discountId: 'D016',
-    features: [
-      { feature: 'Greens', amount: 'Romaine Lettuce' },
-      { feature: 'Dressing', amount: 'Caesar' },
-    ],
-  },
-  {
-    id: 17,
-    foodId: 'F017',
-    name: 'Pad Thai',
-    price: 11.99,
-    availability: 'Available',
-    cafeId: 'C003',
-    category: 'Thai',
-    discountStatus: 'Active',
-    discountId: 'D017',
-    features: [
-      { feature: 'Noodles', amount: 'Rice Noodles' },
-      { feature: 'Protein', amount: 'Shrimp' },
-    ],
-  },
-  {
-    id: 18,
-    foodId: 'F018',
-    name: 'Hamburger',
-    price: 6.99,
-    availability: 'Available',
-    cafeId: 'C002',
-    category: 'Fast Food',
-    discountStatus: 'Paused',
-    discountId: 'D018',
-    features: [
-      { feature: 'Condiments', amount: 'Ketchup, Mustard' },
-      { feature: 'Extras', amount: 'Pickles, Onion' },
-    ],
-  },
-  {
-    id: 19,
-    foodId: 'F019',
-    name: 'Ceviche',
-    price: 13.99,
-    availability: 'Available',
-    cafeId: 'C001',
-    category: 'Seafood',
-    discountStatus: 'Active',
-    discountId: 'D019',
-    features: [
-      { feature: 'Fish', amount: 'Snapper' },
-      { feature: 'Citrus', amount: 'Lime' },
-    ],
-  },
-  {
-    id: 20,
-    foodId: 'F020',
-    name: 'Fajitas',
-    price: 14.49,
-    availability: 'Available',
-    cafeId: 'C003',
-    category: 'Mexican',
-    discountStatus: 'Active',
-    discountId: 'D020',
-    features: [
-      { feature: 'Meat', amount: 'Chicken' },
-      { feature: 'Toppings', amount: 'Peppers, Onions' },
-    ],
-  },
-  {
-    id: 21,
-    foodId: 'F021',
-    name: 'Pulled Pork Sandwich',
-    price: 9.99,
-    availability: 'Available',
-    cafeId: 'C002',
-    category: 'Sandwich',
-    discountStatus: 'Active',
-    discountId: 'D021',
-    features: [
-      { feature: 'Meat', amount: 'Pulled Pork' },
-      { feature: 'Sauce', amount: 'BBQ' },
-    ],
-  },
-  {
-    id: 22,
-    foodId: 'F022',
-    name: 'Ravioli',
-    price: 11.99,
-    availability: 'Available',
-    cafeId: 'C001',
-    category: 'Italian',
-    discountStatus: 'Active',
-    discountId: 'D022',
-    features: [
-      { feature: 'Filling', amount: 'Cheese' },
-      { feature: 'Sauce', amount: 'Tomato Cream' },
-    ],
-  },
-  {
-    id: 23,
-    foodId: 'F023',
-    name: 'Sashimi',
-    price: 16.99,
-    availability: 'Available',
-    cafeId: 'C003',
-    category: 'Japanese',
-    discountStatus: 'Active',
-    discountId: 'D023',
-    features: [
-      { feature: 'Fish', amount: 'Tuna, Salmon' },
-      { feature: 'Presentation', amount: 'Raw' },
-    ],
-  },
-  {
-    id: 24,
-    foodId: 'F024',
-    name: 'Gyro',
-    price: 7.99,
-    availability: 'Available',
-    cafeId: 'C002',
-    category: 'Greek',
-    discountStatus: 'Active',
-    discountId: 'D024',
-    features: [
-      { feature: 'Meat', amount: 'Lamb, Beef' },
-      { feature: 'Wrap', amount: 'Pita Bread' },
-    ],
-  },
-  {
-    id: 25,
-    foodId: 'F025',
-    name: 'Philly Cheesesteak',
-    price: 12.49,
-    availability: 'Available',
-    cafeId: 'C001',
-    category: 'Sandwich',
-    discountStatus: 'Active',
-    discountId: 'D025',
-    features: [
-      { feature: 'Meat', amount: 'Beef' },
-      { feature: 'Cheese', amount: 'Provolone' },
-    ],
-  },
-  {
-    id: 26,
-    foodId: 'F026',
-    name: 'Maki Roll',
-    price: 9.99,
-    availability: 'Available',
-    cafeId: 'C003',
-    category: 'Japanese',
-    discountStatus: 'Active',
-    discountId: 'D026',
-    features: [
-      { feature: 'Ingredients', amount: 'Cucumber, Avocado' },
-      { feature: 'Fish', amount: 'Tuna, Salmon' },
-    ],
-  },
-  {
-    id: 27,
-    foodId: 'F027',
-    name: 'Pierogi',
-    price: 10.99,
-    availability: 'Available',
-    cafeId: 'C002',
-    category: 'Polish',
-    discountStatus: 'Active',
-    discountId: 'D027',
-    features: [
-      { feature: 'Filling', amount: 'Potato, Cheese' },
-      { feature: 'Side', amount: 'Sour Cream' },
-    ],
-  },
-  {
-    id: 28,
-    foodId: 'F028',
-    name: 'Chicken Parmesan',
-    price: 13.99,
-    availability: 'Available',
-    cafeId: 'C001',
-    category: 'Italian',
-    discountStatus: 'Active',
-    discountId: 'D028',
-    features: [
-      { feature: 'Meat', amount: 'Chicken' },
-      { feature: 'Cheese', amount: 'Parmesan' },
-    ],
-  },
-  {
-    id: 29,
-    foodId: 'F029',
-    name: 'Falafel Wrap',
-    price: 8.49,
-    availability: 'Available',
-    cafeId: 'C003',
-    category: 'Middle Eastern',
-    discountStatus: 'Active',
-    discountId: 'D029',
-    features: [
-      { feature: 'Falafel', amount: 'Chickpea' },
-      { feature: 'Wrap', amount: 'Pita Bread' },
-    ],
-  },
-  {
-    id: 30,
-    foodId: 'F030',
-    name: 'Chili Con Carne',
-    price: 10.49,
-    availability: 'Available',
-    cafeId: 'C002',
-    category: 'Mexican',
-    discountStatus: 'Active',
-    discountId: 'D030',
-    features: [
-      { feature: 'Meat', amount: 'Beef' },
-      { feature: 'Beans', amount: 'Kidney Beans' },
-    ],
-  },
-  // Add more food items as needed
-];
+const fetchItems = async () => {
+  try {
+    const apiUrl = (import.meta as any).env.VITE_API_URL;
+    const response = await fetch(`${apiUrl}/food`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch item');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching item:', error);
+  }
+};
+
 const columns = [
   { name: 'Name', uid: 'name' },
   { name: 'Price', uid: 'price' },
@@ -524,6 +85,7 @@ const columns = [
 
 export default function FoodList() {
   const navigate = useNavigate();
+  const [foods, setFoods] = React.useState<Food[]>([]);
   const [filterValue, setFilterValue] = React.useState('');
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
@@ -536,9 +98,17 @@ export default function FoodList() {
   const [page, setPage] = React.useState(1);
   const hasSearchFilter = Boolean(filterValue);
 
-  const headerColumns = React.useMemo(() => {
-    // if (visibleColumns === 'all') return columns;
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchItems();
+      if (data) {
+        setFoods(data);
+      }
+    };
+    fetchData();
+  }, []);
 
+  const headerColumns = React.useMemo(() => {
     return columns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid),
     );
@@ -576,17 +146,29 @@ export default function FoodList() {
   }, [sortDescriptor, items]);
 
   const renderCell = React.useCallback((food: any, columnKey: any) => {
-    const cellValue = food[columnKey as keyof typeof food];
+    const cellValue = food[columnKey as keyof Food];
 
     switch (columnKey) {
       case 'name':
         return cellValue;
       case 'price':
         return `$${cellValue}`;
+      case 'availability':
+        return cellValue === 1 ? 'Available' : 'Not Available';
+      case 'discountStatus':
+        return cellValue === 1 ? 'Discounted' : 'Not Discounted';
+      case 'discountId':
+        return cellValue ? cellValue : 'N/A';
       case 'features':
-        return (cellValue as { feature: string; amount: string }[])
-          .map((f) => `${f.feature}: ${f.amount}`)
-          .join(', ');
+        return (
+          <div>
+            {food.features.map((feature: any) => (
+              <div key={feature.name}>
+                <strong>{feature.name}</strong>: {feature.levels.join(', ')}
+              </div>
+            ))}
+          </div>
+        );
       case 'actions':
         return (
           <div className="relative flex justify-end items-center gap-2">
@@ -597,8 +179,14 @@ export default function FoodList() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu className="bg-black text-white">
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
+                <DropdownItem
+                  onClick={() => navigate(`/foodItems/viewfood/${food.id}`)}
+                >
+                  View
+                </DropdownItem>
+                <DropdownItem onClick={() => navigate(`edit/${food.id}`)}>
+                  Edit
+                </DropdownItem>
                 <DropdownItem>Delete</DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -641,6 +229,9 @@ export default function FoodList() {
   }, []);
 
   const topContent = React.useMemo(() => {
+    if (!foods.length) {
+      return <div>Loading...</div>;
+    }
     return (
       <div className="flex flex-col gap-4">
         <h1 className="text-2xl text-white font-bold">Food List</h1>
@@ -655,14 +246,10 @@ export default function FoodList() {
             onValueChange={onSearchChange}
           />
           <Button
-            color="primary"
-            endContent={<PlusIcon />}
-            className="rounded"
-            onClick={() => {
-              navigate('add');
-            }}
+            className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 mt-8 px-10"
+            onClick={() => navigate('add')}
           >
-            Add New
+            Add New Item
           </Button>
         </div>
         <div className="flex justify-between items-center">
@@ -699,7 +286,6 @@ export default function FoodList() {
           </Button>
           <Pagination
             isCompact
-            // showControls
             showShadow
             color="primary"
             page={page}
@@ -725,31 +311,27 @@ export default function FoodList() {
       isHeaderSticky
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
-      classNames={{
-        wrapper: 'max-h-[382px]',
-      }}
-      // sortDescriptor={sortDescriptor}
       topContent={topContent}
-      topContentPlacement="outside"
+      // sortDescriptor={sortDescriptor}
       // onSortChange={setSortDescriptor}
+      className="w-full"
     >
-      <TableHeader columns={headerColumns} className="bg-gray">
+      <TableHeader columns={headerColumns}>
         {(column) => (
           <TableColumn
             key={column.uid}
             align={column.uid === 'actions' ? 'center' : 'start'}
+            allowsSorting
           >
             {column.name}
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No foods found'} items={sortedItems}>
+      <TableBody items={sortedItems}>
         {(item) => (
-          <TableRow key={item.id} className="hover:bg-gray cursor-pointer">
+          <TableRow key={item.id}>
             {(columnKey) => (
-              <TableCell className=" px-4 py-3">
-                {renderCell(item, columnKey)}
-              </TableCell>
+              <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}
           </TableRow>
         )}

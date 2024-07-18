@@ -13,7 +13,7 @@ import Dashboard from '@pages/BranchManager/Dashboard';
 import BranchManagerLayout from '@layouts/BranchManagerLayout';
 import LoginPage from '@pages/User/LogIn';
 import UserLayout from '@layouts/UserLayout';
-import Foods from '@pages/BranchManager/Foods';
+import AddFoods from '@pages/BranchManager/Foods/AddFood';
 import FoodItem from '@pages/FoodItem';
 import AllFoodItems from '@pages/AllFoodItems';
 import FoodList from '@pages/BranchManager/FoodList';
@@ -24,6 +24,8 @@ import { OrderHistory } from './components/User/OrderHistory/OrderHistory';
 import User from '@pages/BranchManager/Users';
 import UserAdd from '@pages/BranchManager/Users/AddUser';
 import UserEdit from '@pages/BranchManager/Users/EditUser';
+import EditFoods from '@pages/BranchManager/Foods/EditFood';
+import AddCategories from '@pages/BranchManager/Categories/AddCategories';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -106,6 +108,15 @@ const routes = createRoutesFromElements(
           </>
         }
       />
+      <Route
+        path="categories"
+        element={
+          <>
+            <PageTitle title="La Fresca | Add Food Categories " />
+            <AddCategories />
+          </>
+        }
+      />
       <Route path="foods">
         <Route
           index
@@ -121,16 +132,16 @@ const routes = createRoutesFromElements(
           element={
             <>
               <PageTitle title="Branch Manager | Add Food" />
-              <Foods />
+              <AddFoods />
             </>
           }
         />
         <Route
-          path="discountlist"
+          path="edit/:foodId"
           element={
             <>
-              <PageTitle title="Branch Manager | Discount List" />
-              <DiscountList />
+              <PageTitle title="Branch Manager | Edit Food" />
+              <EditFoods />
             </>
           }
         />
@@ -164,6 +175,15 @@ const routes = createRoutesFromElements(
           }
         />
       </Route>
+      <Route
+        path="discountlist"
+        element={
+          <>
+            <PageTitle title="Branch Manager | Discount List" />
+            <DiscountList />
+          </>
+        }
+      />
     </Route>
   </Route>,
 );
