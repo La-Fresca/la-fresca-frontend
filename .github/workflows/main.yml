@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: print out example job
+      - name: Frontend-Build
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: ${{ inputs.hostname }}
+          host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
