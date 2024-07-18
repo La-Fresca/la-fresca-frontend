@@ -96,7 +96,7 @@ export const ImagesSet = () => {
                     className="absolute top-1/2 right-4 transform -translate-y-1/2 text-6xl text-white cursor-pointer"
                 />
             </div>
-            <div className="gallery space-y-4 columns-1 sm:columns-2 md:columns-3 px-3">
+            <div className="gallery space-y-4 columns-1 sm:columns-2 md:columns-3 px-3 ">
                 {images.map((image, index) => (
                     <div
                         key={index}
