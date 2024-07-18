@@ -25,6 +25,7 @@ import User from '@pages/BranchManager/Users';
 import UserAdd from '@pages/BranchManager/Users/AddUser';
 import UserEdit from '@pages/BranchManager/Users/EditUser';
 import EditFoods from '@pages/BranchManager/Foods/EditFood';
+import AddCategories from '@pages/BranchManager/Categories/AddCategories';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -104,6 +105,15 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="Branch Manager | Dashboard" />
             <Dashboard />
+          </>
+        }
+      />
+      <Route
+        path="categories"
+        element={
+          <>
+            <PageTitle title="La Fresca | Add Food Categories " />
+            <AddCategories />
           </>
         }
       />
