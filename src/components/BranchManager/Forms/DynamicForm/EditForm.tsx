@@ -6,14 +6,14 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { TrashIcon } from '@heroicons/react/24/solid';
 import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
-import MultiSelect from '@components/BranchManager/Forms/MultiSelect';
+import MultiSelect from '@components/BranchManager/Forms/MultiCheckBox';
 import { Category } from '@/types/category';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
-  category: z.string().min(1, { message: 'Category is required' }),
+  category: z.array(z.string()).min(1, { message: 'Category is required' }),
   description: z.string().optional(),
   price: z.coerce
     .number()
@@ -167,7 +167,7 @@ function EditForm({ id }: Props) {
     if (item) {
       setItem(item);
       setValue('name', item.name);
-      setValue('category', item.category);
+      setValue('category', item.category || []);
       setValue('description', item.description || '');
       setValue('price', item.price);
       setValue('image', item.image);
@@ -226,6 +226,7 @@ function EditForm({ id }: Props) {
                   categories={categories}
                   register={register}
                   fieldname="category"
+                  setValue={setValue}
                 />
               </label>
 

@@ -25,15 +25,15 @@ const EditUser: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle the form submission logic here
-    navigate('/'); // Navigate back to home after submission
+    navigate('/branch-manager/users'); // Navigate back to home after submission
   };
 
   if (!user) {
-    return <div className="text-white">Loading...</div>;
+    return <div className="text-black">Loading...</div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
+    <div className="min-h-screen bg-transparent text-white p-8">
       <h2 className="text-2xl mb-4">Edit User</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -42,7 +42,7 @@ const EditUser: React.FC = () => {
             type="text"
             value={user.name}
             onChange={(e) => setUser({ ...user, name: e.target.value })}
-            className="w-full p-2 border border-gray-500 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           />
         </div>
@@ -52,7 +52,7 @@ const EditUser: React.FC = () => {
             type="email"
             value={user.email}
             onChange={(e) => setUser({ ...user, email: e.target.value })}
-            className="w-full p-2 border border-gray-500 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           />
         </div>
@@ -61,7 +61,7 @@ const EditUser: React.FC = () => {
           <select
             value={user.status}
             onChange={(e) => setUser({ ...user, status: e.target.value })}
-            className="w-full p-2 border border-gray-500 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           >
             <option value="Active">Active</option>
@@ -74,7 +74,7 @@ const EditUser: React.FC = () => {
             type="text"
             value={user.location}
             onChange={(e) => setUser({ ...user, location: e.target.value })}
-            className="w-full p-2 border border-gray-500 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           />
         </div>
@@ -84,7 +84,7 @@ const EditUser: React.FC = () => {
             type="text"
             value={user.phone}
             onChange={(e) => setUser({ ...user, phone: e.target.value })}
-            className="w-full p-2 border border-gray-500 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           />
         </div>
@@ -94,19 +94,19 @@ const EditUser: React.FC = () => {
             type="text"
             value={user.group}
             onChange={(e) => setUser({ ...user, group: e.target.value })}
-            className="w-full p-2 border border-gray-500 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           />
         </div>
         <div className="flex justify-end">
           <button
             type="button"
-            onClick={() => navigate('/')}
-            className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded mr-2 transition duration-300"
+            onClick={() => navigate('/branch-manager/users')}
+            className="bg-transparent hover:bg-yellow-500 text-white px-4 py-2 border rounded mr-2 transition duration-300"
           >
             Cancel
           </button>
-          <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition duration-300">
+          <button type="submit" className="bg-yellow-500 hover:bg-yellow-700 text-black px-4 py-2 rounded transition duration-300">
             Save
           </button>
         </div>

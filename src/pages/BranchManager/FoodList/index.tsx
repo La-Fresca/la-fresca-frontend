@@ -229,6 +229,9 @@ export default function FoodList() {
   }, []);
 
   const topContent = React.useMemo(() => {
+    if (!foods.length) {
+      return <div>Loading...</div>;
+    }
     return (
       <div className="flex flex-col gap-4">
         <h1 className="text-2xl text-white font-bold">Food List</h1>
