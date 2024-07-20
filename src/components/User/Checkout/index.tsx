@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { Button } from '@nextui-org/react';
+import { useNavigate } from 'react-router-dom';
 
 function index() {
+  const navigate = useNavigate();
   return (
     <section
       className="bg-white py-8 antialiased dark:bg-foodbg border dark:border-foodbg backdrop-blur-md rounded-2xl md:py-16"
@@ -177,10 +177,10 @@ function index() {
                         height="30px"
                         viewBox="0 0 80 64"
                         xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        xmlnsXlink="http://www.w3.org/1999/xlink"
                         aria-hidden="true"
                         role="img"
-                        class="iconify iconify--emojione"
+                        className="iconify iconify--emojione"
                         preserveAspectRatio="xMidYMid meet"
                       >
                         <path
@@ -441,14 +441,12 @@ function index() {
             </div>
 
             <div className="space-y-3">
-              <Link
-                to="/checkout"
-                className="hover:text-white transition duration-300 ease-in-out"
+              <Button
+                className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 px-10 py-5 inline-flex w-full items-center justify-center focus:outline-none focus:ring-4 focus:ring-primary-300 mt-2"
+                onClick={() => navigate('/checkout')}
               >
-                <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 px-10 py-5 inline-flex w-full items-center justify-center focus:outline-none focus:ring-4 focus:ring-primary-300 mt-2">
-                  Proceed to Payment
-                </Button>
-              </Link>
+                Proceed to Payment
+              </Button>
             </div>
           </div>
         </div>
