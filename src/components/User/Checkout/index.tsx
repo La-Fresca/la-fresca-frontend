@@ -1,16 +1,15 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@nextui-org/react';
 
 function index() {
   return (
     <section
-      className="bg-white py-8 antialiased dark:bg-foodbg border dark:border-foodbg backdrop-blur-md rounded-2xl md:py-16"
-      style={{ backgroundColor: 'rgba(255, 255, 255, 0.01)' }}
+      className="bg-white py-8 antialiased dark:bg-foodbg dark:border dark:border-foodbg backdrop-blur-md rounded-2xl md:py-16 dark:bg-[rgba(123,123,123,0.06)]"
+      style={{boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)'}}
     >
       <form action="#" className="mx-auto max-w-screen-xl px-4 2xl:px-0">
         <ol className="items-center flex w-full max-w-2xl text-center text-sm font-medium text-gray-500 dark:text-white sm:text-base">
-          <li className="after:border-1 flex items-center text-primary-700 after:mx-6 after:hidden after:h-1 after:w-full after:border-b after:border-gray-200 dark:text-warning dark:after:border-warning sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-10">
+          <li className="after:border-1 flex items-center text-primary-700 after:mx-6 after:hidden after:h-1 after:w-full after:border-b after:border-gray-200 dark:text-warning text-warning dark:after:border-warning after:border-warning sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-10">
             <span className="flex items-center after:mx-2 after:text-gray-200 after:content-['/'] dark:after:text-gray-500 sm:after:hidden">
               <svg
                 className="me-2 h-4 w-4 sm:h-5 sm:w-5"
@@ -33,7 +32,7 @@ function index() {
             </span>
           </li>
 
-          <li className="after:border-1 flex items-center text-primary-700 after:mx-6 after:hidden after:h-1 after:w-full after:border-b after:border-gray-200 dark:text-warning dark:after:border-white dark:text-primary-500 dark:after:border-gray-700 sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-10">
+          <li className="after:border-1 flex items-center text-primary-700 after:mx-6 after:hidden after:h-1 after:w-full after:border-b after:border-gray-200 dark:text-warning text-warning dark:after:border-white after:border-foodbg dark:text-primary-500 dark:after:border-gray-700 sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-10">
             <span className="flex items-center after:mx-2 after:text-gray-200 after:content-['/'] dark:after:text-gray-500 sm:after:hidden">
               <svg
                 className="me-2 h-4 w-4 sm:h-5 sm:w-5"
@@ -56,7 +55,7 @@ function index() {
             </span>
           </li>
 
-          <li className="flex shrink-0 items-center">
+          <li className="flex shrink-0 items-center text-foodbg dark:text-white">
             <svg
               className="me-2 h-4 w-4 sm:h-5 sm:w-5"
               aria-hidden="true"
@@ -80,22 +79,22 @@ function index() {
 
         <div className="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16">
           <div className="min-w-0 flex-1 space-y-8">
-            {/* Form */}
+            {/* Delivery details */}
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-foodbg dark:text-white">
                 Delivery Details
               </h2>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
                     {' '}
                     Full name*
                   </label>
                   <input
                     type="text"
                     id="your_name"
-                    className="block w-full rounded-lg border dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
+                    className="block w-full rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
                     placeholder="Bonnie Green"
                     required
                     style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
@@ -103,14 +102,14 @@ function index() {
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
                     {' '}
                     Street address*
                   </label>
                   <input
                     type="text"
                     id="your_name"
-                    className="block w-full rounded-lg border dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
+                    className="block w-full rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
                     placeholder="Street Address"
                     required
                     style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
@@ -118,14 +117,14 @@ function index() {
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
                     {' '}
                     City*
                   </label>
                   <input
                     type="text"
                     id="your_name"
-                    className="block w-full rounded-lg border dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
+                    className="block w-full rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
                     placeholder="City"
                     required
                     style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
@@ -134,14 +133,14 @@ function index() {
 
                 <div>
                   <div className="mb-2 flex items-center gap-2">
-                    <label className="block text-sm font-medium text-gray-900 dark:text-white">
+                    <label className="block text-sm font-medium text-foodbg dark:text-white">
                       {' '}
                       Province*{' '}
                     </label>
                   </div>
                   <select
                     id="select-country-input-3"
-                    className="block w-full rounded-lg border dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
+                    className="block w-full rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
                     style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
                   >
                     <option hidden selected>
@@ -161,26 +160,23 @@ function index() {
 
                 {/* phone number */}
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
                     {' '}
                     Phone Number*{' '}
                   </label>
                   <div className="flex items-center">
-                    <button
+                    <div
                       id="dropdown-phone-button-3"
                       data-dropdown-toggle="dropdown-phone-3"
-                      className="z-10 inline-flex shrink-0 items-center rounded-s-lg border px-4 py-[5px] text-center text-sm font-medium text-gray-900 outline-none focus:ring-4 focus:ring-gray-100 dark:border-foodbg dark:text-white"
-                      type="button"
+                      className="z-10 inline-flex shrink-0 items-center rounded-s-lg border px-4 py-[5px] text-center text-sm font-medium text-gray-900 outline-none focus:ring-4 focus:ring-gray-100 dark:border-foodbg border-[rgba(0,0,0,0.3)] dark:text-white"
                     >
                       <svg
                         width="30px"
                         height="30px"
                         viewBox="0 0 80 64"
                         xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink"
                         aria-hidden="true"
                         role="img"
-                        class="iconify iconify--emojione"
                         preserveAspectRatio="xMidYMid meet"
                       >
                         <path
@@ -214,13 +210,12 @@ function index() {
                         </g>
                       </svg>
                       +94
-                    </button>
+                    </div>
                     <div className="relative w-full">
                       <input
                         type="text"
                         id="phone-input"
-                        className="z-20 block w-full rounded-e-lg border border-s-0 dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
-                        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                        className="block w-full border border-s-0 rounded-e-lg border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                         placeholder="12-3456789"
                         required
                         style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
@@ -230,14 +225,14 @@ function index() {
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
                     {' '}
                     Postal / Zip code*
                   </label>
                   <input
                     type="text"
                     id="vat_number"
-                    className="block w-full rounded-lg border dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
+                    className="block w-full border rounded-lg border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                     style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
                     placeholder="Postal / Zip code"
                     required
@@ -275,20 +270,20 @@ function index() {
 
             {/* Card details */}
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-foodbg dark:text-white">
                 Payment Details
               </h2>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
                     {' '}
                     Cardholder name*
                   </label>
                   <input
                     type="text"
                     id="your_name"
-                    className="block w-full rounded-lg border dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
+                    className="block w-full rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
                     placeholder="Bonnie Green"
                     required
                     style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
@@ -297,14 +292,14 @@ function index() {
 
                 <div>
                   <div className="mb-2 flex items-center gap-2">
-                    <label className="block text-sm font-medium text-gray-900 dark:text-white">
+                    <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
                       {' '}
                       Country*{' '}
                     </label>
                   </div>
                   <select
                     id="select-country-input-3"
-                    className="block w-full rounded-lg border dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
+                    className="block w-full rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
                     style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
                   >
                     <option hidden selected className="">
@@ -316,14 +311,14 @@ function index() {
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
                     {' '}
                     Card number*
                   </label>
                   <input
                     type="text"
                     id="your_name"
-                    className="block w-full rounded-lg border dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
+                    className="block w-full rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
                     placeholder="135364958481"
                     required
                     style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
@@ -332,30 +327,30 @@ function index() {
 
                 <div className="grid grid-cols-2">
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                    <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
                       {' '}
                       Expire date*
                     </label>
                     <input
                       type="text"
                       id="company_name"
-                      className="block w-[95%] rounded-lg border dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
-                      style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
+                      className="block w-[95%] rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
+                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
                       placeholder="MM/YY"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                    <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
                       {' '}
                       CVV*
                     </label>
                     <input
                       type="text"
                       id="vat_number"
-                      className="block w-[100%] rounded-lg border dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
-                      style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
+                      className="block w-full rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
+                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
                       placeholder="123"
                       required
                     />

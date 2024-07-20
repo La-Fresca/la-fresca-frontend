@@ -7,12 +7,10 @@ const BranchManagerLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <div
-      className="dark:bg-boxdark-2 dark:text-bodydark"
-      style={{
-        backgroundImage: `url(${BackgrounImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
+      className="dark:bg-boxdark-2 dark:text-bodydark bg-cover bg-center dark:bg-[url('@images/cover/cover-03.png')] bg-white"
+      // style={{
+      //   backgroundImage: `url(${BackgrounImage})`,
+      // }}
     >
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex h-screen overflow-hidden">
