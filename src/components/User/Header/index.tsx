@@ -71,7 +71,7 @@ const Header = (props: {
 
         <div className="hidden sm:flex items-center">
           <div
-            className="text-white font-bold pl-2 pr-12 dark:text-white mr-4"
+            className="text-black font-bold pl-2 pr-12 dark:text-white mr-4"
             style={{ fontFamily: 'Cormorant Upright, serif', fontSize: '30px' }}
           >
             La Fresca
