@@ -1,10 +1,7 @@
-import React from 'react'
-import Checkout from '@components/User/Checkout/index.tsx'
+import Checkout from '@components/User/Checkout/index.tsx';
 
 function index() {
-  return (
-    <Checkout />
-  )
+  return <Checkout />;
 }
 
-export default index
+export default index;
