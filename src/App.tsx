@@ -20,6 +20,7 @@ import FoodList from '@pages/BranchManager/FoodList';
 import { Gallery } from '@components/Gallery/Gallery';
 import DiscountList from './pages/BranchManager/FoodList/DiscountList';
 import Cart from '@pages/Cart';
+import Checkout from '@pages/Checkout';
 import { OrderHistory } from './components/User/OrderHistory/OrderHistory';
 import User from '@pages/BranchManager/Users';
 import UserAdd from '@pages/BranchManager/Users/AddUser';
@@ -64,6 +65,16 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="La Fresca | Order History" />
             <OrderHistory />
+          </>
+        }
+      />
+
+      <Route
+        path="checkout"
+        element={
+          <>
+            <PageTitle title="La Fresca | Checkout" />
+            <Checkout />  
           </>
         }
       />

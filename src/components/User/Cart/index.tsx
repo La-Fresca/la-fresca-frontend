@@ -2,7 +2,8 @@ import React from 'react';
 import Food from '@images/product/pizza.png';
 import { Checkbox } from '@nextui-org/react';
 import QtySelector from './QtySelector';
-import { Link } from '@nextui-org/react';
+// import { Link } from '@nextui-org/react';
+import { Link } from 'react-router-dom';
 import { Button } from "@nextui-org/react";
 
 function index() {
@@ -45,6 +46,27 @@ function index() {
     },
   ];
 
+  const alsoBoughtItems = [
+    {
+      id: '01',
+      name: 'Cheese Pizza',
+      description: 'Indulge in our classic Cheese Pizza',
+      price: 3500,
+    },
+    {
+      id: '02',
+      name: 'Saussage Pizza',
+      description: 'Indulge in our classic Cheese Pizza',
+      price: 4500,
+    },
+    {
+      id: '03',
+      name: 'Margherita Pizza',
+      description: 'Indulge in our classic Cheese Pizza',
+      price: 3000,
+    },
+  ];
+
   return (
     <div>
       <div className="text-4xl text-white mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -66,7 +88,10 @@ function index() {
                       className="rounded-xl border dark:border-foodbg dark:bg-foodbg p-2 shadow-sm md:px-6 backdrop-blur-md"
                       style={{ backgroundColor: 'rgba(255, 255, 255, 0.01)' }}
                     >
+                      
+
                       <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
+                        <Checkbox radius="full" color="warning" className='text-foodbg'></Checkbox>
                         <a href="#" className="shrink-0 md:order-1">
                           <img
                             className="h-30 w-30"
@@ -77,7 +102,7 @@ function index() {
 
                         <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
                           <Link
-                            href="#"
+                            to="#"
                             color="foreground"
                             className="text-xl text-white"
                           >
@@ -113,57 +138,62 @@ function index() {
                 </h3>
 
                 <div className="mt-6 grid grid-cols-3 gap-4 sm:mt-8">
-                  <div
-                    className="space-y-6 overflow-hidden rounded-xl border border-gray-200 dark:bg-foodbg dark:border-foodbg p-6 shadow-sm backdrop-blur-md"
-                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.01)' }}
-                  >
-                    <a href="#" className="overflow-hidden rounded">
-                      <img
-                        className="mx-auto h-44 w-44"
-                        src={Food}
-                        alt="imac image"
-                      />
-                    </a>
-                    <div>
-                      <a
-                        href="#"
-                        className="text-xl font-semibold leading-tight text-gray-900 hover:underline dark:text-white"
-                      >
-                        Cheese Pizza
+                  
+                {alsoBoughtItems.map((_: any) => {
+                  return (
+                    <div
+                      className="space-y-6 overflow-hidden rounded-xl border border-gray-200 dark:bg-foodbg dark:border-foodbg p-6 shadow-sm backdrop-blur-md"
+                      style={{ backgroundColor: 'rgba(255, 255, 255, 0.01)' }}
+                    >
+                      <a href="#" className="overflow-hidden rounded">
+                        <img
+                          className="mx-auto h-44 w-44"
+                          src={Food}
+                          alt="imac image"
+                        />
                       </a>
-                      <p className="mt-2 text-base font-normal text-gray-500 dark:text-gray-400">
-                        Indulge in our classic Cheese Pizza, featuring..
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-lg font-bold text-gray-900 dark:text-white">
-                        <span className="pr-2 text-orange-500">Rs.</span>
-                        3500
-                      </p>
-                    </div>
-                    <div className="mt-2 flex items-center gap-2.5">
-                      <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 px-10 inline-flex w-full items-center justify-center focus:outline-none focus:ring-4 focus:ring-primary-300">
-                        <svg
-                          className="-ms-2 me-2 h-5 w-5"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          fill="none"
-                          viewBox="0 0 24 24"
+                      <div>
+                        <a
+                          href="#"
+                          className="text-xl font-semibold leading-tight text-gray-900 hover:underline dark:text-white"
                         >
-                          <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4"
-                          />
-                        </svg>
-                        Add to cart
-                      </Button>
+                          Cheese Pizza
+                        </a>
+                        <p className="mt-2 text-base font-normal text-gray-500 dark:text-gray-400">
+                          Indulge in our classic Cheese Pizza, featuring..
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-lg font-bold text-gray-900 dark:text-white">
+                          <span className="pr-2 text-orange-500">Rs.</span>
+                          3500
+                        </p>
+                      </div>
+                      <div className="mt-2 flex items-center gap-2.5">
+                        <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 px-10 inline-flex w-full items-center justify-center focus:outline-none focus:ring-4 focus:ring-primary-300">
+                          <svg
+                            className="-ms-2 me-2 h-5 w-5"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4"
+                            />
+                          </svg>
+                          Add to cart
+                        </Button>
+                      </div>
                     </div>
-                  </div>
+                  );
+                })}
                 </div>
               </div>
             </div>
@@ -179,7 +209,7 @@ function index() {
 
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <dl className="flex items-center justify-between gap-4">
+                    <dl className="flex items-center justify-between gap-4 pt-3">
                       <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
                         Original price
                       </dt>
@@ -188,7 +218,7 @@ function index() {
                       </dd>
                     </dl>
 
-                    <dl className="flex items-center justify-between gap-4">
+                    <dl className="flex items-center justify-between gap-4 pt-3">
                       <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
                         Savings
                       </dt>
@@ -197,7 +227,7 @@ function index() {
                       </dd>
                     </dl>
 
-                    <dl className="flex items-center justify-between gap-4">
+                    <dl className="flex items-center justify-between gap-4 pt-3">
                       <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
                         Store Pickup
                       </dt>
@@ -206,7 +236,7 @@ function index() {
                       </dd>
                     </dl>
 
-                    <dl className="flex items-center justify-between gap-4">
+                    <dl className="flex items-center justify-between gap-4 pt-3">
                       <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
                         Tax
                       </dt>
@@ -216,7 +246,7 @@ function index() {
                     </dl>
                   </div>
 
-                  <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
+                  <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-5 dark:border-gray-700">
                     <dt className="text-base font-bold text-gray-900 dark:text-white">
                       Total
                     </dt>
@@ -226,9 +256,14 @@ function index() {
                   </dl>
                 </div>
 
-                <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 px-10 inline-flex w-full items-center justify-center focus:outline-none focus:ring-4 focus:ring-primary-300">
-                  Proceed to Checkout
-                </Button>
+                <Link
+                  to="/checkout"
+                  className='hover:text-white transition duration-300 ease-in-out'
+                >
+                  <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 px-10 inline-flex w-full items-center justify-center focus:outline-none focus:ring-4 focus:ring-primary-300 mt-8">
+                    Proceed to Checkout
+                  </Button>
+                </Link>
 
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-sm font-normal text-gray-500 dark:text-gray-400">

@@ -101,7 +101,7 @@ function index() {
                 backgroundColor: 'rgba(255, 255, 255, 0.01)',
               }}
             >
-              <div>
+              <div className='h-50'>
                 <img src={_.image} alt="" className="w-[100%]" />
               </div>
 
