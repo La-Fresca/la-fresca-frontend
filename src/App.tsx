@@ -26,6 +26,7 @@ import UserAdd from '@pages/BranchManager/Users/AddUser';
 import UserEdit from '@pages/BranchManager/Users/EditUser';
 import EditFoods from '@pages/BranchManager/Foods/EditFood';
 import AddCategories from '@pages/BranchManager/Categories/AddCategories';
+import ViewCategories from './pages/BranchManager/Categories/ViewCategories';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -108,15 +109,35 @@ const routes = createRoutesFromElements(
           </>
         }
       />
-      <Route
-        path="categories"
-        element={
-          <>
-            <PageTitle title="La Fresca | Add Food Categories " />
-            <AddCategories />
-          </>
-        }
-      />
+      <Route path="categories">
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="Branch Manager | Food Categories" />
+              <ViewCategories />
+            </>
+          }
+        />
+        <Route
+          path="add"
+          element={
+            <>
+              <PageTitle title="La Fresca | Add Food Categories " />
+              <AddCategories />
+            </>
+          }
+        />
+        <Route
+          path="edit/:categoryId"
+          element={
+            <>
+              <PageTitle title="La Fresca | Edit Food Categories " />
+              <AddCategories />
+            </>
+          }
+        />
+      </Route>
       <Route path="foods">
         <Route
           index
