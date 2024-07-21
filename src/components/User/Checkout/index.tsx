@@ -6,8 +6,8 @@ function index() {
   const navigate = useNavigate();
   return (
     <section
-      className="bg-white py-8 antialiased dark:bg-foodbg dark:border dark:border-foodbg backdrop-blur-md rounded-2xl md:py-16 dark:bg-[rgba(255,255,255,0.001)]"
-      style={{boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)'}}
+      className="bg-white py-8 antialiased dark:bg-foodbg dark:border dark:border-foodbg backdrop-blur-md rounded-2xl md:py-16"
+      style={{boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)', backgroundColor: 'rgba(255, 255, 255, 0.01)'}}
     >
       <form action="#" className="mx-auto max-w-screen-xl px-4 2xl:px-0">
         <ol className="items-center flex w-full max-w-2xl text-center text-sm font-medium text-gray-500 dark:text-white sm:text-base">
