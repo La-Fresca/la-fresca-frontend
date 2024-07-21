@@ -7,6 +7,7 @@ interface ImageInputProps {
   register: UseFormRegister<any>;
   setImageFile: (file: File | null) => void;
   urlPreview?: string | undefined;
+  height?: string;
 }
 
 const ImageInput: FC<ImageInputProps> = ({
@@ -14,6 +15,7 @@ const ImageInput: FC<ImageInputProps> = ({
   register,
   setImageFile,
   urlPreview,
+  height,
 }) => {
   const [preview, setPreview] = useState<string | null>(urlPreview || null);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +50,7 @@ const ImageInput: FC<ImageInputProps> = ({
     <div className="flex w-full items-center justify-center">
       <Label
         htmlFor="dropzone-file"
-        className="flex md:h-150 w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-spacing-12 border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+        className={`flex md:h-${height} w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-spacing-12 border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
       >
