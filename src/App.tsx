@@ -31,6 +31,7 @@ import ViewCategories from '@/pages/BranchManager/Categories/ViewCategories';
 import AddCombos from '@/pages/BranchManager/FoodCombos/Add';
 import Combos from '@/pages/BranchManager/FoodCombos';
 import EditCombos from '@/pages/BranchManager/FoodCombos/Edit';
+import Sales from '@/pages/BranchManager/Sales';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -120,6 +121,15 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="Branch Manager | Dashboard" />
             <Dashboard />
+          </>
+        }
+      />
+      <Route
+        path="sales"
+        element={
+          <>
+            <PageTitle title="Branch Manager | Sales" />
+            <Sales />
           </>
         }
       />

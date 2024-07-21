@@ -11,11 +11,11 @@ const options: ApexOptions = {
     fontFamily: 'Satoshi, sans-serif',
     type: 'donut',
   },
-  colors: ['#F6C243', '#D9A725', '#E5B76D', '#FFD700'], // Updated colors to dark yellowish shades
-  labels: ['Desktop', 'Tablet', 'Mobile', 'Unknown'],
+  colors: ['#F6C243', '#D9A725', '#E5B76D'], // Updated colors to dark yellowish shades
+  labels: ['Morning', 'Afternoon', 'Evening'],
   legend: {
     show: false,
-    position: 'bottom',
+    position: 'right',
   },
 
   plotOptions: {
@@ -51,7 +51,7 @@ const options: ApexOptions = {
 
 const ChartThree: React.FC = () => {
   const [state, setState] = useState<ChartThreeState>({
-    series: [65, 34, 12, 56],
+    series: [65, 34, 12],
   });
 
   const handleReset = () => {
@@ -62,11 +62,11 @@ const ChartThree: React.FC = () => {
   };
 
   return (
-    <div className="sm:px-7.5 col-span-12 rounded-3xl border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-5">
+    <div className="col-span-12 rounded-3xl border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
       <div className="mb-3 justify-between gap-4 sm:flex">
         <div>
           <h5 className="text-xl font-semibold text-black dark:text-white">
-            Visitors Analytics
+            Order Time
           </h5>
         </div>
         <div>
@@ -117,12 +117,12 @@ const ChartThree: React.FC = () => {
         </div>
       </div>
 
-      <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
+      <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3 mt-12">
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#F6C243]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Desktop </span>
+              <span> Morning </span>
               <span> 65% </span>
             </p>
           </div>
@@ -131,7 +131,7 @@ const ChartThree: React.FC = () => {
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#D9A725]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Tablet </span>
+              <span> Afternoon </span>
               <span> 34% </span>
             </p>
           </div>
@@ -140,17 +140,8 @@ const ChartThree: React.FC = () => {
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#E5B76D]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Mobile </span>
+              <span> Evening </span>
               <span> 45% </span>
-            </p>
-          </div>
-        </div>
-        <div className="sm:w-1/2 w-full px-8">
-          <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#FFD700]"></span>
-            <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Unknown </span>
-              <span> 12% </span>
             </p>
           </div>
         </div>

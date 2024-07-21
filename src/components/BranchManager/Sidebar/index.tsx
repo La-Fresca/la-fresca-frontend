@@ -7,7 +7,11 @@ import { Squares2X2Icon } from '@heroicons/react/24/outline';
 import { CakeIcon } from '@heroicons/react/24/outline';
 import { QueueListIcon } from '@heroicons/react/24/outline';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
-import { RectangleGroupIcon, TagIcon } from '@heroicons/react/24/solid';
+import {
+  ChartBarSquareIcon,
+  RectangleGroupIcon,
+  TagIcon,
+} from '@heroicons/react/24/solid';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -110,6 +114,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   <Squares2X2Icon className="w-6 h-6" />
                   Dashboard
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="sales"
+                  className={`group relative flex items-center gap-2.5 rounded-xl px-4 py-2 font-medium text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    (pathname === '/sales' || pathname.includes('sales')) &&
+                    'bg-yellow-100 dark:bg-meta-4'
+                  }`}
+                >
+                  <ChartBarSquareIcon className="w-6 h-6" />
+                  Sales
                 </NavLink>
               </li>
               <li>
