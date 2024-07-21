@@ -293,7 +293,7 @@ function index() {
                 </div>
 
                 <div>
-                  <div className="mb-2 flex items-center gap-2">
+                  <div className="flex items-center gap-2">
                     <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
                       {' '}
                       Country*{' '}
