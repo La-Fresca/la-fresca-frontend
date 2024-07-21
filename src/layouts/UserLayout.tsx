@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from '@components/User/Header/index';
 import BackgrounImage from '@images/cover/cover-03.png';
+import Sidebar from '@/components/User/Sidebar/index';
 
 const BranchManagerLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -14,6 +15,10 @@ const BranchManagerLayout: React.FC = () => {
     >
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex h-screen overflow-hidden">
+        {/* <!-- ===== Sidebar Start ===== --> */}
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        {/* <!-- ===== Sidebar End ===== --> */}
+
         {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
           {/* <!-- ===== Header Start ===== --> */}

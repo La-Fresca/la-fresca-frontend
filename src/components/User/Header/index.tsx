@@ -63,12 +63,7 @@ const Header = (props: {
           </span>
         </button>
         {/* <!-- Hamburger Toggle BTN --> */}
-        {/* <div className="flex items-center gap-2 sm:gap-4">
-          <Link className="block flex-shrink-0 w-8 h-8" to="/">
-            <img src={LogoIcon} alt="Logo" />
-          </Link>
-        </div> */}
-
+        
         <div className="hidden sm:flex items-center">
           <div
             className="text-black font-bold pl-2 pr-12 dark:text-white mr-4"

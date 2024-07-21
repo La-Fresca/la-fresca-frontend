@@ -6,7 +6,7 @@ function index() {
   const navigate = useNavigate();
   return (
     <section
-      className="bg-white py-8 antialiased dark:bg-foodbg dark:border dark:border-foodbg backdrop-blur-md rounded-2xl md:py-16 dark:bg-[rgba(123,123,123,0.06)]"
+      className="bg-white py-8 antialiased dark:bg-foodbg dark:border dark:border-foodbg backdrop-blur-md rounded-2xl md:py-16 dark:bg-[rgba(255,255,255,0.001)]"
       style={{boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)'}}
     >
       <form action="#" className="mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -293,7 +293,7 @@ function index() {
                 </div>
 
                 <div>
-                  <div className="mb-2 flex items-center gap-2">
+                  <div className="flex items-center gap-2">
                     <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
                       {' '}
                       Country*{' '}
