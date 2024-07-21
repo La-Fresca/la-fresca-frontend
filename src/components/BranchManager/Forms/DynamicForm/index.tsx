@@ -331,7 +331,7 @@ const DynamicForm: FC = () => {
                   fieldname="image"
                   register={register}
                   setImageFile={setImageFile}
-                  height={150}
+                  height={'h-150'}
                 />
               </label>
               <div className="flex justify-center gap-12 mt-16">

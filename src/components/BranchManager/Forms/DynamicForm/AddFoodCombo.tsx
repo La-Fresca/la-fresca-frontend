@@ -186,7 +186,7 @@ const ComboForm: FC = () => {
                   fieldname="image"
                   register={register}
                   setImageFile={setImageFile}
-                  height={'90'}
+                  height={'h-96'}
                 />
               </label>
               <div className="flex justify-center gap-12 mt-16">
