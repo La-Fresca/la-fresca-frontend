@@ -7,7 +7,7 @@ import { Squares2X2Icon } from '@heroicons/react/24/outline';
 import { CakeIcon } from '@heroicons/react/24/outline';
 import { QueueListIcon } from '@heroicons/react/24/outline';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
-import { TagIcon } from '@heroicons/react/24/solid';
+import { RectangleGroupIcon, TagIcon } from '@heroicons/react/24/solid';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -138,6 +138,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <NavLink
+                  to="/branch-manager/food-combos"
+                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    pathname.includes('/branch-manager/food-combos') &&
+                    'bg-yellow-100 dark:bg-meta-4'
+                  }`}
+                >
+                  <RectangleGroupIcon className="w-6 h-6" />
+                  Food Combos
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
                   to="/branch-manager/users"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
                     pathname.includes('/branch-manager/users') &&
@@ -148,7 +160,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Manage Users
                 </NavLink>
               </li>
-              <SidebarLinkGroup
+              {/* <SidebarLinkGroup
                 activeCondition={
                   pathname === '/branch-manager/forms' ||
                   pathname.includes('/branch-manager/forms')
@@ -181,7 +193,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           )}
                         </span>
                       </NavLink>
-                      {/* <!-- Dropdown Menu Start --> */}
+                      
                       <div
                         className={`translate transform overflow-hidden ${
                           !open && 'hidden'
@@ -215,7 +227,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     </React.Fragment>
                   );
                 }}
-              </SidebarLinkGroup>
+              </SidebarLinkGroup> */}
             </ul>
           </div>
         </nav>

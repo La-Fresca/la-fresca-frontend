@@ -6,28 +6,31 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 
-import Loader from '@common/Loader';
-import PageTitle from '@components/PageTitle';
-import Home from '@pages/Home';
-import Dashboard from '@pages/BranchManager/Dashboard';
-import BranchManagerLayout from '@layouts/BranchManagerLayout';
-import LoginPage from '@pages/User/LogIn';
-import UserLayout from '@layouts/UserLayout';
-import AddFoods from '@pages/BranchManager/Foods/AddFood';
-import FoodItem from '@pages/FoodItem';
-import AllFoodItems from '@pages/AllFoodItems';
-import FoodList from '@pages/BranchManager/FoodList';
-import { Gallery } from '@components/Gallery/Gallery';
+import Loader from '@/common/Loader';
+import PageTitle from '@/components/PageTitle';
+import Home from '@/pages/Home';
+import Dashboard from '@/pages/BranchManager/Dashboard';
+import BranchManagerLayout from '@/layouts/BranchManagerLayout';
+import LoginPage from '@/pages/User/LogIn';
+import UserLayout from '@/layouts/UserLayout';
+import AddFoods from '@/pages/BranchManager/Foods/AddFood';
+import FoodItem from '@/pages/FoodItem';
+import AllFoodItems from '@/pages/AllFoodItems';
+import FoodList from '@/pages/BranchManager/FoodList';
+import { Gallery } from '@/components/Gallery/Gallery';
 import DiscountList from './pages/BranchManager/FoodList/DiscountList';
-import Cart from '@pages/Cart';
-import Checkout from '@pages/Checkout';
+import Cart from '@/pages/Cart';
+import Checkout from '@/pages/Checkout';
 import { OrderHistory } from './components/User/OrderHistory/OrderHistory';
-import User from '@pages/BranchManager/Users';
-import UserAdd from '@pages/BranchManager/Users/AddUser';
-import UserEdit from '@pages/BranchManager/Users/EditUser';
-import EditFoods from '@pages/BranchManager/Foods/EditFood';
-import AddCategories from '@pages/BranchManager/Categories/AddCategories';
-import ViewCategories from './pages/BranchManager/Categories/ViewCategories';
+import User from '@/pages/BranchManager/Users';
+import UserAdd from '@/pages/BranchManager/Users/AddUser';
+import UserEdit from '@/pages/BranchManager/Users/EditUser';
+import EditFoods from '@/pages/BranchManager/Foods/EditFood';
+import AddCategories from '@/pages/BranchManager/Categories/AddCategories';
+import ViewCategories from '@/pages/BranchManager/Categories/ViewCategories';
+import AddCombos from '@/pages/BranchManager/FoodCombos/Add';
+import Combos from '@/pages/BranchManager/FoodCombos';
+import EditCombos from '@/pages/BranchManager/FoodCombos/Edit';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -74,7 +77,7 @@ const routes = createRoutesFromElements(
         element={
           <>
             <PageTitle title="La Fresca | Checkout" />
-            <Checkout />  
+            <Checkout />
           </>
         }
       />
@@ -174,6 +177,35 @@ const routes = createRoutesFromElements(
             <>
               <PageTitle title="Branch Manager | Edit Food" />
               <EditFoods />
+            </>
+          }
+        />
+      </Route>
+      <Route path="food-combos">
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="Branch Manager | Food Combos" />
+              <Combos />
+            </>
+          }
+        />
+        <Route
+          path="add"
+          element={
+            <>
+              <PageTitle title="Branch Manager | Add Food Combo" />
+              <AddCombos />
+            </>
+          }
+        />
+        <Route
+          path="edit/:comboId"
+          element={
+            <>
+              <PageTitle title="Branch Manager | Edit Food Combo" />
+              <EditCombos />
             </>
           }
         />
