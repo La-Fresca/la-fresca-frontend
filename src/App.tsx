@@ -36,6 +36,7 @@ import StorekeeperLayout from '@/layouts/StorekeeperLayout';
 import ViewGrns from '@/pages/Storekeeper/GrnList';
 import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
+import AssignWaiter from './pages/KitchenManager/AssignWaiters';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -113,6 +114,15 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="La Fresca | Log In" />
             <LoginPage />
+          </>
+        }
+      />
+      <Route
+        path="testModal"
+        element={
+          <>
+            <PageTitle title="La Fresca | testModal" />
+            <AssignWaiter />
           </>
         }
       />
