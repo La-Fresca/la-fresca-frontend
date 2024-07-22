@@ -77,7 +77,7 @@ const Header = (props: {
             <Link
               key={index}
               to={link.href}
-              className={`hover:text-white transition duration-300 ease-in-out ${link.showOnLarge ? 'hidden lg:block' : ''}`}
+              className={`text-foodbg dark:text-white hover:text-warning dark:hover:text-warning transition duration-300 ease-in-out ${link.showOnLarge ? 'hidden lg:block' : ''}`}
             >
               {link.name}
             </Link>

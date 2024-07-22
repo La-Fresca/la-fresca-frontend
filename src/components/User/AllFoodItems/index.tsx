@@ -75,7 +75,16 @@ function index() {
   // ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5">
+    <div>
+      <div className="text-4xl text-foodbg dark:text-white mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <b>Promotions</b>
+      </div>
+      <div className="mt-2 mx-auto max-w-screen-xl px-4 2xl:px-0">
+        Not ready to checkout? Continue Shopping
+      </div>
+
+
+      <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols- gap-5">
       {item.map((_: any) => {
         return (
           <Link
@@ -94,11 +103,12 @@ function index() {
               <b>+</b>
             </Button>
             <div
-              className="border rounded-2xl border-foodbg bg-foodbg  backdrop-blur-md w-55 h-850 p-2 py-2"
+              className="dark:border rounded-2xl border-foodbg bg-foodbg  backdrop-blur-md w-55 h-850 p-2 py-2"
               style={{
                 marginLeft: '10%',
                 marginRight: '10%',
-                backgroundColor: 'rgba(255, 255, 255, 0.01)',
+                boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)', 
+                backgroundColor: 'rgba(255, 255, 255, 0.01)'
               }}
             >
               <div className='h-50'>
@@ -106,7 +116,7 @@ function index() {
               </div>
 
               <div className="px-3 mt-2">
-                <b className="text-white text-xl">{_.name}</b>
+                <b className="text-foodbg dark:text-white text-xl">{_.name}</b>
 
                 <div className="flex items-center pt-2">
                   {Array.from({ length: 5 }).map((_, i) => {
@@ -114,7 +124,7 @@ function index() {
                   })}
                 </div>
 
-                <div className="font-bold text-white pt-2 text-xl">
+                <div className="font-bold text-foodbg dark:text-white pt-2 text-xl">
                   <span className="pr-2 text-orange-500">Rs.</span>
                   {_.price}
                 </div>
@@ -123,6 +133,7 @@ function index() {
           </Link>
         );
       })}
+    </div>
     </div>
   );
 }

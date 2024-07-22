@@ -73,7 +73,7 @@ function index() {
   // ];
   return (
     <div>
-      <div className="text-4xl text-white mx-auto max-w-screen-xl px-4 2xl:px-0">
+      <div className="text-4xl text-foodbg dark:text-white mx-auto max-w-screen-xl px-4 2xl:px-0">
         <b>Promotions</b>
       </div>
       <div className="mt-2 mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -88,20 +88,21 @@ function index() {
               className="hover:scale-105 transition-transform duration-300 hover:cursor-pointer"
             >
               <div
-                className="border rounded-2xl border-foodbg bg-foodbg  backdrop-blur-md w-55 h-850 p-2 py-2"
+                className="dark:border rounded-2xl border-foodbg bg-foodbg  backdrop-blur-md w-55 h-850 p-2 py-2"
                 style={{
                   marginLeft: '10%',
                   marginRight: '10%',
-                  backgroundColor: 'rgba(255, 255, 255, 0.01)',
+                  boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)', 
+                  backgroundColor: 'rgba(255, 255, 255, 0.01)'
                 }}
               >
 
-                <div className="h-50 bg-white">
+                <div className="h-50  bg-green">
                   <img src={_.image} alt="" className="w-[100%]" />
                 </div>
 
                 <div className="px-3 mt-2">
-                  <p><b className="text-white text-xl">{_.name}</b></p>
+                  <p><b className="dark:text-white text-foodbg text-xl">{_.name}</b></p>
                   <p>{_.branch}</p>
 
                   <div className="font-bold text-white pt-2 text-xl">
