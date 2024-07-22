@@ -1,16 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '@images/logo/la-fresca.png';
-import { Bars3Icon, UserIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon } from '@heroicons/react/24/outline';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
-import { CakeIcon } from '@heroicons/react/24/outline';
-import { QueueListIcon } from '@heroicons/react/24/outline';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import {
   ChartBarSquareIcon,
-  RectangleGroupIcon,
-  TagIcon,
+  FolderPlusIcon,
+  InboxStackIcon,
 } from '@heroicons/react/24/solid';
 
 interface SidebarProps {
@@ -105,77 +101,30 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <ul className="mb-6 flex flex-col gap-1.5">
               <li>
                 <NavLink
-                  to="/branch-manager"
+                  to="/storekeeper"
                   className={`group relative flex items-center gap-2.5 rounded-xl px-4 py-2 font-medium text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    (pathname === '/branch-manager' ||
-                      pathname.includes('dashboard')) &&
+                    (pathname === '/storekeeper' ||
+                      pathname.includes('inventory')) &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <Squares2X2Icon className="w-6 h-6" />
-                  Dashboard
+                  <InboxStackIcon className="w-6 h-6" />
+                  Inventory
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="sales"
+                  to="grn"
                   className={`group relative flex items-center gap-2.5 rounded-xl px-4 py-2 font-medium text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    (pathname === '/sales' || pathname.includes('sales')) &&
+                    (pathname === 'grn' || pathname.includes('grn')) &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <ChartBarSquareIcon className="w-6 h-6" />
-                  Sales
+                  <FolderPlusIcon className="w-6 h-6" />
+                  GRN
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  to="/branch-manager/categories"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/categories') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <TagIcon className="w-6 h-6" />
-                  Categories
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/branch-manager/foods"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/foods') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <CakeIcon className="w-6 h-6" />
-                  Foods
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/branch-manager/food-combos"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/food-combos') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <RectangleGroupIcon className="w-6 h-6" />
-                  Food Combos
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/branch-manager/users"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/users') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <UserIcon className="w-6 h-6" />
-                  Manage Users
-                </NavLink>
-              </li>
+
               {/* <SidebarLinkGroup
                 activeCondition={
                   pathname === '/branch-manager/forms' ||

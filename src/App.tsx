@@ -21,7 +21,7 @@ import { Gallery } from '@/components/Gallery/Gallery';
 import DiscountList from './pages/BranchManager/FoodList/DiscountList';
 import Cart from '@/pages/Cart';
 import Checkout from '@/pages/Checkout';
-import { OrderHistory } from './components/User/OrderHistory/OrderHistory';
+import { OrderHistory } from '@/components/User/OrderHistory/OrderHistory';
 import User from '@/pages/BranchManager/Users';
 import UserAdd from '@/pages/BranchManager/Users/AddUser';
 import UserEdit from '@/pages/BranchManager/Users/EditUser';
@@ -32,6 +32,11 @@ import AddCombos from '@/pages/BranchManager/FoodCombos/Add';
 import Combos from '@/pages/BranchManager/FoodCombos';
 import Discount from '@/pages/Discount';
 import EditCombos from '@/pages/BranchManager/FoodCombos/Edit';
+import Sales from '@/pages/BranchManager/Sales';
+import StorekeeperLayout from '@/layouts/StorekeeperLayout';
+import ViewGrns from '@/pages/Storekeeper/GrnList';
+import AddGrn from '@/pages/Storekeeper/AddGrn';
+import EditGrn from '@/pages/Storekeeper/EditGrn';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -130,6 +135,15 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="Branch Manager | Dashboard" />
             <Dashboard />
+          </>
+        }
+      />
+      <Route
+        path="sales"
+        element={
+          <>
+            <PageTitle title="Branch Manager | Sales" />
+            <Sales />
           </>
         }
       />
@@ -258,6 +272,45 @@ const routes = createRoutesFromElements(
           </>
         }
       />
+    </Route>
+    <Route path="storekeeper/*" element={<StorekeeperLayout />}>
+      <Route
+        index
+        element={
+          <>
+            <PageTitle title="Storekeeper | Inventory" />
+          </>
+        }
+      />
+      <Route path="grn">
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="Storekeeper | GRN List" />
+              <ViewGrns />
+            </>
+          }
+        />
+        <Route
+          path="add"
+          element={
+            <>
+              <PageTitle title="Storekeeper | Add GRN" />
+              <AddGrn />
+            </>
+          }
+        />
+        <Route
+          path="edit/:grnId"
+          element={
+            <>
+              <PageTitle title="Storekeeper | Edit GRN" />
+              <EditGrn />
+            </>
+          }
+        />
+      </Route>
     </Route>
   </Route>,
 );

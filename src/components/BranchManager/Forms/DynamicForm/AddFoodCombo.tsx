@@ -4,7 +4,7 @@ import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
-import MultiSelect from '@components/BranchManager/Forms/MultiCheckBox';
+import MultiSelect from '@components/BranchManager/Forms/MultiSelectSearch';
 import { Combo } from '@/types/combo';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -186,6 +186,7 @@ const ComboForm: FC = () => {
                   fieldname="image"
                   register={register}
                   setImageFile={setImageFile}
+                  height={'h-96'}
                 />
               </label>
               <div className="flex justify-center gap-12 mt-16">
