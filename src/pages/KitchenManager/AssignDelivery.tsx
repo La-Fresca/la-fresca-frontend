@@ -4,44 +4,44 @@ import WaiterCard from "./WaiterCard";
 
 var waiters = [
     {
-        waiterId: 1,
-        waiterName: "Waiter 1",
-        waiterImage: "https://images.unsplash.com/photo-1512485800893-b08ec1ea59b1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        waiterStatus: "Available"
+        deliveryId: 1,
+        deliveryName: "Delivery 1",
+        deliveryImage: "https://images.unsplash.com/photo-1512485800893-b08ec1ea59b1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        deliveryStatus: "Not Available"
     },
     {
-        waiterId: 2,
-        waiterName: "Waiter 2",
-        waiterImage: "https://images.unsplash.com/photo-1512485800893-b08ec1ea59b1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        waiterStatus: "Available"
+        deliveryId: 2,
+        deliveryName: "Delivery 2",
+        deliveryImage: "https://images.unsplash.com/photo-1512485800893-b08ec1ea59b1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        deliveryStatus: "Available"
     },
     {
-        waiterId: 3,
-        waiterName: "Waiter 3",
-        waiterImage: "https://images.unsplash.com/photo-1512485800893-b08ec1ea59b1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        waiterStatus: "Available"
+        deliveryId: 3,
+        deliveryName: "Delivery 3",
+        deliveryImage: "https://images.unsplash.com/photo-1512485800893-b08ec1ea59b1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        deliveryStatus: "Available"
     },
     {
-        waiterId: 4,
-        waiterName: "Waiter 4",
-        waiterImage: "https://images.unsplash.com/photo-1512485800893-b08ec1ea59b1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        waiterStatus: "Available"
+        deliveryId: 4,
+        deliveryName: "Delivery 4",
+        deliveryImage: "https://images.unsplash.com/photo-1512485800893-b08ec1ea59b1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        deliveryStatus: "Available"
     },
     {
-        waiterId: 5,
-        waiterName: "Waiter 5",
-        waiterImage: "https://images.unsplash.com/photo-1512485800893-b08ec1ea59b1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        waiterStatus: "Available"
+        deliveryId: 5,
+        deliveryName: "Delivery 5",
+        deliveryImage: "https://images.unsplash.com/photo-1512485800893-b08ec1ea59b1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        deliveryStatus: "Absent"
     },
 ]
 
-export default function AssignWaiter() {
+export default function AssignDelivery() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     // Sort the waiters based on their status
     const sortedWaiters = waiters.sort((a, b) => {
         const statusOrder: { [key: string]: number } = { "Available": 1, "Not Available": 2, "Absent": 3 };
-        return statusOrder[a.waiterStatus] - statusOrder[b.waiterStatus];
+        return statusOrder[a.deliveryStatus] - statusOrder[b.deliveryStatus];
     });
 
     return (
@@ -65,16 +65,16 @@ export default function AssignWaiter() {
                 <ModalContent className="pb-6">
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1 text-3xl">Assign a Waiter</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1 text-3xl ">Assign a Delivery Person</ModalHeader>
                             <ModalBody className="overflow-auto">
                                 <div className="flex justify-center">
                                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                         {waiters.map((waiter) => (
                                             <WaiterCard
-                                                waiterId={waiter.waiterId}
-                                                waiterName={waiter.waiterName}
-                                                waiterImage={waiter.waiterImage}
-                                                waiterStatus={waiter.waiterStatus}
+                                                waiterId={waiter.deliveryId}
+                                                waiterName={waiter.deliveryName}
+                                                waiterImage={waiter.deliveryImage}
+                                                waiterStatus={waiter.deliveryStatus}
                                             />
                                         ))}
                                         {/* <WaiterCard />
@@ -94,7 +94,6 @@ export default function AssignWaiter() {
                     )}
                 </ModalContent>
             </Modal>
-            
         </>
     );
 }
