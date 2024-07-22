@@ -30,6 +30,7 @@ import AddCategories from '@/pages/BranchManager/Categories/AddCategories';
 import ViewCategories from '@/pages/BranchManager/Categories/ViewCategories';
 import AddCombos from '@/pages/BranchManager/FoodCombos/Add';
 import Combos from '@/pages/BranchManager/FoodCombos';
+import Discount from '@/pages/Discount';
 import EditCombos from '@/pages/BranchManager/FoodCombos/Edit';
 
 const routes = createRoutesFromElements(
@@ -59,6 +60,15 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="La Fresca | Cart" />
             <Cart />
+          </>
+        }
+      />
+      <Route
+        path="promotions"
+        element={
+          <>
+            <PageTitle title="La Fresca | Promotions" />
+            <Discount />
           </>
         }
       />

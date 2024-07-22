@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '@images/logo/la-fresca.png';
-import { Bars3Icon, UserIcon } from '@heroicons/react/24/outline';
-import { Squares2X2Icon } from '@heroicons/react/24/outline';
+import { Bars3Icon, UserIcon, ClockIcon, Squares2X2Icon, PhotoIcon, ReceiptPercentIcon } from '@heroicons/react/24/outline';
+
 import { CakeIcon } from '@heroicons/react/24/outline';
 import { QueueListIcon } from '@heroicons/react/24/outline';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
@@ -114,30 +114,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <NavLink
-                  to="/branch-manager/categories"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/categories') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <TagIcon className="w-6 h-6" />
-                  About Us
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/branch-manager/foods"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/foods') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <CakeIcon className="w-6 h-6" />
-                  Meet Chefs
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
                   to="/fooditems"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
                     pathname.includes('/branch-manager/food-combos') &&
@@ -150,13 +126,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <NavLink
-                  to="/branch-manager/users"
+                  to="/orderhistory"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
                     pathname.includes('/branch-manager/users') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <UserIcon className="w-6 h-6" />
+                  <ClockIcon className="w-6 h-6" />
                   Order History
                 </NavLink>
               </li>
@@ -168,8 +144,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <UserIcon className="w-6 h-6" />
+                  <PhotoIcon className="w-6 h-6" />
                   Gallery
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/promotions"
+                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    pathname.includes('/branch-manager/users') &&
+                    'bg-yellow-100 dark:bg-meta-4'
+                  }`}
+                >
+                  <ReceiptPercentIcon className="w-6 h-6" />
+                  Promotions
                 </NavLink>
               </li>
               <li>
