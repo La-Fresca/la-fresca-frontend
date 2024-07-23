@@ -104,7 +104,7 @@ function index() {
                           style={{
                             marginLeft: '10%',
                             marginRight: '10%',
-                            boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)',
+                            boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
                             backgroundColor: 'rgba(255, 255, 255, 0.01)',
                           }}
                         >

@@ -37,6 +37,7 @@ import StorekeeperLayout from '@/layouts/StorekeeperLayout';
 import ViewGrns from '@/pages/Storekeeper/GrnList';
 import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
+import KitchenManagerDashboard from '@/pages/KitchenManager/Dashboard';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -111,6 +112,15 @@ const routes = createRoutesFromElements(
           element={
             <>
               <PageTitle title="La Fresca | Food Item" />
+              <FoodItem />
+            </>
+          }
+        />
+        <Route
+          path="viewcombo/:comboId"
+          element={
+            <>
+              <PageTitle title="La Fresca | Food Combo" />
               <FoodItem />
             </>
           }
@@ -273,6 +283,7 @@ const routes = createRoutesFromElements(
         }
       />
     </Route>
+    
     <Route path="storekeeper/*" element={<StorekeeperLayout />}>
       <Route
         index
@@ -307,6 +318,29 @@ const routes = createRoutesFromElements(
             <>
               <PageTitle title="Storekeeper | Edit GRN" />
               <EditGrn />
+            </>
+          }
+        />
+      </Route>
+    </Route>
+
+    <Route path="kitchen-manager/*" element={<StorekeeperLayout />}>
+      <Route
+        index
+        element={
+          <>
+            <PageTitle title="La Fresca | Kitchen Manager" />
+            <KitchenManagerDashboard />
+          </>
+        }
+      />
+      <Route path="d">
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="Storekeeper | GRN List" />
+              <ViewGrns />
             </>
           }
         />
