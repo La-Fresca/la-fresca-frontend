@@ -71,5 +71,5 @@ export const useCombos = () => {
     }
   };
 
-  return { getAllCombos, addCombo };
+  return { getAllCombos, addCombo, getComboById };
 };
