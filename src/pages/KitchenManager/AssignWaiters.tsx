@@ -54,8 +54,8 @@ export default function AssignWaiter() {
                 radius="lg"
                 classNames={{
                     body: "py-6",
-                    backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
-                    base: "border-[#000000] bg-[#000000] dark:bg-[#000000] text-[#FFFFFF]",
+                    backdrop: "bg-[#000000]/50 backdrop-opacity-40",
+                    base: "border-[#000000] h-full w-full bg-gray-400 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 border border-gray-100 text-[#FFFFFF]",
                     header: "border-b-[1px] border-[#FDAD13]",
                     footer: "border-t-[1px] border-[#FDAD13]",
                     closeButton: "hover:bg-white/5 active:bg-white/10 text-3xl pt-3 pr-3",
