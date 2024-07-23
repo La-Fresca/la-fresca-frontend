@@ -5,41 +5,31 @@ import TextButtonGroup from './TextButtonGroup';
 import TextButton from './TextButton';
 
 import QtySelector from './QtySelector';
+import { Food } from '@/types/food';
+import { useFoods } from '@/api/useFoods';
 
 interface Props {
   id: string | undefined;
 }
 
 function index({ id }: Props) {
-  const [item, setItem] = useState<any>(null);
+  const { getFoodById } = useFoods();
+  const [food, setFood] = useState<Food>();
 
-  const fetchItems = async () => {
+  const fetchFood = async () => {
     try {
-      let apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(
-        `${apiUrl}/food/${id}`,
-      );
-      if (!response.ok) {
-        throw new Error('Failed to fetch item');
-      }
-      const data = await response.json();
-      return data;
+      const food = await getFoodById(id?.toString() || '');
+      setFood(food);
     } catch (error) {
       console.error('Error fetching item:', error);
     }
   };
 
-  const getItem = async () => {
-    const item = await fetchItems();
-    setItem(item);
-    console.log(item);
-  };
-
   useEffect(() => {
-    getItem();
+    fetchFood();
   }, [id]);
 
-  if (!item) {
+  if (!food) {
     return <div>Loading...</div>; // Placeholder for loading state
   }
 
@@ -54,12 +44,12 @@ function index({ id }: Props) {
         }}
       >
         <div>
-          <img src={item.image} alt="" className="w-[100%]" />
+          <img src={food.image} alt="" className="w-[100%]" />
         </div>
 
         <div className="w-[70%]">
-          <div className="text-4xl font-bold text-white ">{item.name}</div>
-          <div className="pt-3">{item.description}</div>
+          <div className="text-4xl font-bold text-white ">{food.name}</div>
+          <div className="pt-3">{food.description}</div>
 
           <div className="flex items-center pt-3">
             {Array.from({ length: 5 }).map((_, i) => {
@@ -69,14 +59,14 @@ function index({ id }: Props) {
 
           <div className="font-bold text-white pt-5 text-2xl">
             <span className="pr-2 text-orange-500">Rs.</span>
-            {item.price}
+            {food.price}
           </div>
 
           <div>
             <QtySelector />
 
             <div className="mt-8">
-              {item.features.map((feature: any, index: number) => (
+              {food.features.map((feature: any, index: number) => (
                 <TextButtonGroup
                   key={index}
                   name={feature.name}

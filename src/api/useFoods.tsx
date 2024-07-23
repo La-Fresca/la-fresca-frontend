@@ -44,5 +44,25 @@ export const useFoods = () => {
     }
   };
 
-  return { getAllFoods, addFood };
+  const getFoodById = async (id: string) => {
+    try {
+      const response = await fetch(`${API_URL}/food/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch item');
+      } else {
+        return response.json();
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
+  return { getAllFoods, addFood, getFoodById };
 };
