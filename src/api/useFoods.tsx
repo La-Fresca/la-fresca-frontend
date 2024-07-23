@@ -2,7 +2,15 @@ import { Food } from '@/types/food';
 import Cookies from 'js-cookie';
 
 const API_URL = (import.meta as any).env.VITE_API_URL;
-const TOKEN = Cookies.get('_auth');
+
+function getToken() {
+  try {
+    return Cookies.get('_auth');
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
 
 export const useFoods = () => {
   const getAllFoods = async () => {
@@ -11,7 +19,7 @@ export const useFoods = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       });
       if (!response.ok) {
@@ -31,7 +39,7 @@ export const useFoods = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${getToken()}`,
         },
         body: JSON.stringify(data),
       });
@@ -50,7 +58,7 @@ export const useFoods = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       });
       if (!response.ok) {

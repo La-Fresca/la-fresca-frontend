@@ -1,7 +1,15 @@
 import Cookies from 'js-cookie';
 const API_URL = (import.meta as any).env.VITE_API_URL;
-const TOKEN = Cookies.get('_auth');
 import { FoodCombo } from '@/types/combo';
+
+function getToken() {
+  try {
+    return Cookies.get('_auth');
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
 
 export const useCombos = () => {
   const getAllCombos = async () => {
@@ -10,7 +18,7 @@ export const useCombos = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       });
       if (!response.ok) {
@@ -30,7 +38,7 @@ export const useCombos = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${TOKEN}`,
+          Authorization: `Bearer ${getToken()}`,
         },
         body: JSON.stringify(data),
       });
