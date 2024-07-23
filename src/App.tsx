@@ -1,3 +1,6 @@
+import createStore from 'react-auth-kit/createStore';
+import AuthProvider from 'react-auth-kit';
+import AuthOutlet from '@auth-kit/react-router/AuthOutlet';
 import { useEffect, useState } from 'react';
 import {
   createBrowserRouter,
@@ -39,80 +42,41 @@ import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
 import KitchenManagerDashboard from '@/pages/KitchenManager/Dashboard';
 
+const store = createStore({
+  authName: '_auth',
+  authType: 'cookie',
+  cookieDomain: window.location.hostname,
+  cookieSecure: window.location.protocol === 'http:',
+});
+
 const routes = createRoutesFromElements(
   <Route>
-    <Route path="/" element={<UserLayout />}>
-      <Route
-        index
-        element={
-          <>
-            <PageTitle title="La Fresca | Home" />
-            <Home />
-          </>
-        }
-      />
-      <Route
-        path="gallery"
-        element={
-          <>
-            <PageTitle title="La Fresca | Gallery" />
-            <Gallery />
-          </>
-        }
-      />
-      <Route
-        path="cart"
-        element={
-          <>
-            <PageTitle title="La Fresca | Cart" />
-            <Cart />
-          </>
-        }
-      />
-      <Route
-        path="promotions"
-        element={
-          <>
-            <PageTitle title="La Fresca | Promotions" />
-            <Discount />
-          </>
-        }
-      />
-      <Route
-        path="orderhistory"
-        element={
-          <>
-            <PageTitle title="La Fresca | Order History" />
-            <OrderHistory />
-          </>
-        }
-      />
-
-      <Route
-        path="checkout"
-        element={
-          <>
-            <PageTitle title="La Fresca | Checkout" />
-            <Checkout />
-          </>
-        }
-      />
-      <Route path="fooditems">
+    <Route
+      path="login"
+      element={
+        <>
+          <PageTitle title="La Fresca | Log In" />
+          <LoginPage />
+        </>
+      }
+    />
+    <Route element={<AuthOutlet fallbackPath="/login" />}>
+      <Route path="/" element={<UserLayout />}>
         <Route
           index
           element={
             <>
-              <PageTitle title="La Fresca | Food Items" />
-              <AllFoodItems />
+              <PageTitle title="La Fresca | Home" />
+              <Home />
             </>
           }
         />
         <Route
-          path="viewfood/:itemId"
+          path="gallery"
           element={
             <>
-              <PageTitle title="La Fresca | Food Item" />
-              <FoodItem />
+              <PageTitle title="La Fresca | Gallery" />
+              <Gallery />
             </>
           }
         />
@@ -125,68 +89,211 @@ const routes = createRoutesFromElements(
             </>
           }
         />
+        <Route
+          path="cart"
+          element={
+            <>
+              <PageTitle title="La Fresca | Cart" />
+              <Cart />
+            </>
+          }
+        />
+        <Route
+          path="promotions"
+          element={
+            <>
+              <PageTitle title="La Fresca | Promotions" />
+              <Discount />
+            </>
+          }
+        />
+        <Route
+          path="orderhistory"
+          element={
+            <>
+              <PageTitle title="La Fresca | Order History" />
+              <OrderHistory />
+            </>
+          }
+        />
+
+        <Route
+          path="checkout"
+          element={
+            <>
+              <PageTitle title="La Fresca | Checkout" />
+              <Checkout />
+            </>
+          }
+        />
+        <Route path="fooditems">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="La Fresca | Food Items" />
+                <AllFoodItems />
+              </>
+            }
+          />
+          <Route
+            path="viewfood/:itemId"
+            element={
+              <>
+                <PageTitle title="La Fresca | Food Item" />
+                <FoodItem />
+              </>
+            }
+          />
+        </Route>
       </Route>
 
-      <Route
-        path="login"
-        element={
-          <>
-            <PageTitle title="La Fresca | Log In" />
-            <LoginPage />
-          </>
-        }
-      />
-    </Route>
-
-    <Route path="branch-manager/*" element={<BranchManagerLayout />}>
-      <Route
-        index
-        element={
-          <>
-            <PageTitle title="Branch Manager | Dashboard" />
-            <Dashboard />
-          </>
-        }
-      />
-      <Route
-        path="sales"
-        element={
-          <>
-            <PageTitle title="Branch Manager | Sales" />
-            <Sales />
-          </>
-        }
-      />
-      <Route path="categories">
+      <Route path="branch-manager/*" element={<BranchManagerLayout />}>
         <Route
           index
           element={
             <>
-              <PageTitle title="Branch Manager | Food Categories" />
-              <ViewCategories />
+              <PageTitle title="Branch Manager | Dashboard" />
+              <Dashboard />
             </>
           }
         />
         <Route
-          path="add"
+          path="sales"
           element={
             <>
-              <PageTitle title="La Fresca | Add Food Categories " />
-              <AddCategories />
+              <PageTitle title="Branch Manager | Sales" />
+              <Sales />
             </>
           }
         />
+        <Route path="categories">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Branch Manager | Food Categories" />
+                <ViewCategories />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="La Fresca | Add Food Categories " />
+                <AddCategories />
+              </>
+            }
+          />
+          <Route
+            path="edit/:categoryId"
+            element={
+              <>
+                <PageTitle title="La Fresca | Edit Food Categories " />
+                <AddCategories />
+              </>
+            }
+          />
+        </Route>
+        <Route path="foods">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="La Fresca | Food List" />
+                <FoodList />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Add Food" />
+                <AddFoods />
+              </>
+            }
+          />
+          <Route
+            path="edit/:foodId"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Edit Food" />
+                <EditFoods />
+              </>
+            }
+          />
+        </Route>
+        <Route path="food-combos">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Branch Manager | Food Combos" />
+                <Combos />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Add Food Combo" />
+                <AddCombos />
+              </>
+            }
+          />
+          <Route
+            path="edit/:comboId"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Edit Food Combo" />
+                <EditCombos />
+              </>
+            }
+          />
+        </Route>
+        <Route path="users">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Branch Manager | Users" />
+                <User />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Add User" />
+                <UserAdd />
+              </>
+            }
+          />
+          <Route
+            path="edit/:userId"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Edit User" />
+                <UserEdit />
+              </>
+            }
+          />
+        </Route>
         <Route
-          path="edit/:categoryId"
+          path="discountlist"
           element={
             <>
-              <PageTitle title="La Fresca | Edit Food Categories " />
-              <AddCategories />
+              <PageTitle title="Branch Manager | Discount List" />
+              <DiscountList />
             </>
           }
         />
       </Route>
-      <Route path="foods">
+      <Route path="storekeeper/*" element={<StorekeeperLayout />}>
         <Route
           index
           element={
@@ -318,9 +425,39 @@ const routes = createRoutesFromElements(
             <>
               <PageTitle title="Storekeeper | Edit GRN" />
               <EditGrn />
+              <PageTitle title="Storekeeper | Inventory" />
             </>
           }
         />
+        <Route path="grn">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Storekeeper | GRN List" />
+                <ViewGrns />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Storekeeper | Add GRN" />
+                <AddGrn />
+              </>
+            }
+          />
+          <Route
+            path="edit/:grnId"
+            element={
+              <>
+                <PageTitle title="Storekeeper | Edit GRN" />
+                <EditGrn />
+              </>
+            }
+          />
+        </Route>
       </Route>
     </Route>
 
@@ -362,7 +499,13 @@ function App() {
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
-  return loading ? <Loader /> : <RouterProvider router={router} />;
+  return loading ? (
+    <Loader />
+  ) : (
+    <AuthProvider store={store}>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App;

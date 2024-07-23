@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
 import MultiSelect from '@components/BranchManager/Forms/MultiCheckBox';
-import { Combo } from '@/types/combo';
+import { Combo } from '@/types/mock_combo';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 

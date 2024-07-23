@@ -1,75 +1,49 @@
 import { useEffect, useState } from 'react';
-import Food from '@images/product/pizza.png';
 import Star from '../FoodItem/Star';
 import { Button } from '@nextui-org/react';
 import { Link } from 'react-router-dom';
 import { Tabs, Tab, Card, CardBody } from '@nextui-org/react';
+import { useFoods } from '@/api/useFoods';
+import { useCombos } from '@/api/useCombos';
+import { Food } from '@/types/food';
+import { FoodCombo } from '@/types/combo';
 
 function index() {
-  const [combo, setCombo] = useState<any>(null);
-  const [item, setItem] = useState<any>(null); // Adjusted initial state to null
+  const [combos, setCombos] = useState<FoodCombo[]>([]);
+  const [foods, setFoods] = useState<Food[]>([]);
+  const { getAllFoods } = useFoods();
+  const { getAllCombos } = useCombos();
 
-  const fetchItems = async () => {
+  const fetchFoods = async () => {
     try {
-      let apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/food`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch item');
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching item:', error);
+      const data = await getAllFoods();
+      setFoods(data);
+    } catch (error: any) {
+      console.error(error);
     }
   };
-
-  const getItem = async () => {
-    const item = await fetchItems();
-    setItem(item);
-    console.log(item);
-  };
-
 
   const fetchCombos = async () => {
     try {
-      let apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/foodCombo`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch item');
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching item:', error);
+      const data = await getAllCombos();
+      setCombos(data);
+    } catch (error: any) {
+      console.error(error);
     }
   };
 
-  const getCombo = async () => {
-    const combo = await fetchCombos();
-    setCombo(combo);
-    console.log(combo);
-  };
-
   useEffect(() => {
-    getCombo();
-    getItem();
+    fetchFoods();
+    fetchCombos();
   }, []);
 
-
-
-
-
-
-
-  
-
-  if (!item) {
+  if (!foods) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="mx-auto max-w-screen-xl flex w-full flex-col">
-      <Tabs aria-label="Options" variant='underlined'>
+      <Tabs aria-label="Options" variant="underlined">
         <Tab key="FoodItems" title="Food Items">
           <Card>
             <CardBody>
@@ -82,7 +56,7 @@ function index() {
                 </div>
 
                 <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols- gap-5">
-                  {item.map((_: any) => {
+                  {foods.map((_: Food) => {
                     return (
                       <Link
                         to={`viewfood/${_.id}`}
@@ -142,7 +116,7 @@ function index() {
         <Tab key="FoodCombos" title="Food Combos">
           <Card>
             <CardBody>
-            <div>
+              <div>
                 <div className="text-4xl text-foodbg dark:text-white mx-auto max-w-screen-xl px-4 2xl:px-0">
                   <b>Food Combos</b>
                 </div>
@@ -151,7 +125,7 @@ function index() {
                 </div>
 
                 <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols- gap-5">
-                  {combo.map((_: any) => {
+                  {combos.map((_: FoodCombo) => {
                     return (
                       <Link
                         to={`viewfood/${_.id}`}
