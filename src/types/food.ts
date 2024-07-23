@@ -2,6 +2,7 @@ export type Food = {
   id: number;
   foodId: string;
   name: string;
+  description?: string;
   image: string;
   price: number;
   availability: number;
