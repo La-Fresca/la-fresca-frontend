@@ -24,6 +24,9 @@ import { ChevronDownIcon } from './ChevronDownIcon';
 import { SearchIcon } from './SearchIcon';
 import { capitalize } from './utils';
 import { Navigate, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { Food } from '@/types/food';
+import { useFoods } from '@/api/useFoods';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   active: 'success',
@@ -44,33 +47,6 @@ const INITIAL_VISIBLE_COLUMNS = [
   'actions',
 ];
 
-type Food = {
-  id: number;
-  foodId: string;
-  name: string;
-  price: number;
-  availability: number;
-  cafeId: string;
-  category: string;
-  discountStatus: string;
-  discountId: string;
-  features: { name: string; levels: string[]; additionalPrices: number[] }[];
-};
-
-const fetchItems = async () => {
-  try {
-    const apiUrl = (import.meta as any).env.VITE_API_URL;
-    const response = await fetch(`${apiUrl}/food`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch item');
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching item:', error);
-  }
-};
-
 const columns = [
   { name: 'Name', uid: 'name' },
   { name: 'Price', uid: 'price' },
@@ -84,6 +60,7 @@ const columns = [
 ];
 
 export default function FoodList() {
+  const { getAllFoods } = useFoods();
   const navigate = useNavigate();
   const [foods, setFoods] = React.useState<Food[]>([]);
   const [filterValue, setFilterValue] = React.useState('');
@@ -98,14 +75,17 @@ export default function FoodList() {
   const [page, setPage] = React.useState(1);
   const hasSearchFilter = Boolean(filterValue);
 
+  const fetchItems = async () => {
+    try {
+      const data = await getAllFoods();
+      setFoods(data);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
   React.useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchItems();
-      if (data) {
-        setFoods(data);
-      }
-    };
-    fetchData();
+    fetchItems();
   }, []);
 
   const headerColumns = React.useMemo(() => {

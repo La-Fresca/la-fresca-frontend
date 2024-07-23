@@ -10,6 +10,9 @@ import MultiSelect from '@components/BranchManager/Forms/MultiCheckBox';
 import { Category } from '@/types/category';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useUpload } from '@/api/useUpload';
+import { useFoods } from '@/api/useFoods';
+import { Food } from '@/types/food';
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
@@ -43,6 +46,8 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 const DynamicForm: FC = () => {
+  const { uploadImage } = useUpload();
+  const { addFood } = useFoods();
   const Navigate = useNavigate();
   const { register, control, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
@@ -68,28 +73,13 @@ const DynamicForm: FC = () => {
     let imageUrl = data.image;
 
     if (imageFile) {
-      const formData = new FormData();
-      formData.append('file', imageFile);
-
       try {
-        const uploadUrl = (import.meta as any).env.VITE_UPLOAD_URL;
-        const response = await fetch(`${uploadUrl}`, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type',
-          },
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          imageUrl = result.fileUrl;
+        const respose = await uploadImage(imageFile);
+        if (respose) {
+          imageUrl = respose.fileUrl;
           setValue('image', imageUrl);
         } else {
-          console.error('Image upload failed');
-          return;
+          throw new Error('Failed to upload image');
         }
       } catch (error) {
         console.error('Error uploading image:', error);
@@ -97,10 +87,8 @@ const DynamicForm: FC = () => {
       }
     }
 
-    const transformedData = {
+    const transformedData: Food = {
       cafeId: 'cafe 1',
-      available: 0,
-      deleted: 0,
       ...data,
       image: imageUrl,
       features:
@@ -109,25 +97,15 @@ const DynamicForm: FC = () => {
           levels: feature.subCategories.map((sub) => sub.name),
           additionalPrices: feature.subCategories.map((sub) => sub.price),
         })) || [],
+      id: 0,
+      foodId: '',
+      availability: 0,
+      discountStatus: '',
+      discountId: '',
     };
 
     try {
-      const apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/food`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(transformedData),
-      });
-
-      if (response.ok) {
-        toast('Food item added successfully', { type: 'success' });
-        Navigate('/branch-manager/foods');
-      } else {
-        toast('Failed to add food item', { type: 'error' });
-        console.error('Failed to add food item:', response.statusText);
-      }
+      addFood(transformedData);
     } catch (error) {
       console.error('Error adding food item:', error);
       toast('Failed to add food item', { type: 'error' });

@@ -5,9 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
 import MultiSelect from '@components/BranchManager/Forms/MultiSelectSearch';
-import { Combo } from '@/types/combo';
+import { Combo } from '@/types/mock_combo';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useUpload } from '@/api/useUpload';
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
@@ -26,6 +27,7 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 const ComboForm: FC = () => {
+  const { uploadImage } = useUpload();
   const Navigate = useNavigate();
   const { register, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
@@ -44,30 +46,13 @@ const ComboForm: FC = () => {
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     let imageUrl = data.image;
-
     if (imageFile) {
-      const formData = new FormData();
-      formData.append('file', imageFile);
-
       try {
-        const uploadUrl = (import.meta as any).env.VITE_UPLOAD_URL;
-        const response = await fetch(`${uploadUrl}`, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type',
-          },
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          imageUrl = result.fileUrl;
-          setValue('image', imageUrl);
+        const response = uploadImage(imageFile);
+        if (response) {
+          imageUrl = response.fileUrl;
         } else {
-          console.error('Image upload failed');
-          return;
+          throw new Error('Failed to upload image');
         }
       } catch (error) {
         console.error('Error uploading image:', error);
