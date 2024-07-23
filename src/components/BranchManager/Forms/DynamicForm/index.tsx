@@ -8,7 +8,6 @@ import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
 import MultiSelect from '@components/BranchManager/Forms/MultiCheckBox';
 import { Category } from '@/types/category';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useUpload } from '@/api/useUpload';
 import { useFoods } from '@/api/useFoods';
@@ -108,7 +107,6 @@ const DynamicForm: FC = () => {
       addFood(transformedData);
     } catch (error) {
       console.error('Error adding food item:', error);
-      toast('Failed to add food item', { type: 'error' });
     }
   };
 

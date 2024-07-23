@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
-
 const API_URL = (import.meta as any).env.VITE_API_URL;
 const TOKEN = Cookies.get('_auth');
+import { FoodCombo } from '@/types/combo';
 
 export const useCombos = () => {
   const getAllCombos = async () => {
@@ -24,5 +24,24 @@ export const useCombos = () => {
     }
   };
 
-  return { getAllCombos };
+  const addCombo = async (data: FoodCombo) => {
+    try {
+      const response = await fetch(`${API_URL}/foodCombo`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to add combo');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
+  return { getAllCombos, addCombo };
 };

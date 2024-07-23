@@ -6,9 +6,10 @@ import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
 import MultiSelect from '@components/BranchManager/Forms/MultiSelectSearch';
 import { Combo } from '@/types/mock_combo';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useUpload } from '@/api/useUpload';
+import { useCombos } from '@/api/useCombos';
+import { FoodCombo } from '@/types/combo';
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
@@ -21,12 +22,13 @@ const FormSchema = z.object({
     .string({ message: 'Should be a string' })
     .optional()
     .default('test'),
-  foodIds: z.array(z.string()).optional(),
+  foodIds: z.array(z.string()),
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 const ComboForm: FC = () => {
+  const { addCombo } = useCombos();
   const { uploadImage } = useUpload();
   const Navigate = useNavigate();
   const { register, handleSubmit, formState, setValue } =
@@ -48,9 +50,10 @@ const ComboForm: FC = () => {
     let imageUrl = data.image;
     if (imageFile) {
       try {
-        const response = uploadImage(imageFile);
-        if (response) {
-          imageUrl = response.fileUrl;
+        const respose = await uploadImage(imageFile);
+        if (respose) {
+          imageUrl = respose.fileUrl;
+          setValue('image', imageUrl);
         } else {
           throw new Error('Failed to upload image');
         }
@@ -59,36 +62,17 @@ const ComboForm: FC = () => {
         return;
       }
     }
-
-    const transformedData = {
+    const transformedData: FoodCombo = {
       cafeId: 'cafe 1',
       available: 0,
       deleted: 0,
       ...data,
       image: imageUrl,
-      foodIds: [],
     };
-
     try {
-      const apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/foodCombo`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(transformedData),
-      });
-
-      if (response.ok) {
-        toast('Food combo added successfully', { type: 'success' });
-        Navigate('/branch-manager/food-combos');
-      } else {
-        toast('Failed to add food item', { type: 'error' });
-        console.error('Failed to add food combo', response.statusText);
-      }
+      addCombo(transformedData);
     } catch (error) {
-      console.error('Error adding food combo', error);
-      toast('Failed to add food combo', { type: 'error' });
+      console.error('Error adding food item:', error);
     }
   };
 

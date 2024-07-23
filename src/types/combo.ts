@@ -1,8 +1,8 @@
 export type FoodCombo = {
-  id: string;
+  id?: string;
   name: string;
-  description: string;
-  price: 0;
+  description?: string;
+  price: number;
   image: string;
   available: 0;
   cafeId: string;
