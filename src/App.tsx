@@ -1,6 +1,6 @@
 import createStore from 'react-auth-kit/createStore';
 import AuthProvider from 'react-auth-kit';
-import AuthOutlet from '@auth-kit/react-router/AuthOutlet';
+import RequireAuth from './components/AuthOutlet';
 import { useAuth } from '@/api/useAuth';
 import { useEffect, useState } from 'react';
 import {
@@ -54,26 +54,28 @@ const store = createStore({
 
 const routes = createRoutesFromElements(
   <Route>
-    <Route
-      path="login"
-      element={
-        <>
-          <PageTitle title="La Fresca | Log In" />
-          <LoginPage />
-        </>
-      }
-    />
-    <Route element={<AuthOutlet fallbackPath="/login" />}>
+    <Route path="/" element={<UserLayout />}>
+      <Route
+        index
+        element={
+          <>
+            <PageTitle title="La Fresca | Home" />
+            <Home />
+          </>
+        }
+      />
+      <Route
+        path="login"
+        element={
+          <>
+            <PageTitle title="La Fresca | Log In" />
+            <LoginPage />
+          </>
+        }
+      />
+    </Route>
+    <Route element={<RequireAuth />}>
       <Route path="/" element={<UserLayout />}>
-        <Route
-          index
-          element={
-            <>
-              <PageTitle title="La Fresca | Home" />
-              <Home />
-            </>
-          }
-        />
         <Route
           path="gallery"
           element={

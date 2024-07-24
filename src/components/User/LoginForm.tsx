@@ -1,10 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { z } from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import PassINput from './PasswordInput';
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/api/useAuth';
 
 const { testRefresh } = useAuth();
@@ -18,7 +17,10 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 
 const LoginForm = () => {
   const signIn = useSignIn();
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
+  console.log(from);
   const { register, handleSubmit, formState } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
   });
@@ -48,7 +50,7 @@ const LoginForm = () => {
         console.error('error occured');
         return;
       }
-      Navigate('/');
+      navigate(from, { replace: true });
     } catch (error) {
       console.error('Error occured', error);
     }
