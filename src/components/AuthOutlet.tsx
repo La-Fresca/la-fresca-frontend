@@ -1,14 +1,18 @@
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
-import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
-const RequireAuth = () => {
-  const isAuthenticated = useIsAuthenticated();
+interface RequireAuthProps {
+  allowedRoles: string[];
+}
+
+const RequireAuth: React.FC<RequireAuthProps> = ({ allowedRoles }) => {
+  const auth = useAuthUser();
   const location = useLocation();
-
-  return isAuthenticated ? (
+  return auth != null &&
+    allowedRoles.includes((auth as { role: string }).role) ? (
     <Outlet />
   ) : (
-    <Navigate to="/login" state={{ from: location }} />
+    <Navigate to="/login" state={{ from: location }} replace />
   );
 };
 

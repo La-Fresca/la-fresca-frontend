@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import PassINput from './PasswordInput';
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import { useAuth } from '@/api/useAuth';
-
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 const { testRefresh } = useAuth();
 
 const FormSchema = z.object({
@@ -15,12 +15,15 @@ const FormSchema = z.object({
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
+interface ourJwtPayload extends JwtPayload {
+  role?: string;
+}
+
 const LoginForm = () => {
   const signIn = useSignIn();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
-  console.log(from);
   const { register, handleSubmit, formState } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
   });
@@ -39,12 +42,16 @@ const LoginForm = () => {
         const json = await response.json();
         const accessToken = json.access_token;
         const refreshToken = json.refresh_token;
+        const role = (jwtDecode(accessToken) as ourJwtPayload).role;
         signIn({
           auth: {
             token: accessToken,
             type: 'Bearer',
           },
           refresh: refreshToken,
+          userState: {
+            role: role,
+          },
         });
       } else {
         console.error('error occured');
