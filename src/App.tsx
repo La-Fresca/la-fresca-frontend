@@ -1,7 +1,7 @@
 import createStore from 'react-auth-kit/createStore';
 import AuthProvider from 'react-auth-kit';
 import AuthOutlet from '@auth-kit/react-router/AuthOutlet';
-import { useAuth } from '@/api/Auth';
+import { useAuth } from '@/api/auth';
 import { useEffect, useState } from 'react';
 import {
   createBrowserRouter,
