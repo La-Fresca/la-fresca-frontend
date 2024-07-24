@@ -10,5 +10,6 @@ export type Food = {
   category: string[];
   discountStatus: string;
   discountId: string;
+  rating: number;
   features: { name: string; levels: string[]; additionalPrices: number[] }[];
 };

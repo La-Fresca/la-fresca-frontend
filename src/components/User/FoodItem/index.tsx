@@ -15,11 +15,14 @@ interface Props {
 function index({ id }: Props) {
   const { getFoodById } = useFoods();
   const [food, setFood] = useState<Food>();
+  const [count, setCount] = useState<number>(1);
+  const [price, setPrice] = useState<number>(1);
 
   const fetchFood = async () => {
     try {
       const food = await getFoodById(id?.toString() || '');
       setFood(food);
+      setPrice(food.price);
     } catch (error) {
       console.error('Error fetching item:', error);
     }
@@ -59,11 +62,12 @@ function index({ id }: Props) {
 
           <div className="font-bold text-white pt-5 text-2xl">
             <span className="pr-2 text-orange-500">Rs.</span>
-            {food.price}
+            {price*count}
           </div>
 
           <div>
-            <QtySelector />
+          <QtySelector count={count} setCount={setCount} />
+
 
             <div className="mt-8">
               {food.features.map((feature: any, index: number) => (
@@ -71,6 +75,9 @@ function index({ id }: Props) {
                   key={index}
                   name={feature.name}
                   levels={feature.levels}
+                  prices={feature.additionalPrices}
+                  defaultPrice={food.price}
+                  setPrice={setPrice}
                 />
               ))}
             </div>

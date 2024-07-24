@@ -1,20 +1,22 @@
 import { Button } from '@nextui-org/react';
 import { useState } from 'react';
 
-function QtySelector() {
-  const [count, setCount] = useState<number>(1);
+interface Props {
+  count: number;
+  setCount: (newCount:number) => void;
+}
+
+function QtySelector({count,setCount}:Props) {
+  
 
   const handleIncrement = () => {
-    setCount((prevCount) => prevCount + 1);
+    setCount(count+ 1);
   };
 
   const handleDecrement = () => {
-    setCount((prevCount) => {
-      if (prevCount > 1) {
-        return prevCount - 1;
-      }
-      return prevCount; // No change if count is already 1 or less
-    });
+    if (count > 1) {
+      setCount(count - 1);
+    }
   };
 
   return (

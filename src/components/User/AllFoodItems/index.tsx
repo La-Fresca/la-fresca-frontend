@@ -92,9 +92,9 @@ function index() {
                             </b>
 
                             <div className="flex items-center pt-2">
-                              {Array.from({ length: 5 }).map((_, i) => {
+                              {Array.from({ length: 5 }).map((j, i) => {
                                 return (
-                                  <Star key={`star-${i}`} highlight={i !== 4} />
+                                  <Star key={`star-${i}`} highlight={i <= _.rating} />
                                 );
                               })}
                             </div>
