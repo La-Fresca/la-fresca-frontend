@@ -1,6 +1,6 @@
 import createStore from 'react-auth-kit/createStore';
 import AuthProvider from 'react-auth-kit';
-import RequireAuth from './components/AuthOutlet';
+import RequireAuth from '@/components/AuthOutlet';
 import { useAuth } from '@/api/useAuth';
 import { useEffect, useState } from 'react';
 import {
@@ -74,7 +74,7 @@ const routes = createRoutesFromElements(
         }
       />
     </Route>
-    <Route element={<RequireAuth />}>
+    <Route element={<RequireAuth allowedRoles={['ADMIN']} />}>
       <Route path="/" element={<UserLayout />}>
         <Route
           path="gallery"
