@@ -12,7 +12,7 @@ function getRefreshToken() {
 }
 export const useAuth = () => {
   const refresh = createRefresh({
-    interval: 5,
+    interval: 1,
     refreshApiCallback: async (): Promise<any> => {
       try {
         const response = await fetch(`${API_URL}/user/refresh_token`, {
@@ -30,8 +30,8 @@ export const useAuth = () => {
         return {
           isSuccess: true,
           newAuthToken: json.access_token,
-          newAuthTokenExpireIn: 3,
-          newRefreshTokenExpiresIn: 4,
+          newAuthTokenExpireIn: 1000,
+          newRefreshTokenExpiresIn: 10000,
         };
       } catch (error) {
         console.error(error);
