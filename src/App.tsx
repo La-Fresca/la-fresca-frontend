@@ -1,6 +1,7 @@
 import createStore from 'react-auth-kit/createStore';
 import AuthProvider from 'react-auth-kit';
 import AuthOutlet from '@auth-kit/react-router/AuthOutlet';
+import { useAuth } from '@/api/Auth';
 import { useEffect, useState } from 'react';
 import {
   createBrowserRouter,
@@ -41,11 +42,14 @@ import ViewGrns from '@/pages/Storekeeper/GrnList';
 import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
 
+const { refresh } = useAuth();
+
 const store = createStore({
   authName: '_auth',
   authType: 'cookie',
   cookieDomain: window.location.hostname,
   cookieSecure: window.location.protocol === 'http:',
+  refresh: refresh,
 });
 
 const routes = createRoutesFromElements(

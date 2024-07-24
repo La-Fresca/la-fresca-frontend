@@ -31,14 +31,16 @@ const LoginForm = () => {
         body: JSON.stringify(data),
       });
       if (response.ok) {
-        const accessToken = await response
-          .json()
-          .then((data) => data.access_token);
+        const json = await response.json();
+        const accessToken = json.access_token;
+        const refreshToken = json.refresh_token;
+        console.log(accessToken, refreshToken);
         signIn({
           auth: {
             token: accessToken,
             type: 'Bearer',
           },
+          refresh: refreshToken,
         });
       } else {
         console.error('error occured');
