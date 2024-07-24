@@ -41,6 +41,7 @@ import StorekeeperLayout from '@/layouts/StorekeeperLayout';
 import ViewGrns from '@/pages/Storekeeper/GrnList';
 import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
+import DeliveryLayout from '@/layouts/DeliveryLayout';
 
 const { refresh } = useAuth();
 
@@ -323,6 +324,28 @@ const routes = createRoutesFromElements(
               <>
                 <PageTitle title="Storekeeper | Edit GRN" />
                 <EditGrn />
+              </>
+            }
+          />
+        </Route>
+      </Route>
+
+      <Route path="deliveryperson/*" element={<DeliveryLayout />}>
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="Delivery | Home" />
+            </>
+          }
+        />
+        <Route path="path">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Delivery | Path" />
+                <ViewGrns />
               </>
             }
           />
