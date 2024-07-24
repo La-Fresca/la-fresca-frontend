@@ -76,28 +76,6 @@ const routes = createRoutesFromElements(
     </Route>
     <Route element={<RequireAuth allowedRoles={['ADMIN']} />}>
       <Route path="/" element={<UserLayout />}>
-    <Route path="/" element={<UserLayout />}>
-      <Route
-        index
-        element={
-          <>
-            <PageTitle title="La Fresca | Home" />
-            <Home />
-          </>
-        }
-      />
-      <Route
-        path="login"
-        element={
-          <>
-            <PageTitle title="La Fresca | Log In" />
-            <LoginPage />
-          </>
-        }
-      />
-    </Route>
-    <Route element={<RequireAuth allowedRoles={['ADMIN']} />}>
-      <Route path="/" element={<UserLayout />}>
         <Route
           path="gallery"
           element={
