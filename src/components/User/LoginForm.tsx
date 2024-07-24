@@ -1,10 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { z } from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import PassINput from './PasswordInput';
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/api/useAuth';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 const { testRefresh } = useAuth();
@@ -58,7 +57,7 @@ const LoginForm = () => {
         console.error('error occured');
         return;
       }
-      Navigate('/');
+      navigate(from, { replace: true });
     } catch (error) {
       console.error('Error occured', error);
     }
