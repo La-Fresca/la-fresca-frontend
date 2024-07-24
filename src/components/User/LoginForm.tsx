@@ -34,7 +34,6 @@ const LoginForm = () => {
         const json = await response.json();
         const accessToken = json.access_token;
         const refreshToken = json.refresh_token;
-        console.log(accessToken, refreshToken);
         signIn({
           auth: {
             token: accessToken,

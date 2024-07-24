@@ -12,7 +12,7 @@ function getRefreshToken() {
 }
 export const useAuth = () => {
   const refresh = createRefresh({
-    interval: 2,
+    interval: 3000,
     refreshApiCallback: async (): Promise<any> => {
       try {
         const response = await fetch(`${API_URL}/user/refresh_token`, {
