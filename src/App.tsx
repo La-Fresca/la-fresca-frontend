@@ -54,26 +54,28 @@ const store = createStore({
 
 const routes = createRoutesFromElements(
   <Route>
-    <Route
-      path="login"
-      element={
-        <>
-          <PageTitle title="La Fresca | Log In" />
-          <LoginPage />
-        </>
-      }
-    />
-    <Route element={<AuthOutlet fallbackPath="/login" />}>
+    <Route path="/" element={<UserLayout />}>
+      <Route
+        index
+        element={
+          <>
+            <PageTitle title="La Fresca | Home" />
+            <Home />
+          </>
+        }
+      />
+      <Route
+        path="login"
+        element={
+          <>
+            <PageTitle title="La Fresca | Log In" />
+            <LoginPage />
+          </>
+        }
+      />
+    </Route>
+    <Route element={<RequireAuth allowedRoles={['ADMIN']} />}>
       <Route path="/" element={<UserLayout />}>
-        <Route
-          index
-          element={
-            <>
-              <PageTitle title="La Fresca | Home" />
-              <Home />
-            </>
-          }
-        />
         <Route
           path="gallery"
           element={
