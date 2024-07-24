@@ -12,7 +12,7 @@ function getRefreshToken() {
 }
 export const useAuth = () => {
   const refresh = createRefresh({
-    interval: 3000,
+    interval: 5,
     refreshApiCallback: async (): Promise<any> => {
       try {
         const response = await fetch(`${API_URL}/user/refresh_token`, {
@@ -30,8 +30,8 @@ export const useAuth = () => {
         return {
           isSuccess: true,
           newAuthToken: json.access_token,
-          newAuthTokenExpireIn: 10,
-          newRefreshTokenExpiresIn: 60,
+          newAuthTokenExpireIn: 3,
+          newRefreshTokenExpiresIn: 4,
         };
       } catch (error) {
         console.error(error);
@@ -42,5 +42,25 @@ export const useAuth = () => {
     },
   });
 
-  return { refresh };
+  const testRefresh = async () => {
+    try {
+      const response = await fetch(`${API_URL}/user/refresh_token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getRefreshToken()}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to add food');
+      }
+      const json = await response.json();
+      console.log('new auth_token: ', json.access_token);
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
+  return { refresh, testRefresh };
 };
