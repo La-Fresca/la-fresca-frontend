@@ -29,7 +29,7 @@ export const useAuth = () => {
         console.log('Refreshing');
         return {
           isSuccess: true,
-          newAuthToken: json.data.token,
+          newAuthToken: json.access_token,
           newAuthTokenExpireIn: 10,
           newRefreshTokenExpiresIn: 60,
         };
