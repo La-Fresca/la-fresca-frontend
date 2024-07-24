@@ -33,7 +33,8 @@ const LoginForm = () => {
       if (response.ok) {
         const accessToken = await response
           .json()
-          .then((data) => data.access_token);
+          .then((data) => {data.access_token;}
+        );
         signIn({
           auth: {
             token: accessToken,
