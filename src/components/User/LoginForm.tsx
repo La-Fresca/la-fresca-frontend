@@ -5,6 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import PassINput from './PasswordInput';
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/api/useAuth';
+
+const { testRefresh } = useAuth();
 
 const FormSchema = z.object({
   email: z.string().min(1, { message: 'Email is required' }),
@@ -31,14 +34,15 @@ const LoginForm = () => {
         body: JSON.stringify(data),
       });
       if (response.ok) {
-        const accessToken = await response
-          .json()
-          .then((data) => data.access_token);
+        const json = await response.json();
+        const accessToken = json.access_token;
+        const refreshToken = json.refresh_token;
         signIn({
           auth: {
             token: accessToken,
             type: 'Bearer',
           },
+          refresh: refreshToken,
         });
       } else {
         console.error('error occured');
@@ -144,6 +148,13 @@ const LoginForm = () => {
               type="submit"
             >
               Log In
+            </button>
+            <button
+              className="w-full py-2 text-center text-white bg-blue-500 rounded-md hover:bg-blue-600"
+              type="button"
+              onClick={() => testRefresh()}
+            >
+              Refresh
             </button>
           </div>
           <div className="text-center">
