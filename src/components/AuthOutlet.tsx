@@ -8,12 +8,15 @@ interface RequireAuthProps {
 const RequireAuth: React.FC<RequireAuthProps> = ({ allowedRoles }) => {
   const auth = useAuthUser();
   const location = useLocation();
-  return auth != null &&
-    allowedRoles.includes((auth as { role: string }).role) ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
-  );
+
+  if (auth != null && allowedRoles.includes((auth as { role: string }).role)) {
+    return <Outlet />;
+  }
+  if (auth == null) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  } else {
+    return <Navigate to="/unauthorized" replace />;
+  }
 };
 
 export default RequireAuth;

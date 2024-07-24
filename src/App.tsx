@@ -42,6 +42,7 @@ import ViewGrns from '@/pages/Storekeeper/GrnList';
 import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
 import KitchenManagerDashboard from '@/pages/KitchenManager/Dashboard';
+import Unauthorized from './components/Unauthorized';
 
 const { refresh } = useAuth();
 
@@ -71,6 +72,15 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="La Fresca | Log In" />
             <LoginPage />
+          </>
+        }
+      />
+      <Route
+        path="unauthorized"
+        element={
+          <>
+            <PageTitle title="La Fresca | Unauthorized" />
+            <Unauthorized />
           </>
         }
       />
