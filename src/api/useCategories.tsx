@@ -111,11 +111,30 @@ export const useCategories = () => {
     }
   };
 
+  const unsafeDeleteCategory = async (id: string) => {
+    try {
+      const response = await fetch(`${API_URL}/category/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete category');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   return {
     getAllCategories,
     addCategory,
     getCategoryById,
     updateCategory,
     deleteCategory,
+    unsafeDeleteCategory,
   };
 };

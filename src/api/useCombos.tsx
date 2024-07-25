@@ -114,5 +114,30 @@ export const useCombos = () => {
     }
   };
 
-  return { getAllCombos, addCombo, getComboById, updateCombo, deleteCombo };
+  const unsafeDeleteCombo = async (id: string) => {
+    try {
+      const response = await fetch(`${API_URL}/foodCombo/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete food combo');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
+  return {
+    getAllCombos,
+    addCombo,
+    getComboById,
+    updateCombo,
+    deleteCombo,
+    unsafeDeleteCombo,
+  };
 };

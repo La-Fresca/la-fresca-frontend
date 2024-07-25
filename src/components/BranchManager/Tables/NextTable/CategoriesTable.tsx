@@ -40,7 +40,7 @@ const INITIAL_VISIBLE_COLUMNS = ['name', 'status', 'description', 'actions'];
 export default function CategoriesTable() {
   const { showSwal } = swalConfirm();
   const [categories, setCategories] = useState<Category[]>([]);
-  const { getAllCategories, deleteCategory } = useCategories();
+  const { getAllCategories, unsafeDeleteCategory } = useCategories();
 
   const fetchCategories = async () => {
     try {
@@ -53,14 +53,14 @@ export default function CategoriesTable() {
 
   const handleDeleteCategory = async (id: string) => {
     try {
-      await deleteCategory(id);
+      await unsafeDeleteCategory(id);
       fetchCategories();
     } catch (error: any) {
       console.error(error);
     }
   };
 
-  const handleConfirmDelete = (id: string | undefined) => {
+  const handleConfirmDelete = (id: any) => {
     showSwal(() => handleDeleteCategory(id));
   };
 

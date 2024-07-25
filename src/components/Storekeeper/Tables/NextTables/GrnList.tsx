@@ -25,6 +25,7 @@ import { capitalize } from './utils';
 import { useNavigate } from 'react-router-dom';
 import { Stock } from '@/types/stock';
 import { useStocks } from '@/api/useStocks';
+import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'id',
@@ -36,8 +37,9 @@ const INITIAL_VISIBLE_COLUMNS = [
 ];
 
 export default function StockList() {
+  const { showSwal } = swalConfirm();
   const [stocks, setStocks] = useState<Stock[]>([]);
-  const { getAllStocks } = useStocks();
+  const { getAllStocks, unsafeDeleteStock } = useStocks();
 
   const fetchStocks = async () => {
     try {
@@ -46,6 +48,19 @@ export default function StockList() {
     } catch (error: any) {
       console.error(error);
     }
+  };
+
+  const handleDeleteStock = async (id: string) => {
+    try {
+      await unsafeDeleteStock(id);
+      fetchStocks();
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  const handleConfirmDelete = (id: any) => {
+    showSwal(() => handleDeleteStock(id));
   };
 
   useEffect(() => {
@@ -153,7 +168,9 @@ export default function StockList() {
                 <DropdownItem onClick={() => navigate(`edit/${stock.id}`)}>
                   Edit
                 </DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
+                <DropdownItem onClick={() => handleConfirmDelete(stock.id)}>
+                  Delete
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
