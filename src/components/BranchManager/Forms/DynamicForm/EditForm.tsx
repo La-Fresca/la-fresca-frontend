@@ -14,6 +14,11 @@ import { Food } from '@/types/food';
 import { useCategories } from '@/api/useCategories';
 import { Category } from '@/types/category';
 
+type CategoryPicker = {
+  key: string;
+  label: string;
+};
+
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
   category: z.array(z.string()).min(1, { message: 'Category is required' }),
@@ -51,7 +56,7 @@ function EditForm({ id = '' }: { id?: string }) {
   const { getFoodById } = useFoods();
   const { uploadImage } = useUpload();
   const { getAllCategories } = useCategories();
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<CategoryPicker[]>([]);
   const [item, setItem] = useState<Food | null>(null);
 
   const { register, control, handleSubmit, formState, setValue } =
@@ -108,7 +113,11 @@ function EditForm({ id = '' }: { id?: string }) {
     try {
       const categories = await getAllCategories();
       if (categories) {
-        setCategories(categories);
+        const categoryOptions = categories.map((category: Category) => ({
+          key: category.id,
+          label: category.name,
+        }));
+        setCategories(categoryOptions);
       }
     } catch (error) {
       console.error('Error getting categories:', error);

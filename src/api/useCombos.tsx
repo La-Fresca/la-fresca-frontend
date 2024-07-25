@@ -71,5 +71,24 @@ export const useCombos = () => {
     }
   };
 
-  return { getAllCombos, addCombo, getComboById };
+  const updateCombo = async (id: string, data: FoodCombo) => {
+    try {
+      const response = await fetch(`${API_URL}/foodCombo/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update combo');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
+  return { getAllCombos, addCombo, getComboById, updateCombo };
 };
