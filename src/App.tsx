@@ -314,29 +314,39 @@ const routes = createRoutesFromElements(
           index
           element={
             <>
-              <PageTitle title="La Fresca | Food List" />
-              <FoodList />
+              <PageTitle title="Store Keeper | Inventory" />
             </>
           }
         />
-        <Route
-          path="add"
-          element={
-            <>
-              <PageTitle title="Branch Manager | Add Food" />
-              <AddFoods />
-            </>
-          }
-        />
-        <Route
-          path="edit/:foodId"
-          element={
-            <>
-              <PageTitle title="Branch Manager | Edit Food" />
-              <EditFoods />
-            </>
-          }
-        />
+        <Route path="stock">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Storekeeper | GRN List" />
+                <ViewGrns />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Store Keeper | Add Stock" />
+                <AddGrn />
+              </>
+            }
+          />
+          <Route
+            path="edit/:stockId"
+            element={
+              <>
+                <PageTitle title="Store Keeper | Edit Stock" />
+                <EditGrn />
+              </>
+            }
+          />
+        </Route>
       </Route>
       <Route path="kitchen-manager/*" element={<StorekeeperLayout />}>
         <Route
