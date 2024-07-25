@@ -91,5 +91,29 @@ export const useFoods = () => {
     }
   };
 
-  return { getAllFoods, addFood, getFoodById, updateFood };
+  const deleteFood = async (id: string) => {
+    try {
+      const response = await fetch(`${API_URL}/food/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify({
+          deleted: 1,
+          available: 0,
+          discountStatus: 0,
+          rating: 0,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete food');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error.message);
+    }
+  };
+
+  return { getAllFoods, addFood, getFoodById, updateFood, deleteFood };
 };

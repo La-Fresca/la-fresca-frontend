@@ -27,6 +27,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { Food } from '@/types/food';
 import { useFoods } from '@/api/useFoods';
+import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   active: 'success',
@@ -60,7 +61,10 @@ const columns = [
 ];
 
 export default function FoodList() {
+  const { showSwal } = swalConfirm();
+  const [inputValue, setInputValue] = React.useState('');
   const { getAllFoods } = useFoods();
+  const { deleteFood } = useFoods();
   const navigate = useNavigate();
   const [foods, setFoods] = React.useState<Food[]>([]);
   const [filterValue, setFilterValue] = React.useState('');
@@ -82,6 +86,20 @@ export default function FoodList() {
     } catch (error: any) {
       console.error(error);
     }
+  };
+
+  const handleDeleteFood = async (id: string) => {
+    try {
+      await deleteFood(id);
+      fetchItems(); // Refresh the list after deletion
+    } catch (error: any) {
+      console.error('Failed to delete food:', error);
+    }
+  };
+
+  const handleConfirmDelete = (id: string) => {
+    const { showSwal } = swalConfirm(() => handleDeleteFood(id));
+    showSwal();
   };
 
   React.useEffect(() => {
@@ -167,7 +185,9 @@ export default function FoodList() {
                 <DropdownItem onClick={() => navigate(`edit/${food.id}`)}>
                   Edit
                 </DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
+                <DropdownItem onClick={() => handleConfirmDelete(food.id)}>
+                  Delete
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
