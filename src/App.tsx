@@ -31,6 +31,7 @@ import UserAdd from '@/pages/BranchManager/Users/AddUser';
 import UserEdit from '@/pages/BranchManager/Users/EditUser';
 import EditFoods from '@/pages/BranchManager/Foods/EditFood';
 import AddCategories from '@/pages/BranchManager/Categories/AddCategories';
+import EditCategory from '@/pages/BranchManager/Categories/EditCategory';
 import ViewCategories from '@/pages/BranchManager/Categories/ViewCategories';
 import AddCombos from '@/pages/BranchManager/FoodCombos/Add';
 import Combos from '@/pages/BranchManager/FoodCombos';
@@ -42,6 +43,7 @@ import ViewGrns from '@/pages/Storekeeper/GrnList';
 import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
 import KitchenManagerDashboard from '@/pages/KitchenManager/Dashboard';
+import Unauthorized from './components/Unauthorized';
 
 const { refresh } = useAuth();
 
@@ -71,6 +73,15 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="La Fresca | Log In" />
             <LoginPage />
+          </>
+        }
+      />
+      <Route
+        path="unauthorized"
+        element={
+          <>
+            <PageTitle title="La Fresca | Unauthorized" />
+            <Unauthorized />
           </>
         }
       />
@@ -197,7 +208,7 @@ const routes = createRoutesFromElements(
             element={
               <>
                 <PageTitle title="La Fresca | Edit Food Categories " />
-                <AddCategories />
+                <EditCategory />
               </>
             }
           />
@@ -396,7 +407,7 @@ const routes = createRoutesFromElements(
         }
       />
     </Route>
-    
+
     <Route path="storekeeper/*" element={<StorekeeperLayout />}>
       <Route
         index

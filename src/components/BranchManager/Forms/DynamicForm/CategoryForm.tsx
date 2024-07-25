@@ -8,6 +8,7 @@ import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
 import MultiSelect from '@components/BranchManager/Forms/MultiSelect';
 import { Category } from '@/types/category';
+import { useCategories } from '@/api/useCategories';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,6 +20,7 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 function CategoryForm() {
+  const { addCategory } = useCategories();
   const Navigate = useNavigate();
   const { register, handleSubmit, formState } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
@@ -33,27 +35,11 @@ function CategoryForm() {
   }, [errors]);
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
-    console.log('Form data:', data);
     try {
-      const apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/category`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        toast('Food item added successfully', { type: 'success' });
-        Navigate('/branch-manager/foods');
-      } else {
-        toast('Failed to add food item', { type: 'error' });
-        console.error('Failed to add food item:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error adding food item:', error);
-      toast('Failed to add food item', { type: 'error' });
+      await addCategory(data);
+      Navigate('/branch-manager/categories');
+    } catch (error: any) {
+      console.error(error);
     }
   };
 

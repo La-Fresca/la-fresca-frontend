@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import Select, { components } from 'react-select';
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
-import { Category } from '@/types/category';
+import { Category } from '@/types/mock_category';
 
 interface AppProps {
   categories: Category[];

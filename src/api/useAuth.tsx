@@ -10,6 +10,16 @@ function getRefreshToken() {
     return null;
   }
 }
+
+function getAuthToken() {
+  try {
+    return Cookies.get('_auth');
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 export const useAuth = () => {
   const refresh = createRefresh({
     interval: 60,
@@ -52,7 +62,7 @@ export const useAuth = () => {
         },
       });
       if (!response.ok) {
-        throw new Error('Failed to add food');
+        throw new Error('Failed to refresh token');
       }
       const json = await response.json();
       console.log('new auth_token: ', json.access_token);
@@ -62,5 +72,24 @@ export const useAuth = () => {
     }
   };
 
-  return { refresh, testRefresh };
+  const signOut = async () => {
+    try {
+      const response = await fetch(`${API_URL}/user/logout`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to logout');
+      }
+      console.log('Logged out');
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
+  return { refresh, testRefresh, signOut };
 };

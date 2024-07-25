@@ -72,5 +72,24 @@ export const useFoods = () => {
     }
   };
 
-  return { getAllFoods, addFood, getFoodById };
+  const updateFood = async (id: string, data: Food) => {
+    try {
+      const response = await fetch(`${API_URL}/food/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update food');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
+  return { getAllFoods, addFood, getFoodById, updateFood };
 };

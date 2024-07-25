@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 const API_URL = (import.meta as any).env.VITE_API_URL;
-import { FoodCombo } from '@/types/combo';
+import { Category } from '@/types/category';
 
 function getToken() {
   try {
@@ -11,10 +11,10 @@ function getToken() {
   }
 }
 
-export const useCombos = () => {
-  const getAllCombos = async () => {
+export const useCategories = () => {
+  const getAllCategories = async () => {
     try {
-      const response = await fetch(`${API_URL}/foodCombo`, {
+      const response = await fetch(`${API_URL}/category`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -32,9 +32,9 @@ export const useCombos = () => {
     }
   };
 
-  const addCombo = async (data: FoodCombo) => {
+  const addCategory = async (data: Category) => {
     try {
-      const response = await fetch(`${API_URL}/foodCombo`, {
+      const response = await fetch(`${API_URL}/category`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export const useCombos = () => {
         body: JSON.stringify(data),
       });
       if (!response.ok) {
-        throw new Error('Failed to add combo');
+        throw new Error('Failed to add category');
       }
     } catch (error: any) {
       console.error(error);
@@ -51,9 +51,9 @@ export const useCombos = () => {
     }
   };
 
-  const getComboById = async (id: string) => {
+  const getCategoryById = async (id: string) => {
     try {
-      const response = await fetch(`${API_URL}/foodCombo/${id}`, {
+      const response = await fetch(`${API_URL}/category/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -71,9 +71,9 @@ export const useCombos = () => {
     }
   };
 
-  const updateCombo = async (id: string, data: FoodCombo) => {
+  const updateCategory = async (id: string, data: Category) => {
     try {
-      const response = await fetch(`${API_URL}/foodCombo/${id}`, {
+      const response = await fetch(`${API_URL}/category/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ export const useCombos = () => {
         body: JSON.stringify(data),
       });
       if (!response.ok) {
-        throw new Error('Failed to update combo');
+        throw new Error('Failed to update category');
       }
     } catch (error: any) {
       console.error(error);
@@ -90,5 +90,5 @@ export const useCombos = () => {
     }
   };
 
-  return { getAllCombos, addCombo, getComboById, updateCombo };
+  return { getAllCategories, addCategory, getCategoryById, updateCategory };
 };

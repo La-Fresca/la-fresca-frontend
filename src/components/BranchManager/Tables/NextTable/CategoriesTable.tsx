@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import {
   Table,
   TableHeader,
@@ -12,7 +12,7 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Chip,
+  // Chip,
   Pagination,
   Selection,
   ChipProps,
@@ -22,37 +22,54 @@ import { PlusIcon } from './PlusIcon';
 import { VerticalDotsIcon } from './VerticalDotsIcon';
 import { ChevronDownIcon } from './ChevronDownIcon';
 import { SearchIcon } from './SearchIcon';
-import { columns, categories, statusOptions } from './MockCategories';
+import { columns } from './columnCategories';
 import { capitalize } from './utils';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Category } from '@/types/category';
+import { useCategories } from '@/api/useCategories';
+import { set } from 'zod';
 
-const statusColorMap: Record<string, ChipProps['color']> = {
-  active: 'success',
-  inactive: 'danger',
-};
+// const statusColorMap: Record<string, ChipProps['color']> = {
+//   active: 'success',
+//   inactive: 'danger',
+// };
 
 const INITIAL_VISIBLE_COLUMNS = ['name', 'status', 'description', 'actions'];
 
-type Category = (typeof categories)[0];
-
 export default function CategoriesTable() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const { getAllCategories } = useCategories();
+
+  const fetchCategories = async () => {
+    try {
+      const data = await getAllCategories();
+      setCategories(data);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   const navigate = useNavigate();
-  const [filterValue, setFilterValue] = React.useState('');
-  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
+  const [filterValue, setFilterValue] = useState('');
+  const [visibleColumns, setVisibleColumns] = useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
-  const [statusFilter, setStatusFilter] = React.useState<Selection>('all');
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
+  const [statusFilter, setStatusFilter] = useState<Selection>('all');
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: 'name',
     direction: 'ascending',
   });
 
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
 
-  const headerColumns = React.useMemo(() => {
+  const headerColumns = useMemo(() => {
     if (visibleColumns === 'all') return columns;
 
     return columns.filter((column) =>
@@ -60,7 +77,7 @@ export default function CategoriesTable() {
     );
   }, [visibleColumns]);
 
-  const filteredItems = React.useMemo(() => {
+  const filteredItems = useMemo(() => {
     let filteredCategories = [...categories];
 
     if (hasSearchFilter) {
@@ -68,99 +85,96 @@ export default function CategoriesTable() {
         category.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    if (
-      statusFilter !== 'all' &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
-      filteredCategories = filteredCategories.filter((category) =>
-        Array.from(statusFilter).includes(category.status),
-      );
-    }
+    // if (
+    //   statusFilter !== 'all' &&
+    //   Array.from(statusFilter).length !== statusOptions.length
+    // ) {
+    //   filteredCategories = filteredCategories.filter((category) =>
+    //     Array.from(statusFilter).includes(category.status),
+    //   );
+    // }
 
     return filteredCategories;
   }, [categories, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
-  const items = React.useMemo(() => {
+  const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
-  const sortedItems = React.useMemo(() => {
+  const sortedItems = useMemo(() => {
     return [...items].sort((a: Category, b: Category) => {
-      const first = a[sortDescriptor.column as keyof Category] as number;
-      const second = b[sortDescriptor.column as keyof Category] as number;
+      const first = a[sortDescriptor.column as keyof Category] as string;
+      const second = b[sortDescriptor.column as keyof Category] as string;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === 'descending' ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback(
-    (category: Category, columnKey: React.Key) => {
-      const cellValue = category[columnKey as keyof Category];
+  const renderCell = useCallback((category: Category, columnKey: React.Key) => {
+    const cellValue = category[columnKey as keyof Category];
 
-      switch (columnKey) {
-        case 'name':
-          return (
-            <div className="flex flex-col">
-              <p className="text-bold text-small capitalize">{cellValue}</p>
-            </div>
-          );
-        case 'status':
-          return (
-            <Chip
-              className="capitalize"
-              color={statusColorMap[category.status]}
-              size="sm"
-              variant="flat"
-            >
-              {cellValue}
-            </Chip>
-          );
-        case 'description':
-          return <p className="text-default-400 text-small">{cellValue}</p>;
-        case 'actions':
-          return (
-            <div className="relative flex justify-end items-center gap-2">
-              <Dropdown>
-                <DropdownTrigger>
-                  <Button isIconOnly size="sm" variant="light">
-                    <VerticalDotsIcon className="text-default-300" />
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu className="bg-black text-white">
-                  <DropdownItem onClick={() => navigate(`edit/${category.id}`)}>
-                    Edit
-                  </DropdownItem>
-                  <DropdownItem>Delete</DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </div>
-          );
-        default:
-          return cellValue;
-      }
-    },
-    [],
-  );
+    switch (columnKey) {
+      case 'name':
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">{cellValue}</p>
+          </div>
+        );
+      // case 'status':
+      //   return (
+      //     <Chip
+      //       className="capitalize"
+      //       color={statusColorMap[category.status]}
+      //       size="sm"
+      //       variant="flat"
+      //     >
+      //       {cellValue}
+      //     </Chip>
+      //   );
+      case 'description':
+        return <p className="text-default-400 text-small">{cellValue}</p>;
+      case 'actions':
+        return (
+          <div className="relative flex justify-end items-center gap-2">
+            <Dropdown>
+              <DropdownTrigger>
+                <Button isIconOnly size="sm" variant="light">
+                  <VerticalDotsIcon className="text-default-300" />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu className="bg-black text-white">
+                <DropdownItem onClick={() => navigate(`edit/${category.id}`)}>
+                  Edit
+                </DropdownItem>
+                <DropdownItem>Delete</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+        );
+      default:
+        return cellValue;
+    }
+  }, []);
 
-  const onNextPage = React.useCallback(() => {
+  const onNextPage = useCallback(() => {
     if (page < pages) {
       setPage(page + 1);
     }
   }, [page, pages]);
 
-  const onPreviousPage = React.useCallback(() => {
+  const onPreviousPage = useCallback(() => {
     if (page > 1) {
       setPage(page - 1);
     }
   }, [page]);
 
-  const onRowsPerPageChange = React.useCallback(
+  const onRowsPerPageChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(Number(e.target.value));
       setPage(1);
@@ -168,7 +182,7 @@ export default function CategoriesTable() {
     [],
   );
 
-  const onSearchChange = React.useCallback((value?: string) => {
+  const onSearchChange = useCallback((value?: string) => {
     if (value) {
       setFilterValue(value);
       setPage(1);
@@ -177,12 +191,12 @@ export default function CategoriesTable() {
     }
   }, []);
 
-  const onClear = React.useCallback(() => {
+  const onClear = useCallback(() => {
     setFilterValue('');
     setPage(1);
   }, []);
 
-  const topContent = React.useMemo(() => {
+  const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
@@ -196,7 +210,7 @@ export default function CategoriesTable() {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Dropdown>
+            {/* <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
@@ -220,7 +234,7 @@ export default function CategoriesTable() {
                   </DropdownItem>
                 ))}
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -281,7 +295,7 @@ export default function CategoriesTable() {
     hasSearchFilter,
   ]);
 
-  const bottomContent = React.useMemo(() => {
+  const bottomContent = useMemo(() => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
         <span className="w-[30%] text-small text-default-400">
@@ -318,6 +332,9 @@ export default function CategoriesTable() {
     );
   }, [items.length, page, pages, hasSearchFilter]);
 
+  if (!categories.length) {
+    return <div>Loading...</div>;
+  }
   return (
     <Table
       aria-label="Example table with custom cells, pagination and sorting"
