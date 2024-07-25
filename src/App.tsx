@@ -42,6 +42,7 @@ import ViewGrns from '@/pages/Storekeeper/GrnList';
 import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
 import DeliveryLayout from '@/layouts/DeliveryLayout';
+import { OnDelivery } from './pages/DeliveryPerson/OnDelivery';
 
 const { refresh } = useAuth();
 
@@ -345,7 +346,7 @@ const routes = createRoutesFromElements(
             element={
               <>
                 <PageTitle title="Delivery | Path" />
-                <ViewGrns />
+                <OnDelivery />
               </>
             }
           />
