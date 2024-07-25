@@ -104,6 +104,9 @@ const ComboForm: FC = () => {
     }
   };
 
+  if (!foods) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#000000]">

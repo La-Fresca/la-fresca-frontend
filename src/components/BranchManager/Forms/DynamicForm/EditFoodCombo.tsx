@@ -11,7 +11,6 @@ import { useUpload } from '@/api/useUpload';
 import { useCombos } from '@/api/useCombos';
 import { useFoods } from '@/api/useFoods';
 import { Food } from '@/types/food';
-import Combos from '@/pages/BranchManager/FoodCombos';
 
 type ComboPicker = {
   key: string;
@@ -29,7 +28,7 @@ const FormSchema = z.object({
     .string({ message: 'Should be a string' })
     .optional()
     .default('test'),
-  foodIds: z.array(z.string()).optional(),
+  foodIds: z.array(z.string()),
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
@@ -68,6 +67,7 @@ function ComboEditForm({ id = '' }: { id?: string }) {
         setValue('description', data.description || '');
         setValue('price', data.price);
         setValue('image', data.image);
+        setValue('foodIds', data.foodIds);
       }
     } catch (error: any) {
       console.error(error);
@@ -120,7 +120,6 @@ function ComboEditForm({ id = '' }: { id?: string }) {
       deleted: 0,
       ...data,
       image: imageUrl,
-      foodIds: [],
     };
 
     try {

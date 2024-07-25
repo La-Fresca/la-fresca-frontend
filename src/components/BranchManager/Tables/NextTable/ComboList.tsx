@@ -43,7 +43,7 @@ export default function ComboList() {
 
   useEffect(() => {
     fetchCombos();
-  }, []);
+  }, [combos]);
   const navigate = useNavigate();
   const [filterValue, setFilterValue] = useState('');
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
