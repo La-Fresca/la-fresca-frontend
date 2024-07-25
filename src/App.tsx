@@ -43,7 +43,7 @@ import ViewGrns from '@/pages/Storekeeper/GrnList';
 import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
 import KitchenManagerDashboard from '@/pages/KitchenManager/Dashboard';
-import Unauthorized from './components/Unauthorized';
+import Unauthorized from '@/components/Unauthorized';
 
 const { refresh } = useAuth();
 
@@ -164,7 +164,6 @@ const routes = createRoutesFromElements(
           />
         </Route>
       </Route>
-
       <Route path="branch-manager/*" element={<BranchManagerLayout />}>
         <Route
           index
@@ -315,138 +314,11 @@ const routes = createRoutesFromElements(
           index
           element={
             <>
-              <PageTitle title="La Fresca | Food List" />
-              <FoodList />
+              <PageTitle title="Store Keeper | Inventory" />
             </>
           }
         />
-        <Route
-          path="add"
-          element={
-            <>
-              <PageTitle title="Branch Manager | Add Food" />
-              <AddFoods />
-            </>
-          }
-        />
-        <Route
-          path="edit/:foodId"
-          element={
-            <>
-              <PageTitle title="Branch Manager | Edit Food" />
-              <EditFoods />
-            </>
-          }
-        />
-      </Route>
-      <Route path="food-combos">
-        <Route
-          index
-          element={
-            <>
-              <PageTitle title="Branch Manager | Food Combos" />
-              <Combos />
-            </>
-          }
-        />
-        <Route
-          path="add"
-          element={
-            <>
-              <PageTitle title="Branch Manager | Add Food Combo" />
-              <AddCombos />
-            </>
-          }
-        />
-        <Route
-          path="edit/:comboId"
-          element={
-            <>
-              <PageTitle title="Branch Manager | Edit Food Combo" />
-              <EditCombos />
-            </>
-          }
-        />
-      </Route>
-      <Route path="users">
-        <Route
-          index
-          element={
-            <>
-              <PageTitle title="Branch Manager | Users" />
-              <User />
-            </>
-          }
-        />
-        <Route
-          path="add"
-          element={
-            <>
-              <PageTitle title="Branch Manager | Add User" />
-              <UserAdd />
-            </>
-          }
-        />
-        <Route
-          path="edit/:userId"
-          element={
-            <>
-              <PageTitle title="Branch Manager | Edit User" />
-              <UserEdit />
-            </>
-          }
-        />
-      </Route>
-      <Route
-        path="discountlist"
-        element={
-          <>
-            <PageTitle title="Branch Manager | Discount List" />
-            <DiscountList />
-          </>
-        }
-      />
-    </Route>
-
-    <Route path="storekeeper/*" element={<StorekeeperLayout />}>
-      <Route
-        index
-        element={
-          <>
-            <PageTitle title="Storekeeper | Inventory" />
-          </>
-        }
-      />
-      <Route path="grn">
-        <Route
-          index
-          element={
-            <>
-              <PageTitle title="Storekeeper | GRN List" />
-              <ViewGrns />
-            </>
-          }
-        />
-        <Route
-          path="add"
-          element={
-            <>
-              <PageTitle title="Storekeeper | Add GRN" />
-              <AddGrn />
-            </>
-          }
-        />
-        <Route
-          path="edit/:grnId"
-          element={
-            <>
-              <PageTitle title="Storekeeper | Edit GRN" />
-              <EditGrn />
-              <PageTitle title="Storekeeper | Inventory" />
-            </>
-          }
-        />
-        <Route path="grn">
+        <Route path="stock">
           <Route
             index
             element={
@@ -460,44 +332,43 @@ const routes = createRoutesFromElements(
             path="add"
             element={
               <>
-                <PageTitle title="Storekeeper | Add GRN" />
+                <PageTitle title="Store Keeper | Add Stock" />
                 <AddGrn />
               </>
             }
           />
           <Route
-            path="edit/:grnId"
+            path="edit/:stockId"
             element={
               <>
-                <PageTitle title="Storekeeper | Edit GRN" />
+                <PageTitle title="Store Keeper | Edit Stock" />
                 <EditGrn />
               </>
             }
           />
         </Route>
       </Route>
-    </Route>
-
-    <Route path="kitchen-manager/*" element={<StorekeeperLayout />}>
-      <Route
-        index
-        element={
-          <>
-            <PageTitle title="La Fresca | Kitchen Manager" />
-            <KitchenManagerDashboard />
-          </>
-        }
-      />
-      <Route path="d">
+      <Route path="kitchen-manager/*" element={<StorekeeperLayout />}>
         <Route
           index
           element={
             <>
-              <PageTitle title="Storekeeper | GRN List" />
-              <ViewGrns />
+              <PageTitle title="La Fresca | Kitchen Manager" />
+              <KitchenManagerDashboard />
             </>
           }
         />
+        <Route path="d">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Storekeeper | GRN List" />
+                <ViewGrns />
+              </>
+            }
+          />
+        </Route>
       </Route>
     </Route>
   </Route>,

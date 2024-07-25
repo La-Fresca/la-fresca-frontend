@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 const API_URL = (import.meta as any).env.VITE_API_URL;
-import { FoodCombo } from '@/types/combo';
+import { Stock } from '@/types/stock';
 
 function getToken() {
   try {
@@ -11,10 +11,10 @@ function getToken() {
   }
 }
 
-export const useCombos = () => {
-  const getAllCombos = async () => {
+export const useStocks = () => {
+  const getAllStocks = async () => {
     try {
-      const response = await fetch(`${API_URL}/foodCombo`, {
+      const response = await fetch(`${API_URL}/stock`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -32,9 +32,9 @@ export const useCombos = () => {
     }
   };
 
-  const addCombo = async (data: FoodCombo) => {
+  const addStock = async (data: Stock) => {
     try {
-      const response = await fetch(`${API_URL}/foodCombo`, {
+      const response = await fetch(`${API_URL}/stock`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export const useCombos = () => {
         body: JSON.stringify(data),
       });
       if (!response.ok) {
-        throw new Error('Failed to add combo');
+        throw new Error('Failed to add stock');
       }
     } catch (error: any) {
       console.error(error);
@@ -51,9 +51,9 @@ export const useCombos = () => {
     }
   };
 
-  const getComboById = async (id: string) => {
+  const getStockById = async (id: string) => {
     try {
-      const response = await fetch(`${API_URL}/foodCombo/${id}`, {
+      const response = await fetch(`${API_URL}/stock/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -71,9 +71,9 @@ export const useCombos = () => {
     }
   };
 
-  const updateCombo = async (id: string, data: FoodCombo) => {
+  const updateStock = async (id: string, data: Stock) => {
     try {
-      const response = await fetch(`${API_URL}/foodCombo/${id}`, {
+      const response = await fetch(`${API_URL}/stock/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ export const useCombos = () => {
         body: JSON.stringify(data),
       });
       if (!response.ok) {
-        throw new Error('Failed to update combo');
+        throw new Error('Failed to update stock');
       }
     } catch (error: any) {
       console.error(error);
@@ -90,33 +90,9 @@ export const useCombos = () => {
     }
   };
 
-  const deleteCombo = async (id: string) => {
+  const unsafeDeleteStock = async (id: string) => {
     try {
-      const response = await fetch(`${API_URL}/foodCombo/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getToken()}`,
-        },
-        body: JSON.stringify({
-          deleted: 1,
-          price: 0,
-          image: '',
-          available: 0,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to delete food combo');
-      }
-    } catch (error: any) {
-      console.error(error);
-      throw new Error(error.message);
-    }
-  };
-
-  const unsafeDeleteCombo = async (id: string) => {
-    try {
-      const response = await fetch(`${API_URL}/foodCombo/${id}`, {
+      const response = await fetch(`${API_URL}/stock/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +100,7 @@ export const useCombos = () => {
         },
       });
       if (!response.ok) {
-        throw new Error('Failed to delete food combo');
+        throw new Error('Failed to delete stock');
       }
     } catch (error: any) {
       console.error(error);
@@ -133,11 +109,10 @@ export const useCombos = () => {
   };
 
   return {
-    getAllCombos,
-    addCombo,
-    getComboById,
-    updateCombo,
-    deleteCombo,
-    unsafeDeleteCombo,
+    getAllStocks,
+    addStock,
+    getStockById,
+    updateStock,
+    unsafeDeleteStock,
   };
 };

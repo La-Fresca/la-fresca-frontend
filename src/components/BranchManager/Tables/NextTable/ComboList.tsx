@@ -25,12 +25,14 @@ import { capitalize } from './utils';
 import { useNavigate } from 'react-router-dom';
 import { FoodCombo } from '@/types/combo';
 import { useCombos } from '@/api/useCombos';
+import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 const INITIAL_VISIBLE_COLUMNS = ['name', 'price', 'items', 'actions'];
 
 export default function ComboList() {
+  const { showSwal } = swalConfirm();
   const [combos, setCombos] = useState<FoodCombo[]>([]);
-  const { getAllCombos } = useCombos();
+  const { getAllCombos, unsafeDeleteCombo } = useCombos();
 
   const fetchCombos = async () => {
     try {
@@ -39,6 +41,19 @@ export default function ComboList() {
     } catch (error: any) {
       console.error(error);
     }
+  };
+
+  const handleDeleteCombo = async (id: string) => {
+    try {
+      await unsafeDeleteCombo(id);
+      fetchCombos();
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  const handleConfirmDelete = (id: any) => {
+    showSwal(() => handleDeleteCombo(id));
   };
 
   useEffect(() => {
@@ -137,7 +152,9 @@ export default function ComboList() {
                 <DropdownItem onClick={() => navigate(`edit/${combo.id}`)}>
                   Edit
                 </DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
+                <DropdownItem onClick={() => handleConfirmDelete(combo.id)}>
+                  Delete
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
