@@ -1,15 +1,21 @@
 import { FC, useEffect, useState } from 'react';
 import { z } from 'zod';
-import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
 import MultiSelect from '@components/BranchManager/Forms/MultiSelectSearch';
-import { Combo } from '@/types/mock_combo';
+import { FoodCombo } from '@/types/combo';
 import { useNavigate } from 'react-router-dom';
 import { useUpload } from '@/api/useUpload';
 import { useCombos } from '@/api/useCombos';
-import { FoodCombo } from '@/types/combo';
+import { useFoods } from '@/api/useFoods';
+import { Food } from '@/types/food';
+
+type ComboPicker = {
+  key: string;
+  label: string;
+};
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
@@ -29,7 +35,9 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 
 const ComboForm: FC = () => {
   const { addCombo } = useCombos();
+  const { getAllFoods } = useFoods();
   const { uploadImage } = useUpload();
+  const [foods, setFoods] = useState<ComboPicker[]>([]);
   const Navigate = useNavigate();
   const { register, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
@@ -46,13 +54,32 @@ const ComboForm: FC = () => {
     }
   }, [errors]);
 
+  const getFoods = async () => {
+    try {
+      const foods = await getAllFoods();
+      if (foods) {
+        const foodOptions = foods.map((food: Food) => ({
+          key: food.id,
+          label: food.name,
+        }));
+        setFoods(foodOptions);
+      }
+    } catch (error) {
+      console.error('Error getting foods:', error);
+    }
+  };
+
+  useEffect(() => {
+    getFoods();
+  }, []);
+
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     let imageUrl = data.image;
     if (imageFile) {
       try {
-        const respose = await uploadImage(imageFile);
-        if (respose) {
-          imageUrl = respose.fileUrl;
+        const response = await uploadImage(imageFile);
+        if (response) {
+          imageUrl = response.fileUrl;
           setValue('image', imageUrl);
         } else {
           throw new Error('Failed to upload image');
@@ -71,25 +98,17 @@ const ComboForm: FC = () => {
     };
     try {
       addCombo(transformedData);
+      Navigate('/branch-manager/food-combos');
     } catch (error) {
       console.error('Error adding food item:', error);
     }
   };
 
-  const [foodIds] = useState<Combo[]>([
-    { key: 'Pizza', label: 'Pizza' },
-    { key: 'Milk-Shake', label: 'Milk-Shake' },
-    { key: 'Other', label: 'Other' },
-  ]);
-
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#000000]">
         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-          <h3
-            className="font-medium text-xl
-           text-black dark:text-white"
-          >
+          <h3 className="font-medium text-xl text-black dark:text-white">
             Add Food Combos
           </h3>
         </div>
@@ -139,7 +158,7 @@ const ComboForm: FC = () => {
               <label className="mb-3 block text-black dark:text-white">
                 <span className="block mb-1 text-gray-600">Food items</span>
                 <MultiSelect
-                  categories={foodIds}
+                  categories={foods}
                   register={register}
                   fieldname="foodIds"
                   setValue={setValue}
@@ -155,7 +174,7 @@ const ComboForm: FC = () => {
                   fieldname="image"
                   register={register}
                   setImageFile={setImageFile}
-                  height={'h-96'}
+                  height={'h-150'}
                 />
               </label>
               <div className="flex justify-center gap-12 mt-16">

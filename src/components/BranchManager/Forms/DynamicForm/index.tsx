@@ -14,6 +14,11 @@ import { useFoods } from '@/api/useFoods';
 import { useCategories } from '@/api/useCategories';
 import { Food } from '@/types/food';
 
+type CategoryPicker = {
+  key: string;
+  label: string;
+};
+
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
   category: z.array(z.string()).min(1, { message: 'Category is required' }),
@@ -49,7 +54,7 @@ const DynamicForm: FC = () => {
   const { uploadImage } = useUpload();
   const { addFood } = useFoods();
   const { getAllCategories } = useCategories();
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<CategoryPicker[]>([]);
   const Navigate = useNavigate();
   const { register, control, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
@@ -75,7 +80,11 @@ const DynamicForm: FC = () => {
     try {
       const categories = await getAllCategories();
       if (categories) {
-        setCategories(categories);
+        const categoryOptions = categories.map((category: Category) => ({
+          key: category.id,
+          label: category.name,
+        }));
+        setCategories(categoryOptions);
       }
     } catch (error) {
       console.error('Error getting categories:', error);
