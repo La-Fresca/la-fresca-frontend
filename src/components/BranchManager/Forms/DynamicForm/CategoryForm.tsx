@@ -1,15 +1,9 @@
-import { FC, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { z } from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import { TrashIcon } from '@heroicons/react/24/solid';
-import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
-import MultiSelect from '@components/BranchManager/Forms/MultiSelect';
-import { Category } from '@/types/category';
 import { useCategories } from '@/api/useCategories';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const FormSchema = z.object({

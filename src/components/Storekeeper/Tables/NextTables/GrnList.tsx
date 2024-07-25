@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Table,
   TableHeader,
@@ -20,42 +20,54 @@ import { PlusIcon } from '@components/BranchManager/Tables/NextTable/PlusIcon';
 import { VerticalDotsIcon } from '@components/BranchManager/Tables/NextTable/VerticalDotsIcon';
 import { ChevronDownIcon } from '@components/BranchManager/Tables/NextTable/ChevronDownIcon';
 import { SearchIcon } from '@components/BranchManager/Tables/NextTable/SearchIcon';
-import { columns, grns } from './data';
+import { columns } from './columnStocks';
 import { capitalize } from './utils';
 import { useNavigate } from 'react-router-dom';
+import { Stock } from '@/types/stock';
+import { useStocks } from '@/api/useStocks';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'id',
-  'date',
-  'supplier',
+  'name',
   'quantity',
-  'stock',
+  'limit',
+  'expire',
   'actions',
 ];
 
-type Grn = (typeof grns)[0];
+export default function StockList() {
+  const [stocks, setStocks] = useState<Stock[]>([]);
+  const { getAllStocks } = useStocks();
 
-export default function GrnList() {
+  const fetchStocks = async () => {
+    try {
+      const data = await getAllStocks();
+      setStocks(data);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchStocks();
+  }, []);
+
   const navigate = useNavigate();
-  const [filterValue, setFilterValue] = React.useState('');
-  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
-    new Set([]),
-  );
-  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
+  const [filterValue, setFilterValue] = useState('');
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
+  const [visibleColumns, setVisibleColumns] = useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: 'age',
-    direction: 'ascending',
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
+    column: 'id',
+    direction: 'descending',
   });
-  const [page, setPage] = React.useState(1);
-
-  const pages = Math.ceil(grns.length / rowsPerPage);
+  const [page, setPage] = useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
 
-  const headerColumns = React.useMemo(() => {
+  const headerColumns = useMemo(() => {
     if (visibleColumns === 'all') return columns;
 
     return columns.filter((column) =>
@@ -63,66 +75,68 @@ export default function GrnList() {
     );
   }, [visibleColumns]);
 
-  const filteredItems = React.useMemo(() => {
-    let filteredGrns = [...grns];
+  const filteredItems = useMemo(() => {
+    let filteredStocks = [...stocks];
 
     if (hasSearchFilter) {
-      filteredGrns = filteredGrns.filter((grn) =>
-        grn.id.toLowerCase().includes(filterValue.toLowerCase()),
+      filteredStocks = filteredStocks.filter((stock) =>
+        stock.batchId.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    return filteredGrns;
-  }, [grns, filterValue]);
+    return filteredStocks;
+  }, [stocks, filterValue]);
 
-  const items = React.useMemo(() => {
+  const pages = Math.ceil(filteredItems.length / rowsPerPage);
+
+  const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
-  const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: Grn, b: Grn) => {
-      const first = a[sortDescriptor.column as keyof Grn] as number;
-      const second = b[sortDescriptor.column as keyof Grn] as number;
+  const sortedItems = useMemo(() => {
+    return [...items].sort((a: Stock, b: Stock) => {
+      const first = a[sortDescriptor.column as keyof Stock] as number;
+      const second = b[sortDescriptor.column as keyof Stock] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === 'descending' ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((grn: Grn, columnKey: React.Key) => {
-    const cellValue = grn[columnKey as keyof Grn];
+  const renderCell = useCallback((stock: Stock, columnKey: React.Key) => {
+    const cellValue = stock[columnKey as keyof Stock];
 
     switch (columnKey) {
       case 'id':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small">{cellValue}</p>
+            <p className="text-bold text-small">{stock.batchId}</p>
           </div>
         );
-      case 'date':
+      case 'name':
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue}</p>
           </div>
         );
-      case 'supplier':
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small">{cellValue}</p>
-          </div>
-        );
       case 'quantity':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small">{cellValue}</p>
+            <p className="text-bold text-small">{stock.availableAmount}</p>
           </div>
         );
-      case 'stock':
+      case 'limit':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small">{cellValue}</p>
+            <p className="text-bold text-small">{stock.lowerLimit}</p>
+          </div>
+        );
+      case 'expire':
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small">{stock.expiryDate}</p>
           </div>
         );
       case 'actions':
@@ -136,7 +150,7 @@ export default function GrnList() {
               </DropdownTrigger>
               <DropdownMenu className="bg-black text-white">
                 <DropdownItem>View</DropdownItem>
-                <DropdownItem onClick={() => navigate(`edit/${grn.id}`)}>
+                <DropdownItem onClick={() => navigate(`edit/${stock.id}`)}>
                   Edit
                 </DropdownItem>
                 <DropdownItem>Delete</DropdownItem>
@@ -149,7 +163,7 @@ export default function GrnList() {
     }
   }, []);
 
-  const onRowsPerPageChange = React.useCallback(
+  const onRowsPerPageChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(Number(e.target.value));
       setPage(1);
@@ -157,7 +171,7 @@ export default function GrnList() {
     [],
   );
 
-  const onSearchChange = React.useCallback((value?: string) => {
+  const onSearchChange = useCallback((value?: string) => {
     if (value) {
       setFilterValue(value);
       setPage(1);
@@ -166,7 +180,7 @@ export default function GrnList() {
     }
   }, []);
 
-  const topContent = React.useMemo(() => {
+  const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
@@ -223,7 +237,7 @@ export default function GrnList() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {grns.length} grns
+            Total {stocks.length} grns
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -244,11 +258,11 @@ export default function GrnList() {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    grns.length,
+    stocks.length,
     hasSearchFilter,
   ]);
 
-  const bottomContent = React.useMemo(() => {
+  const bottomContent = useMemo(() => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
         <Pagination
@@ -272,7 +286,7 @@ export default function GrnList() {
     );
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
-  const classNames = React.useMemo(
+  const classNames = useMemo(
     () => ({
       wrapper: ['max-h-[382px]', 'max-w-3xl'],
       th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],

@@ -4,5 +4,5 @@ export type Stock = {
   batchId: string;
   availableAmount: number;
   lowerLimit: number;
-  expiryDate: Date;
+  expiryDate: string;
 };
