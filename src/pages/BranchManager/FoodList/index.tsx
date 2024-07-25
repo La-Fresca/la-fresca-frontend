@@ -91,15 +91,14 @@ export default function FoodList() {
   const handleDeleteFood = async (id: string) => {
     try {
       await deleteFood(id);
-      fetchItems(); // Refresh the list after deletion
+      fetchItems();
     } catch (error: any) {
       console.error('Failed to delete food:', error);
     }
   };
 
   const handleConfirmDelete = (id: string) => {
-    const { showSwal } = swalConfirm(() => handleDeleteFood(id));
-    showSwal();
+    showSwal(() => handleDeleteFood(id));
   };
 
   React.useEffect(() => {

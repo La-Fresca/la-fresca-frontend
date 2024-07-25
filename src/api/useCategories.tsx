@@ -90,5 +90,32 @@ export const useCategories = () => {
     }
   };
 
-  return { getAllCategories, addCategory, getCategoryById, updateCategory };
+  const deleteCategory = async (id: string) => {
+    try {
+      const response = await fetch(`${API_URL}/category/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify({
+          deleted: 1,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete category');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error.message);
+    }
+  };
+
+  return {
+    getAllCategories,
+    addCategory,
+    getCategoryById,
+    updateCategory,
+    deleteCategory,
+  };
 };

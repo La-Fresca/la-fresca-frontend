@@ -27,6 +27,7 @@ import { capitalize } from './utils';
 import { useNavigate } from 'react-router-dom';
 import { Category } from '@/types/category';
 import { useCategories } from '@/api/useCategories';
+import { swalConfirm } from '@/components/UI/SwalConfirm';
 import { set } from 'zod';
 
 // const statusColorMap: Record<string, ChipProps['color']> = {
@@ -37,8 +38,9 @@ import { set } from 'zod';
 const INITIAL_VISIBLE_COLUMNS = ['name', 'status', 'description', 'actions'];
 
 export default function CategoriesTable() {
+  const { showSwal } = swalConfirm();
   const [categories, setCategories] = useState<Category[]>([]);
-  const { getAllCategories } = useCategories();
+  const { getAllCategories, deleteCategory } = useCategories();
 
   const fetchCategories = async () => {
     try {
@@ -47,6 +49,19 @@ export default function CategoriesTable() {
     } catch (error: any) {
       console.error(error);
     }
+  };
+
+  const handleDeleteCategory = async (id: string) => {
+    try {
+      await deleteCategory(id);
+      fetchCategories();
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  const handleConfirmDelete = (id: string | undefined) => {
+    showSwal(() => handleDeleteCategory(id));
   };
 
   useEffect(() => {
@@ -152,7 +167,15 @@ export default function CategoriesTable() {
                 <DropdownItem onClick={() => navigate(`edit/${category.id}`)}>
                   Edit
                 </DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
+                {category.id != undefined ? (
+                  <DropdownItem
+                    onClick={() => handleConfirmDelete(category.id)}
+                  >
+                    Delete
+                  </DropdownItem>
+                ) : (
+                  <div>error</div>
+                )}
               </DropdownMenu>
             </Dropdown>
           </div>
