@@ -24,7 +24,7 @@ import { ChevronDownIcon } from './ChevronDownIcon';
 import { SearchIcon } from './SearchIcon';
 import { columns } from './columnCategories';
 import { capitalize } from './utils';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Category } from '@/types/category';
 import { useCategories } from '@/api/useCategories';
 import { set } from 'zod';
