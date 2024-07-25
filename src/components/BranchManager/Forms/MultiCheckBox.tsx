@@ -81,10 +81,10 @@ const App: FC<AppProps> = ({ categories, register, fieldname, setValue }) => {
               {(category) => (
                 <SelectItem
                   className="dark:bg-[#000000] bg-white rounded-sm border border-solid w-full dark:text-white text-[#000000]"
-                  key={category.key}
-                  value={category.key}
+                  key={category.id}
+                  value={category.name}
                 >
-                  {category.label}
+                  {category.name}
                 </SelectItem>
               )}
             </Select>

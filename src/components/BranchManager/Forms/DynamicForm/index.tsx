@@ -11,6 +11,7 @@ import { Category } from '@/types/category';
 import { useNavigate } from 'react-router-dom';
 import { useUpload } from '@/api/useUpload';
 import { useFoods } from '@/api/useFoods';
+import { useCategories } from '@/api/useCategories';
 import { Food } from '@/types/food';
 
 const FormSchema = z.object({
@@ -47,6 +48,8 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 const DynamicForm: FC = () => {
   const { uploadImage } = useUpload();
   const { addFood } = useFoods();
+  const { getAllCategories } = useCategories();
+  const [categories, setCategories] = useState<Category[]>([]);
   const Navigate = useNavigate();
   const { register, control, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
@@ -67,6 +70,21 @@ const DynamicForm: FC = () => {
       console.log('Form errors:', errors);
     }
   }, [errors]);
+
+  const getCategories = async () => {
+    try {
+      const categories = await getAllCategories();
+      if (categories) {
+        setCategories(categories);
+      }
+    } catch (error) {
+      console.error('Error getting categories:', error);
+    }
+  };
+
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     let imageUrl = data.image;
@@ -96,26 +114,28 @@ const DynamicForm: FC = () => {
           levels: feature.subCategories.map((sub) => sub.name),
           additionalPrices: feature.subCategories.map((sub) => sub.price),
         })) || [],
-      id: 0,
-      foodId: '',
-      availability: 0,
       discountStatus: '',
       discountId: '',
+      available: 1,
+      deleted: 0,
     };
 
     try {
       addFood(transformedData);
+      Navigate('/branch-manager/foods');
     } catch (error) {
       console.error('Error adding food item:', error);
     }
   };
 
-  const [categories] = useState<Category[]>([
-    { key: 'Non-Vegetarian', label: 'Non-Vegetarian' },
-    { key: 'Vegetarian', label: 'Vegetarian' },
-    { key: 'Other', label: 'Other' },
-  ]);
-
+  // const [categories] = useState<Category[]>([
+  //   { key: 'Non-Vegetarian', label: 'Non-Vegetarian' },
+  //   { key: 'Vegetarian', label: 'Vegetarian' },
+  //   { key: 'Other', label: 'Other' },
+  // ]);
+  if (!categories.length) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#000000]">

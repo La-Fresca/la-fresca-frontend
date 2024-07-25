@@ -7,9 +7,12 @@ import { TrashIcon } from '@heroicons/react/24/solid';
 import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
 import MultiSelect from '@components/BranchManager/Forms/MultiCheckBox';
-import { Category } from '@/types/category';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useUpload } from '@/api/useUpload';
+import { useFoods } from '@/api/useFoods';
+import { Food } from '@/types/food';
+import { useCategories } from '@/api/useCategories';
+import { Category } from '@/types/category';
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
@@ -42,12 +45,15 @@ const FormSchema = z.object({
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-interface Props {
-  id: string | undefined;
-}
-
-function EditForm({ id }: Props) {
+function EditForm({ id = '' }: { id?: string }) {
   const Navigate = useNavigate();
+  const { updateFood } = useFoods();
+  const { getFoodById } = useFoods();
+  const { uploadImage } = useUpload();
+  const { getAllCategories } = useCategories();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [item, setItem] = useState<Food | null>(null);
+
   const { register, control, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
       resolver: zodResolver(FormSchema),
@@ -68,32 +74,61 @@ function EditForm({ id }: Props) {
     }
   }, [errors]);
 
+  const getFood = async () => {
+    try {
+      const data: Food = await getFoodById(id);
+      if (data) {
+        setItem(data);
+        setValue('name', data.name);
+        setValue('category', data.category || []);
+        setValue('description', data.description || '');
+        setValue('price', data.price);
+        setValue('image', data.image);
+        if (data.features) {
+          const features = data.features.map((feature: any) => ({
+            name: feature.name,
+            subCategories: feature.levels.map((level: any, idx: number) => ({
+              name: level,
+              price: feature.additionalPrices[idx],
+            })),
+          }));
+          setValue('features', features);
+        }
+      }
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getFood();
+  }, [id]);
+
+  const getCategories = async () => {
+    try {
+      const categories = await getAllCategories();
+      if (categories) {
+        setCategories(categories);
+      }
+    } catch (error) {
+      console.error('Error getting categories:', error);
+    }
+  };
+
+  useEffect(() => {
+    getCategories();
+  }, []);
+
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     let imageUrl = data.image;
-
     if (imageFile) {
-      const formData = new FormData();
-      formData.append('file', imageFile);
-
       try {
-        const uploadUrl = (import.meta as any).env.VITE_UPLOAD_URL;
-        const response = await fetch(`${uploadUrl}`, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type',
-          },
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          imageUrl = result.fileUrl;
+        const respose = await uploadImage(imageFile);
+        if (respose) {
+          imageUrl = respose.fileUrl;
           setValue('image', imageUrl);
         } else {
-          console.error('Image upload failed');
-          return;
+          throw new Error('Failed to upload image');
         }
       } catch (error) {
         console.error('Error uploading image:', error);
@@ -101,94 +136,79 @@ function EditForm({ id }: Props) {
       }
     }
 
-    const transformedData = {
+    const transformedData: Food = {
       cafeId: 'cafe 1',
-      available: 0,
-      deleted: 0,
       ...data,
       image: imageUrl,
-      rating: 0,
       features:
         data.features?.map((feature) => ({
           name: feature.name,
           levels: feature.subCategories.map((sub) => sub.name),
           additionalPrices: feature.subCategories.map((sub) => sub.price),
         })) || [],
+      available: 1,
+      deleted: 0,
+      discountStatus: '0',
+      discountId: 'test',
+      rating: 0,
     };
 
     try {
-      const apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/food/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(transformedData),
-      });
-
-      if (response.ok) {
-        toast('Food item added successfully', { type: 'success' });
-        Navigate('/branch-manager/foods');
-      } else {
-        toast('Failed to add food item', { type: 'error' });
-        console.error('Failed to add food item:', response.statusText);
-      }
+      updateFood(id, transformedData);
+      Navigate('/branch-manager/foods');
     } catch (error) {
       console.error('Error adding food item:', error);
-      toast('Failed to add food item', { type: 'error' });
     }
   };
 
-  const [categories] = useState<Category[]>([
-    { key: 'Non-Vegetarian', label: 'Non-Vegetarian' },
-    { key: 'Vegetarian', label: 'Vegetarian' },
-    { key: 'Other', label: 'Other' },
-  ]);
+  // const [categories] = useState<Category[]>([
+  //   { key: 'Non-Vegetarian', label: 'Non-Vegetarian' },
+  //   { key: 'Vegetarian', label: 'Vegetarian' },
+  //   { key: 'Other', label: 'Other' },
+  // ]);
 
-  const [item, setItem] = useState<any>(null);
+  // const fetchItems = async () => {
+  //   try {
+  //     const apiUrl = (import.meta as any).env.VITE_API_URL;
+  //     const response = await fetch(`${apiUrl}/food/${id}`);
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch item');
+  //     }
+  //     const data = await response.json();
+  //     return data;
+  //   } catch (error) {
+  //     console.error('Error fetching item:', error);
+  //   }
+  // };
 
-  const fetchItems = async () => {
-    try {
-      const apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/food/${id}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch item');
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching item:', error);
-    }
-  };
+  // const getItem = async () => {
+  //   const item = await fetchItems();
+  //   console.log('Item:', item);
+  //   if (item) {
+  //     setItem(item);
+  //     setValue('name', item.name);
+  //     setValue('category', item.category || []);
+  //     setValue('description', item.description || '');
+  //     setValue('price', item.price);
+  //     setValue('image', item.image);
+  //     if (item.features) {
+  //       const features = item.features.map((feature: any) => ({
+  //         name: feature.name,
+  //         subCategories: feature.levels.map((level: any, idx: number) => ({
+  //           name: level,
+  //           price: feature.additionalPrices[idx],
+  //         })),
+  //       }));
+  //       setValue('features', features);
+  //     }
+  //   }
+  // };
 
-  const getItem = async () => {
-    const item = await fetchItems();
-    console.log('Item:', item);
-    if (item) {
-      setItem(item);
-      setValue('name', item.name);
-      setValue('category', item.category || []);
-      setValue('description', item.description || '');
-      setValue('price', item.price);
-      setValue('image', item.image);
-      if (item.features) {
-        const features = item.features.map((feature: any) => ({
-          name: feature.name,
-          subCategories: feature.levels.map((level: any, idx: number) => ({
-            name: level,
-            price: feature.additionalPrices[idx],
-          })),
-        }));
-        setValue('features', features);
-      }
-    }
-  };
+  // useEffect(() => {
+  //   getItem();
+  // }, [id]);
 
-  useEffect(() => {
-    getItem();
-  }, [id]);
-
-  if (!item) {
+  if (!item || !categories.length) {
     return <div>Loading...</div>;
   }
 
@@ -384,6 +404,7 @@ function EditForm({ id }: Props) {
                   register={register}
                   setImageFile={setImageFile}
                   urlPreview={item.image}
+                  height={'h-150'}
                 />
               </label>
               <div className="flex justify-center gap-12 mt-16">
