@@ -26,7 +26,13 @@ import UserAdd from '@pages/BranchManager/Users/AddUser';
 import UserEdit from '@pages/BranchManager/Users/EditUser';
 import EditFoods from '@pages/BranchManager/Foods/EditFood';
 import AddCategories from '@pages/BranchManager/Categories/AddCategories';
-import ViewCategories from './pages/BranchManager/Categories/ViewCategories';
+import ViewCategories from '@pages/BranchManager/Categories/ViewCategories';
+import WaiterLayout from '@layouts/WaiterLayout';
+import CashierLayout from '@layouts/CashierLayout';
+import Waiter from '@/pages/Waiter/dashboard';
+import ServedOrders from '@pages/Waiter/servedOrders';
+import PhysicalOrder from './pages/Cashier/PhysicalOrder';
+import UserProfile from '@components/User/Profile/Profile';
 
 const routes = createRoutesFromElements(
   <Route>
@@ -206,6 +212,56 @@ const routes = createRoutesFromElements(
         }
       />
     </Route>
+    <Route path="waiter/*" element={<WaiterLayout />}>
+      <Route
+        index
+        element={
+          <>
+            <PageTitle title="Waiter | Dashboard" />
+            <Waiter />
+          </>
+        }
+      />
+     </Route> 
+
+     <Route path="waiter/served-orders" element={<WaiterLayout />}>
+      <Route
+        index
+        element={
+          <>
+            <PageTitle title="Waiter | served-orders" />
+            <ServedOrders />
+          </>
+        }
+      />
+     </Route> 
+
+     <Route path="cashier/*" element={<CashierLayout />}>
+      <Route
+        index
+        element={
+          <>
+            <PageTitle title="cashier | Dashboard" />
+            <PhysicalOrder />    
+          </>
+        }
+      />
+      </Route>
+
+      <Route path="cashier/profile" element={<CashierLayout />}>
+      <Route
+        index
+        element={
+          <>
+            <PageTitle title="cashier | profile" />
+            <UserProfile />   
+          </>
+        }
+      />
+      </Route>
+
+      
+
   </Route>,
 );
 
