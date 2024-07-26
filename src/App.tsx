@@ -42,6 +42,8 @@ import StorekeeperLayout from '@/layouts/StorekeeperLayout';
 import ViewGrns from '@/pages/Storekeeper/GrnList';
 import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
+import DeliveryLayout from '@/layouts/DeliveryLayout';
+import { OnDelivery } from './pages/DeliveryPerson/OnDelivery';
 import KitchenManagerDashboard from '@/pages/KitchenManager/Dashboard';
 import Unauthorized from '@/components/Unauthorized';
 import WaiterLayout from '@/layouts/WaiterLayout';
