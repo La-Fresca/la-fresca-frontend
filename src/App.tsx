@@ -42,6 +42,8 @@ import StorekeeperLayout from '@/layouts/StorekeeperLayout';
 import ViewGrns from '@/pages/Storekeeper/GrnList';
 import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
+import AssignWaiter from './pages/KitchenManager/AssignWaiters';
+import AssignDelivery from './pages/KitchenManager/AssignDelivery';
 import DeliveryLayout from '@/layouts/DeliveryLayout';
 import { OnDelivery } from './pages/DeliveryPerson/OnDelivery';
 import KitchenManagerDashboard from '@/pages/KitchenManager/Dashboard';
@@ -90,6 +92,24 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="La Fresca | Unauthorized" />
             <Unauthorized />
+          </>
+        }
+      />
+      <Route
+        path="testwaiterModal"
+        element={
+          <>
+            <PageTitle title="La Fresca | testModal" />
+            <AssignWaiter />
+          </>
+        }
+      />
+      <Route
+        path="testdeliveryModal"
+        element={
+          <>
+            <PageTitle title="La Fresca | Food Items" />
+            <AssignDelivery />
           </>
         }
       />
