@@ -2,8 +2,15 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ClickOutside from '@components/BranchManager/ClickOutside';
 import UserOne from '@images/user/user.png';
+import { useAuth } from '@/api/useAuth';
+import useSignOut from 'react-auth-kit/hooks/useSignOut';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const DropdownUser = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { signOut } = useAuth();
+  const clientSignOut = useSignOut();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
@@ -18,7 +25,7 @@ const DropdownUser = () => {
         </span>
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Branch Manager
+            Dasun Thathsara
           </span>
         </span>
 
@@ -117,7 +124,15 @@ const DropdownUser = () => {
               </Link>
             </li>
           </ul>
-          <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+          <button
+            className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+            onClick={() => {
+              signOut()?.then(() => {
+                clientSignOut();
+              });
+              navigate('/login', { state: { from: location } });
+            }}
+          >
             <svg
               className="fill-current"
               width="22"

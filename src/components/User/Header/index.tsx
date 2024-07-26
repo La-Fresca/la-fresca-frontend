@@ -10,10 +10,10 @@ const Header = (props: {
 }) => {
   const links = [
     { name: 'Home', href: '/', showOnLarge: true },
-    { name: 'About Us', href: '#', showOnLarge: true },
-    { name: 'Meet Chefs', href: '#', showOnLarge: true },
     { name: 'Foods', href: '/foodItems', showOnLarge: true },
+    { name: 'Order History', href: '/orderhistory', showOnLarge: true },
     { name: 'Gallery', href: '/gallery', showOnLarge: true },
+    { name: 'Promotions', href: '/promotions', showOnLarge: true },
     { name: 'Contact Us', href: '#', showOnLarge: true },
   ];
 
@@ -62,15 +62,10 @@ const Header = (props: {
           </span>
         </button>
         {/* <!-- Hamburger Toggle BTN --> */}
-        {/* <div className="flex items-center gap-2 sm:gap-4">
-          <Link className="block flex-shrink-0 w-8 h-8" to="/">
-            <img src={LogoIcon} alt="Logo" />
-          </Link>
-        </div> */}
-
+        
         <div className="hidden sm:flex items-center">
           <div
-            className="text-white font-bold pl-2 pr-12 dark:text-white mr-4"
+            className="text-black font-bold pl-2 pr-12 dark:text-white mr-4"
             style={{ fontFamily: 'Cormorant Upright, serif', fontSize: '30px' }}
           >
             La Fresca
@@ -82,7 +77,7 @@ const Header = (props: {
             <Link
               key={index}
               to={link.href}
-              className={`hover:text-white transition duration-300 ease-in-out ${link.showOnLarge ? 'hidden lg:block' : ''}`}
+              className={`text-foodbg dark:text-white hover:text-warning dark:hover:text-warning transition duration-300 ease-in-out ${link.showOnLarge ? 'hidden lg:block' : ''}`}
             >
               {link.name}
             </Link>

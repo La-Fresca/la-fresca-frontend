@@ -1,27 +1,57 @@
 import { FC, useState, useEffect } from 'react';
-import { Select, SelectItem } from '@nextui-org/react';
-import { Category } from '@/types/category';
+import { Select, SelectItem, Chip, SelectedItems } from '@nextui-org/react';
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
+type ComboPicker = {
+  key: string;
+  label: string;
+};
+
 interface AppProps {
-  categories: Category[];
+  categories: ComboPicker[];
   fieldname: string;
   register: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
 }
 
+const colors = [
+  'bg-red-500',
+  'bg-blue-500',
+  'bg-purple-500',
+  'bg-pink-500',
+  'bg-indigo-500',
+];
+
+const getRandomColor = () => {
+  const randomIndex = Math.floor(Math.random() * colors.length);
+  return colors[randomIndex];
+};
+
 const App: FC<AppProps> = ({ categories, register, fieldname, setValue }) => {
   const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
-  let value = Array.from(selectedKeys);
+  const [chipColors, setChipColors] = useState<{ [key: string]: string }>({});
+  const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
 
   useEffect(() => {
-    setValue(fieldname, Array.from(selectedKeys));
-    console.log(/*selectedKeys*/ Array.from(selectedKeys));
-    console.log(value);
-  }, [selectedKeys, setValue, fieldname]);
+    const labels = Array.from(selectedKeys).map(
+      (key) => categories.find((category) => category.key === key)?.label || '',
+    );
+    setSelectedLabels(labels);
+    setValue(fieldname, labels);
+  }, [selectedKeys, setValue, fieldname, categories]);
 
   const handleSelectionChange = (keys: Set<string> | any) => {
-    setSelectedKeys(keys instanceof Set ? keys : new Set(keys)); // Ensure keys is always a Set<string>
+    const newKeys = keys instanceof Set ? keys : new Set(keys);
+    const newChipColors = { ...chipColors };
+
+    newKeys.forEach((key) => {
+      if (!chipColors[key]) {
+        newChipColors[key] = getRandomColor();
+      }
+    });
+
+    setChipColors(newChipColors);
+    setSelectedKeys(newKeys);
   };
 
   return (
@@ -41,6 +71,18 @@ const App: FC<AppProps> = ({ categories, register, fieldname, setValue }) => {
                 base: 'max-w-full',
                 trigger: 'min-h-12 py-2',
               }}
+              renderValue={(items: SelectedItems<ComboPicker>) => (
+                <div className="flex flex-wrap gap-2">
+                  {items.map((item) => (
+                    <Chip
+                      key={item.key}
+                      className={`${chipColors[String(item.key)]} bg-opacity-25`}
+                    >
+                      {item.textValue}
+                    </Chip>
+                  ))}
+                </div>
+              )}
               selectedKeys={selectedKeys}
               onSelectionChange={(keys) => handleSelectionChange(keys)}
             >
@@ -54,7 +96,11 @@ const App: FC<AppProps> = ({ categories, register, fieldname, setValue }) => {
                 </SelectItem>
               )}
             </Select>
-            <input type="hidden" value={value} {...register(fieldname)} />
+            <input
+              type="hidden"
+              value={selectedLabels.join(',')}
+              {...register(fieldname)}
+            />
           </div>
         </div>
       </div>

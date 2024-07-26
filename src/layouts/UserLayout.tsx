@@ -2,20 +2,23 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from '@components/User/Header/index';
 import BackgrounImage from '@images/cover/cover-03.png';
+import Sidebar from '@/components/User/Sidebar/index';
 
 const BranchManagerLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <div
-      className="dark:bg-boxdark-2 dark:text-bodydark"
-      style={{
-        backgroundImage: `url(${BackgrounImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
+      className="dark:bg-boxdark-2 dark:text-bodydark bg-cover bg-center dark:bg-[url('@images/cover/cover-03.png')] bg-white"
+      // style={{
+      //   backgroundImage: `url(${BackgrounImage})`,
+      // }}
     >
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex h-screen overflow-hidden">
+        {/* <!-- ===== Sidebar Start ===== --> */}
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        {/* <!-- ===== Sidebar End ===== --> */}
+
         {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
           {/* <!-- ===== Header Start ===== --> */}

@@ -24,6 +24,10 @@ import { ChevronDownIcon } from './ChevronDownIcon';
 import { SearchIcon } from './SearchIcon';
 import { capitalize } from './utils';
 import { Navigate, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { Food } from '@/types/food';
+import { useFoods } from '@/api/useFoods';
+import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   active: 'success',
@@ -44,33 +48,6 @@ const INITIAL_VISIBLE_COLUMNS = [
   'actions',
 ];
 
-type Food = {
-  id: number;
-  foodId: string;
-  name: string;
-  price: number;
-  availability: number;
-  cafeId: string;
-  category: string;
-  discountStatus: string;
-  discountId: string;
-  features: { name: string; levels: string[]; additionalPrices: number[] }[];
-};
-
-const fetchItems = async () => {
-  try {
-    const apiUrl = (import.meta as any).env.VITE_API_URL;
-    const response = await fetch(`${apiUrl}/food`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch item');
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching item:', error);
-  }
-};
-
 const columns = [
   { name: 'Name', uid: 'name' },
   { name: 'Price', uid: 'price' },
@@ -84,6 +61,10 @@ const columns = [
 ];
 
 export default function FoodList() {
+  const { showSwal } = swalConfirm();
+  const [inputValue, setInputValue] = React.useState('');
+  const { getAllFoods } = useFoods();
+  const { deleteFood } = useFoods();
   const navigate = useNavigate();
   const [foods, setFoods] = React.useState<Food[]>([]);
   const [filterValue, setFilterValue] = React.useState('');
@@ -98,14 +79,30 @@ export default function FoodList() {
   const [page, setPage] = React.useState(1);
   const hasSearchFilter = Boolean(filterValue);
 
+  const fetchItems = async () => {
+    try {
+      const data = await getAllFoods();
+      setFoods(data);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteFood = async (id: string) => {
+    try {
+      await deleteFood(id);
+      fetchItems();
+    } catch (error: any) {
+      console.error('Failed to delete food:', error);
+    }
+  };
+
+  const handleConfirmDelete = (id: string) => {
+    showSwal(() => handleDeleteFood(id));
+  };
+
   React.useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchItems();
-      if (data) {
-        setFoods(data);
-      }
-    };
-    fetchData();
+    fetchItems();
   }, []);
 
   const headerColumns = React.useMemo(() => {
@@ -187,7 +184,9 @@ export default function FoodList() {
                 <DropdownItem onClick={() => navigate(`edit/${food.id}`)}>
                   Edit
                 </DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
+                <DropdownItem onClick={() => handleConfirmDelete(food.id)}>
+                  Delete
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -229,9 +228,6 @@ export default function FoodList() {
   }, []);
 
   const topContent = React.useMemo(() => {
-    if (!foods.length) {
-      return <div>Loading...</div>;
-    }
     return (
       <div className="flex flex-col gap-4">
         <h1 className="text-2xl text-white font-bold">Food List</h1>
@@ -305,6 +301,9 @@ export default function FoodList() {
     );
   }, [page, pages]);
 
+  if (!foods.length) {
+    return <div>Loading...</div>;
+  }
   return (
     <Table
       aria-label="Example table with custom cells, pagination and sorting"

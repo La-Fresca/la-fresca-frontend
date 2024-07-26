@@ -1,8 +1,14 @@
-import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FC, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { UseFormRegister } from 'react-hook-form';
 
-const PassINput = () => {
+interface PassInputProps {
+  register: UseFormRegister<any>;
+  fieldname: string;
+}
+
+const PassINput: FC<PassInputProps> = ({ register, fieldname }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -12,9 +18,10 @@ const PassINput = () => {
   return (
     <div className="relative">
       <input
-        type={showPassword ? "text" : "password"}
+        type={showPassword ? 'text' : 'password'}
         placeholder="Password"
         className="w-full text-white border-b-2 border-white-700 bg-transparent focus:outline-none focus:ring-0"
+        {...register(fieldname)}
       />
       <button
         type="button"
