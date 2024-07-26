@@ -3,26 +3,23 @@ import { z } from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
+import { useStocks } from '@/api/useStocks';
 import { useNavigate } from 'react-router-dom';
 
 const FormSchema = z.object({
-  supplier: z.string().min(1, { message: 'Supplier is required' }),
-  item: z.string().min(1, { message: 'Item is required' }),
-  quantity: z.number().min(1, { message: 'Quantity is required' }),
-  createdAt: z.string().min(1, { message: 'Date is required' }),
-  category: z.string().min(1, { message: 'Category is required' }),
-  inventory: z.string().min(1, { message: 'Inventory is required' }),
-  units: z.string().min(1, { message: 'Units is required' }),
-  expire: z.string().min(1, { message: 'Expire is required' }),
-  batchcode: z.string().min(1, { message: 'Batchcode is required' }),
-  roq: z.number().min(1, { message: 'ROQ is required' }),
-  unitcost: z.number().min(1, { message: 'Unitcost is required' }),
-  totalcost: z.number().min(1, { message: 'Totalcost is required' }),
+  name: z.string().min(1, { message: 'Name is required' }),
+  batchId: z.string().min(1, { message: 'Batch ID is required' }),
+  availableAmount: z.coerce
+    .number()
+    .min(1, { message: 'Quantity is required' }),
+  lowerLimit: z.coerce.number().min(1, { message: 'Lower Limit required' }),
+  expiryDate: z.string().min(1, { message: 'Date is Required' }),
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-function GrnForm() {
+function StockForm() {
+  const { addStock } = useStocks();
   const Navigate = useNavigate();
   const { register, handleSubmit, formState } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
@@ -37,7 +34,12 @@ function GrnForm() {
   }, [errors]);
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
-    console.log('Form data:', data);
+    try {
+      await addStock(data);
+      Navigate('/branch-manager/stocks');
+    } catch (error: any) {
+      console.error(error);
+    }
   };
 
   return (
@@ -48,7 +50,7 @@ function GrnForm() {
             className="font-medium text-xl
            text-black dark:text-white"
           >
-            New GRN
+            Add Stocks
           </h3>
         </div>
         <form
@@ -58,84 +60,58 @@ function GrnForm() {
           <div className="w-full md:w-3/7 space-y-4 p-6.5">
             <div className="w-full">
               <label className="mb-3 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Supplier name</span>
+                <span className="block mb-1 text-gray-600">
+                  Stock Item name
+                </span>
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                   type="text"
+                  {...register('name')}
                 />
-                {errors.supplier && (
-                  <p className="text-red-600 mb-1">{errors.supplier.message}</p>
+                {errors.name && (
+                  <p className="text-red-600 mb-1">{errors.name.message}</p>
                 )}
               </label>
 
               <label className="mb-3 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Item name</span>
+                <span className="block mb-1 text-gray-600">Batch ID</span>
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                   type="text"
+                  {...register('batchId')}
                 />
-                {errors.item && (
-                  <p className="text-red-600 mb-1">{errors.item.message}</p>
+                {errors.batchId && (
+                  <p className="text-red-600 mb-1">{errors.batchId.message}</p>
                 )}
               </label>
               <label className="mb-6 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Quantitiy</span>
+                <span className="block mb-1 text-gray-600">
+                  Available Amount
+                </span>
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                   type="number"
-                  {...register('quantity')}
+                  {...register('availableAmount')}
                 />
-                {errors.quantity && (
-                  <p className="text-red-600">{errors.quantity.message}</p>
-                )}
-              </label>
-              <label className="mb-6 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Unit Cost</span>
-                <input
-                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
-                  type="number"
-                  {...register('unitcost')}
-                />
-                {errors.unitcost && (
-                  <p className="text-red-600">{errors.unitcost.message}</p>
+                {errors.availableAmount && (
+                  <p className="text-red-600">
+                    {errors.availableAmount.message}
+                  </p>
                 )}
               </label>
             </div>
           </div>
           <div className="w-full md:w-4/7 flex p-6.5">
             <div className="w-full">
-              <label className="mb-3 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Batch Code</span>
-                <input
-                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
-                  type="text"
-                />
-                {errors.batchcode && (
-                  <p className="text-red-600 mb-1">
-                    {errors.batchcode.message}
-                  </p>
-                )}
-              </label>
               <label className="mb-6 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">ROQ Level</span>
+                <span className="block mb-1 text-gray-600">Lower Limit</span>
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                   type="number"
-                  {...register('roq')}
+                  {...register('lowerLimit')}
                 />
-                {errors.roq && (
-                  <p className="text-red-600">{errors.roq.message}</p>
-                )}
-              </label>
-              <label className="mb-6 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Total Cost</span>
-                <input
-                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
-                  type="number"
-                  {...register('totalcost')}
-                />
-                {errors.totalcost && (
-                  <p className="text-red-600">{errors.totalcost.message}</p>
+                {errors.lowerLimit && (
+                  <p className="text-red-600">{errors.lowerLimit.message}</p>
                 )}
               </label>
               <label className="mb-6 block text-black dark:text-white">
@@ -143,10 +119,10 @@ function GrnForm() {
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                   type="date"
-                  {...register('expire')}
+                  {...register('expiryDate')}
                 />
-                {errors.expire && (
-                  <p className="text-red-600">{errors.expire.message}</p>
+                {errors.expiryDate && (
+                  <p className="text-red-600">{errors.expiryDate.message}</p>
                 )}
               </label>
               <div className="flex justify-center gap-12 mt-16">
@@ -168,4 +144,4 @@ function GrnForm() {
   );
 }
 
-export default GrnForm;
+export default StockForm;

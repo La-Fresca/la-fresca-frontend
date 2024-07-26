@@ -1,13 +1,21 @@
 import { FC, useEffect, useState } from 'react';
 import { z } from 'zod';
-import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
-import MultiSelect from '@components/BranchManager/Forms/MultiCheckBox';
-import { Combo } from '@/types/combo';
-import { toast } from 'react-toastify';
+import MultiSelect from '@components/BranchManager/Forms/MultiSelectSearch';
+import { FoodCombo } from '@/types/combo';
 import { useNavigate } from 'react-router-dom';
+import { useUpload } from '@/api/useUpload';
+import { useCombos } from '@/api/useCombos';
+import { useFoods } from '@/api/useFoods';
+import { Food } from '@/types/food';
+
+type ComboPicker = {
+  key: string;
+  label: string;
+};
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
@@ -20,13 +28,21 @@ const FormSchema = z.object({
     .string({ message: 'Should be a string' })
     .optional()
     .default('test'),
-  foodIds: z.array(z.string()).optional(),
+  foodIds: z.array(z.string()),
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-function ComboEditForm({ id }: { id: string | undefined }) {
+function ComboEditForm({ id = '' }: { id?: string }) {
   const Navigate = useNavigate();
+  const { updateCombo } = useCombos();
+  const { getComboById } = useCombos();
+  const { uploadImage } = useUpload();
+  const { getAllFoods } = useFoods();
+
+  const [foods, setFoods] = useState<ComboPicker[]>([]);
+  const [item, setItem] = useState<FoodCombo | null>(null);
+
   const { register, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
       resolver: zodResolver(FormSchema),
@@ -42,32 +58,55 @@ function ComboEditForm({ id }: { id: string | undefined }) {
     }
   }, [errors]);
 
+  const getCombo = async () => {
+    try {
+      const data: FoodCombo = await getComboById(id);
+      if (data) {
+        setItem(data);
+        setValue('name', data.name);
+        setValue('description', data.description || '');
+        setValue('price', data.price);
+        setValue('image', data.image);
+        setValue('foodIds', data.foodIds);
+      }
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getCombo();
+  }, [id]);
+
+  const getFoods = async () => {
+    try {
+      const foods = await getAllFoods();
+      if (foods) {
+        const foodOptions = foods.map((food: Food) => ({
+          key: food.id,
+          label: food.name,
+        }));
+        setFoods(foodOptions);
+      }
+    } catch (error) {
+      console.error('Error getting categories:', error);
+    }
+  };
+
+  useEffect(() => {
+    getFoods();
+  }, []);
+
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     let imageUrl = data.image;
-
     if (imageFile) {
-      const formData = new FormData();
-      formData.append('file', imageFile);
-
       try {
-        const uploadUrl = (import.meta as any).env.VITE_UPLOAD_URL;
-        const response = await fetch(`${uploadUrl}`, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type',
-          },
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          imageUrl = result.fileUrl;
+        const respose = await uploadImage(imageFile);
+        if (respose) {
+          imageUrl = respose.fileUrl;
           setValue('image', imageUrl);
         } else {
-          console.error('Image upload failed');
-          return;
+          throw new Error('Failed to upload image');
         }
       } catch (error) {
         console.error('Error uploading image:', error);
@@ -75,44 +114,25 @@ function ComboEditForm({ id }: { id: string | undefined }) {
       }
     }
 
-    const transformedData = {
+    const transformedData: FoodCombo = {
       cafeId: 'cafe 1',
       available: 0,
       deleted: 0,
       ...data,
       image: imageUrl,
-      foodIds: [],
     };
 
     try {
-      const apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/foodCombo`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(transformedData),
-      });
-
-      if (response.ok) {
-        toast('Food combo added successfully', { type: 'success' });
-        Navigate('/branch-manager/food-combos');
-      } else {
-        toast('Failed to add food item', { type: 'error' });
-        console.error('Failed to add food combo', response.statusText);
-      }
+      updateCombo(id, transformedData);
+      Navigate('/branch-manager/food-combos');
     } catch (error) {
-      console.error('Error adding food combo', error);
-      toast('Failed to add food combo', { type: 'error' });
+      console.error('Error adding food combo:', error);
     }
   };
 
-  const [foodIds] = useState<Combo[]>([
-    { key: 'Pizza', label: 'Pizza' },
-    { key: 'Milk-Shake', label: 'Milk-Shake' },
-    { key: 'Other', label: 'Other' },
-  ]);
-
+  if (!item || !foods.length) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#000000]">
@@ -170,7 +190,7 @@ function ComboEditForm({ id }: { id: string | undefined }) {
               <label className="mb-3 block text-black dark:text-white">
                 <span className="block mb-1 text-gray-600">Food items</span>
                 <MultiSelect
-                  categories={foodIds}
+                  categories={foods}
                   register={register}
                   fieldname="foodIds"
                   setValue={setValue}
@@ -186,6 +206,8 @@ function ComboEditForm({ id }: { id: string | undefined }) {
                   fieldname="image"
                   register={register}
                   setImageFile={setImageFile}
+                  urlPreview={item.image}
+                  height={'h-150'}
                 />
               </label>
               <div className="flex justify-center gap-12 mt-16">

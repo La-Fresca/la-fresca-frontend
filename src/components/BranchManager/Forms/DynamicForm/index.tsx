@@ -8,8 +8,16 @@ import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
 import MultiSelect from '@components/BranchManager/Forms/MultiCheckBox';
 import { Category } from '@/types/category';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useUpload } from '@/api/useUpload';
+import { useFoods } from '@/api/useFoods';
+import { useCategories } from '@/api/useCategories';
+import { Food } from '@/types/food';
+
+type CategoryPicker = {
+  key: string;
+  label: string;
+};
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
@@ -43,6 +51,10 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 const DynamicForm: FC = () => {
+  const { uploadImage } = useUpload();
+  const { addFood } = useFoods();
+  const { getAllCategories } = useCategories();
+  const [categories, setCategories] = useState<CategoryPicker[]>([]);
   const Navigate = useNavigate();
   const { register, control, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
@@ -64,32 +76,36 @@ const DynamicForm: FC = () => {
     }
   }, [errors]);
 
+  const getCategories = async () => {
+    try {
+      const categories = await getAllCategories();
+      if (categories) {
+        const categoryOptions = categories.map((category: Category) => ({
+          key: category.id,
+          label: category.name,
+        }));
+        setCategories(categoryOptions);
+      }
+    } catch (error) {
+      console.error('Error getting categories:', error);
+    }
+  };
+
+  useEffect(() => {
+    getCategories();
+  }, []);
+
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     let imageUrl = data.image;
 
     if (imageFile) {
-      const formData = new FormData();
-      formData.append('file', imageFile);
-
       try {
-        const uploadUrl = (import.meta as any).env.VITE_UPLOAD_URL;
-        const response = await fetch(`${uploadUrl}`, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type',
-          },
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          imageUrl = result.fileUrl;
+        const respose = await uploadImage(imageFile);
+        if (respose) {
+          imageUrl = respose.fileUrl;
           setValue('image', imageUrl);
         } else {
-          console.error('Image upload failed');
-          return;
+          throw new Error('Failed to upload image');
         }
       } catch (error) {
         console.error('Error uploading image:', error);
@@ -97,10 +113,8 @@ const DynamicForm: FC = () => {
       }
     }
 
-    const transformedData = {
+    const transformedData: Food = {
       cafeId: 'cafe 1',
-      available: 0,
-      deleted: 0,
       ...data,
       image: imageUrl,
       features:
@@ -109,37 +123,28 @@ const DynamicForm: FC = () => {
           levels: feature.subCategories.map((sub) => sub.name),
           additionalPrices: feature.subCategories.map((sub) => sub.price),
         })) || [],
+      discountStatus: '',
+      discountId: '',
+      available: 1,
+      deleted: 0,
     };
 
     try {
-      const apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/food`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(transformedData),
-      });
-
-      if (response.ok) {
-        toast('Food item added successfully', { type: 'success' });
-        Navigate('/branch-manager/foods');
-      } else {
-        toast('Failed to add food item', { type: 'error' });
-        console.error('Failed to add food item:', response.statusText);
-      }
+      addFood(transformedData);
+      Navigate('/branch-manager/foods');
     } catch (error) {
       console.error('Error adding food item:', error);
-      toast('Failed to add food item', { type: 'error' });
     }
   };
 
-  const [categories] = useState<Category[]>([
-    { key: 'Non-Vegetarian', label: 'Non-Vegetarian' },
-    { key: 'Vegetarian', label: 'Vegetarian' },
-    { key: 'Other', label: 'Other' },
-  ]);
-
+  // const [categories] = useState<Category[]>([
+  //   { key: 'Non-Vegetarian', label: 'Non-Vegetarian' },
+  //   { key: 'Vegetarian', label: 'Vegetarian' },
+  //   { key: 'Other', label: 'Other' },
+  // ]);
+  if (!categories.length) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#000000]">

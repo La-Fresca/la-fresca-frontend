@@ -1,7 +1,7 @@
 import CategoryEditForm from '@/components/BranchManager/Forms/DynamicForm/CategoryEditForm';
 import { useParams } from 'react-router-dom';
 
-const EditFoods: React.FC = () => {
+const EditCategory: React.FC = () => {
   const { categoryId } = useParams<{ categoryId?: string }>();
   return (
     <>
@@ -12,4 +12,4 @@ const EditFoods: React.FC = () => {
   );
 };
 
-export default EditFoods;
+export default EditCategory;

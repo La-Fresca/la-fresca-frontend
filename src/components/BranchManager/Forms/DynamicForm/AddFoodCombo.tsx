@@ -1,13 +1,21 @@
 import { FC, useEffect, useState } from 'react';
 import { z } from 'zod';
-import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
 import MultiSelect from '@components/BranchManager/Forms/MultiSelectSearch';
-import { Combo } from '@/types/combo';
-import { toast } from 'react-toastify';
+import { FoodCombo } from '@/types/combo';
 import { useNavigate } from 'react-router-dom';
+import { useUpload } from '@/api/useUpload';
+import { useCombos } from '@/api/useCombos';
+import { useFoods } from '@/api/useFoods';
+import { Food } from '@/types/food';
+
+type ComboPicker = {
+  key: string;
+  label: string;
+};
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
@@ -20,12 +28,16 @@ const FormSchema = z.object({
     .string({ message: 'Should be a string' })
     .optional()
     .default('test'),
-  foodIds: z.array(z.string()).optional(),
+  foodIds: z.array(z.string()),
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 const ComboForm: FC = () => {
+  const { addCombo } = useCombos();
+  const { getAllFoods } = useFoods();
+  const { uploadImage } = useUpload();
+  const [foods, setFoods] = useState<ComboPicker[]>([]);
   const Navigate = useNavigate();
   const { register, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
@@ -42,85 +54,64 @@ const ComboForm: FC = () => {
     }
   }, [errors]);
 
+  const getFoods = async () => {
+    try {
+      const foods = await getAllFoods();
+      if (foods) {
+        const foodOptions = foods.map((food: Food) => ({
+          key: food.id,
+          label: food.name,
+        }));
+        setFoods(foodOptions);
+      }
+    } catch (error) {
+      console.error('Error getting foods:', error);
+    }
+  };
+
+  useEffect(() => {
+    getFoods();
+  }, []);
+
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     let imageUrl = data.image;
-
     if (imageFile) {
-      const formData = new FormData();
-      formData.append('file', imageFile);
-
       try {
-        const uploadUrl = (import.meta as any).env.VITE_UPLOAD_URL;
-        const response = await fetch(`${uploadUrl}`, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type',
-          },
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          imageUrl = result.fileUrl;
+        const response = await uploadImage(imageFile);
+        if (response) {
+          imageUrl = response.fileUrl;
           setValue('image', imageUrl);
         } else {
-          console.error('Image upload failed');
-          return;
+          throw new Error('Failed to upload image');
         }
       } catch (error) {
         console.error('Error uploading image:', error);
         return;
       }
     }
-
-    const transformedData = {
+    const transformedData: FoodCombo = {
       cafeId: 'cafe 1',
       available: 0,
       deleted: 0,
       ...data,
       image: imageUrl,
-      foodIds: [],
     };
-
     try {
-      const apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/foodCombo`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(transformedData),
-      });
-
-      if (response.ok) {
-        toast('Food combo added successfully', { type: 'success' });
-        Navigate('/branch-manager/food-combos');
-      } else {
-        toast('Failed to add food item', { type: 'error' });
-        console.error('Failed to add food combo', response.statusText);
-      }
+      addCombo(transformedData);
+      Navigate('/branch-manager/food-combos');
     } catch (error) {
-      console.error('Error adding food combo', error);
-      toast('Failed to add food combo', { type: 'error' });
+      console.error('Error adding food item:', error);
     }
   };
 
-  const [foodIds] = useState<Combo[]>([
-    { key: 'Pizza', label: 'Pizza' },
-    { key: 'Milk-Shake', label: 'Milk-Shake' },
-    { key: 'Other', label: 'Other' },
-  ]);
-
+  if (!foods) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#000000]">
         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-          <h3
-            className="font-medium text-xl
-           text-black dark:text-white"
-          >
+          <h3 className="font-medium text-xl text-black dark:text-white">
             Add Food Combos
           </h3>
         </div>
@@ -170,7 +161,7 @@ const ComboForm: FC = () => {
               <label className="mb-3 block text-black dark:text-white">
                 <span className="block mb-1 text-gray-600">Food items</span>
                 <MultiSelect
-                  categories={foodIds}
+                  categories={foods}
                   register={register}
                   fieldname="foodIds"
                   setValue={setValue}
@@ -186,7 +177,7 @@ const ComboForm: FC = () => {
                   fieldname="image"
                   register={register}
                   setImageFile={setImageFile}
-                  height={'h-96'}
+                  height={'h-150'}
                 />
               </label>
               <div className="flex justify-center gap-12 mt-16">
