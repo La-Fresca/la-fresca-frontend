@@ -4,16 +4,17 @@ import Header from '@components/Cashier/Header/index';
 import Sidebar from '@components/Cashier/Sidebar/index';
 import BackgrounImage from '@images/cover/cover-03.png';
 
-const BranchManagerLayout: React.FC = () => {
+const CashierLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="dark:bg-boxdark-2 dark:text-bodydark"
+    <div
+      className="dark:bg-boxdark-2 dark:text-bodydark"
       style={{
-      backgroundImage: `url(${BackgrounImage})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-    }}
+        backgroundImage: `url(${BackgrounImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
     >
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex h-screen overflow-hidden">
@@ -42,4 +43,4 @@ const BranchManagerLayout: React.FC = () => {
   );
 };
 
-export default BranchManagerLayout;
+export default CashierLayout;
