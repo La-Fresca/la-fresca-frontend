@@ -17,8 +17,8 @@ const AddUser: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-transparent text-white">
-      <h2 className="text-4xl mb-4 font-bold">Add User</h2>
+    <div className="min-h-screen bg-transparent text-white p-8">
+      <h2 className="text-2xl mb-4">Add User</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block mb-2">Name</label>
@@ -26,7 +26,7 @@ const AddUser: React.FC = () => {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-black text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           />
         </div>
@@ -36,7 +36,7 @@ const AddUser: React.FC = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-black text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded  text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           />
         </div>
@@ -45,7 +45,7 @@ const AddUser: React.FC = () => {
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-black text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded  text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           >
             <option value="Active">Active</option>
@@ -58,7 +58,7 @@ const AddUser: React.FC = () => {
             type="text"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-black text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           />
         </div>
@@ -68,25 +68,21 @@ const AddUser: React.FC = () => {
             type="text"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-black text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           />
         </div>
         <div className="mb-4">
           <label className="block mb-2">Group</label>
-          <select
+          <input
+            type="text"
             value={group}
             onChange={(e) => setGroup(e.target.value)}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-black text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded text-black focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300"
             required
-          >
-            <option value="Waiter">Waiter</option>
-            <option value="Kitchen Manager">Kitchen Manager</option>
-            <option value="Store Keeper">Store Keeper</option>
-            <option value="Cashier">Cashier</option>
-          </select>
+          />
         </div>
-        <div className="flex items-center mt-15">
+        <div className="flex justify-end">
           <button
             type="button"
             onClick={() => navigate('/branch-manager/users')}
