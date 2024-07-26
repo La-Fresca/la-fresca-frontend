@@ -44,6 +44,7 @@ import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
 import KitchenManagerDashboard from '@/pages/KitchenManager/Dashboard';
 import Unauthorized from '@/components/Unauthorized';
+import KitchenManagerLayout from './layouts/KitchenManagerLayout';
 
 const { refresh } = useAuth();
 
@@ -348,7 +349,7 @@ const routes = createRoutesFromElements(
           />
         </Route>
       </Route>
-      <Route path="kitchen-manager/*" element={<StorekeeperLayout />}>
+      <Route path="kitchen-manager/*" element={<KitchenManagerLayout />}>
         <Route
           index
           element={
