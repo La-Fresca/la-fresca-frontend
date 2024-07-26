@@ -47,8 +47,9 @@ import Unauthorized from '@/components/Unauthorized';
 import WaiterLayout from '@/layouts/WaiterLayout';
 import WaiterDashboard from '@/pages/Waiter/dashboard';
 import ServedOrders from '@/pages/Waiter/servedOrders';
-import CashierLayout from './layouts/CashierLayout';
+import CashierLayout from '@/layouts/CashierLayout';
 import PhysicalOrder from '@pages/Cashier/PhysicalOrder';
+import UserProfile from '@components/User/Profile/Profile';
 
 const { refresh } = useAuth();
 
