@@ -17,6 +17,7 @@ import Dashboard from '@/pages/BranchManager/Dashboard';
 import BranchManagerLayout from '@/layouts/BranchManagerLayout';
 import KitchenManagerLayout from '@/layouts/KitchenManagerLayout';
 import LoginPage from '@/pages/User/LogIn';
+import RegistrationPage from '@/pages/User/Registration';
 import UserLayout from '@/layouts/UserLayout';
 import AddFoods from '@/pages/BranchManager/Foods/AddFood';
 import FoodItem from '@/pages/FoodItem';
@@ -56,6 +57,7 @@ import CashierLayout from '@/layouts/CashierLayout';
 import PhysicalOrder from '@pages/Cashier/PhysicalOrder';
 import UserProfile from '@components/User/Profile/Profile';
 
+
 const { refresh } = useAuth();
 
 const store = createStore({
@@ -84,6 +86,15 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="La Fresca | Log In" />
             <LoginPage />
+          </>
+        }
+      />
+      <Route
+        path="register"
+        element={
+          <>
+            <PageTitle title="La Fresca | Register" />
+            <RegistrationPage />
           </>
         }
       />

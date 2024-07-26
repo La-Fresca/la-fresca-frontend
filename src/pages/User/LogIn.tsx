@@ -1,21 +1,45 @@
 import LoginForm from '@components/User/LoginForm';
-import backgroundImage from '@images/cover/cover-02.jpg';
+import backgroundImage from '@images/cover/Logincover.png';
+import LogoIcon from '@/images/logo/la-fresca.png';
 
 const LoginPage = () => {
   return (
+    
     <div className="relative h-screen overflow-hidden">
       {/* Background image */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 ">
         <img src={backgroundImage} alt="Background" />
       </div>
 
       {/* Content */}
       {/* Hidden on mobile */}
-      <div className="hidden md:flex md:w-1/2 md:items-center md:justify-center bg-white bg-opacity-20 backdrop-blur relative">
-        <div className="w-full p-6 m-auto bg-transparent bg-opacity-0 backdrop-blur-none rounded-md shadow-none lg:max-w-lg">
+  <div className='flex '>
+    <div className="hidden w-1/2 md:flex md:items-center md:justify-center bg-white bg-opacity-20 backdrop-blur relative">
+        <div className="w-2/3 p-6 m-auto bg-transparent bg-opacity-0 backdrop-blur-none rounded-md shadow-none lg:max-w-lg">
           <LoginForm />
         </div>
+    </div>
+
+    <div className="flex flex-col w-1/2 z-1">
+      <div className="mt-30 h-60 justify-center flex w-full">
+        <img src={LogoIcon} alt="Background" />        
       </div>
+
+      <div className='mt-10 text-center'>
+        <h1 className='text-xl font-bold'>
+          Don't have an account yet?
+        </h1>
+        <p className='my-5 mx-25'>
+        Register now to access personalized content, save your preferences, and enjoy exclusive discounts. Click the button to get started!
+        </p>
+
+        <button className='bg-yellow-500 text-white rounded-md px-5 py-2'>
+          Register
+        </button>
+      </div>       
+    </div>
+  </div>
+
 
       {/* Shown on mobile */}
       <div className="md:hidden">

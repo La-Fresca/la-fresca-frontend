@@ -8,7 +8,6 @@ import { useAuth } from '@/api/useAuth';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 const { testRefresh } = useAuth();
 
-
 const FormSchema = z.object({
   email: z.string().min(1, { message: 'Email is required' }),
   password: z.string().min(1, { message: 'Password is required' }),
@@ -68,7 +67,7 @@ const LoginForm = () => {
     <div className="relative flex flex-row justify-center h-screen overflow-hidden">
       <div className="w-full p-6 m-auto lg:max-w-full bg-white bg-opacity-0">
         <h1 className="text-4xl font-semibold mb-8 text-white text-center">
-          Log in 
+          Register
         </h1>
 
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
@@ -86,7 +85,7 @@ const LoginForm = () => {
               className="w-full py-2 mt-5 text-center text-white bg-yellow-500 rounded-md hover:bg-yellow-600"
               type="submit"
             >
-              Log In
+              Register
             </button>
             
           </div>
