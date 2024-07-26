@@ -418,6 +418,27 @@ const routes = createRoutesFromElements(
           }
         ></Route>
       </Route>
+      <Route path="deliveryperson/*" element={<DeliveryLayout />}>
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="Delivery | Home" />
+            </>
+          }
+        />
+        <Route path="path">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Delivery | Path" />
+                <OnDelivery />
+              </>
+            }
+          />
+        </Route>
+      </Route>
     </Route>
   </Route>,
 );
