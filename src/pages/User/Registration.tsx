@@ -25,7 +25,7 @@ const LoginPage = () => {
             Already have an account?
             </h1>
             <p className='my-5 mx-25'>
-            Register now to access personalized content, save your preferences, and enjoy exclusive discounts. Click the button to get started!
+            Log in now to access your account and enjoy personalized features, exclusive content, and seamless updates
             </p>
             <button className='bg-yellow-500 text-white rounded-md px-5 py-2'>
             Login
