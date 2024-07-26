@@ -33,9 +33,8 @@ const EditUser: React.FC = () => {
   }
 
   return (
-
-    <div className="min-h-screen bg-transparent text-white p-8 ">
-      <h2 className="text-xl mb-4 font-bold">Edit User</h2>
+    <div className="min-h-screen bg-transparent text-white p-8">
+      <h2 className="text-2xl mb-4">Edit User</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block mb-2">Name</label>
@@ -43,7 +42,7 @@ const EditUser: React.FC = () => {
             type="text"
             value={user.name}
             onChange={(e) => setUser({ ...user, name: e.target.value })}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-white bg-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           />
         </div>
@@ -53,7 +52,7 @@ const EditUser: React.FC = () => {
             type="email"
             value={user.email}
             onChange={(e) => setUser({ ...user, email: e.target.value })}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-white bg-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           />
         </div>
@@ -62,7 +61,7 @@ const EditUser: React.FC = () => {
           <select
             value={user.status}
             onChange={(e) => setUser({ ...user, status: e.target.value })}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-white bg-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           >
             <option value="Active">Active</option>
@@ -75,7 +74,7 @@ const EditUser: React.FC = () => {
             type="text"
             value={user.location}
             onChange={(e) => setUser({ ...user, location: e.target.value })}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-white bg-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           />
         </div>
@@ -85,26 +84,21 @@ const EditUser: React.FC = () => {
             type="text"
             value={user.phone}
             onChange={(e) => setUser({ ...user, phone: e.target.value })}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-white bg-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
           />
         </div>
         <div className="mb-4">
           <label className="block mb-2">Group</label>
-          <select
+          <input
+            type="text"
             value={user.group}
             onChange={(e) => setUser({ ...user, group: e.target.value })}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-white bg-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
+            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
             required
-          >
-            <option value="Waiter">Waiter</option>
-            <option value="Kitchen Manager">Kitchen Manager</option>
-            <option value="Store Keeper">Store Keeper</option>
-            <option value="Inactive">Cashier</option>
-
-          </select>
+          />
         </div>
-        <div className="flex items-center mt-15">
+        <div className="flex justify-end">
           <button
             type="button"
             onClick={() => navigate('/branch-manager/users')}
@@ -118,7 +112,6 @@ const EditUser: React.FC = () => {
         </div>
       </form>
     </div>
-
   );
 };
 

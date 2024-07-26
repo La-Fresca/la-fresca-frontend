@@ -23,7 +23,7 @@ import FoodItem from '@/pages/FoodItem';
 import AllFoodItems from '@/pages/AllFoodItems';
 import FoodList from '@/pages/BranchManager/FoodList';
 import { Gallery } from '@/components/Gallery/Gallery';
-import DiscountList from './pages/BranchManager/FoodList/DiscountList';
+import DiscountList from '@/pages/BranchManager/FoodList/DiscountList';
 import Cart from '@/pages/Cart';
 import Checkout from '@/pages/Checkout';
 import { OrderHistory } from '@/components/User/OrderHistory/OrderHistory';
@@ -43,8 +43,18 @@ import StorekeeperLayout from '@/layouts/StorekeeperLayout';
 import ViewGrns from '@/pages/Storekeeper/GrnList';
 import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
+import AssignWaiter from './pages/KitchenManager/AssignWaiters';
+import AssignDelivery from './pages/KitchenManager/AssignDelivery';
+import DeliveryLayout from '@/layouts/DeliveryLayout';
+import { OnDelivery } from './pages/DeliveryPerson/OnDelivery';
 import KitchenManagerDashboard from '@/pages/KitchenManager/Dashboard';
 import Unauthorized from '@/components/Unauthorized';
+import WaiterLayout from '@/layouts/WaiterLayout';
+import WaiterDashboard from '@/pages/Waiter/dashboard';
+import ServedOrders from '@/pages/Waiter/servedOrders';
+import CashierLayout from '@/layouts/CashierLayout';
+import PhysicalOrder from '@pages/Cashier/PhysicalOrder';
+import UserProfile from '@components/User/Profile/Profile';
 
 
 const { refresh } = useAuth();
@@ -93,6 +103,24 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="La Fresca | Unauthorized" />
             <Unauthorized />
+          </>
+        }
+      />
+      <Route
+        path="testwaiterModal"
+        element={
+          <>
+            <PageTitle title="La Fresca | testModal" />
+            <AssignWaiter />
+          </>
+        }
+      />
+      <Route
+        path="testdeliveryModal"
+        element={
+          <>
+            <PageTitle title="La Fresca | Food Items" />
+            <AssignDelivery />
           </>
         }
       />
@@ -376,6 +404,67 @@ const routes = createRoutesFromElements(
               <>
                 <PageTitle title="Storekeeper | GRN List" />
                 <ViewGrns />
+              </>
+            }
+          />
+        </Route>
+      </Route>
+      <Route path="waiter/*" element={<WaiterLayout />}>
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="Waiter | Dashboard" />
+              <WaiterDashboard />
+            </>
+          }
+        />
+        <Route
+          path="served-orders"
+          element={
+            <>
+              <PageTitle title="Waiter | served-orders" />
+              <ServedOrders />
+            </>
+          }
+        ></Route>
+      </Route>
+      <Route path="cashier/*" element={<CashierLayout />}>
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="cashier | Dashboard" />
+              <PhysicalOrder />
+            </>
+          }
+        />
+        <Route
+          path="profile"
+          element={
+            <>
+              <PageTitle title="cashier | profile" />
+              <UserProfile />
+            </>
+          }
+        ></Route>
+      </Route>
+      <Route path="deliveryperson/*" element={<DeliveryLayout />}>
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="Delivery | Home" />
+            </>
+          }
+        />
+        <Route path="path">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Delivery | Path" />
+                <OnDelivery />
               </>
             }
           />

@@ -22,6 +22,8 @@ function index({ id }: Props) {
     try {
       const food = await getFoodById(id?.toString() || '');
       setFood(food);
+      console.log(food);
+      console.log(food.price);
       setPrice(food.price);
     } catch (error) {
       console.error('Error fetching item:', error);
@@ -62,12 +64,11 @@ function index({ id }: Props) {
 
           <div className="font-bold text-white pt-5 text-2xl">
             <span className="pr-2 text-orange-500">Rs.</span>
-            {price*count}
+            {price * count}
           </div>
 
           <div>
-          <QtySelector count={count} setCount={setCount} />
-
+            <QtySelector count={count} setCount={setCount} />
 
             <div className="mt-8">
               {food.features.map((feature: any, index: number) => (
