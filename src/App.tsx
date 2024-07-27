@@ -55,6 +55,7 @@ import ServedOrders from '@/pages/Waiter/servedOrders';
 import CashierLayout from '@/layouts/CashierLayout';
 import PhysicalOrder from '@pages/Cashier/PhysicalOrder';
 import UserProfile from '@components/User/Profile/Profile';
+import DeliveryHome from '@pages/DeliveryPerson/Home';
 
 
 const { refresh } = useAuth();
@@ -455,6 +456,7 @@ const routes = createRoutesFromElements(
           element={
             <>
               <PageTitle title="Delivery | Home" />
+              <DeliveryHome />
             </>
           }
         />
