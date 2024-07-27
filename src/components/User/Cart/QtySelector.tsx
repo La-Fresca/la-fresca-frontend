@@ -30,7 +30,7 @@ function QtySelector({ quantity, onQuantityChange }: QtySelectorProps) {
           type="text"
           value={quantity}
           readOnly
-          className="text-center w-16 ml-2 mr-2 py-1 bg-transparent border border-foodbg text-white rounded-md"
+          className="text-center w-16 ml-2 mr-2 py-1 bg-transparent border border-foodbg dark:text-white rounded-md"
         />
         <Button
           className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg min-w-0 h-8 w-1"

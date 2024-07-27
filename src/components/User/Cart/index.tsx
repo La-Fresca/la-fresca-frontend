@@ -64,7 +64,7 @@ function Index() {
 
   return (
     <div>
-      <div className="text-4xl text-white mx-auto max-w-screen-xl px-4 2xl:px-0">
+      <div className="text-4xl dark:text-white text-foodbg mx-auto max-w-screen-xl px-4 2xl:px-0">
         <b>Cart</b>
       </div>
       <div className="mt-2 mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -80,8 +80,8 @@ function Index() {
                 {items.map((item) => (
                   <div
                     key={item.id}
-                    className="rounded-xl border dark:border-foodbg dark:bg-foodbg p-2 shadow-sm md:px-6 backdrop-blur-md"
-                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.01)' }}
+                    className="rounded-xl dark:border dark:border-foodbg dark:bg-foodbg p-2 shadow-sm md:px-6 backdrop-blur-md"
+                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.01)', boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)'}}
                   >
                     <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                       <Checkbox
@@ -95,7 +95,7 @@ function Index() {
                       </a>
 
                       <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
-                        <Link to="#" color="foreground" className="text-xl text-white">
+                        <Link to="#" color="foreground" className="text-xl dark:text-white text-foodbg">
                           <b>{item.name}</b>
                         </Link>
                         <p>{item.description}</p>
@@ -133,8 +133,8 @@ function Index() {
                   {alsoBoughtItems.map((item) => (
                     <div
                       key={item.id}
-                      className="space-y-6 overflow-hidden rounded-xl border border-gray-200 dark:bg-foodbg dark:border-foodbg p-6 shadow-sm backdrop-blur-md"
-                      style={{ backgroundColor: 'rgba(255, 255, 255, 0.01)' }}
+                      className="space-y-6 overflow-hidden rounded-xl dark:border border-gray-200 dark:bg-foodbg dark:border-foodbg p-6 shadow-sm backdrop-blur-md"
+                      style={{ backgroundColor: 'rgba(255, 255, 255, 0.01)', boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)' }}
                     >
                       <a href="#" className="overflow-hidden rounded">
                         <img className="mx-auto h-44 w-44" src={Food} alt="food image" />
@@ -183,8 +183,8 @@ function Index() {
 
             <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full sticky leading-normal">
               <div
-                className="space-y-4 rounded-lg border border-gray-200 dark:border-foodbg dark:bg-foodbg p-4 shadow-sm sm:p-6 backdrop-blur-md"
-                style={{ backgroundColor: 'rgba(255, 255, 255, 0.01)' }}
+                className="space-y-4 rounded-lg dark:border border-gray-200 dark:border-foodbg dark:bg-foodbg p-4 shadow-sm sm:p-6 backdrop-blur-md"
+                style={{ backgroundColor: 'rgba(255, 255, 255, 0.01)', boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)'}}
               >
                 <p className="text-xl font-semibold text-gray-900 dark:text-white">Order summary</p>
 
