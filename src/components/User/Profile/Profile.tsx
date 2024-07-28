@@ -270,13 +270,8 @@ const Settings = () => {
                     />
                   </div>
 
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="Username"
-                    >
-                      BIO
-                    </label>
+                  {/* <div className="mb-5.5">
+                    
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
                         <svg
@@ -318,7 +313,7 @@ const Settings = () => {
                         defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet."
                       ></textarea>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="flex justify-end gap-4.5">
                     <button

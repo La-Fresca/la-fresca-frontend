@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Item } from '@components/Cashier/Dashboard/Type'; 
 import { TrashIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import PaymentMethodSelector from '@components/Cashier/Dashboard/Payment'
 import Logo from '@images/logo/la-fresca.png'
 import { CrossIcon } from 'node_modules/react-select/dist/declarations/src/components/indicators';
 
@@ -16,7 +17,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, removeItemFromOrder,
   const [customerName, setCustomerName] = useState<string>('');
 
   return (
-    <section className="w-1/3 p-4 rounded-xl shadow-lg bg-gray ml-5 h-[90vh]">
+    <section className="w-1/3 p-4 rounded-xl shadow-lg bg-gray ml-5 h-[100vh]">
     {/* <div className="flex items-center bg-transparent p-4 ml-15">
       <img src={Logo} alt="La Fresca Logo" className="h-10 w-10 mr-2" />
       <span className="text-black dark:text-white text-2xl font-noto-serif">La Fresca</span>
@@ -44,13 +45,15 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, removeItemFromOrder,
       </ul>
       </div>
       <div className="mt-4">
-        <p className="text-lg">Total: LKR {calculateTotal()}</p>
+        <p className="text-lg">Total:Rs.{calculateTotal()}</p>
         <p className="text-sm">Total Discount:None</p>
-        <p className="text-sm">Number Of Items:None</p>
+        <p className="text-sm">Number Of Items:None</p>    
+        <PaymentMethodSelector /> 
         <button className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400  text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700">
-          Pay LKR {calculateTotal()}
+          Pay Rs.{calculateTotal()}
         </button>
-      </div>
+        </div>
+
     </section>
   );
 };

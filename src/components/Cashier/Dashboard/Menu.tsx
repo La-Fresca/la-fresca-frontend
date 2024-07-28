@@ -51,7 +51,7 @@ const Menu: React.FC<MenuProps> = ({
           <div key={item.name} className="p-4 shadow hover:bg-slate-950 bg-black bg-opacity-50 border-spacing-3 rounded-lg transform hover:scale-105 border hover:border-yellow-500 ">
             <img src={Image} alt={item.name} className="mb-2 w-full h-32 object-cover rounded" />
             <h3 className="text-lg font-semibold">{item.name}</h3>
-            <p className="text-orange-500">LKR {item.price.toFixed(2)}</p>
+            <p className="text-orange-500">Rs.{item.price.toFixed(2)}</p>
             <button
               onClick={() => addItemToOrder(item)}
               className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400  text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700"
