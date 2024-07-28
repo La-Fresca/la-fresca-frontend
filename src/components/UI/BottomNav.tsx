@@ -1,7 +1,13 @@
 import React from 'react';
 import { FaHome, FaBoxOpen, FaUser } from 'react-icons/fa'; // Import the icons you need
+import { useNavigate } from 'react-router-dom';
 
 export const BottomNav = () => {
+    const navigate = useNavigate();
+    const goToHome = () => {
+        console.log('Go to home');
+        navigate('./deliveryperson/home');
+    }
   return (
     <div className="fixed z-50 w-[50%] h-16 max-w-lg -translate-x-1/2 bg-black border border-gray-200 rounded-full bottom-4 left-1/2 dark:bg-gray-700 dark:border-gray-600">
       <div className="grid h-full max-w-lg grid-cols-3 mx-auto">
@@ -9,7 +15,7 @@ export const BottomNav = () => {
           <FaHome className="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-[#FDB241] dark:group-hover:text-[#FDB241]" aria-hidden="true" />
           <span className="sr-only">Home</span>
         </button>
-        <div id="tooltip-home" role="tooltip" className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+        <div id="tooltip-home" role="tooltip" className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700" onClick={goToHome}>
           Home
           <div className="tooltip-arrow" data-popper-arrow></div>
         </div>
