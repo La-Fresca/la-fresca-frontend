@@ -57,6 +57,7 @@ import PhysicalOrder from '@pages/Cashier/PhysicalOrder';
 import UserProfile from '@components/User/Profile/Profile';
 import DeliveryHome from '@pages/DeliveryPerson/Home';
 import History from './pages/DeliveryPerson/History';
+import OrderQueue from './pages/DeliveryPerson/OrderQueue';
 
 
 const { refresh } = useAuth();
@@ -479,6 +480,17 @@ const routes = createRoutesFromElements(
               <>
                 <PageTitle title="Delivery | History" />
                 <History />
+              </>
+            }
+          />
+        </Route>
+        <Route path="queue">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Delivery | Order Queue" />
+                <OrderQueue />
               </>
             }
           />
