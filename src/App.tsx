@@ -43,10 +43,10 @@ import StorekeeperLayout from '@/layouts/StorekeeperLayout';
 import ViewGrns from '@/pages/Storekeeper/GrnList';
 import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
-import AssignWaiter from './pages/KitchenManager/AssignWaiters';
-import AssignDelivery from './pages/KitchenManager/AssignDelivery';
+import AssignWaiter from '@/pages/KitchenManager/AssignWaiters';
+import AssignDelivery from '@/pages/KitchenManager/AssignDelivery';
 import DeliveryLayout from '@/layouts/DeliveryLayout';
-import { OnDelivery } from './pages/DeliveryPerson/OnDelivery';
+import { OnDelivery } from '@/pages/DeliveryPerson/OnDelivery';
 import KitchenManagerDashboard from '@/pages/KitchenManager/Dashboard';
 import Unauthorized from '@/components/Unauthorized';
 import WaiterLayout from '@/layouts/WaiterLayout';
@@ -55,7 +55,10 @@ import ServedOrders from '@/pages/Waiter/servedOrders';
 import CashierLayout from '@/layouts/CashierLayout';
 import PhysicalOrder from '@pages/Cashier/PhysicalOrder';
 import UserProfile from '@components/User/Profile/Profile';
-
+import ViewInventory from '@/pages/Storekeeper/InventoryList';
+import AddInventory from '@/pages/Storekeeper/AddInventory';
+import EditInventory from '@/pages/Storekeeper/EditInventory';
+import ViewGrnByCollection from '@/pages/Storekeeper/GrnListByCollection';
 
 const { refresh } = useAuth();
 
@@ -354,6 +357,34 @@ const routes = createRoutesFromElements(
           element={
             <>
               <PageTitle title="Store Keeper | Inventory" />
+              <ViewInventory />
+            </>
+          }
+        />
+        <Route
+          path="add"
+          element={
+            <>
+              <PageTitle title="Storekeeper | Add Inventory" />
+              <AddInventory />
+            </>
+          }
+        />
+        <Route
+          path="view/:collection"
+          element={
+            <>
+              <PageTitle title="Storekeeper | Inventory" />
+              <ViewGrnByCollection />
+            </>
+          }
+        />
+        <Route
+          path="edit/:inventoryId"
+          element={
+            <>
+              <PageTitle title="Storekeeper | Edit Inventory" />
+              <EditInventory />
             </>
           }
         />
