@@ -59,6 +59,7 @@ const OrderQueue = () => {
                         cardImage={order.cardImage}
                         text={order.text}
                         key={index}
+                        buttonTitle="Pick Order"
                     />
                 ))}
                 {/* <OrderCard

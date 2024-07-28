@@ -1,18 +1,16 @@
 import React from "react";
-import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Divider, Image } from "@nextui-org/react";
 import { Button } from "flowbite-react";
 
-export default function orderCard({
-    title,
-    subtitle,
-    cardImage,
-    text
-}: {
-    title: string,
-    subtitle: string,
-    cardImage: string,
-    text: string
-}) {
+interface OrderCardProps {
+    title: string;
+    subtitle: string;
+    cardImage: string;
+    text: string;
+    buttonTitle?: string;
+}
+
+const OrderCard: React.FC<OrderCardProps> = ({ title, subtitle, cardImage, text, buttonTitle }) => {
     return (
         <Card className="max-w-[400px] border rounded-xl border-warning py-3">
             <CardHeader className="flex gap-3">
@@ -32,15 +30,17 @@ export default function orderCard({
                 </div>
             </CardHeader>
             
-            {/* <CardFooter>
-                <Link
-                    isExternal
-                    showAnchorIcon
-                    href="https://github.com/nextui-org/nextui"
-                >
-                    Visit source code on GitHub.
-                </Link>
-            </CardFooter> */}
+            <Divider />
+            <CardBody>
+                {buttonTitle && (
+                    <Button
+                        className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg px-10 !text-4xl">
+                        {buttonTitle}
+                    </Button>
+                )}
+            </CardBody>
         </Card>
     );
-}
+};
+
+export default OrderCard;
