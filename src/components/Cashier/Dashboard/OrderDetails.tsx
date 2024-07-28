@@ -17,14 +17,14 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, removeItemFromOrder,
   const [customerName, setCustomerName] = useState<string>('');
 
   return (
-    <section className="w-1/3 p-4 rounded-xl shadow-lg bg-gray ml-5 h-[100vh]">
+    <section className="w-1/3 p-4 rounded-xl shadow-lg bg-gray ml-5 h-[85vh]">
     {/* <div className="flex items-center bg-transparent p-4 ml-15">
       <img src={Logo} alt="La Fresca Logo" className="h-10 w-10 mr-2" />
       <span className="text-black dark:text-white text-2xl font-noto-serif">La Fresca</span>
 
     </div> */}
       <h2 className="text-2xl font-semibold mt-2  mb-8 text-center">Order Details</h2>
-      <div className="width-[100%] mt-2 !overflow-scroll h-[50vh] px-2">
+      <div className="width-[100%] mt-2 !overflow-scroll h-[30vh] px-2">
       <ul>
         {order.map((item, index) => (
           <li key={index} className="flex justify-between items-center mb-2 p-2 bg-yellow-400 bg-opacity-15 rounded-xl">
@@ -47,7 +47,8 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, removeItemFromOrder,
       <div className="mt-4">
         <p className="text-lg">Total:Rs.{calculateTotal()}</p>
         <p className="text-sm">Total Discount:None</p>
-        <p className="text-sm">Number Of Items:None</p>    
+        <p className="text-sm">Number Of Items:None</p> 
+        <h2 className='mt-5 font-semibold'>Payment Methods</h2>   
         <PaymentMethodSelector /> 
         <button className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400  text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700">
           Pay Rs.{calculateTotal()}

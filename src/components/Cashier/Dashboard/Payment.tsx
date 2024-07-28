@@ -14,7 +14,7 @@ const PaymentMethodSelector = () => {
       {methods.map((method) => (
         <button
           key={method.name}
-          className={`flex-col items-center p-2 rounded-xl justify-center border 
+          className={`flex-col items-center p-2 rounded-xl justify-center border  
             ${selectedMethod === method.name 
               ? 'bg-white text-black' 
               : 'bg-gray-900 text-white hover:bg-gray-700 items-center'}`}
