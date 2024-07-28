@@ -1,6 +1,46 @@
 import React from "react";
 import { DatePicker } from "@nextui-org/react";
 import OrderCard from "@/pages/DeliveryPerson/OrderCard";
+import { title } from "process";
+
+const ordersList = [
+    {
+        title: "#399392",
+        subtitle: "Nugegoda",
+        cardImage: "https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg",
+        text: "Completed at 12.00 PM"
+    },
+    {
+        title: "#322292",
+        subtitle: "Kollupitiya",
+        cardImage: "https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg",
+        text: "Completed at 11.00 AM"
+    },
+    {
+        title: "#399392",
+        subtitle: "Nugegoda",
+        cardImage: "https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg",
+        text: "Completed at 12.00 PM"
+    },
+    {
+        title: "#322292",
+        subtitle: "Kollupitiya",
+        cardImage: "https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg",
+        text: "Completed at 11.00 AM"
+    },
+    {
+        title: "#399392",
+        subtitle: "Nugegoda",
+        cardImage: "https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg",
+        text: "Completed at 12.00 PM"
+    },
+    {
+        title: "#322292",
+        subtitle: "Kollupitiya",
+        cardImage: "https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg",
+        text: "Completed at 11.00 AM"
+    }
+]
 
 const History = () => {
     return (
@@ -12,42 +52,14 @@ const History = () => {
             </div>
             
             <div className="flex flex-col h-[70%] overflow-auto gap-2">
-                <OrderCard
-                    title="#399392"
-                    subtitle="Nugegoda"
-                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    text="Completed at 12.00 PM"
-                />
-                <OrderCard
-                    title="#322292"
-                    subtitle="Kollupitiya"
-                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    text="Completed at 11.00 AM"
-                />
-                <OrderCard
-                    title="#399392"
-                    subtitle="Nugegoda"
-                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    text="Completed at 12.00 PM"
-                />
-                <OrderCard
-                    title="#322292"
-                    subtitle="Kollupitiya"
-                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    text="Completed at 11.00 AM"
-                />
-                <OrderCard
-                    title="#399392"
-                    subtitle="Nugegoda"
-                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    text="Completed at 12.00 PM"
-                />
-                <OrderCard
-                    title="#322292"
-                    subtitle="Kollupitiya"
-                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    text="Completed at 11.00 AM"
-                />
+                {ordersList.map((order, index) => (
+                    <OrderCard
+                        title={order.title}
+                        subtitle={order.subtitle}
+                        cardImage={order.cardImage}
+                        text={order.text}
+                    />
+                ))}
             </div>
 
             {/* <HomeCard title='Deliveries Queue' stat='0' />
