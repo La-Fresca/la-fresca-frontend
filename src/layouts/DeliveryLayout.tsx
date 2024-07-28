@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Header from '@components/BranchManager/Header/index';
 import Sidebar from '@components/BranchManager/Sidebar/index';
 import { BottomNav } from '@/components/UI/BottomNav';
+import MoblieTopNav from '@/components/UI/TopNav';
 
 const DeliveryLayout: React.FC = () => {
 
@@ -14,7 +15,7 @@ const DeliveryLayout: React.FC = () => {
         {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
           {/* <!-- ===== Header Start ===== --> */}
-          {/* <Header /> */}
+          <MoblieTopNav />
           {/* <!-- ===== Header End ===== --> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}

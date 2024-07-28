@@ -55,6 +55,9 @@ import ServedOrders from '@/pages/Waiter/servedOrders';
 import CashierLayout from '@/layouts/CashierLayout';
 import PhysicalOrder from '@pages/Cashier/PhysicalOrder';
 import UserProfile from '@components/User/Profile/Profile';
+import DeliveryHome from '@pages/DeliveryPerson/Home';
+import History from '@/pages/DeliveryPerson/History';
+import OrderQueue from '@/pages/DeliveryPerson/OrderQueue';
 import ViewInventory from '@/pages/Storekeeper/InventoryList';
 import AddInventory from '@/pages/Storekeeper/AddInventory';
 import EditInventory from '@/pages/Storekeeper/EditInventory';
@@ -486,6 +489,7 @@ const routes = createRoutesFromElements(
           element={
             <>
               <PageTitle title="Delivery | Home" />
+              <DeliveryHome />
             </>
           }
         />
@@ -494,8 +498,30 @@ const routes = createRoutesFromElements(
             index
             element={
               <>
-                <PageTitle title="Delivery | Path" />
+                <PageTitle title="Delivery | Ongoing" />
                 <OnDelivery />
+              </>
+            }
+          />
+        </Route>
+        <Route path="history">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Delivery | History" />
+                <History />
+              </>
+            }
+          />
+        </Route>
+        <Route path="queue">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Delivery | Order Queue" />
+                <OrderQueue />
               </>
             }
           />
