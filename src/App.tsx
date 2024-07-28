@@ -56,6 +56,7 @@ import CashierLayout from '@/layouts/CashierLayout';
 import PhysicalOrder from '@pages/Cashier/PhysicalOrder';
 import UserProfile from '@components/User/Profile/Profile';
 import DeliveryHome from '@pages/DeliveryPerson/Home';
+import History from './pages/DeliveryPerson/History';
 
 
 const { refresh } = useAuth();
@@ -465,8 +466,19 @@ const routes = createRoutesFromElements(
             index
             element={
               <>
-                <PageTitle title="Delivery | Path" />
+                <PageTitle title="Delivery | Ongoing" />
                 <OnDelivery />
+              </>
+            }
+          />
+        </Route>
+        <Route path="history">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Delivery | History" />
+                <History />
               </>
             }
           />

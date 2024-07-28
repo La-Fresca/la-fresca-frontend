@@ -13,7 +13,11 @@ const DeliveryHome = () => {
 
     return (
         <div className='mx-10 my-5 flex flex-col gap-5'>
-            <p className='text-xl font-bold'>Welcome to Ravindu!</p>
+            <div>
+                <p className='text-xl font-bold text-white'>Good morning Ravindu!</p>
+                <p className='text-lg'>Welcome to lafresca delivery app ...</p>
+            </div>
+
             <HomeCard title='Deliveries Queue' stat='0' />
             <HomeCard title='Completed Deliveries' stat='5' />
             <Button
