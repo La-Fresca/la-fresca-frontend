@@ -82,7 +82,7 @@ const LoginForm = () => {
           <PassINput register={register} fieldname="password" />
           <div className="space-y-6">
             <button
-              className="w-full py-2 mt-5 text-center text-white bg-yellow-500 rounded-md hover:bg-yellow-600"
+              className="w-full py-2 mt-5 text-center  text-black font-extrabold bg-yellow-500 rounded-md hover:bg-yellow-600"
               type="submit"
             >
               Register

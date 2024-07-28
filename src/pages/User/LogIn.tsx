@@ -14,7 +14,7 @@ const LoginPage = () => {
       {/* Content */}
       {/* Hidden on mobile */}
   <div className='flex '>
-    <div className="hidden w-1/2 md:flex md:items-center md:justify-center bg-white bg-opacity-20 backdrop-blur relative">
+    <div className="hidden w-1/2 md:flex md:items-center md:justify-center bg-yellow-900 bg-opacity-10 backdrop-blur-lg relative">
         <div className="w-2/3 p-6 m-auto bg-transparent bg-opacity-0 backdrop-blur-none rounded-md shadow-none lg:max-w-lg">
           <LoginForm />
         </div>
@@ -26,14 +26,14 @@ const LoginPage = () => {
       </div>
 
       <div className='mt-10 text-center'>
-        <h1 className='text-xl font-bold'>
-          Don't have an account yet?
+        <h1 className='text-xl text-white font-bold'>
+          Don't have an account yet ? 
         </h1>
-        <p className='my-5 mx-25'>
+        <p className='my-5 mx-25 text-white'>
         Register now to access personalized content, save your preferences, and enjoy exclusive discounts. Click the button to get started!
         </p>
 
-        <button className='bg-yellow-500 text-white rounded-md px-5 py-2'>
+        <button className='bg-yellow-500 text-black rounded-md px-5 py-2 font-extrabold'>
           Register
         </button>
       </div>       

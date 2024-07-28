@@ -79,6 +79,8 @@ const routes = createRoutesFromElements(
           </>
         }
       />
+      </Route>
+    <Route path="/">
       <Route
         path="login"
         element={
