@@ -3,15 +3,15 @@ import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from "@n
 import { Button } from "flowbite-react";
 
 export default function orderCard({
-    waiterId,
-    waiterName,
-    waiterImage,
-    waiterStatus
+    title,
+    subtitle,
+    cardImage,
+    text
 }: {
-    waiterId: number,
-    waiterName: string,
-    waiterImage: string,
-    waiterStatus: string
+    title: string,
+    subtitle: string,
+    cardImage: string,
+    text: string
 }) {
     return (
         <Card className="max-w-[400px] border rounded-xl border-warning py-3">
@@ -20,15 +20,15 @@ export default function orderCard({
                     alt="waiter"
                     height={100}
                     radius="sm"
-                    src={waiterImage}
+                    src={cardImage}
                     width={100}
                     style={{ objectFit: 'cover', width: '100%', height: '100%' }}
                 />
 
                 <div className="flex flex-col">
-                    <p className="text-xl font-medium">#2030332</p>
-                    <p className="text-slate-300 text-small text-default-500">Destination: Nugegoda</p>
-                    <p className="text-slate-300 text-small text-default-500">Completed at 1.30 PM</p>
+                    <p className="text-xl font-medium">{title}</p>
+                    <p className="text-slate-300 text-small text-default-500">Destination: {subtitle}</p>
+                    <p className="text-slate-300 text-small text-default-500">{text}</p>
                 </div>
             </CardHeader>
             

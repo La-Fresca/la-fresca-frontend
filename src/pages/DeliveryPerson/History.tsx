@@ -13,40 +13,40 @@ const History = () => {
             
             <div className="flex flex-col h-[70%] overflow-auto gap-2">
                 <OrderCard
-                    waiterId={1}
-                    waiterName="jone doe"
-                    waiterImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    waiterStatus="{waiter.waiterStatus}"
+                    title="#399392"
+                    subtitle="Nugegoda"
+                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
+                    text="Completed at 12.00 PM"
                 />
                 <OrderCard
-                    waiterId={1}
-                    waiterName="jone doe"
-                    waiterImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    waiterStatus="{waiter.waiterStatus}"
+                    title="#322292"
+                    subtitle="Kollupitiya"
+                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
+                    text="Completed at 11.00 AM"
                 />
                 <OrderCard
-                    waiterId={1}
-                    waiterName="jone doe"
-                    waiterImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    waiterStatus="{waiter.waiterStatus}"
+                    title="#399392"
+                    subtitle="Nugegoda"
+                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
+                    text="Completed at 12.00 PM"
                 />
                 <OrderCard
-                    waiterId={1}
-                    waiterName="jone doe"
-                    waiterImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    waiterStatus="{waiter.waiterStatus}"
+                    title="#322292"
+                    subtitle="Kollupitiya"
+                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
+                    text="Completed at 11.00 AM"
                 />
                 <OrderCard
-                    waiterId={1}
-                    waiterName="jone doe"
-                    waiterImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    waiterStatus="{waiter.waiterStatus}"
+                    title="#399392"
+                    subtitle="Nugegoda"
+                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
+                    text="Completed at 12.00 PM"
                 />
                 <OrderCard
-                    waiterId={1}
-                    waiterName="jone doe"
-                    waiterImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    waiterStatus="{waiter.waiterStatus}"
+                    title="#322292"
+                    subtitle="Kollupitiya"
+                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
+                    text="Completed at 11.00 AM"
                 />
             </div>
 

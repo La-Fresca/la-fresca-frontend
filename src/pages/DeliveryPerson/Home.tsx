@@ -11,6 +11,14 @@ const DeliveryHome = () => {
         navigate('./path');
     };
 
+    const goToHistory = () => {
+        navigate('./history');
+    };
+
+    const goToOrderQueue = () => {
+        navigate('./queue');
+    };
+
     return (
         <div className='mx-10 my-5 flex flex-col gap-5'>
             <div>
@@ -21,7 +29,7 @@ const DeliveryHome = () => {
             <HomeCard title='Deliveries Queue' stat='0' />
             <HomeCard title='Completed Deliveries' stat='5' />
             <Button
-                className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg px-10 !text-4xl">
+                className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg px-10 !text-4xl" onClick={goToHistory}>
                 Order history
             </Button>
             <Button
@@ -29,7 +37,7 @@ const DeliveryHome = () => {
                 Ongoing Order
             </Button>
             <Button
-                className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg px-10 !text-4xl">
+                className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg px-10 !text-4xl" onClick={goToOrderQueue}>
                 View Order Queue
             </Button>
         </div>

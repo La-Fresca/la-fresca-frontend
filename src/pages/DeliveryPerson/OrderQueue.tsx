@@ -2,6 +2,8 @@ import React from "react";
 import { DatePicker } from "@nextui-org/react";
 import OrderCard from "@/pages/DeliveryPerson/OrderCard";
 
+
+
 const OrderQueue = () => {
     return (
         <div className='mx-10 my-5 flex flex-col gap-5'>
@@ -13,40 +15,40 @@ const OrderQueue = () => {
             
             <div className="flex flex-col h-[70%] overflow-auto gap-2">
                 <OrderCard
-                    waiterId={1}
-                    waiterName="jone doe"
-                    waiterImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    waiterStatus="{waiter.waiterStatus}"
+                    title="#399392"
+                    subtitle="Nugegoda"
+                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
+                    text="5 minutes ago"
                 />
                 <OrderCard
-                    waiterId={1}
-                    waiterName="jone doe"
-                    waiterImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    waiterStatus="{waiter.waiterStatus}"
+                    title="#322292"
+                    subtitle="Kollupitiya"
+                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
+                    text="10 minutes ago"
                 />
                 <OrderCard
-                    waiterId={1}
-                    waiterName="jone doe"
-                    waiterImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    waiterStatus="{waiter.waiterStatus}"
+                    title="#399392"
+                    subtitle="Nugegoda"
+                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
+                    text="15 minutes ago"
                 />
                 <OrderCard
-                    waiterId={1}
-                    waiterName="jone doe"
-                    waiterImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    waiterStatus="{waiter.waiterStatus}"
+                    title="#322292"
+                    subtitle="Kollupitiya"
+                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
+                    text="20 minutes ago"
                 />
                 <OrderCard
-                    waiterId={1}
-                    waiterName="jone doe"
-                    waiterImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    waiterStatus="{waiter.waiterStatus}"
+                    title="#399392"
+                    subtitle="Nugegoda"
+                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
+                    text="25 minutes ago"
                 />
                 <OrderCard
-                    waiterId={1}
-                    waiterName="jone doe"
-                    waiterImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
-                    waiterStatus="{waiter.waiterStatus}"
+                    title="#322292"
+                    subtitle="Kollupitiya"
+                    cardImage="https://www.shutterstock.com/image-vector/paper-cup-filled-black-coffee-600nw-1801429321.jpg"
+                    text="30 minutes ago"
                 />
             </div>
 
