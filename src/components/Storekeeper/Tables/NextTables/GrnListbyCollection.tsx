@@ -44,11 +44,14 @@ export default function StockListByCollection({
   const { showSwal } = swalConfirm();
   const [stocks, setStocks] = useState<Stock[]>([]);
   const { getStockyByCollection, deleteStock } = useStocks();
+  const [loading, setLoading] = useState(true);
 
   const fetchStocks = async () => {
     try {
+      setLoading(true);
       const data = await getStockyByCollection(collectionName);
       setStocks(data);
+      setLoading(false);
     } catch (error: any) {
       console.error(error);
     }
@@ -327,7 +330,7 @@ export default function StockListByCollection({
     [],
   );
 
-  if (!stocks.length) {
+  if (loading) {
     return <div>Loading...</div>;
   }
   return (
