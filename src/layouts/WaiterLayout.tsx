@@ -2,18 +2,18 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from '@components/Waiter/Header/index';
 import Sidebar from '@components/Waiter/Sidebar/index';
-import BackgrounImage from '@images/cover/cover-03.png';
+
 
 const WaiterLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark"
-    style={{
-      backgroundImage: `url(${BackgrounImage})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-    }}
+    // style={{
+    //   backgroundImage: `url(${BackgrounImage})`,
+    //   backgroundSize: 'cover',
+    //   backgroundPosition: 'center',
+    // }}
     >
 
       {/* <!-- ===== Page Wrapper Start ===== --> */}

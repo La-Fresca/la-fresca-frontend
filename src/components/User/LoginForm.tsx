@@ -76,14 +76,16 @@ const LoginForm = () => {
             <input
               type="text"
               placeholder="Email Address"
-              className="w-full text-white border-b-2 border-white-700 bg-transparent focus:outline-none focus:ring-0"
+              className="w-full h-8 text-white border-b-2 rounded-md border-border-white-700 bg-transparent focus:outline-none focus:ring-0 mb-5"
               {...register('email')}
             />
-          </div>
+          
           <PassINput register={register} fieldname="password" />
           <div className="space-y-6">
+          </div>
+          
             <button
-              className="w-full py-2 mt-5 text-center text-white bg-yellow-500 rounded-md hover:bg-yellow-600"
+              className="w-full py-2 mt-5 text-center text-black font-extrabold bg-yellow-500 rounded-md hover:bg-yellow-600"
               type="submit"
             >
               Log In
