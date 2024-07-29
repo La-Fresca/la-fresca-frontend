@@ -66,7 +66,7 @@ function StockForm() {
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
       await addStock(data);
-      Navigate('/storekeeper/stocks');
+      Navigate('/storekeeper/stock');
     } catch (error: any) {
       console.error(error);
     }

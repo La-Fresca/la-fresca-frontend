@@ -37,7 +37,6 @@ export default function InventoryList() {
 
   const fetchInventory = async () => {
     try {
-      setLoading(true);
       const data = await getAllInventory();
       setInventory(data);
       setLoading(false);
