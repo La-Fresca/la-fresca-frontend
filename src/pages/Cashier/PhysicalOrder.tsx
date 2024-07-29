@@ -15,6 +15,7 @@ const initialItems: Item[] = [
   { name: 'Indomie Soto', price: 1300, category: 'Noodles', quantity: 1 },
   { name: 'Red Noodles', price: 700, category: 'Noodles', quantity: 1 },
   { name: 'Bread Toast with Egg', price: 800, category: 'Breakfast', quantity: 1 },
+  { name: 'Bread Toast with Egg', price: 800, category: 'Breakfast', quantity: 1 },
 ];
 
 const App: React.FC = () => {
