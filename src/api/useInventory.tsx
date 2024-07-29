@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 const API_URL = (import.meta as any).env.VITE_API_URL;
-import { Stock } from '@/types/stock';
+import { Inventory } from '@/types/inventory';
 
 function getToken() {
   try {
@@ -11,10 +11,10 @@ function getToken() {
   }
 }
 
-export const useStocks = () => {
-  const getAllStocks = async () => {
+export const useInventory = () => {
+  const getAllInventory = async () => {
     try {
-      const response = await fetch(`${API_URL}/stock`, {
+      const response = await fetch(`${API_URL}/stockCollection`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -32,9 +32,9 @@ export const useStocks = () => {
     }
   };
 
-  const addStock = async (data: Stock) => {
+  const addInventory = async (data: Inventory) => {
     try {
-      const response = await fetch(`${API_URL}/stock`, {
+      const response = await fetch(`${API_URL}/stockCollection`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -51,9 +51,9 @@ export const useStocks = () => {
     }
   };
 
-  const getStockById = async (id: string) => {
+  const getInventoryById = async (id: string) => {
     try {
-      const response = await fetch(`${API_URL}/stock/${id}`, {
+      const response = await fetch(`${API_URL}/stockCollection/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -71,9 +71,9 @@ export const useStocks = () => {
     }
   };
 
-  const updateStock = async (id: string, data: Stock) => {
+  const updateInventory = async (id: string, data: Inventory) => {
     try {
-      const response = await fetch(`${API_URL}/stock/${id}`, {
+      const response = await fetch(`${API_URL}/stockCollection/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -90,9 +90,9 @@ export const useStocks = () => {
     }
   };
 
-  const unsafeDeleteStock = async (id: string) => {
+  const unsafeDeleteInventory = async (id: string) => {
     try {
-      const response = await fetch(`${API_URL}/stock/${id}`, {
+      const response = await fetch(`${API_URL}/stockCollection/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -108,35 +108,11 @@ export const useStocks = () => {
     }
   };
 
-  const getStockyByCollection = async (collectionName: string) => {
-    try {
-      const response = await fetch(
-        `${API_URL}/stockCollection/viewCollection/${collectionName}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${getToken()}`,
-          },
-        },
-      );
-      if (!response.ok) {
-        throw new Error('Failed to fetch item');
-      } else {
-        return response.json();
-      }
-    } catch (error: any) {
-      console.error(error);
-      throw new Error(error);
-    }
-  };
-
   return {
-    getAllStocks,
-    addStock,
-    getStockById,
-    updateStock,
-    unsafeDeleteStock,
-    getStockyByCollection,
+    getAllInventory,
+    addInventory,
+    getInventoryById,
+    updateInventory,
+    unsafeDeleteInventory,
   };
 };

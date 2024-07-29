@@ -6,16 +6,16 @@ import { Item } from '@components/Cashier/Dashboard/Type';
 
 
 const initialItems: Item[] = [
-  { name: 'Cheese Pizza', price: 4.99, category: 'Breakfast',  quantity: 1 },
-  { name: 'Mutton Stu', price: 3.99, category: 'Breakfast', quantity: 1 },
-  { name: 'Ramen', price: 6.99, category: 'Pasta', quantity: 1 },
-  { name: 'Egg Fried Rice', price: 7.99, category: 'Rice Bowl', quantity: 1 },
-  { name: 'Cheese Burger', price: 9.99, category: 'Side Dish', quantity: 1 },
-  { name: 'Egg Soup ', price: 4.99, category: 'Soup', quantity: 1 },
-  { name: 'Indomie Soto', price: 12.99, category: 'Noodles', quantity: 1 },
-  { name: 'Red Noodles', price: 8.99, category: 'Noodles', quantity: 1 },
-  { name: 'Healthy Vegie Salad', price: 3.99, category: 'Salad', quantity: 1 },
-  { name: 'Bread Toast with Egg', price: 7.99, category: 'Breakfast', quantity: 1 },
+  { name: 'Cheese Pizza', price: 1500, category: 'Breakfast',  quantity: 1 },
+  { name: 'Mutton Stu', price: 1250, category: 'Breakfast', quantity: 1 },
+  { name: 'Ramen', price: 800, category: 'Pasta', quantity: 1 },
+  { name: 'Egg Fried Rice', price: 900, category: 'Rice Bowl', quantity: 1 },
+  { name: 'Cheese Burger', price: 750, category: 'Side Dish', quantity: 1 },
+  { name: 'Egg Soup ', price: 600, category: 'Soup', quantity: 1 },
+  { name: 'Indomie Soto', price: 1300, category: 'Noodles', quantity: 1 },
+  { name: 'Red Noodles', price: 700, category: 'Noodles', quantity: 1 },
+  { name: 'Bread Toast with Egg', price: 800, category: 'Breakfast', quantity: 1 },
+  { name: 'Bread Toast with Egg', price: 800, category: 'Breakfast', quantity: 1 },
 ];
 
 const App: React.FC = () => {

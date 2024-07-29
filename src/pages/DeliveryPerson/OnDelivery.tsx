@@ -54,7 +54,7 @@ export const OnDelivery = () => {
                 />
             </div>
             <div className="absolute bottom-0 left-0 w-full h-full flex justify-center items-end">
-                <div className="w-[80%] pt-2 bottom-0 bg-white bg-opacity-100 rounded-lg shadow-lg mb-30" onClick={onOpen}>
+                <div className="w-[90%] pt-2 bottom-0 bg-black text-white bg-opacity-100 rounded-lg shadow-lg mb-30" onClick={onOpen}>
                     <OrderCardSmall />
                 </div>
             </div>
@@ -63,7 +63,7 @@ export const OnDelivery = () => {
                     isOpen={isOpen}
                     placement="bottom-center"
                     onOpenChange={onOpenChange}
-                    className='bg-white border border-white rounded-lg'
+                    className='bg-black border border-black rounded-lg text-white'
                 >
                     <ModalContent>
                         {(onClose) => (
@@ -87,14 +87,14 @@ export const OnDelivery = () => {
                                         <p>Order Pickup time</p>
                                         <p>12.20 PM</p>
                                     </div>
-                                    <Divider className="my-4 bg-black h-0.5" />
+                                    <Divider className="my-4 bg-white h-0.5" />
 
                                     <p>Order Items</p>
                                     <div className="flex flex-col gap-2">
                                         {orderItemsRow}
                                     </div>
 
-                                    <Divider className="my-4 bg-black h-0.5" />
+                                    <Divider className="my-4 bg-white h-0.5" />
 
                                     <p>Order Summary</p>
                                     <div className="flex flex-row justify-between">

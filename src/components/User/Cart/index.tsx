@@ -3,8 +3,12 @@ import { Checkbox, Button } from '@nextui-org/react';
 import QtySelector from './QtySelector';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useCallback, useEffect } from 'react';
+import { useCart } from '@/api/useCart';
+import { Cart } from '@/types/cart';
 
 function Index() {
+  const { getCartByUserId } = useCart();
+  const [items, setItems] = useState<Cart[]>([]);
   const [selectedItems, setSelectedItems] = useState<Record<string, { price: number; quantity: number }>>({});
   const [price, setPrice] = useState<number>(0);
 
@@ -47,14 +51,14 @@ function Index() {
 
   const navigate = useNavigate();
 
-  const items = [
-    { id: '01', name: 'Cheese Pizza', description: 'Indulge in our classic Cheese Pizza', price: 3500 },
-    { id: '02', name: 'Saussage Pizza', description: 'Indulge in our classic Saussage Pizza', price: 4500 },
-    { id: '03', name: 'Margherita Pizza', description: 'Indulge in our classic Margherita Pizza', price: 3000 },
-    { id: '04', name: 'BBQ Chicken Pizza', description: 'Indulge in our BBQ Chicken Pizza', price: 4000 },
-    { id: '05', name: 'Black Chicken Pizza', description: 'Indulge in our Black Chicken Pizza', price: 4000 },
-    { id: '06', name: 'Hot & Spicy Chicken Pizza', description: 'Indulge in our Hot & Spicy Chicken Pizza', price: 4000 },
-  ];
+  // const items = [
+  //   { id: '01', name: 'Cheese Pizza', description: 'Indulge in our classic Cheese Pizza', price: 3500 },
+  //   { id: '02', name: 'Saussage Pizza', description: 'Indulge in our classic Saussage Pizza', price: 4500 },
+  //   { id: '03', name: 'Margherita Pizza', description: 'Indulge in our classic Margherita Pizza', price: 3000 },
+  //   { id: '04', name: 'BBQ Chicken Pizza', description: 'Indulge in our BBQ Chicken Pizza', price: 4000 },
+  //   { id: '05', name: 'Black Chicken Pizza', description: 'Indulge in our Black Chicken Pizza', price: 4000 },
+  //   { id: '06', name: 'Hot & Spicy Chicken Pizza', description: 'Indulge in our Hot & Spicy Chicken Pizza', price: 4000 },
+  // ];
 
   const alsoBoughtItems = [
     { id: '01', name: 'Cheese Pizza', description: 'Indulge in our classic Cheese Pizza', price: 3500 },

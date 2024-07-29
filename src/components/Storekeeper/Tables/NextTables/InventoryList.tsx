@@ -20,51 +20,44 @@ import { PlusIcon } from '@components/BranchManager/Tables/NextTable/PlusIcon';
 import { VerticalDotsIcon } from '@components/BranchManager/Tables/NextTable/VerticalDotsIcon';
 import { ChevronDownIcon } from '@components/BranchManager/Tables/NextTable/ChevronDownIcon';
 import { SearchIcon } from '@components/BranchManager/Tables/NextTable/SearchIcon';
-import { columns } from './columnStocks';
+import { columns } from './columnInventory';
 import { capitalize } from './utils';
 import { useNavigate } from 'react-router-dom';
-import { Stock } from '@/types/stock';
-import { useStocks } from '@/api/useStocks';
+import { Inventory } from '@/types/inventory';
+import { useInventory } from '@/api/useInventory';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 
-const INITIAL_VISIBLE_COLUMNS = [
-  'id',
-  'name',
-  'supplier',
-  'quantity',
-  'expire',
-  'actions',
-];
+const INITIAL_VISIBLE_COLUMNS = ['name', 'quantity', 'limit', 'actions'];
 
-export default function StockList() {
+export default function InventoryList() {
   const { showSwal } = swalConfirm();
-  const [stocks, setStocks] = useState<Stock[]>([]);
-  const { getAllStocks, unsafeDeleteStock } = useStocks();
+  const [inventory, setInventory] = useState<Inventory[]>([]);
+  const { getAllInventory, unsafeDeleteInventory } = useInventory();
 
-  const fetchStocks = async () => {
+  const fetchInventory = async () => {
     try {
-      const data = await getAllStocks();
-      setStocks(data);
+      const data = await getAllInventory();
+      setInventory(data);
     } catch (error: any) {
       console.error(error);
     }
   };
 
-  const handleDeleteStock = async (id: string) => {
+  const handleDeleteInventory = async (id: string) => {
     try {
-      await unsafeDeleteStock(id);
-      fetchStocks();
+      await unsafeDeleteInventory(id);
+      fetchInventory();
     } catch (error: any) {
       console.error(error);
     }
   };
 
   const handleConfirmDelete = (id: any) => {
-    showSwal(() => handleDeleteStock(id));
+    showSwal(() => handleDeleteInventory(id));
   };
 
   useEffect(() => {
-    fetchStocks();
+    fetchInventory();
   }, []);
 
   const navigate = useNavigate();
@@ -75,7 +68,7 @@ export default function StockList() {
   );
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: 'id',
+    column: 'name',
     direction: 'descending',
   });
   const [page, setPage] = useState(1);
@@ -91,15 +84,15 @@ export default function StockList() {
   }, [visibleColumns]);
 
   const filteredItems = useMemo(() => {
-    let filteredStocks = [...stocks];
+    let filteredInventory = [...inventory];
 
     if (hasSearchFilter) {
-      filteredStocks = filteredStocks.filter((stock) =>
-        stock.batchId.toLowerCase().includes(filterValue.toLowerCase()),
+      filteredInventory = filteredInventory.filter((inventory) =>
+        inventory.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    return filteredStocks;
-  }, [stocks, filterValue]);
+    return filteredInventory;
+  }, [inventory, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -111,78 +104,75 @@ export default function StockList() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = useMemo(() => {
-    return [...items].sort((a: Stock, b: Stock) => {
-      const first = a[sortDescriptor.column as keyof Stock] as number;
-      const second = b[sortDescriptor.column as keyof Stock] as number;
+    return [...items].sort((a: Inventory, b: Inventory) => {
+      const first = a[sortDescriptor.column as keyof Inventory] as number;
+      const second = b[sortDescriptor.column as keyof Inventory] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === 'descending' ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = useCallback((stock: Stock, columnKey: React.Key) => {
-    const cellValue = stock[columnKey as keyof Stock];
+  const renderCell = useCallback(
+    (inventory: Inventory, columnKey: React.Key) => {
+      const cellValue = inventory[columnKey as keyof Inventory];
 
-    switch (columnKey) {
-      case 'id':
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small">{stock.batchId}</p>
-          </div>
-        );
-      case 'name':
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">
-              {stock.stockCollectionName}
-            </p>
-          </div>
-        );
-      case 'supplier':
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">
-              {stock.supplierName}
-            </p>
-          </div>
-        );
-      case 'quantity':
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small">{stock.initialAmount}</p>
-          </div>
-        );
-      case 'expire':
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small">{stock.expiryDate}</p>
-          </div>
-        );
-      case 'actions':
-        return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown className="bg-background border-1 border-default-200">
-              <DropdownTrigger>
-                <Button isIconOnly radius="full" size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-400" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu className="bg-black text-white">
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem onClick={() => navigate(`edit/${stock.id}`)}>
-                  Edit
-                </DropdownItem>
-                <DropdownItem onClick={() => handleConfirmDelete(stock.id)}>
-                  Delete
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
-  }, []);
+      switch (columnKey) {
+        case 'name':
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small capitalize">{cellValue}</p>
+            </div>
+          );
+        case 'quantity':
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small">
+                {inventory.availableAmount}
+              </p>
+            </div>
+          );
+        case 'limit':
+          return (
+            <div className="flex flex-col">
+              <p className="text-bold text-small">{inventory.lowerLimit}</p>
+            </div>
+          );
+        case 'actions':
+          return (
+            <div className="relative flex justify-end items-center gap-2">
+              <Dropdown className="bg-background border-1 border-default-200">
+                <DropdownTrigger>
+                  <Button isIconOnly radius="full" size="sm" variant="light">
+                    <VerticalDotsIcon className="text-default-400" />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu className="bg-black text-white">
+                  <DropdownItem
+                    onClick={() => navigate(`view/${inventory.name}`)}
+                  >
+                    View
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => navigate(`edit/${inventory.id}`)}
+                  >
+                    Edit
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => handleConfirmDelete(inventory.id)}
+                  >
+                    Delete
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+          );
+        default:
+          return cellValue;
+      }
+    },
+    [],
+  );
 
   const onRowsPerPageChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -258,7 +248,7 @@ export default function StockList() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {stocks.length} inventory items
+            Total {inventory.length} grns
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -279,7 +269,7 @@ export default function StockList() {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    stocks.length,
+    inventory.length,
     hasSearchFilter,
   ]);
 
@@ -322,8 +312,7 @@ export default function StockList() {
     }),
     [],
   );
-
-  if (!stocks.length) {
+  if (!inventory.length) {
     return <div>Loading...</div>;
   }
   return (
@@ -358,7 +347,7 @@ export default function StockList() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No inventory items found'} items={sortedItems}>
+      <TableBody emptyContent={'No grns found'} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

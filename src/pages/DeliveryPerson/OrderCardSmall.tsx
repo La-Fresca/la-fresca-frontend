@@ -20,8 +20,8 @@ export default function OrderCardSmall() {
           className="object-cover"
         />
         <div className="flex flex-col">
-          <p className="text-md text-black font-extrabold">Order # 010102</p>
-          <p className="text-small text-default-600 text-black font-semibold">Thimbirigasyaya</p>
+          <p className="text-md font-extrabold">Order # 010102</p>
+          <p className="text-small text-default-600 font-semibold">Thimbirigasyaya</p>
         </div>
       </CardHeader>
       {/* <Divider/>

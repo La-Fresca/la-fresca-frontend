@@ -36,14 +36,18 @@ const INITIAL_VISIBLE_COLUMNS = [
   'actions',
 ];
 
-export default function StockList() {
+export default function StockListByCollection({
+  collectionName = '',
+}: {
+  collectionName?: string;
+}) {
   const { showSwal } = swalConfirm();
   const [stocks, setStocks] = useState<Stock[]>([]);
-  const { getAllStocks, unsafeDeleteStock } = useStocks();
+  const { getStockyByCollection, unsafeDeleteStock } = useStocks();
 
   const fetchStocks = async () => {
     try {
-      const data = await getAllStocks();
+      const data = await getStockyByCollection(collectionName);
       setStocks(data);
     } catch (error: any) {
       console.error(error);
