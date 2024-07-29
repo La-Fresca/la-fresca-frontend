@@ -301,7 +301,7 @@ export default function FoodList() {
     );
   }, [page, pages]);
 
-  if (!foods.length) {
+  if (!foods) {
     return <div>Loading...</div>;
   }
   return (

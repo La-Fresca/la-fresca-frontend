@@ -32,7 +32,7 @@ const INITIAL_VISIBLE_COLUMNS = ['name', 'price', 'items', 'actions'];
 export default function ComboList() {
   const { showSwal } = swalConfirm();
   const [combos, setCombos] = useState<FoodCombo[]>([]);
-  const { getAllCombos, unsafeDeleteCombo } = useCombos();
+  const { getAllCombos, deleteCombo } = useCombos();
 
   const fetchCombos = async () => {
     try {
@@ -45,7 +45,7 @@ export default function ComboList() {
 
   const handleDeleteCombo = async (id: string) => {
     try {
-      await unsafeDeleteCombo(id);
+      await deleteCombo(id);
       fetchCombos();
     } catch (error: any) {
       console.error(error);

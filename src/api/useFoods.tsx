@@ -93,7 +93,7 @@ export const useFoods = () => {
 
   const deleteFood = async (id: string) => {
     try {
-      const response = await fetch(`${API_URL}/food/${id}`, {
+      const response = await fetch(`${API_URL}/food/delete/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -101,9 +101,6 @@ export const useFoods = () => {
         },
         body: JSON.stringify({
           deleted: 1,
-          available: 0,
-          discountStatus: 0,
-          rating: 0,
         }),
       });
       if (!response.ok) {
