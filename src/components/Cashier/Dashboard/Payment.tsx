@@ -4,9 +4,9 @@ const PaymentMethodSelector = () => {
   const [selectedMethod, setSelectedMethod] = useState('Cash');
 
   const methods = [
-    { name: 'Cash', icon: '💵' },
-    { name: 'Card', icon: '💳' },
-    { name: 'Wallet', icon: '👛' },
+    { name: ' Cash', icon: '💵' },
+    { name: ' Card', icon: '💳' },
+    { name: ' Wallet', icon: '👛' },
   ];
 
   return (
@@ -15,9 +15,11 @@ const PaymentMethodSelector = () => {
         <button
           key={method.name}
           className={`flex-col items-center p-2 rounded-xl justify-center border  
-            ${selectedMethod === method.name 
-              ? 'bg-white text-black' 
-              : 'bg-gray-900 text-white hover:bg-gray-700 items-center'}`}
+            ${
+              selectedMethod === method.name
+                ? 'bg-white text-black'
+                : 'bg-gray-900 text-white hover:bg-gray-700 items-center'
+            }`}
           onClick={() => setSelectedMethod(method.name)}
         >
           <span className="text-2xl">{method.icon}</span>
