@@ -90,6 +90,27 @@ export const useStocks = () => {
     }
   };
 
+  const deleteStock = async (id: string) => {
+    try {
+      const response = await fetch(`${API_URL}/stock/delete/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify({
+          deleted: 1,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete stock');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   const unsafeDeleteStock = async (id: string) => {
     try {
       const response = await fetch(`${API_URL}/stock/${id}`, {
@@ -136,6 +157,7 @@ export const useStocks = () => {
     addStock,
     getStockById,
     updateStock,
+    deleteStock,
     unsafeDeleteStock,
     getStockyByCollection,
   };

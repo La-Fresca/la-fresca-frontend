@@ -32,7 +32,7 @@ const INITIAL_VISIBLE_COLUMNS = ['name', 'quantity', 'limit', 'actions'];
 export default function InventoryList() {
   const { showSwal } = swalConfirm();
   const [inventory, setInventory] = useState<Inventory[]>([]);
-  const { getAllInventory, unsafeDeleteInventory } = useInventory();
+  const { getAllInventory, deleteInventory } = useInventory();
 
   const fetchInventory = async () => {
     try {
@@ -45,7 +45,7 @@ export default function InventoryList() {
 
   const handleDeleteInventory = async (id: string) => {
     try {
-      await unsafeDeleteInventory(id);
+      await deleteInventory(id);
       fetchInventory();
     } catch (error: any) {
       console.error(error);

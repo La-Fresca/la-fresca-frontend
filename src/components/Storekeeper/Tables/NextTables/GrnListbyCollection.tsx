@@ -43,7 +43,7 @@ export default function StockListByCollection({
 }) {
   const { showSwal } = swalConfirm();
   const [stocks, setStocks] = useState<Stock[]>([]);
-  const { getStockyByCollection, unsafeDeleteStock } = useStocks();
+  const { getStockyByCollection, deleteStock } = useStocks();
 
   const fetchStocks = async () => {
     try {
@@ -56,7 +56,7 @@ export default function StockListByCollection({
 
   const handleDeleteStock = async (id: string) => {
     try {
-      await unsafeDeleteStock(id);
+      await deleteStock(id);
       fetchStocks();
     } catch (error: any) {
       console.error(error);
@@ -172,7 +172,7 @@ export default function StockListByCollection({
                 </Button>
               </DropdownTrigger>
               <DropdownMenu className="bg-black text-white">
-                <DropdownItem>View</DropdownItem>
+                {/* <DropdownItem>View</DropdownItem> */}
                 <DropdownItem onClick={() => navigate(`edit/${stock.id}`)}>
                   Edit
                 </DropdownItem>
