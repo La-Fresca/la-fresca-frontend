@@ -5,23 +5,37 @@ import { Link } from 'react-router-dom';
 import { Tabs, Tab, Card, CardBody } from '@nextui-org/react';
 import { useFoods } from '@/api/useFoods';
 import { useCombos } from '@/api/useCombos';
+import { useCategories } from '@/api/useCategories';
 import { Food } from '@/types/food';
 import { FoodCombo } from '@/types/combo';
+import { Category } from '@/types/category';
 
 function index() {
+  const { getAllCategories } = useCategories();
   const [combos, setCombos] = useState<FoodCombo[]>([]);
   const [foods, setFoods] = useState<Food[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const { getAllFoods } = useFoods();
   const { getAllCombos } = useCombos();
 
   const fetchFoods = async () => {
     try {
       const data = await getAllFoods();
+      console.log(data);
       setFoods(data);
     } catch (error: any) {
       console.error(error);
     }
   };
+
+  const fetchCategories = async () => {
+    try {
+      const data = await getAllCategories();
+      setCategories(data);
+    } catch (error: any) {
+      console.error(error);
+    }
+  }
 
   const fetchCombos = async () => {
     try {
@@ -35,17 +49,27 @@ function index() {
   useEffect(() => {
     fetchFoods();
     fetchCombos();
+    fetchCategories();
   }, []);
 
   if (!foods) {
     return <div>Loading...</div>;
   }
 
+
   return (
     <div className="mx-auto max-w-screen-xl flex w-full flex-col">
       <Tabs aria-label="Options" variant="underlined">
         <Tab key="FoodItems" title="Food Items">
-          <Card>
+          <div>
+            <div className="text-4xl text-foodbg dark:text-white mx-auto max-w-screen-xl px-4 2xl:px-0">
+              <b>Food Items</b>
+            </div>
+            <div className="mt-2 mx-auto max-w-screen px-4 2xl:px-0">
+              Not ready to checkout? Continue Shopping
+            </div>
+          </div>
+          {/* <Card>
             <CardBody>
               <div>
                 <div className="text-4xl text-foodbg dark:text-white mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -111,7 +135,21 @@ function index() {
                 </div>
               </div>
             </CardBody>
-          </Card>
+          </Card> */}
+
+          <Tabs aria-label="Options" variant="underlined">
+            {categories.map((category: any) => {
+              return (
+                <Tab key={category.id} title={category.name}>
+                  <Card>
+                    <CardBody>
+                      {category.name}
+                    </CardBody>
+                  </Card>
+                </Tab>
+              );
+            })}
+          </Tabs>
         </Tab>
         <Tab key="FoodCombos" title="Food Combos">
           <Card>
