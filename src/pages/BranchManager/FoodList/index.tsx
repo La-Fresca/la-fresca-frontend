@@ -64,6 +64,7 @@ export default function FoodList() {
   const { showSwal } = swalConfirm();
   const [inputValue, setInputValue] = React.useState('');
   const { getAllFoods } = useFoods();
+  const [loading, setLoading] = React.useState(true);
   const { deleteFood } = useFoods();
   const navigate = useNavigate();
   const [foods, setFoods] = React.useState<Food[]>([]);
@@ -80,9 +81,11 @@ export default function FoodList() {
   const hasSearchFilter = Boolean(filterValue);
 
   const fetchItems = async () => {
+    setLoading(true);
     try {
       const data = await getAllFoods();
       setFoods(data);
+      setLoading(false);
     } catch (error: any) {
       console.error(error);
     }
@@ -301,7 +304,7 @@ export default function FoodList() {
     );
   }, [page, pages]);
 
-  if (!foods) {
+  if (loading) {
     return <div>Loading...</div>;
   }
   return (

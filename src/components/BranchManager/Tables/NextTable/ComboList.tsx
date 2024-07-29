@@ -33,11 +33,14 @@ export default function ComboList() {
   const { showSwal } = swalConfirm();
   const [combos, setCombos] = useState<FoodCombo[]>([]);
   const { getAllCombos, deleteCombo } = useCombos();
+  const [loading, setLoading] = useState(true);
 
   const fetchCombos = async () => {
     try {
+      setLoading(true);
       const data = await getAllCombos();
       setCombos(data);
+      setLoading(false);
     } catch (error: any) {
       console.error(error);
     }
@@ -308,7 +311,7 @@ export default function ComboList() {
     );
   }, [items.length, page, pages, hasSearchFilter]);
 
-  if (!combos.length) {
+  if (loading) {
     return <div>Loading...</div>;
   }
   return (

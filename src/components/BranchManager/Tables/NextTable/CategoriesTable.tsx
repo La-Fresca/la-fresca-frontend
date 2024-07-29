@@ -41,11 +41,14 @@ export default function CategoriesTable() {
   const { showSwal } = swalConfirm();
   const [categories, setCategories] = useState<Category[]>([]);
   const { getAllCategories, unsafeDeleteCategory } = useCategories();
+  const [loading, setLoading] = useState(true);
 
   const fetchCategories = async () => {
     try {
+      setLoading(true);
       const data = await getAllCategories();
       setCategories(data);
+      setLoading(false);
     } catch (error: any) {
       console.error(error);
     }
@@ -355,7 +358,7 @@ export default function CategoriesTable() {
     );
   }, [items.length, page, pages, hasSearchFilter]);
 
-  if (!categories.length) {
+  if (loading) {
     return <div>Loading...</div>;
   }
   return (
