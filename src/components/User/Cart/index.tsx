@@ -1,50 +1,43 @@
+import { useState, useEffect } from 'react';
 import Food from '@images/product/pizza.png';
 import { Checkbox } from '@nextui-org/react';
 import QtySelector from './QtySelector';
 import { Link } from 'react-router-dom';
 import { Button } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
+import { useCart } from '@/api/useCart';
+import { CartItem } from '@/types/cartItem';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
 function index() {
   const navigate = useNavigate();
-  const item = [
-    {
-      id: '01',
-      name: 'Cheese Pizza',
-      description: 'Indulge in our classic Cheese Pizza',
-      price: 3500,
-    },
-    {
-      id: '02',
-      name: 'Saussage Pizza',
-      description: 'Indulge in our classic Cheese Pizza',
-      price: 4500,
-    },
-    {
-      id: '03',
-      name: 'Margherita Pizza',
-      description: 'Indulge in our classic Cheese Pizza',
-      price: 3000,
-    },
-    {
-      id: '04',
-      name: 'BBQ Chicken Pizza',
-      description: 'Indulge in our classic Cheese Pizza',
-      price: 4000,
-    },
-    {
-      id: '05',
-      name: 'Black Chicken Pizza',
-      description: 'Indulge in our classic Cheese Pizza',
-      price: 4000,
-    },
-    {
-      id: '06',
-      name: 'Hot & Spicy Chicken Pizza',
-      description: 'Indulge in our classic Cheese Pizza',
-      price: 4000,
-    },
-  ];
+  const userId = (useAuthUser() as { userId: string }).userId;
+  const { getCartByUserId, removeCartItem } = useCart();
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchCart = async () => {
+    try {
+      const data = await getCartByUserId(userId);
+      setCartItems(data);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deleteCartItem = async (id: string) => {
+    try {
+      await removeCartItem(id);
+      fetchCart();
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
   const alsoBoughtItems = [
     {
@@ -67,6 +60,9 @@ function index() {
     },
   ];
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div>
       <div className="text-4xl text-white mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -82,7 +78,7 @@ function index() {
             <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
               {/* Card set start */}
               <div className="space-y-6">
-                {item.map((_: any) => {
+                {cartItems.map((_: CartItem) => {
                   return (
                     <div
                       className="rounded-xl border dark:border-foodbg dark:bg-foodbg p-2 shadow-sm md:px-6 backdrop-blur-md"
@@ -97,7 +93,7 @@ function index() {
                         <a href="#" className="shrink-0 md:order-1">
                           <img
                             className="h-30 w-30"
-                            src={Food}
+                            src={_.image}
                             alt="imac image"
                           />
                         </a>
@@ -115,17 +111,26 @@ function index() {
 
                         <div className="flex items-center justify-between md:order-3 md:justify-end">
                           <div className="flex items-center">
-                            <QtySelector />
+                            <QtySelector quantity={_.quantity} />
                           </div>
 
                           <div className="text-end md:order-4 md:w-10">
                             <p className="text-base font-bold text-gray-900 dark:text-white">
                               <span className="pr-2 text-orange-500">Rs.</span>
-                              {_.price}
+                              {_.itemTotalPrice}
                             </p>
                           </div>
 
-                          <div className="text-end md:order-5 md:w-30">X</div>
+                          <div
+                            className="text-end md:order-5 md:w-30"
+                            onClick={() => {
+                              if (_.id != undefined) {
+                                deleteCartItem(_.id);
+                              }
+                            }}
+                          >
+                            X
+                          </div>
                         </div>
                       </div>
                     </div>

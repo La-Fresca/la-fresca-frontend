@@ -1,8 +1,12 @@
 import { Button } from '@nextui-org/react';
 import { useState } from 'react';
 
-function QtySelector() {
-  const [count, setCount] = useState<number>(1);
+interface QtySelectorProps {
+  quantity: number;
+}
+
+const QtySelector: React.FC<QtySelectorProps> = ({ quantity }) => {
+  const [count, setCount] = useState<number>(quantity);
 
   const handleIncrement = () => {
     setCount((prevCount) => prevCount + 1);
@@ -41,6 +45,6 @@ function QtySelector() {
       </div>
     </div>
   );
-}
+};
 
 export default QtySelector;
