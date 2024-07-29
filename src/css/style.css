@@ -229,3 +229,11 @@ span.flatpickr-weekday,
     )
     1;
 }
+
+
+
+/* Add this to your CSS file or within a <style> tag in your component */
+.input-focus:focus {
+  border-color: #FDB241 !important; /* Yellow border */
+  outline: none; /* Remove default outline */
+}
