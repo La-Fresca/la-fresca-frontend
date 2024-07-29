@@ -111,7 +111,7 @@ export const useStocks = () => {
   const getStockyByCollection = async (collectionName: string) => {
     try {
       const response = await fetch(
-        `${API_URL}/stockCollection/viewCollection/${collectionName}`,
+        `${API_URL}/stock/collection/${collectionName}`,
         {
           method: 'GET',
           headers: {
