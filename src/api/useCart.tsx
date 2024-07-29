@@ -1,4 +1,4 @@
-import { Cart, CartItem, CustomFeature } from '@/types/cart';
+import { Cart } from '@/types/cart';
 import Cookies from 'js-cookie';
 
 const API_URL = (import.meta as any).env.VITE_API_URL;

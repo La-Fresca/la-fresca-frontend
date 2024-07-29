@@ -21,7 +21,7 @@ type CategoryPicker = {
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
-  category: z.array(z.string()).min(1, { message: 'Category is required' }),
+  categories: z.array(z.string()).min(1, { message: 'Categories is required' }),
   description: z.string().optional(),
   price: z.coerce
     .number()
@@ -85,7 +85,7 @@ function EditForm({ id = '' }: { id?: string }) {
       if (data) {
         setItem(data);
         setValue('name', data.name);
-        setValue('category', data.category || []);
+        setValue('categories', data.categories || []);
         setValue('description', data.description || '');
         setValue('price', data.price);
         setValue('image', data.image);
