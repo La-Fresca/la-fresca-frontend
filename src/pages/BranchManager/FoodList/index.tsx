@@ -12,28 +12,15 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Chip,
   Pagination,
-  Selection,
   ChipProps,
-  SortDescriptor,
 } from '@nextui-org/react';
-import { PlusIcon } from './PlusIcon';
 import { VerticalDotsIcon } from './VerticalDotsIcon';
-import { ChevronDownIcon } from './ChevronDownIcon';
 import { SearchIcon } from './SearchIcon';
-import { capitalize } from './utils';
-import { Navigate, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 import { Food } from '@/types/food';
 import { useFoods } from '@/api/useFoods';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
-
-const statusColorMap: Record<string, ChipProps['color']> = {
-  active: 'success',
-  paused: 'danger',
-  vacation: 'warning',
-};
 
 const INITIAL_VISIBLE_COLUMNS = [
   'foodId',
@@ -304,19 +291,43 @@ export default function FoodList() {
     );
   }, [page, pages]);
 
+  const classNames = React.useMemo(
+    () => ({
+      wrapper: ['max-h-[382px]', 'max-w-3xl'],
+      th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],
+      td: [
+        // changing the rows border radius
+        // first
+        'group-data-[first=true]:first:before:rounded-none',
+        'group-data-[first=true]:last:before:rounded-none',
+        // middle
+        'group-data-[middle=true]:before:rounded-none',
+        // last
+        'group-data-[last=true]:first:before:rounded-none',
+        'group-data-[last=true]:last:before:rounded-none',
+      ],
+    }),
+    [],
+  );
+
   if (loading) {
     return <div>Loading...</div>;
   }
   return (
     <Table
+      isCompact
+      removeWrapper
       aria-label="Example table with custom cells, pagination and sorting"
-      isHeaderSticky
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
+      checkboxesProps={{
+        classNames: {
+          wrapper: 'after:bg-foreground after:text-background text-background',
+        },
+      }}
+      classNames={classNames}
       topContent={topContent}
-      // sortDescriptor={sortDescriptor}
-      // onSortChange={setSortDescriptor}
-      className="w-full"
+      topContentPlacement="outside"
     >
       <TableHeader columns={headerColumns}>
         {(column) => (
