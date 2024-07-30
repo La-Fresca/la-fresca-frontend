@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, menu, user } from '@nextui-org/react';
+import { Button } from '@nextui-org/react';
 import { useFoods } from '@/api/useFoods';
 import { useCart } from '@/api/useCart';
 import { Food } from '@/types/food';
@@ -13,7 +13,7 @@ import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { Cart } from '@/types/cart';
 import { useNavigate } from 'react-router-dom';
 import { swalSuccess } from '@/components/UI/SwalSuccess';
-import { delay } from 'framer-motion';
+import QtySelector from './QtySelector';
 
 interface Props {
   id: string | undefined;
@@ -41,6 +41,7 @@ function FoodForm({ id }: Props) {
   const { addCartItem } = useCart();
   const [food, setFood] = useState<Food>();
   const [price, setPrice] = useState<number>(1);
+  const [additionalPrices, setAdditionalPrices] = useState<number>(0);
 
   const {
     register,
@@ -106,6 +107,10 @@ function FoodForm({ id }: Props) {
     }
   };
 
+  const adjustAdditionalPrice = (priceDelta: number) => {
+    setAdditionalPrices((prev) => prev + priceDelta);
+  };
+
   if (!food) {
     return <div>Loading...</div>;
   }
@@ -136,43 +141,14 @@ function FoodForm({ id }: Props) {
 
           <div className="font-bold text-white pt-5 text-2xl">
             <span className="pr-2 text-orange-500">Rs.</span>
-            {price * (watch('quantity') || 1)}
+            {price * (watch('quantity') || 1) + additionalPrices}
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
-            <div className="flex items-center justify-between w-60">
-              <div className="text-white mt-2">
-                <b>Quantity:</b>
-              </div>
-              <div className="mt-3">
-                <Button
-                  className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg min-w-0 h-8"
-                  onClick={() =>
-                    setValue(
-                      'quantity',
-                      Math.max((watch('quantity') || 1) - 1, 1),
-                    )
-                  }
-                >
-                  <b>-</b>
-                </Button>
-                <input
-                  type="text"
-                  value={watch('quantity') || 1}
-                  readOnly
-                  className="text-center w-16 ml-2 mr-2 py-1 bg-transparent border border-white text-white rounded-md"
-                  {...register('quantity')}
-                />
-                <Button
-                  className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg min-w-0 h-8"
-                  onClick={() =>
-                    setValue('quantity', (watch('quantity') || 1) + 1)
-                  }
-                >
-                  <b>+</b>
-                </Button>
-              </div>
-            </div>
+            <QtySelector
+              count={watch('quantity') || 1}
+              setCount={(newCount) => setValue('quantity', newCount)}
+            />
 
             <div className="mt-8">
               {fields.map((field, index) => (
@@ -185,9 +161,7 @@ function FoodForm({ id }: Props) {
                   setSelectedIndex={(level) => {
                     setValue(`customFeatures.${index}.level`, level);
                   }}
-                  setPrice={(newPrice) => {
-                    setPrice(newPrice);
-                  }}
+                  adjustPrice={adjustAdditionalPrice}
                 />
               ))}
             </div>

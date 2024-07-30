@@ -7,7 +7,7 @@ interface Props {
   defaultPrice: number;
   prices: number[];
   setSelectedIndex: (index: number) => void;
-  setPrice: (newPrice: number) => void;
+  adjustPrice: (priceDelta: number) => void;
 }
 
 export default function TextButtonGroup({
@@ -16,16 +16,25 @@ export default function TextButtonGroup({
   defaultPrice,
   prices,
   setSelectedIndex,
-  setPrice,
+  adjustPrice,
 }: Props) {
   const [localSelectedIndex, setLocalSelectedIndex] = useState<number | null>(
     null,
   );
 
-  const handleIncrement = (index: number) => {
-    setPrice(defaultPrice + prices[index]);
-    setSelectedIndex(index);
-    setLocalSelectedIndex(index);
+  const handleSelect = (index: number) => {
+    if (localSelectedIndex === index) {
+      adjustPrice(-prices[index]);
+      setSelectedIndex(-1);
+      setLocalSelectedIndex(null);
+    } else {
+      if (localSelectedIndex !== null) {
+        adjustPrice(-prices[localSelectedIndex]);
+      }
+      adjustPrice(prices[index]);
+      setSelectedIndex(index);
+      setLocalSelectedIndex(index);
+    }
   };
 
   return (
@@ -51,7 +60,7 @@ export default function TextButtonGroup({
             <Button
               key={index}
               className={buttonClass}
-              onClick={() => handleIncrement(index)}
+              onClick={() => handleSelect(index)}
             >
               {level}
             </Button>
