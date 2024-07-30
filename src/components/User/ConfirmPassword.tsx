@@ -19,7 +19,7 @@ const PassINput: FC<PassInputProps> = ({ register, fieldname }) => {
     <div className="relative">
       <input
         type={showPassword ? 'text' : 'password'}
-        placeholder="Password"
+        placeholder=" confirm Password"
         className=" h-8 w-full rounded-lg  text-white border-b-2  border-white-700 bg-transparent focus:outline-none focus:ring-0"
         {...register(fieldname)}
       />
