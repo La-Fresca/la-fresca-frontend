@@ -4,7 +4,7 @@ import { Button } from "flowbite-react";
 
 interface OrderCardProps {
     title: string;
-    subtitle: string;
+    subtitle: string | undefined;
     cardImage: string;
     text: string;
     buttonTitle?: string;
