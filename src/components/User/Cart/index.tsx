@@ -4,15 +4,32 @@ import { Checkbox, Button } from '@nextui-org/react';
 import QtySelector from './QtySelector';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '@/api/useCart';
-import { Cart } from '@/types/cart';
+import { CartItem } from '@/types/cartItem';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
 function Index() {
+  const userId = (useAuthUser() as { userId: string }).userId;
   const { getCartByUserId } = useCart();
-  const [items, setItems] = useState<Cart[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  // const [items, setItems] = useState<Cart[]>([]);
   const [selectedItems, setSelectedItems] = useState<
     Record<string, { price: number; quantity: number }>
   >({});
   const [price, setPrice] = useState<number>(0);
+
+  const fetchCart = async () => {
+    try {
+      const cart = await getCartByUserId(userId);
+      setCartItems(cart);
+      console.log(cart);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
   // Function to calculate the total price
   const calculateTotalPrice = useCallback(() => {
@@ -60,14 +77,44 @@ function Index() {
 
   const navigate = useNavigate();
 
-  // const items = [
-  //   { id: '01', name: 'Cheese Pizza', description: 'Indulge in our classic Cheese Pizza', price: 3500 },
-  //   { id: '02', name: 'Saussage Pizza', description: 'Indulge in our classic Saussage Pizza', price: 4500 },
-  //   { id: '03', name: 'Margherita Pizza', description: 'Indulge in our classic Margherita Pizza', price: 3000 },
-  //   { id: '04', name: 'BBQ Chicken Pizza', description: 'Indulge in our BBQ Chicken Pizza', price: 4000 },
-  //   { id: '05', name: 'Black Chicken Pizza', description: 'Indulge in our Black Chicken Pizza', price: 4000 },
-  //   { id: '06', name: 'Hot & Spicy Chicken Pizza', description: 'Indulge in our Hot & Spicy Chicken Pizza', price: 4000 },
-  // ];
+  const items = [
+    {
+      id: '01',
+      name: 'Cheese Pizza',
+      description: 'Indulge in our classic Cheese Pizza',
+      price: 3500,
+    },
+    {
+      id: '02',
+      name: 'Saussage Pizza',
+      description: 'Indulge in our classic Saussage Pizza',
+      price: 4500,
+    },
+    {
+      id: '03',
+      name: 'Margherita Pizza',
+      description: 'Indulge in our classic Margherita Pizza',
+      price: 3000,
+    },
+    {
+      id: '04',
+      name: 'BBQ Chicken Pizza',
+      description: 'Indulge in our BBQ Chicken Pizza',
+      price: 4000,
+    },
+    {
+      id: '05',
+      name: 'Black Chicken Pizza',
+      description: 'Indulge in our Black Chicken Pizza',
+      price: 4000,
+    },
+    {
+      id: '06',
+      name: 'Hot & Spicy Chicken Pizza',
+      description: 'Indulge in our Hot & Spicy Chicken Pizza',
+      price: 4000,
+    },
+  ];
 
   const alsoBoughtItems = [
     {
@@ -105,7 +152,7 @@ function Index() {
             <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
               {/* Card set start */}
               <div className="space-y-6">
-                {items.map((item) => (
+                {cartItems.map((item) => (
                   <div
                     key={item.id}
                     className="rounded-xl dark:border dark:border-foodbg dark:bg-foodbg p-2 shadow-sm md:px-6 backdrop-blur-md"
@@ -122,7 +169,7 @@ function Index() {
                         onChange={(e) =>
                           handleCheckboxChange(
                             item.id,
-                            item.price,
+                            item.itemTotalPrice,
                             e.target.checked,
                           )
                         }
@@ -159,7 +206,7 @@ function Index() {
                         <div className="text-end md:order-4 md:w-10">
                           <p className="text-base font-bold text-gray-900 dark:text-white">
                             <span className="pr-2 text-orange-500">Rs.</span>
-                            {item.price}
+                            {item.itemTotalPrice}
                           </p>
                         </div>
 
@@ -257,7 +304,7 @@ function Index() {
                         Original price
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        ${price}
+                        Rs. {price}
                       </dd>
                     </dl>
 
@@ -266,27 +313,27 @@ function Index() {
                         Savings
                       </dt>
                       <dd className="text-base font-medium text-green-600">
-                        $0
+                        Rs. 0
                       </dd>
                     </dl>
 
                     <dl className="flex items-center justify-between gap-4 pt-3">
                       <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                        Store Pickup
+                        Delivery Charge
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        $0
+                        Rs. 0
                       </dd>
                     </dl>
 
-                    <dl className="flex items-center justify-between gap-4 pt-3">
+                    {/* <dl className="flex items-center justify-between gap-4 pt-3">
                       <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
                         Tax
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
                         $0
                       </dd>
-                    </dl>
+                    </dl> */}
                   </div>
 
                   <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-5 dark:border-gray-700">
@@ -294,7 +341,7 @@ function Index() {
                       Total
                     </dt>
                     <dd className="text-base font-bold text-gray-900 dark:text-white">
-                      ${price}
+                      Rs.{price}
                     </dd>
                   </dl>
                 </div>

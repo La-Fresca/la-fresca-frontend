@@ -1,5 +1,5 @@
 export type CartItem = {
-  id?: string;
+  id: string;
   name: string;
   description: string;
   image: string;
@@ -13,5 +13,5 @@ export type CartItem = {
 
 export type CustomFeature = {
   name: string;
-  levels: number;
+  level: number;
 };

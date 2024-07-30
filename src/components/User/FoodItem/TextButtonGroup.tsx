@@ -6,6 +6,7 @@ interface Props {
   levels: string[];
   defaultPrice: number;
   prices: number[];
+  setSelectedIndex: (index: number) => void;
   setPrice: (newPrice: number) => void;
 }
 
@@ -14,14 +15,17 @@ export default function TextButtonGroup({
   levels,
   defaultPrice,
   prices,
+  setSelectedIndex,
   setPrice,
 }: Props) {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [localSelectedIndex, setLocalSelectedIndex] = useState<number | null>(
+    null,
+  );
 
   const handleIncrement = (index: number) => {
     setPrice(defaultPrice + prices[index]);
     setSelectedIndex(index);
-    console.log(defaultPrice);
+    setLocalSelectedIndex(index);
   };
 
   return (
@@ -39,7 +43,7 @@ export default function TextButtonGroup({
             buttonClass += ' rounded-r-lg';
           }
 
-          if (selectedIndex === index) {
+          if (localSelectedIndex === index) {
             buttonClass += ' bg-foodbg text-white';
           }
 
