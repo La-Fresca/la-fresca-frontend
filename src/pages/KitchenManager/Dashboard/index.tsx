@@ -1,74 +1,97 @@
 import React from 'react';
 import { Button } from '@nextui-org/react';
+import { useOrders } from '@/api/useOrders';
 
 const Dashboard: React.FC = () => {
+  const {getAllOrders} = useOrders();
+  const [orders, setOrders] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(true);
+  
+  const fetchOrders = async () => {
+    try {
+      const response = await getAllOrders();
+      setOrders(response);
+      console.log(response);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  React.useEffect(() => {
+    fetchOrders();
+  }, []);
+
   const colours = ['red', 'green', 'blue', 'yellow', 'white'];
-  const orders = [
-    {
-      id: '01',
-      orderId: 102,
-      orderType: 'ONLINE',
-      time: '2',
-      orderStatus: 'PENDING',
-      foodItems: [
-        {
-          foodId: '01',
-          name: 'Cheese Pizza',
-          quentity: 2,
-          itemStatus: 'PENDING',
-        },
-        {
-          foodId: '02',
-          name: 'Chicken Pizza',
-          quentity: 2,
-          itemStatus: 'PENDING',
-        },
-        {
-          foodId: '03',
-          name: 'Saussage Pizza',
-          quentity: 5,
-          itemStatus: 'PREPARING',
-        },
-      ],
-    },
-    {
-      id: '02',
-      orderId: 105,
-      orderType: 'ONLINE',
-      time: '2',
-      orderStatus: 'PENDING',
-      foodItems: [
-        {
-          foodId: '01',
-          name: 'Cheese Pizza',
-          quentity: 2,
-          itemStatus: 'PENDING',
-        },
-        {
-          foodId: '03',
-          name: 'Saussage Pizza',
-          quentity: 5,
-          itemStatus: 'PREPARING',
-        },
-        {
-          foodId: '03',
-          name: 'Saussage Pizza',
-          quentity: 5,
-          itemStatus: 'READY',
-        },
-      ],
-    },
-  ];
+
+
+  // const orders = [
+  //   {
+  //     id: '01',
+  //     orderId: 102,
+  //     orderType: 'ONLINE',
+  //     time: '2',
+  //     orderStatus: 'PENDING',
+  //     orderItems: [
+  //       {
+  //         foodId: '01',
+  //         name: 'Cheese Pizza',
+  //         quentity: 2,
+  //         orderStatus: 'PENDING',
+  //       },
+  //       {
+  //         foodId: '02',
+  //         name: 'Chicken Pizza',
+  //         quentity: 2,
+  //         orderStatus: 'PENDING',
+  //       },
+  //       {
+  //         foodId: '03',
+  //         name: 'Saussage Pizza',
+  //         quentity: 5,
+  //         orderStatus: 'PREPARING',
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: '02',
+  //     orderId: 105,
+  //     orderType: 'ONLINE',
+  //     time: '2',
+  //     orderStatus: 'PENDING',
+  //     orderItems: [
+  //       {
+  //         foodId: '01',
+  //         name: 'Cheese Pizza',
+  //         quentity: 2,
+  //         orderStatus: 'PENDING',
+  //       },
+  //       {
+  //         foodId: '03',
+  //         name: 'Saussage Pizza',
+  //         quentity: 5,
+  //         orderStatus: 'PREPARING',
+  //       },
+  //       {
+  //         foodId: '03',
+  //         name: 'Saussage Pizza',
+  //         quentity: 5,
+  //         orderStatus: 'READY',
+  //       },
+  //     ],
+  //   },
+  // ];
 
   const itemWaitingQueue = orders
     .filter((order) => order.orderStatus === 'PENDING')
     .map((order) => ({
       ...order,
-      foodItems: order.foodItems.filter(
-        (foodItem) => foodItem.itemStatus === 'PENDING',
+      orderItems: order.orderItems.filter(
+        (orderItem: any) => orderItem.orderStatus === 'PENDING',
       ),
     }))
-    .filter((order) => order.foodItems.length > 0);
+    .filter((order) => order.orderItems.length > 0);
+    console.log(itemWaitingQueue);
 
   const itemPendingQueue = orders
     .filter(
@@ -77,11 +100,11 @@ const Dashboard: React.FC = () => {
     )
     .map((order) => ({
       ...order,
-      foodItems: order.foodItems.filter(
-        (foodItem) => foodItem.itemStatus === 'PREPARING',
+      orderItems: order.orderItems.filter(
+        (orderItem: any) => orderItem.orderStatus === 'PREPARING',
       ),
     }))
-    .filter((order) => order.foodItems.length > 0);
+    .filter((order) => order.orderItems.length > 0);
 
   const itemCompletedQueue = orders
     .filter(
@@ -90,11 +113,11 @@ const Dashboard: React.FC = () => {
     )
     .map((order) => ({
       ...order,
-      foodItems: order.foodItems.filter(
-        (foodItem) => foodItem.itemStatus === 'READY',
+      orderItems: order.orderItems.filter(
+        (orderItem: any) => orderItem.orderStatus === 'READY',
       ),
     }))
-    .filter((order) => order.foodItems.length > 0);
+    .filter((order) => order.orderItems.length > 0);
 
   var qCount = 0;
   var pCount = 0;
@@ -120,16 +143,16 @@ const Dashboard: React.FC = () => {
                   style={{ boxShadow: `0 0 10px 0.1px ${colours[qCount]} ` }}
                 >
                   <p className="text-center text-foodbg dark:text-white text-lg font-bold">
-                    Order ID: {_.orderId}
+                    Order ID: {_.id.slice(-6).toUpperCase()}
                   </p>
-                  <p className="text-center text-xs"> {_.time} min ago</p>
-                  {_.foodItems.map((item: any) => {
+                  <p className="text-center text-xs"> <b className='dark:text-white'>{_.orderType}</b> | {_.createdAt} min ago</p>
+                  {_.orderItems.map((item: any) => {
                     return (
                       <div className="border border-foodbg rounded-xl py-2 px-2 flex items-center justify-between mt-5">
                         <div className="w-[60px] h-[60px] bg-green"></div>
                         <div className="w-[110px] h-[60px]">
                           <p className="text-md">{item.name}</p>
-                          <p className="text-xs">x{item.quentity}</p>
+                          <p className="text-xs">x{item.quantity}</p>
                         </div>
                         <div className="grid w-[100px]">
                           <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
@@ -145,6 +168,7 @@ const Dashboard: React.FC = () => {
             })}
           </div>
         </div>
+
 
         <div
           className="h-[80vh] xl:w-[24vw] bg-white rounded-xl dark:bg-gray"
@@ -163,18 +187,21 @@ const Dashboard: React.FC = () => {
                   style={{ boxShadow: `0 0 10px 0.1px ${colours[pCount]} ` }}
                 >
                   <p className="text-center text-foodbg dark:text-white text-lg font-bold">
-                    Order ID: {_.orderId}
+                    Order ID: {_.id.slice(-6).toUpperCase()}
                   </p>
-                  <p className="text-center text-xs"> {_.time} min ago</p>
-                  {_.foodItems.map((item: any) => {
+                  <p className="text-center text-xs"> <b className='dark:text-white'>{_.orderType}</b> | {_.createdAt} min ago</p>
+                  {_.orderItems.map((item: any) => {
                     return (
                       <div className="border border-foodbg rounded-xl py-2 px-2 flex items-center justify-between mt-5">
                         <div className="w-[60px] h-[60px] bg-green"></div>
                         <div className="w-[110px] h-[60px]">
                           <p className="text-md">{item.name}</p>
-                          <p className="text-xs">x{item.quentity}</p>
+                          <p className="text-xs">x{item.quantity}</p>
                         </div>
                         <div className="grid w-[100px]">
+                          <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
+                            Back
+                          </Button>
                           <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
                             Next
                           </Button>
@@ -189,6 +216,7 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
+
         <div
           className="h-[80vh] xl:w-[24vw] bg-white rounded-xl dark:bg-gray"
           style={{
@@ -196,7 +224,7 @@ const Dashboard: React.FC = () => {
           }}
         >
           <p className="font-bold dark:text-white text-foodbg text-2xl pt-5 text-center">
-            Processing
+            Completed
           </p>
           <div className="width-[100%] mt-2 mx-4 !overflow-scroll h-[70vh] px-2">
             {itemCompletedQueue.map((_: any) => {
@@ -206,20 +234,20 @@ const Dashboard: React.FC = () => {
                   style={{ boxShadow: `0 0 10px 0.1px ${colours[cCount]} ` }}
                 >
                   <p className="text-center text-foodbg dark:text-white text-lg font-bold">
-                    Order ID: {_.orderId}
+                    Order ID: {_.id.slice(-6).toUpperCase()}
                   </p>
-                  <p className="text-center text-xs"> {_.time} min ago</p>
-                  {_.foodItems.map((item: any) => {
+                  <p className="text-center text-xs"> <b className='dark:text-white'>{_.orderType}</b> | {_.createdAt} min ago</p>
+                  {_.orderItems.map((item: any) => {
                     return (
                       <div className="border border-foodbg rounded-xl py-2 px-2 flex items-center justify-between mt-5">
                         <div className="w-[60px] h-[60px] bg-green"></div>
                         <div className="w-[110px] h-[60px]">
                           <p className="text-md">{item.name}</p>
-                          <p className="text-xs">x{item.quentity}</p>
+                          <p className="text-xs">x{item.quantity}</p>
                         </div>
                         <div className="grid w-[100px]">
                           <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
-                            Next
+                            Back
                           </Button>
                         </div>
                       </div>
@@ -231,6 +259,10 @@ const Dashboard: React.FC = () => {
             })}
           </div>
         </div>
+
+        
+
+        
       </div>
     </>
   );
