@@ -36,7 +36,7 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
       const apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/user/login`, {
+      const response = await fetch(`${apiUrl}/user/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
