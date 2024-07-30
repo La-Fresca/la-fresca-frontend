@@ -5,6 +5,7 @@ import HeroImg from '../../images/Landing/Hero.png';
 import ContactUs from '../../images/Landing/contact.png';
 import Gallery from '@/components/Landing/Gallery';
 import Menus from '@/components/Landing/Menus';
+import { ReadMore } from '@/components/User/NavbarHome/readMore';
 
 const HomePage: React.FC = () => {
   return (
