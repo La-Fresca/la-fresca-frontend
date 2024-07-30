@@ -1,16 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Item } from '@components/Cashier/Dashboard/Type';
 import SearchBar from '@components/Cashier/Dashboard/Search';
-import Image from '@images/product/pizza.png';
-import ItemCustomCard from '@/components/User/FoodItem/index';
+import ItemCustomCard from '@/components/Cashier/Dashboard/FoodCustomize';
+import { Food } from '@/types/food';
+import { useCategories } from '@/api/useCategories';
+import { Category } from '@/types/category';
 
 interface MenuProps {
-  items: Item[];
+  items: Food[];
   searchTerm: string;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   selectedCategory: string;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
-  addItemToOrder: (item: Item) => void;
+  addItemToOrder: (item: Food) => void;
 }
 
 const Menu: React.FC<MenuProps> = ({
@@ -23,21 +24,26 @@ const Menu: React.FC<MenuProps> = ({
 }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const {getAllCategories} = useCategories(); 
 
-  const categories = [
-    'All',
-    'Breakfast',
-    'Pasta',
-    'Rice Bowl',
-    'Side Dish',
-    'Soup',
-    'Noodles',
-  ];
+  const fetchCategories = async () => {
+    try {
+      const categories = await getAllCategories();
+      setCategories(categories);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  }
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const filteredItems = items.filter(
     (item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (selectedCategory === 'All' || item.category === selectedCategory),
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) && item.categories &&
+      (selectedCategory === 'All' || item.categories[0] === selectedCategory),
   );
 
   const togglePopup = () => {
@@ -68,41 +74,45 @@ const Menu: React.FC<MenuProps> = ({
       <div className="flex flex-wrap justify-start mb-4">
         {categories.map((category) => (
           <button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
+            key={category.id}
+            onClick={() => setSelectedCategory(category.name)}
             className={`mr-2 mb-2 px-4 py-2 rounded-lg h-10 ${
-              selectedCategory === category ? 'bg-orange-500' : 'bg-yellow-500'
+              selectedCategory === category.name ? 'bg-orange-500' : 'bg-yellow-500'
             } hover:bg-orange-700 transition duration-300 text-md font-medium`}
           >
-            {category}
+            {category.name}
           </button>
         ))}
       </div>
       <h2 className="text-xl font-semibold mb-4">Menu Items</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {isPopupOpen && (
-          <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md">
             <div ref={popupRef}>
-              <ItemCustomCard id="66818dfdf03a193946df8a01" />
+              <ItemCustomCard id="66a7e6d47c9e8377f1d95d90" />
             </div>
           </div>
         )}
         {filteredItems.map((item) => (
+          item.categories && console.log(item.categories[0]),
           <div
             key={item.name}
             className="p-4 shadow hover:bg-slate-950 bg-black bg-opacity-50 border-spacing-3 rounded-lg transform hover:scale-105 border hover:border-yellow-500 "
             onClick={togglePopup}
           >
             <img
-              src={Image}
+              src={item.image}
               alt={item.name}
               className="mb-2 w-full h-32 object-cover rounded"
             />
-            <h3 className="text-lg font-semibold">{item.name}</h3>
+            <h3 className="text-lg font-semibold h-15">{item.name}</h3>
             <p className="text-orange-500">Rs.{item.price.toFixed(2)}</p>
             <button
-              onClick={() => addItemToOrder(item)}
-              className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400 text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700"
+              onClick={(event: React.SyntheticEvent) => {
+                event.stopPropagation();
+                addItemToOrder(item)
+              }}
+              className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400 text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700 "
             >
               Add to Order
             </button>

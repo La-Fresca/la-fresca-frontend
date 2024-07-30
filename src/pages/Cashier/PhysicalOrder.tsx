@@ -1,35 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '@components/Cashier/Dashboard/Top'; 
 import Menu from '@components/Cashier/Dashboard/Menu';
 import OrderDetails from '@components/Cashier/Dashboard/OrderDetails';
-import { Item } from '@components/Cashier/Dashboard/Type';
+import { useFoods } from '@/api/useFoods';
+import { Food } from '@/types/food';
 
-
-const initialItems: Item[] = [
-  { name: 'Cheese Pizza', price: 1500, category: 'Breakfast',  quantity: 1 },
-  { name: 'Mutton Stu', price: 1250, category: 'Breakfast', quantity: 1 },
-  { name: 'Ramen', price: 800, category: 'Pasta', quantity: 1 },
-  { name: 'Egg Fried Rice', price: 900, category: 'Rice Bowl', quantity: 1 },
-  { name: 'Cheese Burger', price: 750, category: 'Side Dish', quantity: 1 },
-  { name: 'Egg Soup ', price: 600, category: 'Soup', quantity: 1 },
-  { name: 'Indomie Soto', price: 1300, category: 'Noodles', quantity: 1 },
-  { name: 'Red Noodles', price: 700, category: 'Noodles', quantity: 1 },
-  { name: 'Bread Toast with Egg', price: 800, category: 'Breakfast', quantity: 1 },
-  { name: 'Bread Toast with Egg', price: 800, category: 'Breakfast', quantity: 1 },
-];
 
 const App: React.FC = () => {
-  const [items, setItems] = useState<Item[]>(initialItems);
-  const [order, setOrder] = useState<Item[]>([]);
+  const { getAllFoods } = useFoods();
+  const [foods, setFoods] = useState<Food[]>([]);
+  
+  const fetchFoods = async () => {
+    try {
+      const foods = await getAllFoods();
+      setFoods(foods);
+    } catch (error) {
+      console.error('Error fetching items:', error);
+    }
+  }
+
+  useEffect(() => {
+    fetchFoods();
+  }, []);
+
+  const [order, setOrder] = useState<Food[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-  const addItemToOrder = (item: Item) => {
+  const addItemToOrder = (item: Food) => {
     const itemInOrder = order.find((orderItem) => orderItem.name === item.name);
     if (itemInOrder) {
-      setOrder(order.map((orderItem) => orderItem.name === item.name ? { ...orderItem, quantity: orderItem.quantity + 1 } : orderItem));
+      setOrder(order.map((orderItem) => orderItem.name === item.name ? { ...orderItem, quantity: 1 + 1 } : orderItem));
     } else {
-      setOrder([...order, { ...item, quantity: 1 }]);
+      setOrder([...order, { ...item }]); 
     }
   };
 
@@ -38,7 +41,7 @@ const App: React.FC = () => {
   };
 
   const calculateTotal = () => {
-    return order.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+    return order.reduce((total, item) => total + item.price * 1, 0).toFixed(2);
   };
 
   return (
@@ -46,7 +49,7 @@ const App: React.FC = () => {
       <Header />
       <main className="flex flex-1 p-4">
         <Menu
-          items={items}
+          items={foods}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           selectedCategory={selectedCategory}

@@ -5,10 +5,11 @@ import { TrashIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import PaymentMethodSelector from '@components/Cashier/Dashboard/Payment'
 import Logo from '@images/logo/la-fresca.png'
 import { CrossIcon } from 'node_modules/react-select/dist/declarations/src/components/indicators';
+import { Food } from '@/types/food';
 
 
 interface OrderDetailsProps {
-  order: Item[];
+  order: Food[];
   removeItemFromOrder: (itemName: string) => void;
   calculateTotal: () => string;
 }
@@ -30,7 +31,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order, removeItemFromOrder,
           <li key={index} className="flex justify-between items-center mb-2 p-2 bg-yellow-400 bg-opacity-15 rounded-xl">
             <div>
               <h3 className="text-base font-bold">
-                {item.name} <span className="text-sm text-gray-400">x{item.quantity}</span>
+                {item.name} <span className="text-sm text-gray-400">x{1}</span>
               </h3>
               <p className="text-orange-600">LKR {item.price.toFixed(2)}</p>
             </div>
