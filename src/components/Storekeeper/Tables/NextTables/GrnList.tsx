@@ -30,8 +30,8 @@ import { swalConfirm } from '@/components/UI/SwalConfirm';
 const INITIAL_VISIBLE_COLUMNS = [
   'id',
   'name',
+  'supplier',
   'quantity',
-  'limit',
   'expire',
   'actions',
 ];
@@ -39,12 +39,15 @@ const INITIAL_VISIBLE_COLUMNS = [
 export default function StockList() {
   const { showSwal } = swalConfirm();
   const [stocks, setStocks] = useState<Stock[]>([]);
-  const { getAllStocks, unsafeDeleteStock } = useStocks();
+  const { getAllStocks, deleteStock } = useStocks();
+  const [loading, setLoading] = useState(true);
 
   const fetchStocks = async () => {
     try {
+      setLoading(true);
       const data = await getAllStocks();
       setStocks(data);
+      setLoading(false);
     } catch (error: any) {
       console.error(error);
     }
@@ -52,7 +55,7 @@ export default function StockList() {
 
   const handleDeleteStock = async (id: string) => {
     try {
-      await unsafeDeleteStock(id);
+      await deleteStock(id);
       fetchStocks();
     } catch (error: any) {
       console.error(error);
@@ -133,19 +136,23 @@ export default function StockList() {
       case 'name':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
+            <p className="text-bold text-small capitalize">
+              {stock.stockCollectionName}
+            </p>
+          </div>
+        );
+      case 'supplier':
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">
+              {stock.supplierName}
+            </p>
           </div>
         );
       case 'quantity':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small">{stock.availableAmount}</p>
-          </div>
-        );
-      case 'limit':
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small">{stock.lowerLimit}</p>
+            <p className="text-bold text-small">{stock.initialAmount}</p>
           </div>
         );
       case 'expire':
@@ -164,7 +171,7 @@ export default function StockList() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu className="bg-black text-white">
-                <DropdownItem>View</DropdownItem>
+                {/* <DropdownItem>View</DropdownItem> */}
                 <DropdownItem onClick={() => navigate(`edit/${stock.id}`)}>
                   Edit
                 </DropdownItem>
@@ -254,7 +261,7 @@ export default function StockList() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {stocks.length} grns
+            Total {stocks.length} inventory items
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -283,15 +290,12 @@ export default function StockList() {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
         <Pagination
+          isCompact
           showControls
-          classNames={{
-            cursor: 'bg-foreground text-background',
-          }}
-          color="default"
-          isDisabled={hasSearchFilter}
+          showShadow
           page={page}
           total={pages}
-          variant="light"
+          color="primary"
           onChange={setPage}
         />
         <span className="text-small text-default-400">
@@ -322,6 +326,9 @@ export default function StockList() {
     [],
   );
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <Table
       isCompact
@@ -354,7 +361,7 @@ export default function StockList() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No grns found'} items={sortedItems}>
+      <TableBody emptyContent={'No inventory items found'} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

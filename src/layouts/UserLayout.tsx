@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from '@components/User/Header/index';
-import BackgrounImage from '@images/cover/cover-03.png';
+
 import Sidebar from '@/components/User/Sidebar/index';
 
 const BranchManagerLayout: React.FC = () => {

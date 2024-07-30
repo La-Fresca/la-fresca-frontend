@@ -62,11 +62,11 @@ const Header = (props: {
 
         <div className="hidden sm:flex items-center">
           <div className="text-black font-bold pl-2 pr-12 dark:text-white mr-4">
-            Dashboard
+            Branch Manager
           </div>
           <form action="https://formbold.com/s/unique_form_id" method="POST">
             <div className="relative">
-              <button className="absolute left-0 top-1/2 -translate-y-1/2">
+              {/* <button className="absolute left-0 top-1/2 -translate-y-1/2">
                 <svg
                   className="fill-body hover:fill-primary dark:fill-bodydark dark:hover:fill-primary"
                   width="20"
@@ -88,13 +88,13 @@ const Header = (props: {
                     fill=""
                   />
                 </svg>
-              </button>
+              </button> */}
 
-              <input
+              {/* <input
                 type="text"
                 placeholder="Type to search..."
                 className="w-full bg-transparent pl-9 pr-4 text-black focus:outline-none dark:text-white xl:w-125 rounded-lg"
-              />
+              /> */}
             </div>
           </form>
         </div>

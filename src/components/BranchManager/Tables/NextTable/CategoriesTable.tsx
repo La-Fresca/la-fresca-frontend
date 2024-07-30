@@ -12,10 +12,8 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  // Chip,
   Pagination,
   Selection,
-  ChipProps,
   SortDescriptor,
 } from '@nextui-org/react';
 import { PlusIcon } from './PlusIcon';
@@ -28,12 +26,6 @@ import { useNavigate } from 'react-router-dom';
 import { Category } from '@/types/category';
 import { useCategories } from '@/api/useCategories';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
-import { set } from 'zod';
-
-// const statusColorMap: Record<string, ChipProps['color']> = {
-//   active: 'success',
-//   inactive: 'danger',
-// };
 
 const INITIAL_VISIBLE_COLUMNS = ['name', 'status', 'description', 'actions'];
 
@@ -41,11 +33,14 @@ export default function CategoriesTable() {
   const { showSwal } = swalConfirm();
   const [categories, setCategories] = useState<Category[]>([]);
   const { getAllCategories, unsafeDeleteCategory } = useCategories();
+  const [loading, setLoading] = useState(true);
 
   const fetchCategories = async () => {
     try {
+      setLoading(true);
       const data = await getAllCategories();
       setCategories(data);
+      setLoading(false);
     } catch (error: any) {
       console.error(error);
     }
@@ -73,7 +68,6 @@ export default function CategoriesTable() {
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
-  const [statusFilter, setStatusFilter] = useState<Selection>('all');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: 'name',
@@ -100,17 +94,8 @@ export default function CategoriesTable() {
         category.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    // if (
-    //   statusFilter !== 'all' &&
-    //   Array.from(statusFilter).length !== statusOptions.length
-    // ) {
-    //   filteredCategories = filteredCategories.filter((category) =>
-    //     Array.from(statusFilter).includes(category.status),
-    //   );
-    // }
-
     return filteredCategories;
-  }, [categories, filterValue, statusFilter]);
+  }, [categories, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -141,17 +126,6 @@ export default function CategoriesTable() {
             <p className="text-bold text-small capitalize">{cellValue}</p>
           </div>
         );
-      // case 'status':
-      //   return (
-      //     <Chip
-      //       className="capitalize"
-      //       color={statusColorMap[category.status]}
-      //       size="sm"
-      //       variant="flat"
-      //     >
-      //       {cellValue}
-      //     </Chip>
-      //   );
       case 'description':
         return <p className="text-default-400 text-small">{cellValue}</p>;
       case 'actions':
@@ -233,31 +207,6 @@ export default function CategoriesTable() {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            {/* <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                >
-                  Status
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                className="bg-black text-white"
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown> */}
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -310,7 +259,6 @@ export default function CategoriesTable() {
     );
   }, [
     filterValue,
-    statusFilter,
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
@@ -355,18 +303,41 @@ export default function CategoriesTable() {
     );
   }, [items.length, page, pages, hasSearchFilter]);
 
-  if (!categories.length) {
+  const classNames = useMemo(
+    () => ({
+      wrapper: ['max-h-[382px]', 'max-w-3xl'],
+      th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],
+      td: [
+        // changing the rows border radius
+        // first
+        'group-data-[first=true]:first:before:rounded-none',
+        'group-data-[first=true]:last:before:rounded-none',
+        // middle
+        'group-data-[middle=true]:before:rounded-none',
+        // last
+        'group-data-[last=true]:first:before:rounded-none',
+        'group-data-[last=true]:last:before:rounded-none',
+      ],
+    }),
+    [],
+  );
+
+  if (loading) {
     return <div>Loading...</div>;
   }
   return (
     <Table
+      isCompact
+      removeWrapper
       aria-label="Example table with custom cells, pagination and sorting"
-      isHeaderSticky
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
-      classNames={{
-        wrapper: 'max-h-[382px]',
+      checkboxesProps={{
+        classNames: {
+          wrapper: 'after:bg-foreground after:text-background text-background',
+        },
       }}
+      classNames={classNames}
       sortDescriptor={sortDescriptor}
       topContent={topContent}
       topContentPlacement="outside"

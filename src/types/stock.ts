@@ -1,8 +1,8 @@
 export type Stock = {
   id?: number;
-  name: string;
+  stockCollectionName: string;
+  supplierName: string;
   batchId: string;
-  availableAmount: number;
-  lowerLimit: number;
+  initialAmount: number;
   expiryDate: string;
 };

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import PassINput from './PasswordInput';
+import ConfirmPassINput from './ConfirmPassword';
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import { useAuth } from '@/api/useAuth';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
@@ -75,14 +76,22 @@ const LoginForm = () => {
             <input
               type="text"
               placeholder="Email Address"
-              className="w-full text-white border-b-2 border-white-700 bg-transparent focus:outline-none focus:ring-0"
+              className="w-full text-white border-b-2 rounded-lg border-white-700 bg-transparent focus:outline-none focus:ring-0"
               {...register('email')}
             />
+            <input
+              type="text"
+              placeholder="Contact Number"
+              className="w-full text-white border-b-2 rounded-lg mt-7 border-white-700 bg-transparent focus:outline-none focus:ring-0"
+              {...register('email')}
+            />
+
           </div>
           <PassINput register={register} fieldname="password" />
+          <ConfirmPassINput register={register} fieldname="password" />
           <div className="space-y-6">
             <button
-              className="w-full py-2 mt-5 text-center text-white bg-yellow-500 rounded-md hover:bg-yellow-600"
+              className="w-full py-2 mt-5 text-center  text-black font-extrabold bg-yellow-500 rounded-md hover:bg-yellow-600"
               type="submit"
             >
               Register

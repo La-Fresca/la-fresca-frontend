@@ -1,0 +1,7 @@
+.swal2-popup {
+  box-shadow: 0 0 3px white !important;
+}
+.swal2-confirm {
+  background-color: red !important;
+  border-color: red !important;
+}

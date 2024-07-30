@@ -21,8 +21,11 @@ type CategoryPicker = {
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
-  category: z.array(z.string()).min(1, { message: 'Category is required' }),
+  categories: z
+    .array(z.string())
+    .min(1, { message: 'Categories are required' }),
   description: z.string().optional(),
+  cost: z.coerce.number().optional(),
   price: z.coerce
     .number()
     .multipleOf(0.01)
@@ -178,7 +181,7 @@ const DynamicForm: FC = () => {
                 <MultiSelect
                   categories={categories}
                   register={register}
-                  fieldname="category"
+                  fieldname="categories"
                   setValue={setValue}
                 />
               </label>
@@ -194,6 +197,18 @@ const DynamicForm: FC = () => {
                   <p className="text-red-600 mb-1">
                     {errors.description.message}
                   </p>
+                )}
+              </label>
+              <label className="mb-6 block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">Cost</span>
+                <input
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
+                  type="number"
+                  {...register('cost')}
+                  placeholder="Enter the production cost"
+                />
+                {errors.price && (
+                  <p className="text-red-600">{errors.price.message}</p>
                 )}
               </label>
               <label className="mb-6 block text-black dark:text-white">

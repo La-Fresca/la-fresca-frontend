@@ -92,7 +92,7 @@ export const useCombos = () => {
 
   const deleteCombo = async (id: string) => {
     try {
-      const response = await fetch(`${API_URL}/foodCombo/${id}`, {
+      const response = await fetch(`${API_URL}/foodCombo/delete/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -100,9 +100,6 @@ export const useCombos = () => {
         },
         body: JSON.stringify({
           deleted: 1,
-          price: 0,
-          image: '',
-          available: 0,
         }),
       });
       if (!response.ok) {
