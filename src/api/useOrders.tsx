@@ -155,5 +155,25 @@ export const useOrders = () => {
     }
   }
 
-  return { getAllOrders, createOrder, getOrderById, updateOrder, deleteOrder, getPendingOrdersByDeliveryPersonId, getCompletedOrdersByDeliveryPersonId };
+  const getonDeliveryOrdersByDeliveryPersonId = async (id: string) => {
+    try {
+      const response = await fetch(`${API_URL}/order/ondeliveryordersbydeliverypersonid/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch orders');
+      } else {
+        return response.json();
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  }
+
+  return { getAllOrders, createOrder, getOrderById, updateOrder, deleteOrder, getPendingOrdersByDeliveryPersonId, getCompletedOrdersByDeliveryPersonId , getonDeliveryOrdersByDeliveryPersonId};
 };
