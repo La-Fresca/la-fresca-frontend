@@ -33,11 +33,13 @@ export default function InventoryList() {
   const { showSwal } = swalConfirm();
   const [inventory, setInventory] = useState<Inventory[]>([]);
   const { getAllInventory, deleteInventory } = useInventory();
+  const [loading, setLoading] = useState(true);
 
   const fetchInventory = async () => {
     try {
       const data = await getAllInventory();
       setInventory(data);
+      setLoading(false);
     } catch (error: any) {
       console.error(error);
     }
@@ -312,7 +314,7 @@ export default function InventoryList() {
     }),
     [],
   );
-  if (!inventory.length) {
+  if (loading) {
     return <div>Loading...</div>;
   }
   return (

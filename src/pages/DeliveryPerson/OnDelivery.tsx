@@ -1,9 +1,9 @@
+import React, { useState } from 'react';
+import { Card, CardHeader, CardBody, Divider, Image, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
 import { OrderCard } from '@/components/User/OrderHistory/OrderCard';
-import React from 'react';
 import OrderCardSmall from './OrderCardSmall';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, RadioGroup, Radio } from "@nextui-org/react";
-import { Divider } from "@nextui-org/react";
-import { features } from 'process';
+import IntegerOnlyDemo from './IntegerOnlyOTP';
+import { useNavigate } from 'react-router-dom';
 
 const orderItems = [
     {
@@ -24,7 +24,7 @@ const orderItems = [
 
 const orderItemsRow = orderItems.map((item) => {
     return (
-        <>
+        <div key={item.id}>
             <div className="flex flex-row justify-between">
                 <p className='text-lg font-semibold'>{item.name}</p>
                 <p>{item.price}</p>
@@ -33,13 +33,56 @@ const orderItemsRow = orderItems.map((item) => {
                 <p>{item.features.join(' | ')}</p>
                 <p>Qty: {item.quantity}</p>
             </div>
-        </>
+        </div>
     );
 });
 
-export const OnDelivery = () => {
+export const OnDelivery: React.FC = () => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const [modalPlacement, setModalPlacement] = React.useState("bottom-center");
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [modalPlacement, setModalPlacement] = useState("bottom-center");
+    const [otp, setOTP] = useState("");
+
+    const handleDeliverOrder = () => {
+        setIsPopupOpen(true);
+        isOpen && onOpenChange();
+    };
+
+    const closePopup = () => {
+        setIsPopupOpen(false);
+        !isOpen && onOpenChange();
+    };
+
+    const OTPConfirm = () => {
+        setIsPopupOpen(false);
+    };
+
+    const handleOTPChange = (otp: string) => {
+        console.log("Entered OTP:", otp);
+        if (otp.length === 4) {
+            // OTPCheck(otp);
+            setOTP(otp);
+        }
+    };
+
+    const navigate = useNavigate();
+
+    const OTPCheck = () => {
+        // const otp = "1234";
+        console.log("OTP:", otp);
+        if(otp === "1234" || otp === "1030" || otp === "2343" || otp === "4873") {
+            console.log("OTP Confirmed");
+            navigate('../');
+            // navigate('./');
+        }
+        else {
+            console.log("OTP not Confirmed");
+            // navigate('./');
+        }
+    };
+
+
+
     return (
         <div className="relative h-screen">
             <div className="absolute top-0 left-0 w-full h-full">
@@ -78,7 +121,7 @@ export const OnDelivery = () => {
                                     </svg>
                                     <p>4.9</p>
                                 </div>
-                                <ModalBody className="overflow-y-auto max-h-96">
+                                <ModalBody className="overflow-y-auto max-h-96 pt-1">
                                     <div className='flex flex-row justify-between'>
                                         <p>Order Time</p>
                                         <p>12.00 PM</p>
@@ -123,12 +166,31 @@ export const OnDelivery = () => {
                                     <Button color="danger" variant="light" onPress={onClose}>
                                         Close
                                     </Button>
-                                    <Button color="primary" onPress={onClose} className='text-white'>
+                                    <Button color="primary" onPress={handleDeliverOrder} className='text-white'>
                                         Deliver Order
                                     </Button>
                                 </ModalFooter>
                             </>
                         )}
+                    </ModalContent>
+                </Modal>
+
+                <Modal
+                    isOpen={isPopupOpen}
+                    onOpenChange={setIsPopupOpen}
+                    className='bg-black border border-black rounded-lg text-white'
+                >
+                    <ModalContent>
+                        <ModalHeader className="flex flex-col gap-0 text-2xl">Enter the Customer's code </ModalHeader>
+                        <IntegerOnlyDemo onOTPChange={handleOTPChange} />
+                        <ModalFooter>
+                            <Button color="danger" variant="light" onPress={closePopup}>
+                                Cancel
+                            </Button>
+                            <Button color="primary" onPress={OTPCheck} className='text-white'>
+                                Confirm
+                            </Button>
+                        </ModalFooter>
                     </ModalContent>
                 </Modal>
             </div>

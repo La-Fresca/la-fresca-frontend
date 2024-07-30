@@ -107,7 +107,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <NavLink
                   to="/kitchen-manager"
                   className={`group relative flex items-center gap-2.5 rounded-xl px-4 py-2 font-medium text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    (pathname === '/branch-manager' ||
+                    (pathname === '/kitchen-manager' ||
                       pathname.includes('dashboard')) &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}

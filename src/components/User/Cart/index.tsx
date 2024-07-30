@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Food from '@images/product/pizza.png';
 import { Checkbox, Button } from '@nextui-org/react';
 import QtySelector from './QtySelector';
@@ -9,17 +10,26 @@ import { Cart } from '@/types/cart';
 function Index() {
   const { getCartByUserId } = useCart();
   const [items, setItems] = useState<Cart[]>([]);
-  const [selectedItems, setSelectedItems] = useState<Record<string, { price: number; quantity: number }>>({});
+  const [selectedItems, setSelectedItems] = useState<
+    Record<string, { price: number; quantity: number }>
+  >({});
   const [price, setPrice] = useState<number>(0);
 
   // Function to calculate the total price
   const calculateTotalPrice = useCallback(() => {
-    const total = Object.values(selectedItems).reduce((total, { price, quantity }) => total + price * quantity, 0);
+    const total = Object.values(selectedItems).reduce(
+      (total, { price, quantity }) => total + price * quantity,
+      0,
+    );
     setPrice(total);
   }, [selectedItems]);
 
   // Update selected items and price based on checkbox change
-  const handleCheckboxChange = (itemId: string, itemPrice: number, isChecked: boolean) => {
+  const handleCheckboxChange = (
+    itemId: string,
+    itemPrice: number,
+    isChecked: boolean,
+  ) => {
     setSelectedItems((prev) => {
       const newSelectedItems = { ...prev };
       if (isChecked) {
@@ -61,9 +71,24 @@ function Index() {
   // ];
 
   const alsoBoughtItems = [
-    { id: '01', name: 'Cheese Pizza', description: 'Indulge in our classic Cheese Pizza', price: 3500 },
-    { id: '02', name: 'Saussage Pizza', description: 'Indulge in our classic Saussage Pizza', price: 4500 },
-    { id: '03', name: 'Margherita Pizza', description: 'Indulge in our classic Margherita Pizza', price: 3000 },
+    {
+      id: '01',
+      name: 'Cheese Pizza',
+      description: 'Indulge in our classic Cheese Pizza',
+      price: 3500,
+    },
+    {
+      id: '02',
+      name: 'Saussage Pizza',
+      description: 'Indulge in our classic Saussage Pizza',
+      price: 4500,
+    },
+    {
+      id: '03',
+      name: 'Margherita Pizza',
+      description: 'Indulge in our classic Margherita Pizza',
+      price: 3000,
+    },
   ];
 
   return (
@@ -85,21 +110,38 @@ function Index() {
                   <div
                     key={item.id}
                     className="rounded-xl dark:border dark:border-foodbg dark:bg-foodbg p-2 shadow-sm md:px-6 backdrop-blur-md"
-                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.01)', boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)'}}
+                    style={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.01)',
+                      boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)',
+                    }}
                   >
                     <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                       <Checkbox
                         radius="full"
                         color="warning"
                         className="text-foodbg"
-                        onChange={(e) => handleCheckboxChange(item.id, item.price, e.target.checked)}
+                        onChange={(e) =>
+                          handleCheckboxChange(
+                            item.id,
+                            item.price,
+                            e.target.checked,
+                          )
+                        }
                       ></Checkbox>
                       <a href="#" className="shrink-0 md:order-1">
-                        <img className="h-30 w-30" src={Food} alt="food image" />
+                        <img
+                          className="h-30 w-30"
+                          src={Food}
+                          alt="food image"
+                        />
                       </a>
 
                       <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
-                        <Link to="#" color="foreground" className="text-xl dark:text-white text-foodbg">
+                        <Link
+                          to="#"
+                          color="foreground"
+                          className="text-xl dark:text-white text-foodbg"
+                        >
                           <b>{item.name}</b>
                         </Link>
                         <p>{item.description}</p>
@@ -109,7 +151,9 @@ function Index() {
                         <div className="flex items-center">
                           <QtySelector
                             quantity={selectedItems[item.id]?.quantity || 1}
-                            onQuantityChange={(quantity) => handleQuantityChange(item.id, quantity)}
+                            onQuantityChange={(quantity) =>
+                              handleQuantityChange(item.id, quantity)
+                            }
                           />
                         </div>
 
@@ -138,13 +182,23 @@ function Index() {
                     <div
                       key={item.id}
                       className="space-y-6 overflow-hidden rounded-xl dark:border border-gray-200 dark:bg-foodbg dark:border-foodbg p-6 shadow-sm backdrop-blur-md"
-                      style={{ backgroundColor: 'rgba(255, 255, 255, 0.01)', boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)' }}
+                      style={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.01)',
+                        boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)',
+                      }}
                     >
                       <a href="#" className="overflow-hidden rounded">
-                        <img className="mx-auto h-44 w-44" src={Food} alt="food image" />
+                        <img
+                          className="mx-auto h-44 w-44"
+                          src={Food}
+                          alt="food image"
+                        />
                       </a>
                       <div>
-                        <a href="#" className="text-xl font-semibold leading-tight text-gray-900 hover:underline dark:text-white">
+                        <a
+                          href="#"
+                          className="text-xl font-semibold leading-tight text-gray-900 hover:underline dark:text-white"
+                        >
                           {item.name}
                         </a>
                         <p className="mt-2 text-base font-normal text-gray-500 dark:text-gray-400">
@@ -188,36 +242,61 @@ function Index() {
             <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full sticky leading-normal">
               <div
                 className="space-y-4 rounded-lg dark:border border-gray-200 dark:border-foodbg dark:bg-foodbg p-4 shadow-sm sm:p-6 backdrop-blur-md"
-                style={{ backgroundColor: 'rgba(255, 255, 255, 0.01)', boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)'}}
+                style={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.01)',
+                  boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)',
+                }}
               >
-                <p className="text-xl font-semibold text-gray-900 dark:text-white">Order summary</p>
+                <p className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Order summary
+                </p>
 
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <dl className="flex items-center justify-between gap-4 pt-3">
-                      <dt className="text-base font-normal text-gray-500 dark:text-gray-400">Original price</dt>
-                      <dd className="text-base font-medium text-gray-900 dark:text-white">${price}</dd>
+                      <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+                        Original price
+                      </dt>
+                      <dd className="text-base font-medium text-gray-900 dark:text-white">
+                        ${price}
+                      </dd>
                     </dl>
 
                     <dl className="flex items-center justify-between gap-4 pt-3">
-                      <dt className="text-base font-normal text-gray-500 dark:text-gray-400">Savings</dt>
-                      <dd className="text-base font-medium text-green-600">$0</dd>
+                      <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+                        Savings
+                      </dt>
+                      <dd className="text-base font-medium text-green-600">
+                        $0
+                      </dd>
                     </dl>
 
                     <dl className="flex items-center justify-between gap-4 pt-3">
-                      <dt className="text-base font-normal text-gray-500 dark:text-gray-400">Store Pickup</dt>
-                      <dd className="text-base font-medium text-gray-900 dark:text-white">$0</dd>
+                      <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+                        Store Pickup
+                      </dt>
+                      <dd className="text-base font-medium text-gray-900 dark:text-white">
+                        $0
+                      </dd>
                     </dl>
 
                     <dl className="flex items-center justify-between gap-4 pt-3">
-                      <dt className="text-base font-normal text-gray-500 dark:text-gray-400">Tax</dt>
-                      <dd className="text-base font-medium text-gray-900 dark:text-white">$0</dd>
+                      <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
+                        Tax
+                      </dt>
+                      <dd className="text-base font-medium text-gray-900 dark:text-white">
+                        $0
+                      </dd>
                     </dl>
                   </div>
 
                   <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-5 dark:border-gray-700">
-                    <dt className="text-base font-bold text-gray-900 dark:text-white">Total</dt>
-                    <dd className="text-base font-bold text-gray-900 dark:text-white">${price}</dd>
+                    <dt className="text-base font-bold text-gray-900 dark:text-white">
+                      Total
+                    </dt>
+                    <dd className="text-base font-bold text-gray-900 dark:text-white">
+                      ${price}
+                    </dd>
                   </dl>
                 </div>
 
@@ -229,7 +308,10 @@ function Index() {
                 </Button>
 
                 <div className="flex items-center justify-center gap-2">
-                  <span className="text-sm font-normal text-gray-500 dark:text-gray-400"> or </span>
+                  <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    {' '}
+                    or{' '}
+                  </span>
                   <a
                     href="/foodItems"
                     title=""

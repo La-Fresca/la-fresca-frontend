@@ -5,6 +5,7 @@ import Image from '@images/product/pizza.png';
 import ItemCustomCard from '@/components/User/FoodItem/index';
 
 interface MenuProps {
+  image: string;
   items: Item[];
   searchTerm: string;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
@@ -14,6 +15,7 @@ interface MenuProps {
 }
 
 const Menu: React.FC<MenuProps> = ({
+  image,
   items,
   searchTerm,
   setSearchTerm,
@@ -83,7 +85,7 @@ const Menu: React.FC<MenuProps> = ({
         {isPopupOpen && (
           <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black bg-opacity-50">
             <div ref={popupRef}>
-              <ItemCustomCard id="66818dfdf03a193946df8a01" />
+              <ItemCustomCard id="66a7e6d47c9e8377f1d95d90" />
             </div>
           </div>
         )}
@@ -94,14 +96,17 @@ const Menu: React.FC<MenuProps> = ({
             onClick={togglePopup}
           >
             <img
-              src={Image}
+              src={item.image}
               alt={item.name}
               className="mb-2 w-full h-32 object-cover rounded"
             />
             <h3 className="text-lg font-semibold">{item.name}</h3>
             <p className="text-orange-500">Rs.{item.price.toFixed(2)}</p>
             <button
-              onClick={() => addItemToOrder(item)}
+              onClick={(event: React.SyntheticEvent) => {
+                event.stopPropagation();
+                addItemToOrder(item)
+              }}
               className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400 text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700"
             >
               Add to Order

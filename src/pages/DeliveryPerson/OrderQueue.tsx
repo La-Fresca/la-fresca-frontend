@@ -3,6 +3,16 @@ import { DatePicker } from "@nextui-org/react";
 import OrderCard from "@/pages/DeliveryPerson/OrderCard";
 import { title } from "process";
 
+const fetchStocks = async () => {
+    try {
+      const data = await getAllStocks();
+      setStocks(data);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+
 const ordersList = [
     {
         title: "#399392",

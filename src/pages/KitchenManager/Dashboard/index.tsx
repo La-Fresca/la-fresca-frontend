@@ -285,7 +285,7 @@ const Dashboard: React.FC = () => {
               return (
                 <div
                   className={`rounded-2xl px-2 py-2 mt-5`}
-                  style={{ boxShadow: `0 0 10px 0.1px ${colours[qCount]} `}}
+                  style={{ boxShadow: `0 0 10px 0.1px ${colours[qCount]} ` }}
                 >
                   <p className="text-center text-foodbg dark:text-white text-lg font-bold">
                     Order ID: {_.orderId}
@@ -308,54 +308,7 @@ const Dashboard: React.FC = () => {
                       </div>
                     );
                   })}
-                  <p style={{display: 'none'}}>{qCount++}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        
-        <div
-          className="h-[80vh] xl:w-[24vw] bg-white rounded-xl dark:bg-gray"
-          style={{
-            boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
-          }}
-        >
-          <p className="font-bold dark:text-white text-foodbg text-2xl pt-5 text-center">
-            Item Queue
-          </p>
-          <div className="width-[100%] mt-2 mx-4 !overflow-scroll h-[70vh] px-2">
-            {itemPendingQueue.map((_: any) => {
-              return (
-                <div
-                  className={`rounded-2xl px-2 py-2 mt-5`}
-                  style={{ boxShadow: `0 0 10px 0.1px ${colours[pCount]}`}}
-                >
-                  <p className="text-center text-foodbg dark:text-white text-lg font-bold">
-                    Order ID: {_.orderId}
-                  </p>
-                  <p className="text-center text-xs"> {_.time} min ago</p>
-                  {_.items.map((item: any) => {
-                    return (
-                      <div className="border border-foodbg rounded-xl py-2 px-2 flex items-center justify-between mt-5">
-                        <div className="w-[60px] h-[60px] bg-green"></div>
-                        <div className="w-[110px] h-[60px]">
-                          <p className="text-md">{item.name}</p>
-                          <p className="text-sm">{item.description}</p>
-                          <p className="text-xs">x{item.quentity}</p>
-                        </div>
-                        <div className="grid w-[100px]">
-                          <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
-                            Back
-                          </Button>
-                          <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
-                            Next
-                          </Button>
-                        </div>
-                      </div>
-                    );
-                  })}
-                  <p style={{display: 'none'}}>{pCount++}</p>
+                  <p style={{ display: 'none' }}>{qCount++}</p>
                 </div>
               );
             })}
@@ -369,14 +322,14 @@ const Dashboard: React.FC = () => {
           }}
         >
           <p className="font-bold dark:text-white text-foodbg text-2xl pt-5 text-center">
-            Item Queue
+            Proccessing
           </p>
           <div className="width-[100%] mt-2 mx-4 !overflow-scroll h-[70vh] px-2">
-            {itemCompletedQueue.map((_: any) => {
+            {itemPendingQueue.map((_: any) => {
               return (
                 <div
                   className={`rounded-2xl px-2 py-2 mt-5`}
-                  style={{ boxShadow: `0 0 10px 0.1px ${colours[cCount]}`}}
+                  style={{ boxShadow: `0 0 10px 0.1px ${colours[pCount]}` }}
                 >
                   <p className="text-center text-foodbg dark:text-white text-lg font-bold">
                     Order ID: {_.orderId}
@@ -402,7 +355,54 @@ const Dashboard: React.FC = () => {
                       </div>
                     );
                   })}
-                  <p style={{display: 'none'}}>{cCount++}</p>
+                  <p style={{ display: 'none' }}>{pCount++}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div
+          className="h-[80vh] xl:w-[24vw] bg-white rounded-xl dark:bg-gray"
+          style={{
+            boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
+          }}
+        >
+          <p className="font-bold dark:text-white text-foodbg text-2xl pt-5 text-center">
+            Completed
+          </p>
+          <div className="width-[100%] mt-2 mx-4 !overflow-scroll h-[70vh] px-2">
+            {itemCompletedQueue.map((_: any) => {
+              return (
+                <div
+                  className={`rounded-2xl px-2 py-2 mt-5`}
+                  style={{ boxShadow: `0 0 10px 0.1px ${colours[cCount]}` }}
+                >
+                  <p className="text-center text-foodbg dark:text-white text-lg font-bold">
+                    Order ID: {_.orderId}
+                  </p>
+                  <p className="text-center text-xs"> {_.time} min ago</p>
+                  {_.items.map((item: any) => {
+                    return (
+                      <div className="border border-foodbg rounded-xl py-2 px-2 flex items-center justify-between mt-5">
+                        <div className="w-[60px] h-[60px] bg-green"></div>
+                        <div className="w-[110px] h-[60px]">
+                          <p className="text-md">{item.name}</p>
+                          <p className="text-sm">{item.description}</p>
+                          <p className="text-xs">x{item.quentity}</p>
+                        </div>
+                        <div className="grid w-[100px]">
+                          <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
+                            Back
+                          </Button>
+                          <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
+                            Next
+                          </Button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                  <p style={{ display: 'none' }}>{cCount++}</p>
                 </div>
               );
             })}

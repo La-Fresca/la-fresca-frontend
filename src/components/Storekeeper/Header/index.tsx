@@ -62,7 +62,7 @@ const Header = (props: {
 
         <div className="hidden sm:flex items-center">
           <div className="text-black font-bold pl-2 pr-12 dark:text-white mr-4">
-            Kitchen Manager
+            Store Keeper
           </div>
           <form action="https://formbold.com/s/unique_form_id" method="POST">
             <div className="relative">

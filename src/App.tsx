@@ -86,7 +86,7 @@ const routes = createRoutesFromElements(
           </>
         }
       />
-      </Route>
+    </Route>
     <Route path="/">
       <Route
         path="login"
