@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Food from '@images/product/pizza.png';
 import { Checkbox, Button } from '@nextui-org/react';
 import QtySelector from './QtySelector';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, useCallback, useEffect } from 'react';
 import { useCart } from '@/api/useCart';
 import { Cart } from '@/types/cart';
 
