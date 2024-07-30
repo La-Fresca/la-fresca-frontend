@@ -105,75 +105,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <ul className="mb-6 flex flex-col gap-1.5">
               <li>
                 <NavLink
-                  to="/branch-manager"
+                  to="/kitchen-manager"
                   className={`group relative flex items-center gap-2.5 rounded-xl px-4 py-2 font-medium text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    (pathname === '/branch-manager' ||
+                    (pathname === '/kitchen-manager' ||
                       pathname.includes('dashboard')) &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
                   <Squares2X2Icon className="w-6 h-6" />
                   Dashboard
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="sales"
-                  className={`group relative flex items-center gap-2.5 rounded-xl px-4 py-2 font-medium text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    (pathname === '/sales' || pathname.includes('sales')) &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <ChartBarSquareIcon className="w-6 h-6" />
-                  Sales
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/branch-manager/categories"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/categories') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <TagIcon className="w-6 h-6" />
-                  Categories
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/branch-manager/foods"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/foods') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <CakeIcon className="w-6 h-6" />
-                  Foods
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/branch-manager/food-combos"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/food-combos') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <RectangleGroupIcon className="w-6 h-6" />
-                  Food Combos
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/branch-manager/users"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/users') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <UserIcon className="w-6 h-6" />
-                  Manage Users
                 </NavLink>
               </li>
               {/* <SidebarLinkGroup

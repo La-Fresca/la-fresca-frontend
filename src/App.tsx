@@ -62,6 +62,7 @@ import ViewInventory from '@/pages/Storekeeper/InventoryList';
 import AddInventory from '@/pages/Storekeeper/AddInventory';
 import EditInventory from '@/pages/Storekeeper/EditInventory';
 import ViewGrnByCollection from '@/pages/Storekeeper/GrnListByCollection';
+import KitchenManagerLayout from './layouts/KitchenManagerLayout';
 
 const { refresh } = useAuth();
 
@@ -85,7 +86,7 @@ const routes = createRoutesFromElements(
           </>
         }
       />
-      </Route>
+    </Route>
     <Route path="/">
       <Route
         path="login"
@@ -423,7 +424,7 @@ const routes = createRoutesFromElements(
           />
         </Route>
       </Route>
-      <Route path="kitchen-manager/*" element={<StorekeeperLayout />}>
+      <Route path="kitchen-manager/*" element={<KitchenManagerLayout />}>
         <Route
           index
           element={
