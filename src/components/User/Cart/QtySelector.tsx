@@ -3,22 +3,18 @@ import { useState } from 'react';
 
 interface QtySelectorProps {
   quantity: number;
+  onQuantityChange: (quantity: number) => void;
 }
 
-const QtySelector: React.FC<QtySelectorProps> = ({ quantity }) => {
-  const [count, setCount] = useState<number>(quantity);
-
+function QtySelector({ quantity, onQuantityChange }: QtySelectorProps) {
   const handleIncrement = () => {
-    setCount((prevCount) => prevCount + 1);
+    onQuantityChange(quantity + 1);
   };
 
   const handleDecrement = () => {
-    setCount((prevCount) => {
-      if (prevCount > 1) {
-        return prevCount - 1;
-      }
-      return prevCount; // No change if count is already 1 or less
-    });
+    if (quantity > 1) {
+      onQuantityChange(quantity - 1);
+    }
   };
 
   return (
@@ -32,9 +28,9 @@ const QtySelector: React.FC<QtySelectorProps> = ({ quantity }) => {
         </Button>
         <input
           type="text"
-          value={count}
+          value={quantity}
           readOnly
-          className="text-center w-16 ml-2 mr-2 py-1 bg-transparent border border-foodbg text-white rounded-md"
+          className="text-center w-16 ml-2 mr-2 py-1 bg-transparent border border-foodbg dark:text-white rounded-md"
         />
         <Button
           className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg min-w-0 h-8 w-1"
@@ -45,6 +41,6 @@ const QtySelector: React.FC<QtySelectorProps> = ({ quantity }) => {
       </div>
     </div>
   );
-};
+}
 
 export default QtySelector;

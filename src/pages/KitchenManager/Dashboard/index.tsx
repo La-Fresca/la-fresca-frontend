@@ -284,8 +284,8 @@ const Dashboard: React.FC = () => {
             {itemWaitingQueue.map((_: any) => {
               return (
                 <div
-                  className={`border-2 border-[${colours[qCount]}] rounded-2xl px-2 py-2 mt-5`}
-                  style={{ boxShadow: `0 0 10px 0.1px ${colours[qCount]}` }}
+                  className={`rounded-2xl px-2 py-2 mt-5`}
+                  style={{ boxShadow: `0 0 10px 0.1px ${colours[qCount]} ` }}
                 >
                   <p className="text-center text-foodbg dark:text-white text-lg font-bold">
                     Order ID: {_.orderId}
@@ -328,7 +328,7 @@ const Dashboard: React.FC = () => {
             {itemPendingQueue.map((_: any) => {
               return (
                 <div
-                  className={`border-2 border-[${colours[pCount]}] rounded-2xl px-2 py-2 mt-5`}
+                  className={`rounded-2xl px-2 py-2 mt-5`}
                   style={{ boxShadow: `0 0 10px 0.1px ${colours[pCount]}` }}
                 >
                   <p className="text-center text-foodbg dark:text-white text-lg font-bold">
@@ -375,7 +375,7 @@ const Dashboard: React.FC = () => {
             {itemCompletedQueue.map((_: any) => {
               return (
                 <div
-                  className={`border-2 border-[${colours[cCount]}] rounded-2xl px-2 py-2 mt-5`}
+                  className={`rounded-2xl px-2 py-2 mt-5`}
                   style={{ boxShadow: `0 0 10px 0.1px ${colours[cCount]}` }}
                 >
                   <p className="text-center text-foodbg dark:text-white text-lg font-bold">
