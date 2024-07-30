@@ -2,11 +2,13 @@ import { useState, useEffect, useCallback } from 'react';
 import Food from '@images/product/pizza.png';
 import { Checkbox, Button } from '@nextui-org/react';
 import QtySelector from './QtySelector';
-import { Link, useNavigate } from 'react-router-dom';
+import { json, Link, useNavigate } from 'react-router-dom';
 import { useCart } from '@/api/useCart';
+import { useOrders } from '@/api/useOrders';
 import { CartItem } from '@/types/cartItem';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { swalConfirm } from '@/components/UI/SwalDelete';
+import { Order } from '@/types/order';
 
 function Index() {
   const { showSwal } = swalConfirm({
@@ -18,6 +20,7 @@ function Index() {
   const { getCartByUserId, removeCartItem } = useCart();
   const [Loading, setLoading] = useState<boolean>(true);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { createOrder } = useOrders();
   // const [items, setItems] = useState<Cart[]>([]);
   const [selectedItems, setSelectedItems] = useState<
     Record<string, { price: number; quantity: number }>
@@ -38,6 +41,34 @@ function Index() {
   useEffect(() => {
     fetchCart();
   }, []);
+
+  const newOrder = async () => {
+    try {
+      const transformedData: Order = {
+        orderType: 'ONLINE',
+        orderStatus: 'PENDING',
+        totalAmount: price,
+        location: 'Colombo',
+        cafeId: '1',
+        contactNo: '0712345678',
+        customerId: userId,
+        orderItems: cartItems.map((item) => ({
+          name: item.name,
+          quantity: item.quantity,
+          totalPrice: item.itemTotalPrice,
+          foodId: item.menuItemId,
+          addedFeatures: item.customFeatures.map((feature) => ({
+            name: feature.name,
+            level: feature.level,
+          })),
+        })),
+      };
+      createOrder(transformedData);
+      console.log(JSON.stringify(transformedData));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleConfirmDelete = (id: any) => {
     showSwal(() => removeCartItem(id));
@@ -373,7 +404,10 @@ function Index() {
 
                 <Button
                   className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 px-10 inline-flex w-full items-center justify-center focus:outline-none focus:ring-4 focus:ring-primary-300 mt-8"
-                  onClick={() => navigate('/checkout')}
+                  onClick={() => {
+                    newOrder();
+                    // navigate('/checkout');
+                  }}
                 >
                   Proceed to Checkout
                 </Button>
