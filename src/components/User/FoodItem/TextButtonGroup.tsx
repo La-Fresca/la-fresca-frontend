@@ -53,7 +53,7 @@ export default function TextButtonGroup({
               className={buttonClass}
               onClick={() => handleIncrement(index)}
             >
-              {level}({prices[index]})
+              {level}
             </Button>
           );
         })}

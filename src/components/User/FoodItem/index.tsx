@@ -12,6 +12,8 @@ import TextButton from './TextButton';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { Cart } from '@/types/cart';
 import { useNavigate } from 'react-router-dom';
+import { swalSuccess } from '@/components/UI/SwalSuccess';
+import { delay } from 'framer-motion';
 
 interface Props {
   id: string | undefined;
@@ -30,6 +32,9 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 function FoodForm({ id }: Props) {
+  const { showSwal } = swalSuccess({
+    message: 'Item Added to cart successfully',
+  });
   const navigate = useNavigate();
   const userId = (useAuthUser() as { userId: string }).userId;
   const { getFoodById } = useFoods();
@@ -91,9 +96,13 @@ function FoodForm({ id }: Props) {
     };
     try {
       addCartItem(transformedData);
-      navigate('/cart');
     } catch (error) {
       console.error('Error adding food item:', error);
+    } finally {
+      setTimeout(() => {
+        showSwal();
+        navigate('/cart');
+      }, 2000);
     }
   };
 
