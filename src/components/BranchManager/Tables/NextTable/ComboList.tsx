@@ -137,7 +137,7 @@ export default function ComboList() {
           <div className="flex flex-col">
             {/* food ids shold be a list seperate with commas */}
             <p className="text-small text-default-400">
-              {Array.from(combo.foodIds).join(', ')}
+              {Array.from(combo.foodNames).join(', ')}
             </p>
           </div>
         );
