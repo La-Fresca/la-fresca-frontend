@@ -8,5 +8,5 @@ export type Cart = {
 
 export type CustomFeature = {
   name: string;
-  levels: number;
+  level: number;
 };

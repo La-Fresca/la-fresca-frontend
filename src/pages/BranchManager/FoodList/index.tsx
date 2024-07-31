@@ -139,7 +139,7 @@ export default function FoodList() {
       case 'name':
         return cellValue;
       case 'price':
-        return `$${cellValue}`;
+        return `Rs.${cellValue}`;
       case 'availability':
         return cellValue === 1 ? 'Available' : 'Not Available';
       case 'discountStatus':

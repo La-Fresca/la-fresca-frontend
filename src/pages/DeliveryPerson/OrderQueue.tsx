@@ -74,16 +74,41 @@ const OrderQueue = () => {
             </div>
 
             <div className="flex flex-col h-[70%] overflow-auto gap-2">
-                {ordersList.map((order, index) => (
+                {
+                    orders.map((order, index) => (
+                        <OrderCard
+                            title={order.id.toString()}
+                            subtitle={order.location}
+                            cardImage={"https://images.unsplash.com/photo-1515467410840-96a3cf21dbea?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} // need to handle
+                            text={"time ago"} // need to handle
+                            key={index}
+                            buttonTitle="Pick Order"
+                        />
+                    ))
+                    }
+                {/* {if(orders.length > 0) :(
+                orders.map((order, index) => (
                     <OrderCard
-                        title={order.title}
-                        subtitle={order.subtitle}
-                        cardImage={order.cardImage}
-                        text={order.text}
+                        title={order.id.toString()}
+                        subtitle={order.location}
+                        cardImage={"https://images.unsplash.com/photo-1515467410840-96a3cf21dbea?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} // need to handle
+                        text={"time ago"} // need to handle
                         key={index}
                         buttonTitle="Pick Order"
                     />
-                ))}
+                ))):(
+                    ordersList.map((order, index) => (
+                        <OrderCard
+                            title={order.title}
+                            subtitle={order.subtitle}
+                            cardImage={order.cardImage}
+                            text={order.text}
+                            key={index}
+                        />
+                )
+            } */}
+
+
                 {/* <OrderCard
                     title="#399392"
                     subtitle="Nugegoda"

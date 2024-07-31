@@ -6,6 +6,7 @@ import { Button } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 import { Category } from '@/types/category';
 import { useCategories } from '@/api/useCategories';
+import { swalSuccess } from '@/components/UI/SwalSuccess';
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Category name is required' }),
@@ -15,6 +16,9 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 function CategoryEditForm({ id = '' }: { id?: string }) {
+  const { showSwal } = swalSuccess({
+    message: 'Item Added successfully',
+  });
   const { updateCategory } = useCategories();
   const { getCategoryById } = useCategories();
   const Navigate = useNavigate();
@@ -50,9 +54,13 @@ function CategoryEditForm({ id = '' }: { id?: string }) {
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
       await updateCategory(id, data);
-      Navigate('/branch-manager/categories');
     } catch (error: any) {
       console.error(error);
+    } finally {
+      setTimeout(() => {
+        showSwal();
+        Navigate('/branch-manager/categories');
+      }, 2000);
     }
   };
 

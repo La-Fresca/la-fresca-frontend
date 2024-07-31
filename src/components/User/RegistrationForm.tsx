@@ -11,7 +11,11 @@ const { testRefresh } = useAuth();
 
 const FormSchema = z.object({
   email: z.string().min(1, { message: 'Email is required' }),
+  contact: z.string().min(1, { message: 'Contact is required' }),
   password: z.string().min(1, { message: 'Password is required' }),
+  confirmPassword: z
+    .string()
+    .min(1, { message: 'Confirm Password is required' }),
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
@@ -32,7 +36,7 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
       const apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/user/login`, {
+      const response = await fetch(`${apiUrl}/user/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,12 +87,11 @@ const LoginForm = () => {
               type="text"
               placeholder="Contact Number"
               className="w-full text-white border-b-2 rounded-lg mt-7 border-white-700 bg-transparent focus:outline-none focus:ring-0"
-              {...register('email')}
+              {...register('contact')}
             />
-
           </div>
           <PassINput register={register} fieldname="password" />
-          <ConfirmPassINput register={register} fieldname="password" />
+          <ConfirmPassINput register={register} fieldname="confirmPassword" />
           <div className="space-y-6">
             <button
               className="w-full py-2 mt-5 text-center  text-black font-extrabold bg-yellow-500 rounded-md hover:bg-yellow-600"
@@ -96,20 +99,20 @@ const LoginForm = () => {
             >
               Register
             </button>
-            
           </div>
           <div className="text-center">
             <p className="text-white">
-              <Link to="/forgot-password" className="text-white hover:text-yellow-500">
+              <Link
+                to="/forgot-password"
+                className="text-white hover:text-yellow-500"
+              >
                 Forgot password?
               </Link>
             </p>
           </div>
         </form>
 
-        <h1 className='text-center my-10 text-xl'>
-          -OR-
-        </h1>
+        <h1 className="text-center my-10 text-xl">-OR-</h1>
 
         <div className="mt-6 mb-6 flex justify-center space-x-10">
           <div className="px-6 sm:px-0 max-w-sm">
@@ -179,15 +182,9 @@ const LoginForm = () => {
               Sign up with Facebook<div></div>
             </button>
           </div>
-        </div>        
+        </div>
       </div>
-      
-        
     </div>
-    
-
-
-    
   );
 };
 

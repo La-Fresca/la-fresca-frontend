@@ -2,17 +2,77 @@ import { useState, useEffect, useCallback } from 'react';
 import Food from '@images/product/pizza.png';
 import { Checkbox, Button } from '@nextui-org/react';
 import QtySelector from './QtySelector';
-import { Link, useNavigate } from 'react-router-dom';
+import { json, Link, useNavigate } from 'react-router-dom';
 import { useCart } from '@/api/useCart';
-import { Cart } from '@/types/cart';
+import { useOrders } from '@/api/useOrders';
+import { CartItem } from '@/types/cartItem';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import { swalConfirm } from '@/components/UI/SwalDelete';
+import { Order } from '@/types/order';
 
 function Index() {
-  const { getCartByUserId } = useCart();
-  const [items, setItems] = useState<Cart[]>([]);
+  const { showSwal } = swalConfirm({
+    message: 'Do you want to remove the item from cart?',
+    buttonText: 'Remove',
+    afterString: 'Item removed successfully',
+  });
+  const userId = (useAuthUser() as { userId: string }).userId;
+  const { getCartByUserId, removeCartItem } = useCart();
+  const [Loading, setLoading] = useState<boolean>(true);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { createOrder } = useOrders();
+  // const [items, setItems] = useState<Cart[]>([]);
   const [selectedItems, setSelectedItems] = useState<
     Record<string, { price: number; quantity: number }>
   >({});
   const [price, setPrice] = useState<number>(0);
+
+  const fetchCart = async () => {
+    try {
+      const cart = await getCartByUserId(userId);
+      setCartItems(cart);
+      setLoading(false);
+      console.log(cart);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  const newOrder = async () => {
+    try {
+      const transformedData: Order = {
+        orderType: 'ONLINE',
+        orderStatus: 'PENDING',
+        totalAmount: price,
+        location: 'Colombo',
+        cafeId: '1',
+        contactNo: '0712345678',
+        customerId: userId,
+        orderItems: cartItems.map((item) => ({
+          name: item.name,
+          quantity: item.quantity,
+          totalPrice: item.itemTotalPrice,
+          foodId: item.menuItemId,
+          addedFeatures: item.customFeatures.map((feature) => ({
+            name: feature.name,
+            level: feature.level,
+          })),
+        })),
+      };
+      createOrder(transformedData);
+      console.log(JSON.stringify(transformedData));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleConfirmDelete = (id: any) => {
+    showSwal(() => removeCartItem(id));
+  };
 
   // Function to calculate the total price
   const calculateTotalPrice = useCallback(() => {
@@ -61,12 +121,42 @@ function Index() {
   const navigate = useNavigate();
 
   // const items = [
-  //   { id: '01', name: 'Cheese Pizza', description: 'Indulge in our classic Cheese Pizza', price: 3500 },
-  //   { id: '02', name: 'Saussage Pizza', description: 'Indulge in our classic Saussage Pizza', price: 4500 },
-  //   { id: '03', name: 'Margherita Pizza', description: 'Indulge in our classic Margherita Pizza', price: 3000 },
-  //   { id: '04', name: 'BBQ Chicken Pizza', description: 'Indulge in our BBQ Chicken Pizza', price: 4000 },
-  //   { id: '05', name: 'Black Chicken Pizza', description: 'Indulge in our Black Chicken Pizza', price: 4000 },
-  //   { id: '06', name: 'Hot & Spicy Chicken Pizza', description: 'Indulge in our Hot & Spicy Chicken Pizza', price: 4000 },
+  //   {
+  //     id: '01',
+  //     name: 'Cheese Pizza',
+  //     description: 'Indulge in our classic Cheese Pizza',
+  //     price: 3500,
+  //   },
+  //   {
+  //     id: '02',
+  //     name: 'Saussage Pizza',
+  //     description: 'Indulge in our classic Saussage Pizza',
+  //     price: 4500,
+  //   },
+  //   {
+  //     id: '03',
+  //     name: 'Margherita Pizza',
+  //     description: 'Indulge in our classic Margherita Pizza',
+  //     price: 3000,
+  //   },
+  //   {
+  //     id: '04',
+  //     name: 'BBQ Chicken Pizza',
+  //     description: 'Indulge in our BBQ Chicken Pizza',
+  //     price: 4000,
+  //   },
+  //   {
+  //     id: '05',
+  //     name: 'Black Chicken Pizza',
+  //     description: 'Indulge in our Black Chicken Pizza',
+  //     price: 4000,
+  //   },
+  //   {
+  //     id: '06',
+  //     name: 'Hot & Spicy Chicken Pizza',
+  //     description: 'Indulge in our Hot & Spicy Chicken Pizza',
+  //     price: 4000,
+  //   },
   // ];
 
   const alsoBoughtItems = [
@@ -90,6 +180,9 @@ function Index() {
     },
   ];
 
+  if (Loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div>
       <div className="text-4xl dark:text-white text-foodbg mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -105,7 +198,7 @@ function Index() {
             <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
               {/* Card set start */}
               <div className="space-y-6">
-                {items.map((item) => (
+                {cartItems.map((item) => (
                   <div
                     key={item.id}
                     className="rounded-xl dark:border dark:border-foodbg dark:bg-foodbg p-2 shadow-sm md:px-6 backdrop-blur-md"
@@ -122,7 +215,7 @@ function Index() {
                         onChange={(e) =>
                           handleCheckboxChange(
                             item.id,
-                            item.price,
+                            item.itemTotalPrice,
                             e.target.checked,
                           )
                         }
@@ -159,11 +252,21 @@ function Index() {
                         <div className="text-end md:order-4 md:w-10">
                           <p className="text-base font-bold text-gray-900 dark:text-white">
                             <span className="pr-2 text-orange-500">Rs.</span>
-                            {item.price}
+                            {item.itemTotalPrice}
                           </p>
                         </div>
 
-                        <div className="text-end md:order-5 md:w-30">X</div>
+                        <Button
+                          className="text-end md:order-5 md:w-30 w-2 h-5"
+                          onClick={() => {
+                            handleConfirmDelete(item.id);
+                            setTimeout(() => {
+                              fetchCart();
+                            }, 2000);
+                          }}
+                        >
+                          X
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -292,7 +395,10 @@ function Index() {
 
                 <Button
                   className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 px-10 inline-flex w-full items-center justify-center focus:outline-none focus:ring-4 focus:ring-primary-300 mt-8"
-                  onClick={() => navigate('/checkout')}
+                  onClick={() => {
+                    newOrder();
+                    // navigate('/checkout');
+                  }}
                 >
                   Proceed to Checkout
                 </Button>
@@ -302,8 +408,8 @@ function Index() {
                     {' '}
                     or{' '}
                   </span>
-                  <a
-                    href="/foodItems"
+                  <Button
+                    onClick={() => navigate('/fooditems')}
                     title=""
                     className="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500"
                   >

@@ -1,16 +1,13 @@
 import { Button } from '@nextui-org/react';
-import { useState } from 'react';
 
 interface Props {
   count: number;
-  setCount: (newCount:number) => void;
+  setCount: (newCount: number) => void;
 }
 
-function QtySelector({count,setCount}:Props) {
-  
-
+function QtySelector({ count, setCount }: Props) {
   const handleIncrement = () => {
-    setCount(count+ 1);
+    setCount(count + 1);
   };
 
   const handleDecrement = () => {

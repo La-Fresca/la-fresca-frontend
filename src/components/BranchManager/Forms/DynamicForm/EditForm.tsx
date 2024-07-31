@@ -13,6 +13,7 @@ import { useFoods } from '@/api/useFoods';
 import { Food } from '@/types/food';
 import { useCategories } from '@/api/useCategories';
 import { Category } from '@/types/category';
+import { swalSuccess } from '@/components/UI/SwalSuccess';
 
 type CategoryPicker = {
   key: string;
@@ -51,6 +52,9 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 function EditForm({ id = '' }: { id?: string }) {
+  const { showSwal } = swalSuccess({
+    message: 'Item Added successfully',
+  });
   const Navigate = useNavigate();
   const { updateFood } = useFoods();
   const { getFoodById } = useFoods();
@@ -164,9 +168,13 @@ function EditForm({ id = '' }: { id?: string }) {
 
     try {
       updateFood(id, transformedData);
-      Navigate('/branch-manager/foods');
     } catch (error) {
       console.error('Error adding food item:', error);
+    } finally {
+      setTimeout(() => {
+        showSwal();
+        Navigate('/branch-manager/foods');
+      }, 2000);
     }
   };
 

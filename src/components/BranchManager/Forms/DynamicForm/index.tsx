@@ -13,6 +13,7 @@ import { useUpload } from '@/api/useUpload';
 import { useFoods } from '@/api/useFoods';
 import { useCategories } from '@/api/useCategories';
 import { Food } from '@/types/food';
+import { swalSuccess } from '@/components/UI/SwalSuccess';
 
 type CategoryPicker = {
   key: string;
@@ -54,6 +55,9 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 const DynamicForm: FC = () => {
+  const { showSwal } = swalSuccess({
+    message: 'Item Added successfully',
+  });
   const { uploadImage } = useUpload();
   const { addFood } = useFoods();
   const { getAllCategories } = useCategories();
@@ -134,9 +138,13 @@ const DynamicForm: FC = () => {
 
     try {
       addFood(transformedData);
-      Navigate('/branch-manager/foods');
     } catch (error) {
       console.error('Error adding food item:', error);
+    } finally {
+      setTimeout(() => {
+        showSwal();
+        Navigate('/branch-manager/foods');
+      }, 2000);
     }
   };
 
