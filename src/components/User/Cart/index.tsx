@@ -61,6 +61,7 @@ function Index() {
             name: feature.name,
             level: feature.level,
           })),
+          menuItemType: item.menuItemType,
         })),
       };
       createOrder(transformedData);
