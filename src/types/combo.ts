@@ -8,5 +8,5 @@ export type FoodCombo = {
   cafeId: string;
   deleted: 0;
   foodIds: string[];
-  foodNames: string[];
+  foodNames?: string[];
 };

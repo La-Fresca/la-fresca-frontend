@@ -223,7 +223,7 @@ function Index() {
                       <a href="#" className="shrink-0 md:order-1">
                         <img
                           className="h-30 w-30"
-                          src={Food}
+                          src={item.image}
                           alt="food image"
                         />
                       </a>
@@ -369,7 +369,7 @@ function Index() {
                         Savings
                       </dt>
                       <dd className="text-base font-medium text-green-600">
-                      Rs. 0
+                        Rs. 0
                       </dd>
                     </dl>
 
@@ -378,7 +378,7 @@ function Index() {
                         Delivery fee
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-                      Rs. 0
+                        Rs. 0
                       </dd>
                     </dl>
                   </div>
@@ -388,7 +388,7 @@ function Index() {
                       Total
                     </dt>
                     <dd className="text-base font-bold text-gray-900 dark:text-white">
-                    Rs. {price}
+                      Rs. {price}
                     </dd>
                   </dl>
                 </div>

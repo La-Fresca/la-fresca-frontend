@@ -160,6 +160,7 @@ const ComboForm: FC = () => {
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                   type="number"
+                  step="0.01"
                   {...register('price')}
                 />
                 {errors.price && (

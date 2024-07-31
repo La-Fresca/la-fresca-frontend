@@ -4,6 +4,7 @@ export type Food = {
   name: string;
   description?: string;
   image: string;
+  cost?: number;
   price: number;
   available?: number;
   deleted?: number;

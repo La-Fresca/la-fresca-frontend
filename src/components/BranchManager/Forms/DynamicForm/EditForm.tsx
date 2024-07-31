@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { z } from 'zod';
+import { set, z } from 'zod';
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -24,6 +24,7 @@ const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
   categories: z.array(z.string()).min(1, { message: 'Categories is required' }),
   description: z.string().optional(),
+  cost: z.coerce.number().multipleOf(0.01).optional(),
   price: z.coerce
     .number()
     .multipleOf(0.01)
@@ -91,6 +92,7 @@ function EditForm({ id = '' }: { id?: string }) {
         setValue('name', data.name);
         setValue('categories', data.categories || []);
         setValue('description', data.description || '');
+        setValue('cost', data.cost);
         setValue('price', data.price);
         setValue('image', data.image);
         if (data.features) {
@@ -281,10 +283,24 @@ function EditForm({ id = '' }: { id?: string }) {
                 )}
               </label>
               <label className="mb-6 block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">Cost</span>
+                <input
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
+                  type="number"
+                  step=".01"
+                  {...register('cost')}
+                  placeholder="Enter the production cost"
+                />
+                {errors.price && (
+                  <p className="text-red-600">{errors.price.message}</p>
+                )}
+              </label>
+              <label className="mb-6 block text-black dark:text-white">
                 <span className="block mb-1 text-gray-600">Price</span>
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                   type="number"
+                  step="0.01"
                   {...register('price')}
                 />
                 {errors.price && (
@@ -360,6 +376,7 @@ function EditForm({ id = '' }: { id?: string }) {
                         <input
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                           type="number"
+                          step="0.01"
                           {...register(
                             `features.${index}.subCategories.${subIndex}.price`,
                           )}
