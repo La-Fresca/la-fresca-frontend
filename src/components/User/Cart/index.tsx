@@ -257,7 +257,7 @@ function Index() {
                         Original price
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        ${price}
+                        Rs. {price}
                       </dd>
                     </dl>
 
@@ -266,25 +266,16 @@ function Index() {
                         Savings
                       </dt>
                       <dd className="text-base font-medium text-green-600">
-                        $0
+                      Rs. 0
                       </dd>
                     </dl>
 
                     <dl className="flex items-center justify-between gap-4 pt-3">
                       <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                        Store Pickup
+                        Delivery fee
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        $0
-                      </dd>
-                    </dl>
-
-                    <dl className="flex items-center justify-between gap-4 pt-3">
-                      <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                        Tax
-                      </dt>
-                      <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        $0
+                      Rs. 0
                       </dd>
                     </dl>
                   </div>
@@ -294,7 +285,7 @@ function Index() {
                       Total
                     </dt>
                     <dd className="text-base font-bold text-gray-900 dark:text-white">
-                      ${price}
+                    Rs. {price}
                     </dd>
                   </dl>
                 </div>
@@ -306,7 +297,7 @@ function Index() {
                   Proceed to Checkout
                 </Button>
 
-                <div className="flex items-center justify-center gap-2">
+                {/* <div className="flex items-center justify-center gap-2">
                   <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
                     {' '}
                     or{' '}
@@ -333,7 +324,7 @@ function Index() {
                       />
                     </svg>
                   </a>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

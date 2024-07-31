@@ -139,13 +139,13 @@ const Dashboard: React.FC = () => {
             {itemWaitingQueue.map((_: any) => {
               return (
                 <div
-                  className={`rounded-2xl px-2 py-2 mt-5`}
-                  style={{ boxShadow: `0 0 10px 0.1px ${colours[qCount]} ` }}
+                  className={`rounded-2xl px-2 py-2 mt-5 border borde-xl`}
+                  // style={{ boxShadow: `0 0 10px 0.1px ${colours[qCount]} ` }}
                 >
                   <p className="text-center text-foodbg dark:text-white text-lg font-bold">
                     Order ID: {_.id.slice(-6).toUpperCase()}
                   </p>
-                  <p className="text-center text-xs"> <b className='dark:text-white'>{_.orderType}</b> | {_.createdAt} min ago</p>
+                  <p className="text-center text-xs"> <b className='dark:text-white border border-xl border-foodbg rounded-xl px-2 bg-[#5713b8]'>{_.orderType}</b> | {_.createdAt} min ago</p>
                   {_.orderItems.map((item: any) => {
                     return (
                       <div className="border border-foodbg rounded-xl py-2 px-2 flex items-center justify-between mt-5">

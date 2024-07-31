@@ -74,7 +74,7 @@ function index() {
                 d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
               />
             </svg>
-            Order summary
+            Payment
           </li>
         </ol>
 
@@ -396,7 +396,7 @@ function index() {
                     Subtotal
                   </dt>
                   <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    $8,094.00
+                  Rs. 8,094.00
                   </dd>
                 </dl>
 
@@ -409,19 +409,10 @@ function index() {
 
                 <dl className="flex items-center justify-between gap-4 py-3">
                   <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                    Store Pickup
+                    Delivery fee
                   </dt>
                   <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    $99
-                  </dd>
-                </dl>
-
-                <dl className="flex items-center justify-between gap-4 py-3">
-                  <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                    Tax
-                  </dt>
-                  <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    $199
+                  Rs. 99
                   </dd>
                 </dl>
 
@@ -430,7 +421,7 @@ function index() {
                     Total
                   </dt>
                   <dd className="text-base font-bold text-gray-900 dark:text-white">
-                    $8,392.00
+                  Rs. 8,392.00
                   </dd>
                 </dl>
               </div>
