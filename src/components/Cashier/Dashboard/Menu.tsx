@@ -28,7 +28,7 @@ const Menu: React.FC<MenuProps> = ({
 
   const categories = [
     'All',
-    'Breakfast',
+    'Pizza',
     'Pasta',
     'Rice Bowl',
     'Side Dish',
@@ -105,7 +105,7 @@ const Menu: React.FC<MenuProps> = ({
             <button
               onClick={(event: React.SyntheticEvent) => {
                 event.stopPropagation();
-                addItemToOrder(item)
+                addItemToOrder(item);
               }}
               className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400 text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700"
             >
