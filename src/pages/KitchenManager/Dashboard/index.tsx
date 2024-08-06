@@ -39,7 +39,7 @@ const Dashboard: React.FC = () => {
     {
       id: '02',
       orderId: 105,
-      orderType: 'ONLINE',
+      orderType: 'OFFLINE',
       time: '2',
       orderStatus: 'PENDING',
       orderItems: [
@@ -52,7 +52,7 @@ const Dashboard: React.FC = () => {
             'https://simple-uploadddddddddd.iamtrazy.eu.org/uploads/1722279635684-bdba90a67b204831.png',
         },
         {
-          foodId: '03',
+          foodId: '02',
           name: 'Sausage Pizza',
           quantity: 5,
           orderStatus: 'PREPARING',
@@ -69,7 +69,44 @@ const Dashboard: React.FC = () => {
         },
       ],
     },
+    {
+      id: '03',
+      orderId: 108,
+      orderType: 'ONLINE',
+      time: '2',
+      orderStatus: 'PENDING',
+      orderItems: [
+        {
+          foodId: '01',
+          name: 'Cheese Pizza',
+          quantity: 2,
+          orderStatus: 'PENDING',
+          image:
+            'https://simple-uploadddddddddd.iamtrazy.eu.org/uploads/1722279635684-bdba90a67b204831.png',
+        },
+        {
+          foodId: '02',
+          name: 'Chicken Pizza',
+          quantity: 2,
+          orderStatus: 'PENDING',
+          image:
+            'https://simple-uploadddddddddd.iamtrazy.eu.org/uploads/1722279635684-bdba90a67b204831.png',
+        },
+        {
+          foodId: '03',
+          name: 'Sausage Pizza',
+          quantity: 5,
+          orderStatus: 'PENDING',
+          image:
+            'https://simple-uploadddddddddd.iamtrazy.eu.org/uploads/1722279635684-bdba90a67b204831.png',
+        },
+      ],
+    },
   ]);
+
+  console.log(orders);
+
+  const colours = ['red', 'green', 'blue', 'yellow', 'white'];
 
   const updateOrderStatus = (orderId, itemId, newStatus) => {
     setOrders((prevOrders) =>
@@ -103,8 +140,6 @@ const Dashboard: React.FC = () => {
   const itemPendingQueue = getFilteredOrders('PREPARING');
   const itemCompletedQueue = getFilteredOrders('READY');
 
-  const colours = ['red', 'green', 'blue', 'yellow', 'white'];
-
   return (
     <div className="grid grid-cols-3 gap-4 md:gap-6 2xl:gap-7.5">
       <div
@@ -117,19 +152,25 @@ const Dashboard: React.FC = () => {
           Item Queue
         </p>
         <div className="width-[100%] mt-2 mx-4 !overflow-scroll h-[70vh] px-2">
-          {itemWaitingQueue.map((order, qCount) => (
+        {itemWaitingQueue.map((order) => {
+          const originalOrderIndex = orders.findIndex((o) => o.id === order.id);
+          return (
             <div
               key={order.id}
-              className={`rounded-2xl px-2 py-2 mt-5 border borde-xl`}
+              className={`rounded-2xl px-2 py-2 mt-5 border-4 border-[${colours[originalOrderIndex]}]`}
             >
               <p className="text-center text-foodbg dark:text-white text-lg font-bold">
                 Order ID: {order.id.slice(-6).toUpperCase()}
               </p>
               <p className="text-center text-xs">
-                <b className="dark:text-white border border-xl border-foodbg rounded-xl px-2 bg-[#5713b8]">
+                <b
+                  className={`dark:text-white border border-xl border-foodbg rounded-xl px-2 ${
+                    order.orderType === 'ONLINE' ? 'bg-[#5713b8]' : 'bg-red-500'
+                  }`}
+                >
                   {order.orderType}
                 </b>{' '}
-                | {order.createdAt} min ago
+                | {order.time} min ago
               </p>
               {order.orderItems.map((item) => (
                 <div
@@ -144,11 +185,7 @@ const Dashboard: React.FC = () => {
                   <div className="grid w-[100px]">
                     <Button
                       onClick={() =>
-                        updateOrderStatus(
-                          order.orderId,
-                          item.foodId,
-                          'PREPARING',
-                        )
+                        updateOrderStatus(order.orderId, item.foodId, 'PREPARING')
                       }
                       className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]"
                     >
@@ -158,7 +195,8 @@ const Dashboard: React.FC = () => {
                 </div>
               ))}
             </div>
-          ))}
+          );
+        })}
         </div>
       </div>
 
@@ -169,21 +207,28 @@ const Dashboard: React.FC = () => {
         }}
       >
         <p className="font-bold dark:text-white text-foodbg text-2xl pt-5 text-center">
-          Processing
+          Item Queue
         </p>
         <div className="width-[100%] mt-2 mx-4 !overflow-scroll h-[70vh] px-2">
-          {itemPendingQueue.map((order, pCount) => (
+        {itemPendingQueue.map((order) => {
+          const originalOrderIndex = orders.findIndex((o) => o.id === order.id);
+          return (
             <div
               key={order.id}
-              className={`rounded-2xl px-2 py-2 mt-5`}
-              style={{ boxShadow: `0 0 10px 0.1px ${colours[pCount]} ` }}
+              className={`rounded-2xl px-2 py-2 mt-5 border-4 border-[${colours[originalOrderIndex]}]`}
             >
               <p className="text-center text-foodbg dark:text-white text-lg font-bold">
                 Order ID: {order.id.slice(-6).toUpperCase()}
               </p>
               <p className="text-center text-xs">
-                <b className="dark:text-white">{order.orderType}</b> |{' '}
-                {order.createdAt} min ago
+                <b
+                  className={`dark:text-white border border-xl border-foodbg rounded-xl px-2 ${
+                    order.orderType === 'ONLINE' ? 'bg-[#5713b8]' : 'bg-red-500'
+                  }`}
+                >
+                  {order.orderType}
+                </b>{' '}
+                | {order.time} min ago
               </p>
               {order.orderItems.map((item) => (
                 <div
@@ -193,12 +238,16 @@ const Dashboard: React.FC = () => {
                   <img src={item.image} className="w-11 h-11" />
                   <div className="w-[110px] h-[60px]">
                     <p className="text-md">{item.name}</p>
-                    <p className="text-xs">x {item.quantity}</p>
+                    <p className="text-xs">x{item.quantity}</p>
                   </div>
                   <div className="grid w-[100px]">
-                    <Button
+                  <Button
                       onClick={() =>
-                        updateOrderStatus(order.orderId, item.foodId, 'READY')
+                        updateOrderStatus(
+                          order.orderId,
+                          item.foodId,
+                          'READY',
+                        )
                       }
                       className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]"
                     >
@@ -216,7 +265,8 @@ const Dashboard: React.FC = () => {
                 </div>
               ))}
             </div>
-          ))}
+          );
+        })}
         </div>
       </div>
 
@@ -227,21 +277,28 @@ const Dashboard: React.FC = () => {
         }}
       >
         <p className="font-bold dark:text-white text-foodbg text-2xl pt-5 text-center">
-          Completed
+          Item Queue
         </p>
         <div className="width-[100%] mt-2 mx-4 !overflow-scroll h-[70vh] px-2">
-          {itemCompletedQueue.map((order, cCount) => (
+        {itemCompletedQueue.map((order) => {
+          const originalOrderIndex = orders.findIndex((o) => o.id === order.id);
+          return (
             <div
               key={order.id}
-              className={`rounded-2xl px-2 py-2 mt-5`}
-              style={{ boxShadow: `0 0 10px 0.1px ${colours[cCount]} ` }}
+              className={`rounded-2xl px-2 py-2 mt-5 border-4 border-[${colours[originalOrderIndex]}]`}
             >
               <p className="text-center text-foodbg dark:text-white text-lg font-bold">
                 Order ID: {order.id.slice(-6).toUpperCase()}
               </p>
               <p className="text-center text-xs">
-                <b className="dark:text-white">{order.orderType}</b> |{' '}
-                {order.createdAt} min ago
+                <b
+                  className={`dark:text-white border border-xl border-foodbg rounded-xl px-2 ${
+                    order.orderType === 'ONLINE' ? 'bg-[#5713b8]' : 'bg-red-500'
+                  }`}
+                >
+                  {order.orderType}
+                </b>{' '}
+                | {order.time} min ago
               </p>
               {order.orderItems.map((item) => (
                 <div
@@ -251,10 +308,10 @@ const Dashboard: React.FC = () => {
                   <img src={item.image} className="w-11 h-11" />
                   <div className="w-[110px] h-[60px]">
                     <p className="text-md">{item.name}</p>
-                    <p className="text-xs">x {item.quantity}</p>
+                    <p className="text-xs">x{item.quantity}</p>
                   </div>
                   <div className="grid w-[100px]">
-                    <Button
+                  <Button
                       onClick={() =>
                         updateOrderStatus(
                           order.orderId,
@@ -264,13 +321,22 @@ const Dashboard: React.FC = () => {
                       }
                       className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]"
                     >
+                      Next
+                    </Button>
+                    <Button
+                      onClick={() =>
+                        updateOrderStatus(order.orderId, item.foodId, 'PREPARING')
+                      }
+                      className="bg-gradient-to-r from-gray-600 to-gray-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]"
+                    >
                       Back
                     </Button>
                   </div>
                 </div>
               ))}
             </div>
-          ))}
+          );
+        })}
         </div>
       </div>
     </div>

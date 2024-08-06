@@ -9,7 +9,6 @@ import { CartItem } from '@/types/cartItem';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { swalConfirm } from '@/components/UI/SwalDelete';
 import { Order } from '@/types/order';
-import { useNavigate } from 'react-router-dom';
 
 function Index() {
   const { showSwal } = swalConfirm({
