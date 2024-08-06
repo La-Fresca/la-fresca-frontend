@@ -90,7 +90,22 @@ function index() {
                 <div>
                   <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
                     {' '}
-                    Full name*
+                    First name*
+                  </label>
+                  <input
+                    type="text"
+                    id="your_name"
+                    className="block w-full rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
+                    placeholder="Bonnie Green"
+                    required
+                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
+                    {' '}
+                    Last name*
                   </label>
                   <input
                     type="text"
@@ -132,7 +147,7 @@ function index() {
                   />
                 </div>
 
-                <div>
+                {/* <div>
                   <div className="mb-2 flex items-center gap-2">
                     <label className="block text-sm font-medium text-foodbg dark:text-white">
                       {' '}
@@ -157,7 +172,7 @@ function index() {
                     <option value="U">Uva</option>
                     <option value="S">Sabaragamuwa</option>
                   </select>
-                </div>
+                </div> */}
 
                 {/* phone number */}
                 <div>
@@ -225,21 +240,6 @@ function index() {
                   </div>
                 </div>
 
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
-                    {' '}
-                    Postal / Zip code*
-                  </label>
-                  <input
-                    type="text"
-                    id="vat_number"
-                    className="block w-full border rounded-lg border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
-                    placeholder="Postal / Zip code"
-                    required
-                  />
-                </div>
-
                 {/* <div className="sm:col-span-2">
                   <button
                     type="submit"
@@ -271,11 +271,11 @@ function index() {
 
             {/* Card details */}
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold text-foodbg dark:text-white">
+              {/* <h2 className="text-xl font-semibold text-foodbg dark:text-white">
                 Payment Details
-              </h2>
+              </h2> */}
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
                     {' '}
@@ -358,7 +358,7 @@ function index() {
                   </div>
                 </div>
 
-                {/* <div className="sm:col-span-2">
+                <div className="sm:col-span-2">
                   <button
                     type="submit"
                     className="flex w-full items-center justify-center gap-2 rounded-lg border dark:border-foodbg dark:bg-foodbg hover:dark:border-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:text-gray-400 dark:hover:text-white dark:focus:ring-gray-700 duration-200"
@@ -383,8 +383,8 @@ function index() {
                     </svg>
                     Add Card
                   </button>
-                </div> */}
-              </div>
+                </div>
+              </div> */}
             </div>
           </div>
 
