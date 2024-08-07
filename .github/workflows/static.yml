@@ -23,6 +23,13 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_VITE_API_URL: 'https://lafresca-api.ucsc.eu.org/api/lafresca'
+          envkey_VITE_UPLOAD_URL: ${{ secrets.UPLOAD_URL }}
+          envkey_COOKIE_PROTOCOL: 'https:'
+          file_name: .env
       - name: Upload artifact
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -30,6 +37,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
-          source: './dist'
+          source: './dist, .env'
           target: '/var/www/lafresca-frontend/html'
           rm: true
