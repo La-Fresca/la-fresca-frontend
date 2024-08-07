@@ -21,8 +21,6 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci
-      - name: Build
-        run: npm run build
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v2.0
         with:
@@ -30,7 +28,8 @@ jobs:
           envkey_VITE_UPLOAD_URL: ${{ secrets.UPLOAD_URL }}
           envkey_COOKIE_PROTOCOL: 'https:'
           file_name: .env
-          directory: dist
+      - name: Build
+        run: npm run build
       - name: Upload artifact
         uses: appleboy/scp-action@v0.1.7
         with:
