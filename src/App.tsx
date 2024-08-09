@@ -65,12 +65,13 @@ import EditInventory from '@/pages/Storekeeper/EditInventory';
 import ViewGrnByCollection from '@/pages/Storekeeper/GrnListByCollection';
 
 const { refresh } = useAuth();
+const cookieProtocol = (import.meta as any).env.VITE_COOKIE_PROTOCOL;
 
 const store = createStore({
   authName: '_auth',
   authType: 'cookie',
   cookieDomain: window.location.hostname,
-  cookieSecure: window.location.protocol === 'http:',
+  cookieSecure: window.location.protocol === cookieProtocol,
   refresh: refresh,
 });
 
