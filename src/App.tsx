@@ -1,3 +1,7 @@
+import createStore from 'react-auth-kit/createStore';
+import AuthProvider from 'react-auth-kit';
+import RequireAuth from '@/components/AuthOutlet';
+import { useAuth } from '@/api/useAuth';
 import { useEffect, useState } from 'react';
 import {
   createBrowserRouter,
@@ -11,14 +15,16 @@ import PageTitle from '@/components/PageTitle';
 import Home from '@/pages/Home';
 import Dashboard from '@/pages/BranchManager/Dashboard';
 import BranchManagerLayout from '@/layouts/BranchManagerLayout';
+import KitchenManagerLayout from '@/layouts/KitchenManagerLayout';
 import LoginPage from '@/pages/User/LogIn';
+import RegistrationPage from '@/pages/User/Registration';
 import UserLayout from '@/layouts/UserLayout';
 import AddFoods from '@/pages/BranchManager/Foods/AddFood';
 import FoodItem from '@/pages/FoodItem';
 import AllFoodItems from '@/pages/AllFoodItems';
 import FoodList from '@/pages/BranchManager/FoodList';
 import { Gallery } from '@/components/Gallery/Gallery';
-import DiscountList from './pages/BranchManager/FoodList/DiscountList';
+import DiscountList from '@/pages/BranchManager/FoodList/DiscountList';
 import Cart from '@/pages/Cart';
 import Checkout from '@/pages/Checkout';
 import { OrderHistory } from '@/components/User/OrderHistory/OrderHistory';
@@ -27,6 +33,7 @@ import UserAdd from '@/pages/BranchManager/Users/AddUser';
 import UserEdit from '@/pages/BranchManager/Users/EditUser';
 import EditFoods from '@/pages/BranchManager/Foods/EditFood';
 import AddCategories from '@/pages/BranchManager/Categories/AddCategories';
+import EditCategory from '@/pages/BranchManager/Categories/EditCategory';
 import ViewCategories from '@/pages/BranchManager/Categories/ViewCategories';
 import AddCombos from '@/pages/BranchManager/FoodCombos/Add';
 import Combos from '@/pages/BranchManager/FoodCombos';
@@ -37,7 +44,36 @@ import StorekeeperLayout from '@/layouts/StorekeeperLayout';
 import ViewGrns from '@/pages/Storekeeper/GrnList';
 import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
+import AssignWaiter from '@/pages/KitchenManager/AssignWaiters';
+import AssignDelivery from '@/pages/KitchenManager/AssignDelivery';
+import DeliveryLayout from '@/layouts/DeliveryLayout';
+import { OnDelivery } from '@/pages/DeliveryPerson/OnDelivery';
 import KitchenManagerDashboard from '@/pages/KitchenManager/Dashboard';
+import Unauthorized from '@/components/Unauthorized';
+import WaiterLayout from '@/layouts/WaiterLayout';
+import WaiterDashboard from '@/pages/Waiter/dashboard';
+import ServedOrders from '@/pages/Waiter/servedOrders';
+import CashierLayout from '@/layouts/CashierLayout';
+import PhysicalOrder from '@pages/Cashier/PhysicalOrder';
+import UserProfile from '@components/User/Profile/Profile';
+import DeliveryHome from '@pages/DeliveryPerson/Home';
+import History from '@/pages/DeliveryPerson/History';
+import OrderQueue from '@/pages/DeliveryPerson/OrderQueue';
+import ViewInventory from '@/pages/Storekeeper/InventoryList';
+import AddInventory from '@/pages/Storekeeper/AddInventory';
+import EditInventory from '@/pages/Storekeeper/EditInventory';
+import ViewGrnByCollection from '@/pages/Storekeeper/GrnListByCollection';
+
+const { refresh } = useAuth();
+const cookieProtocol = (import.meta as any).env.VITE_COOKIE_PROTOCOL;
+
+const store = createStore({
+  authName: '_auth',
+  authType: 'cookie',
+  cookieDomain: window.location.hostname,
+  cookieSecure: window.location.protocol === cookieProtocol,
+  refresh: refresh,
+});
 
 const routes = createRoutesFromElements(
   <Route>
@@ -51,68 +87,62 @@ const routes = createRoutesFromElements(
           </>
         }
       />
+    </Route>
+    <Route path="/">
       <Route
-        path="gallery"
+        path="login"
         element={
           <>
-            <PageTitle title="La Fresca | Gallery" />
-            <Gallery />
+            <PageTitle title="La Fresca | Log In" />
+            <LoginPage />
           </>
         }
       />
       <Route
-        path="cart"
+        path="register"
         element={
           <>
-            <PageTitle title="La Fresca | Cart" />
-            <Cart />
+            <PageTitle title="La Fresca | Register" />
+            <RegistrationPage />
           </>
         }
       />
       <Route
-        path="promotions"
+        path="unauthorized"
         element={
           <>
-            <PageTitle title="La Fresca | Promotions" />
-            <Discount />
+            <PageTitle title="La Fresca | Unauthorized" />
+            <Unauthorized />
           </>
         }
       />
       <Route
-        path="orderhistory"
+        path="testwaiterModal"
         element={
           <>
-            <PageTitle title="La Fresca | Order History" />
-            <OrderHistory />
+            <PageTitle title="La Fresca | testModal" />
+            <AssignWaiter />
           </>
         }
       />
-
       <Route
-        path="checkout"
+        path="testdeliveryModal"
         element={
           <>
-            <PageTitle title="La Fresca | Checkout" />
-            <Checkout />
+            <PageTitle title="La Fresca | Food Items" />
+            <AssignDelivery />
           </>
         }
       />
-      <Route path="fooditems">
+    </Route>
+    <Route element={<RequireAuth allowedRoles={['ADMIN']} />}>
+      <Route path="/" element={<UserLayout />}>
         <Route
-          index
+          path="gallery"
           element={
             <>
-              <PageTitle title="La Fresca | Food Items" />
-              <AllFoodItems />
-            </>
-          }
-        />
-        <Route
-          path="viewfood/:itemId"
-          element={
-            <>
-              <PageTitle title="La Fresca | Food Item" />
-              <FoodItem />
+              <PageTitle title="La Fresca | Gallery" />
+              <Gallery />
             </>
           }
         />
@@ -125,45 +155,216 @@ const routes = createRoutesFromElements(
             </>
           }
         />
-      </Route>
+        <Route
+          path="cart"
+          element={
+            <>
+              <PageTitle title="La Fresca | Cart" />
+              <Cart />
+            </>
+          }
+        />
+        <Route
+          path="promotions"
+          element={
+            <>
+              <PageTitle title="La Fresca | Promotions" />
+              <Discount />
+            </>
+          }
+        />
+        <Route
+          path="orderhistory"
+          element={
+            <>
+              <PageTitle title="La Fresca | Order History" />
+              <OrderHistory />
+            </>
+          }
+        />
 
-      <Route
-        path="login"
-        element={
-          <>
-            <PageTitle title="La Fresca | Log In" />
-            <LoginPage />
-          </>
-        }
-      />
-    </Route>
-
-    <Route path="branch-manager/*" element={<BranchManagerLayout />}>
-      <Route
-        index
-        element={
-          <>
-            <PageTitle title="Branch Manager | Dashboard" />
-            <Dashboard />
-          </>
-        }
-      />
-      <Route
-        path="sales"
-        element={
-          <>
-            <PageTitle title="Branch Manager | Sales" />
-            <Sales />
-          </>
-        }
-      />
-      <Route path="categories">
+        <Route
+          path="checkout"
+          element={
+            <>
+              <PageTitle title="La Fresca | Checkout" />
+              <Checkout />
+            </>
+          }
+        />
+        <Route path="fooditems">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="La Fresca | Food Items" />
+                <AllFoodItems />
+              </>
+            }
+          />
+          <Route
+            path="viewfood/:itemId"
+            element={
+              <>
+                <PageTitle title="La Fresca | Food Item" />
+                <FoodItem />
+              </>
+            }
+          />
+        </Route>
+      </Route>
+      <Route path="branch-manager/*" element={<BranchManagerLayout />}>
         <Route
           index
           element={
             <>
-              <PageTitle title="Branch Manager | Food Categories" />
-              <ViewCategories />
+              <PageTitle title="Branch Manager | Dashboard" />
+              <Dashboard />
+            </>
+          }
+        />
+        <Route
+          path="sales"
+          element={
+            <>
+              <PageTitle title="Branch Manager | Sales" />
+              <Sales />
+            </>
+          }
+        />
+        <Route path="categories">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Branch Manager | Food Categories" />
+                <ViewCategories />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="La Fresca | Add Food Categories " />
+                <AddCategories />
+              </>
+            }
+          />
+          <Route
+            path="edit/:categoryId"
+            element={
+              <>
+                <PageTitle title="La Fresca | Edit Food Categories " />
+                <EditCategory />
+              </>
+            }
+          />
+        </Route>
+        <Route path="foods">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="La Fresca | Food List" />
+                <FoodList />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Add Food" />
+                <AddFoods />
+              </>
+            }
+          />
+          <Route
+            path="edit/:foodId"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Edit Food" />
+                <EditFoods />
+              </>
+            }
+          />
+        </Route>
+        <Route path="food-combos">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Branch Manager | Food Combos" />
+                <Combos />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Add Food Combo" />
+                <AddCombos />
+              </>
+            }
+          />
+          <Route
+            path="edit/:comboId"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Edit Food Combo" />
+                <EditCombos />
+              </>
+            }
+          />
+        </Route>
+        <Route path="users">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Branch Manager | Users" />
+                <User />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Add User" />
+                <UserAdd />
+              </>
+            }
+          />
+          <Route
+            path="edit/:userId"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Edit User" />
+                <UserEdit />
+              </>
+            }
+          />
+        </Route>
+        <Route
+          path="discountlist"
+          element={
+            <>
+              <PageTitle title="Branch Manager | Discount List" />
+              <DiscountList />
+            </>
+          }
+        />
+      </Route>
+      <Route path="storekeeper/*" element={<StorekeeperLayout />}>
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="Store Keeper | Inventory" />
+              <ViewInventory />
             </>
           }
         />
@@ -171,179 +372,164 @@ const routes = createRoutesFromElements(
           path="add"
           element={
             <>
-              <PageTitle title="La Fresca | Add Food Categories " />
-              <AddCategories />
+              <PageTitle title="Storekeeper | Add Inventory" />
+              <AddInventory />
             </>
           }
         />
         <Route
-          path="edit/:categoryId"
+          path="view/:collection"
           element={
             <>
-              <PageTitle title="La Fresca | Edit Food Categories " />
-              <AddCategories />
+              <PageTitle title="Storekeeper | Inventory" />
+              <ViewGrnByCollection />
             </>
           }
         />
+        <Route
+          path="edit/:inventoryId"
+          element={
+            <>
+              <PageTitle title="Storekeeper | Edit Inventory" />
+              <EditInventory />
+            </>
+          }
+        />
+        <Route path="stock">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Storekeeper | GRN List" />
+                <ViewGrns />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Store Keeper | Add Stock" />
+                <AddGrn />
+              </>
+            }
+          />
+          <Route
+            path="edit/:stockId"
+            element={
+              <>
+                <PageTitle title="Store Keeper | Edit Stock" />
+                <EditGrn />
+              </>
+            }
+          />
+        </Route>
       </Route>
-      <Route path="foods">
+      <Route path="kitchen-manager/*" element={<KitchenManagerLayout />}>
         <Route
           index
           element={
             <>
-              <PageTitle title="La Fresca | Food List" />
-              <FoodList />
+              <PageTitle title="La Fresca | Kitchen Manager" />
+              <KitchenManagerDashboard />
             </>
           }
         />
-        <Route
-          path="add"
-          element={
-            <>
-              <PageTitle title="Branch Manager | Add Food" />
-              <AddFoods />
-            </>
-          }
-        />
-        <Route
-          path="edit/:foodId"
-          element={
-            <>
-              <PageTitle title="Branch Manager | Edit Food" />
-              <EditFoods />
-            </>
-          }
-        />
+        <Route path="d">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Storekeeper | GRN List" />
+                <ViewGrns />
+              </>
+            }
+          />
+        </Route>
       </Route>
-      <Route path="food-combos">
+      <Route path="waiter/*" element={<WaiterLayout />}>
         <Route
           index
           element={
             <>
-              <PageTitle title="Branch Manager | Food Combos" />
-              <Combos />
+              <PageTitle title="Waiter | Dashboard" />
+              <WaiterDashboard />
             </>
           }
         />
         <Route
-          path="add"
+          path="served-orders"
           element={
             <>
-              <PageTitle title="Branch Manager | Add Food Combo" />
-              <AddCombos />
+              <PageTitle title="Waiter | served-orders" />
+              <ServedOrders />
             </>
           }
-        />
-        <Route
-          path="edit/:comboId"
-          element={
-            <>
-              <PageTitle title="Branch Manager | Edit Food Combo" />
-              <EditCombos />
-            </>
-          }
-        />
+        ></Route>
       </Route>
-      <Route path="users">
+      <Route path="cashier/*" element={<CashierLayout />}>
         <Route
           index
           element={
             <>
-              <PageTitle title="Branch Manager | Users" />
-              <User />
+              <PageTitle title="cashier | Dashboard" />
+              <PhysicalOrder />
             </>
           }
         />
         <Route
-          path="add"
+          path="profile"
           element={
             <>
-              <PageTitle title="Branch Manager | Add User" />
-              <UserAdd />
+              <PageTitle title="cashier | profile" />
+              <UserProfile />
             </>
           }
-        />
-        <Route
-          path="edit/:userId"
-          element={
-            <>
-              <PageTitle title="Branch Manager | Edit User" />
-              <UserEdit />
-            </>
-          }
-        />
+        ></Route>
       </Route>
-      <Route
-        path="discountlist"
-        element={
-          <>
-            <PageTitle title="Branch Manager | Discount List" />
-            <DiscountList />
-          </>
-        }
-      />
-    </Route>
-    
-    <Route path="storekeeper/*" element={<StorekeeperLayout />}>
-      <Route
-        index
-        element={
-          <>
-            <PageTitle title="Storekeeper | Inventory" />
-          </>
-        }
-      />
-      <Route path="grn">
+      <Route path="deliveryperson/*" element={<DeliveryLayout />}>
         <Route
           index
           element={
             <>
-              <PageTitle title="Storekeeper | GRN List" />
-              <ViewGrns />
+              <PageTitle title="Delivery | Home" />
+              <DeliveryHome />
             </>
           }
         />
-        <Route
-          path="add"
-          element={
-            <>
-              <PageTitle title="Storekeeper | Add GRN" />
-              <AddGrn />
-            </>
-          }
-        />
-        <Route
-          path="edit/:grnId"
-          element={
-            <>
-              <PageTitle title="Storekeeper | Edit GRN" />
-              <EditGrn />
-            </>
-          }
-        />
-      </Route>
-    </Route>
-
-    <Route path="kitchen-manager/*" element={<StorekeeperLayout />}>
-      <Route
-        index
-        element={
-          <>
-            <PageTitle title="La Fresca | Kitchen Manager" />
-            <KitchenManagerDashboard />
-          </>
-        }
-      />
-      <Route path="d">
-        <Route
-          index
-          element={
-            <>
-              <PageTitle title="Storekeeper | GRN List" />
-              <ViewGrns />
-            </>
-          }
-        />
+        <Route path="path">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Delivery | Ongoing" />
+                <OnDelivery />
+              </>
+            }
+          />
+        </Route>
+        <Route path="history">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Delivery | History" />
+                <History />
+              </>
+            }
+          />
+        </Route>
+        <Route path="queue">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Delivery | Order Queue" />
+                <OrderQueue />
+              </>
+            }
+          />
+        </Route>
       </Route>
     </Route>
   </Route>,
@@ -362,7 +548,13 @@ function App() {
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
-  return loading ? <Loader /> : <RouterProvider router={router} />;
+  return loading ? (
+    <Loader />
+  ) : (
+    <AuthProvider store={store}>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App;

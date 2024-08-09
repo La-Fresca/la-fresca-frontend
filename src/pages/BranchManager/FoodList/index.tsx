@@ -12,24 +12,15 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Chip,
   Pagination,
-  Selection,
   ChipProps,
-  SortDescriptor,
 } from '@nextui-org/react';
-import { PlusIcon } from './PlusIcon';
 import { VerticalDotsIcon } from './VerticalDotsIcon';
-import { ChevronDownIcon } from './ChevronDownIcon';
 import { SearchIcon } from './SearchIcon';
-import { capitalize } from './utils';
-import { Navigate, useNavigate } from 'react-router-dom';
-
-const statusColorMap: Record<string, ChipProps['color']> = {
-  active: 'success',
-  paused: 'danger',
-  vacation: 'warning',
-};
+import { useNavigate } from 'react-router-dom';
+import { Food } from '@/types/food';
+import { useFoods } from '@/api/useFoods';
+import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'foodId',
@@ -37,46 +28,19 @@ const INITIAL_VISIBLE_COLUMNS = [
   'price',
   'availability',
   'cafeId',
-  'category',
+  'categories',
   'discountStatus',
   'discountId',
   'features',
   'actions',
 ];
 
-type Food = {
-  id: number;
-  foodId: string;
-  name: string;
-  price: number;
-  availability: number;
-  cafeId: string;
-  category: string;
-  discountStatus: string;
-  discountId: string;
-  features: { name: string; levels: string[]; additionalPrices: number[] }[];
-};
-
-const fetchItems = async () => {
-  try {
-    const apiUrl = (import.meta as any).env.VITE_API_URL;
-    const response = await fetch(`${apiUrl}/food`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch item');
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching item:', error);
-  }
-};
-
 const columns = [
   { name: 'Name', uid: 'name' },
   { name: 'Price', uid: 'price' },
   { name: 'Availability', uid: 'availability' },
   { name: 'Cafe ID', uid: 'cafeId' },
-  { name: 'Category', uid: 'category' },
+  { name: 'Categories', uid: 'categories' },
   { name: 'Discount Status', uid: 'discountStatus' },
   { name: 'Discount ID', uid: 'discountId' },
   { name: 'Features', uid: 'features' },
@@ -84,6 +48,11 @@ const columns = [
 ];
 
 export default function FoodList() {
+  const { showSwal } = swalConfirm();
+  const [inputValue, setInputValue] = React.useState('');
+  const { getAllFoods } = useFoods();
+  const [loading, setLoading] = React.useState(true);
+  const { deleteFood } = useFoods();
   const navigate = useNavigate();
   const [foods, setFoods] = React.useState<Food[]>([]);
   const [filterValue, setFilterValue] = React.useState('');
@@ -98,14 +67,32 @@ export default function FoodList() {
   const [page, setPage] = React.useState(1);
   const hasSearchFilter = Boolean(filterValue);
 
+  const fetchItems = async () => {
+    setLoading(true);
+    try {
+      const data = await getAllFoods();
+      setFoods(data);
+      setLoading(false);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteFood = async (id: string) => {
+    try {
+      await deleteFood(id);
+      fetchItems();
+    } catch (error: any) {
+      console.error('Failed to delete food:', error);
+    }
+  };
+
+  const handleConfirmDelete = (id: string) => {
+    showSwal(() => handleDeleteFood(id));
+  };
+
   React.useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchItems();
-      if (data) {
-        setFoods(data);
-      }
-    };
-    fetchData();
+    fetchItems();
   }, []);
 
   const headerColumns = React.useMemo(() => {
@@ -152,7 +139,7 @@ export default function FoodList() {
       case 'name':
         return cellValue;
       case 'price':
-        return `$${cellValue}`;
+        return `Rs.${cellValue}`;
       case 'availability':
         return cellValue === 1 ? 'Available' : 'Not Available';
       case 'discountStatus':
@@ -187,7 +174,9 @@ export default function FoodList() {
                 <DropdownItem onClick={() => navigate(`edit/${food.id}`)}>
                   Edit
                 </DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
+                <DropdownItem onClick={() => handleConfirmDelete(food.id)}>
+                  Delete
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -229,9 +218,6 @@ export default function FoodList() {
   }, []);
 
   const topContent = React.useMemo(() => {
-    if (!foods.length) {
-      return <div>Loading...</div>;
-    }
     return (
       <div className="flex flex-col gap-4">
         <h1 className="text-2xl text-white font-bold">Food List</h1>
@@ -305,16 +291,43 @@ export default function FoodList() {
     );
   }, [page, pages]);
 
+  const classNames = React.useMemo(
+    () => ({
+      wrapper: ['max-h-[382px]', 'max-w-3xl'],
+      th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],
+      td: [
+        // changing the rows border radius
+        // first
+        'group-data-[first=true]:first:before:rounded-none',
+        'group-data-[first=true]:last:before:rounded-none',
+        // middle
+        'group-data-[middle=true]:before:rounded-none',
+        // last
+        'group-data-[last=true]:first:before:rounded-none',
+        'group-data-[last=true]:last:before:rounded-none',
+      ],
+    }),
+    [],
+  );
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <Table
+      isCompact
+      removeWrapper
       aria-label="Example table with custom cells, pagination and sorting"
-      isHeaderSticky
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
+      checkboxesProps={{
+        classNames: {
+          wrapper: 'after:bg-foreground after:text-background text-background',
+        },
+      }}
+      classNames={classNames}
       topContent={topContent}
-      // sortDescriptor={sortDescriptor}
-      // onSortChange={setSortDescriptor}
-      className="w-full"
+      topContentPlacement="outside"
     >
       <TableHeader columns={headerColumns}>
         {(column) => (

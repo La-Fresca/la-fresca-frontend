@@ -1,14 +1,112 @@
-import { Link } from 'react-router-dom'
-import PassINput from './PasswordInput'
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { z } from 'zod';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import PassINput from './PasswordInput';
+import useSignIn from 'react-auth-kit/hooks/useSignIn';
+import { useAuth } from '@/api/useAuth';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
+const { testRefresh } = useAuth();
+
+const FormSchema = z.object({
+  email: z.string().min(1, { message: 'Email is required' }),
+  password: z.string().min(1, { message: 'Password is required' }),
+});
+
+type FormSchemaType = z.infer<typeof FormSchema>;
+
+interface ourJwtPayload extends JwtPayload {
+  role?: string;
+  userId?: string;
+}
 
 const LoginForm = () => {
+  const signIn = useSignIn();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
+  const { register, handleSubmit, formState } = useForm<FormSchemaType>({
+    resolver: zodResolver(FormSchema),
+  });
+
+  const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
+    try {
+      const apiUrl = (import.meta as any).env.VITE_API_URL;
+      const response = await fetch(`${apiUrl}/user/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        const json = await response.json();
+        const accessToken = json.access_token;
+        const refreshToken = json.refresh_token;
+        const role = (jwtDecode(accessToken) as ourJwtPayload).role;
+        const userId = (jwtDecode(accessToken) as ourJwtPayload).userId;
+        signIn({
+          auth: {
+            token: accessToken,
+            type: 'Bearer',
+          },
+          refresh: refreshToken,
+          userState: {
+            role: role,
+            userId: userId,
+          },
+        });
+      } else {
+        console.error('error occured');
+        return;
+      }
+      navigate(from, { replace: true });
+    } catch (error) {
+      console.error('Error occured', error);
+    }
+  };
+  const { errors } = formState;
   return (
-    <div className="relative flex flex-col justify-center h-screen overflow-hidden">
-      <div className="w-full p-6 m-auto lg:max-w-lg bg-white bg-opacity-0">
-        <h1 className="text-3xl font-semibold mb-8 text-yellow-500">
-          Login Account
+    <div className="relative flex flex-row justify-center h-screen overflow-hidden">
+      <div className="w-full p-6 m-auto lg:max-w-full bg-white bg-opacity-0">
+        <h1 className="text-4xl font-semibold mb-8 text-white text-center">
+          Log in
         </h1>
-        <div className="mt-6 mb-6 flex justify-center space-x-16">
+
+        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <input
+              type="text"
+              placeholder="Email Address"
+              className="w-full h-8 text-white border-b-2 rounded-md border-border-white-700 bg-transparent focus:outline-none focus:ring-0 mb-5"
+              {...register('email')}
+            />
+
+            <PassINput register={register} fieldname="password" />
+            <div className="space-y-6"></div>
+
+            <button
+              className="w-full py-2 mt-5 text-center text-black font-extrabold bg-yellow-500 rounded-md hover:bg-yellow-600"
+              type="submit"
+            >
+              Log In
+            </button>
+          </div>
+          <div className="text-center">
+            <p className="text-white">
+              <Link
+                to="/forgot-password"
+                className="text-white hover:text-yellow-500"
+              >
+                Forgot password?
+              </Link>
+            </p>
+          </div>
+        </form>
+
+        <h1 className="text-center my-10 text-xl">-OR-</h1>
+
+        <div className="mt-6 mb-6 flex justify-center space-x-10">
           <div className="px-6 sm:px-0 max-w-sm">
             <button
               type="button"
@@ -77,37 +175,6 @@ const LoginForm = () => {
             </button>
           </div>
         </div>
-        <h1 className="text-3xl font-semibold text-white mb-8 text-center">
-          - OR -
-        </h1>
-        <form className="space-y-6">
-          <div>
-            <input
-              type="text"
-              placeholder="Email Address"
-              className="w-full text-white border-b-2 border-white-700 bg-transparent focus:outline-none focus:ring-0"
-            />
-          </div>
-          <PassINput />
-          <div className="space-y-6">
-            <button className="w-full py-2 text-center text-white bg-yellow-500 rounded-md hover:bg-yellow-600">
-              Log In
-            </button>
-          </div>
-          <div className="text-center">
-            <p className="text-white">
-              {`Don't have an account? `}
-              <Link to="/register" className="text-yellow-500">
-                Create account
-              </Link>
-            </p>
-            <p className="text-white">
-              <Link to="/forgot-password" className="text-yellow-500">
-                Forgot password?
-              </Link>
-            </p>
-          </div>
-        </form>
       </div>
     </div>
   );

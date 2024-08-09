@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Table,
   TableHeader,
@@ -20,31 +20,64 @@ import { PlusIcon } from './PlusIcon';
 import { VerticalDotsIcon } from './VerticalDotsIcon';
 import { ChevronDownIcon } from './ChevronDownIcon';
 import { SearchIcon } from './SearchIcon';
-import { columns, combos } from './MockCombos';
+import { columns } from './columnCombos';
 import { capitalize } from './utils';
 import { useNavigate } from 'react-router-dom';
+import { FoodCombo } from '@/types/combo';
+import { useCombos } from '@/api/useCombos';
+import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 const INITIAL_VISIBLE_COLUMNS = ['name', 'price', 'items', 'actions'];
 
-type Combo = (typeof combos)[0];
-
 export default function ComboList() {
+  const { showSwal } = swalConfirm();
+  const [combos, setCombos] = useState<FoodCombo[]>([]);
+  const { getAllCombos, deleteCombo } = useCombos();
+  const [loading, setLoading] = useState(true);
+
+  const fetchCombos = async () => {
+    try {
+      setLoading(true);
+      const data = await getAllCombos();
+      setCombos(data);
+      setLoading(false);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteCombo = async (id: string) => {
+    try {
+      await deleteCombo(id);
+      fetchCombos();
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  const handleConfirmDelete = (id: any) => {
+    showSwal(() => handleDeleteCombo(id));
+  };
+
+  useEffect(() => {
+    fetchCombos();
+  }, []);
   const navigate = useNavigate();
-  const [filterValue, setFilterValue] = React.useState('');
-  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
+  const [filterValue, setFilterValue] = useState('');
+  const [visibleColumns, setVisibleColumns] = useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: 'name',
     direction: 'ascending',
   });
 
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
 
-  const headerColumns = React.useMemo(() => {
+  const headerColumns = useMemo(() => {
     if (visibleColumns === 'all') return columns;
 
     return columns.filter((column) =>
@@ -52,7 +85,7 @@ export default function ComboList() {
     );
   }, [visibleColumns]);
 
-  const filteredItems = React.useMemo(() => {
+  const filteredItems = useMemo(() => {
     let filteredCombos = [...combos];
 
     if (hasSearchFilter) {
@@ -66,25 +99,25 @@ export default function ComboList() {
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
-  const items = React.useMemo(() => {
+  const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
-  const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: Combo, b: Combo) => {
-      const first = a[sortDescriptor.column as keyof Combo] as number;
-      const second = b[sortDescriptor.column as keyof Combo] as number;
+  const sortedItems = useMemo(() => {
+    return [...items].sort((a: FoodCombo, b: FoodCombo) => {
+      const first = a[sortDescriptor.column as keyof FoodCombo] as number;
+      const second = b[sortDescriptor.column as keyof FoodCombo] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === 'descending' ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((combo: Combo, columnKey: React.Key) => {
-    const cellValue = combo[columnKey as keyof Combo];
+  const renderCell = useCallback((combo: FoodCombo, columnKey: React.Key) => {
+    const cellValue = combo[columnKey as keyof FoodCombo];
 
     switch (columnKey) {
       case 'name':
@@ -104,7 +137,7 @@ export default function ComboList() {
           <div className="flex flex-col">
             {/* food ids shold be a list seperate with commas */}
             <p className="text-small text-default-400">
-              {Array.from(combo.foodIds).join(', ')}
+              {Array.from(combo.foodNames).join(', ')}
             </p>
           </div>
         );
@@ -122,7 +155,9 @@ export default function ComboList() {
                 <DropdownItem onClick={() => navigate(`edit/${combo.id}`)}>
                   Edit
                 </DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
+                <DropdownItem onClick={() => handleConfirmDelete(combo.id)}>
+                  Delete
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -132,19 +167,19 @@ export default function ComboList() {
     }
   }, []);
 
-  const onNextPage = React.useCallback(() => {
+  const onNextPage = useCallback(() => {
     if (page < pages) {
       setPage(page + 1);
     }
   }, [page, pages]);
 
-  const onPreviousPage = React.useCallback(() => {
+  const onPreviousPage = useCallback(() => {
     if (page > 1) {
       setPage(page - 1);
     }
   }, [page]);
 
-  const onRowsPerPageChange = React.useCallback(
+  const onRowsPerPageChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(Number(e.target.value));
       setPage(1);
@@ -152,7 +187,7 @@ export default function ComboList() {
     [],
   );
 
-  const onSearchChange = React.useCallback((value?: string) => {
+  const onSearchChange = useCallback((value?: string) => {
     if (value) {
       setFilterValue(value);
       setPage(1);
@@ -161,12 +196,12 @@ export default function ComboList() {
     }
   }, []);
 
-  const onClear = React.useCallback(() => {
+  const onClear = useCallback(() => {
     setFilterValue('');
     setPage(1);
   }, []);
 
-  const topContent = React.useMemo(() => {
+  const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
@@ -239,7 +274,7 @@ export default function ComboList() {
     hasSearchFilter,
   ]);
 
-  const bottomContent = React.useMemo(() => {
+  const bottomContent = useMemo(() => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
         <span className="w-[30%] text-small text-default-400">
@@ -276,15 +311,41 @@ export default function ComboList() {
     );
   }, [items.length, page, pages, hasSearchFilter]);
 
+  const classNames = useMemo(
+    () => ({
+      wrapper: ['max-h-[382px]', 'max-w-3xl'],
+      th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],
+      td: [
+        // changing the rows border radius
+        // first
+        'group-data-[first=true]:first:before:rounded-none',
+        'group-data-[first=true]:last:before:rounded-none',
+        // middle
+        'group-data-[middle=true]:before:rounded-none',
+        // last
+        'group-data-[last=true]:first:before:rounded-none',
+        'group-data-[last=true]:last:before:rounded-none',
+      ],
+    }),
+    [],
+  );
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <Table
+      isCompact
+      removeWrapper
       aria-label="Example table with custom cells, pagination and sorting"
-      isHeaderSticky
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
-      classNames={{
-        wrapper: 'max-h-[382px]',
+      checkboxesProps={{
+        classNames: {
+          wrapper: 'after:bg-foreground after:text-background text-background',
+        },
       }}
+      classNames={classNames}
       sortDescriptor={sortDescriptor}
       topContent={topContent}
       topContentPlacement="outside"

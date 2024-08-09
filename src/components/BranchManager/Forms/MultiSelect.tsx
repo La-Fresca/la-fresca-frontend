@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Select, SelectItem } from '@nextui-org/react';
-import { Category } from '@/types/category';
+import { Category } from '@/types/mock_category';
 import { UseFormRegister } from 'react-hook-form';
 
 interface AppProps {

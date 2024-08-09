@@ -3,8 +3,10 @@ import { z } from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { Category } from '@/types/category';
+import { useCategories } from '@/api/useCategories';
+import { swalSuccess } from '@/components/UI/SwalSuccess';
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Category name is required' }),
@@ -13,11 +15,17 @@ const FormSchema = z.object({
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-function CategoryEditForm({ id }: { id: string | undefined }) {
-  const Navigate = useNavigate();
-  const { register, handleSubmit, formState } = useForm<FormSchemaType>({
-    resolver: zodResolver(FormSchema),
+function CategoryEditForm({ id = '' }: { id?: string }) {
+  const { showSwal } = swalSuccess({
+    message: 'Item Added successfully',
   });
+  const { updateCategory } = useCategories();
+  const { getCategoryById } = useCategories();
+  const Navigate = useNavigate();
+  const { register, handleSubmit, formState, setValue } =
+    useForm<FormSchemaType>({
+      resolver: zodResolver(FormSchema),
+    });
 
   const { errors } = formState;
 
@@ -27,28 +35,32 @@ function CategoryEditForm({ id }: { id: string | undefined }) {
     }
   }, [errors]);
 
-  const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
-    console.log('Form data:', data);
+  const getCategory = async () => {
     try {
-      const apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/category`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        toast('Food item added successfully', { type: 'success' });
-        Navigate('/branch-manager/foods');
-      } else {
-        toast('Failed to add food item', { type: 'error' });
-        console.error('Failed to add food item:', response.statusText);
+      const data: Category = await getCategoryById(id);
+      if (data) {
+        setValue('name', data.name);
+        setValue('description', data.description);
       }
-    } catch (error) {
-      console.error('Error adding food item:', error);
-      toast('Failed to add food item', { type: 'error' });
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getCategory();
+  }, [id]);
+
+  const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
+    try {
+      await updateCategory(id, data);
+    } catch (error: any) {
+      console.error(error);
+    } finally {
+      setTimeout(() => {
+        showSwal();
+        Navigate('/branch-manager/categories');
+      }, 2000);
     }
   };
 

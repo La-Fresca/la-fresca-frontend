@@ -8,13 +8,25 @@ import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
 import MultiSelect from '@components/BranchManager/Forms/MultiCheckBox';
 import { Category } from '@/types/category';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useUpload } from '@/api/useUpload';
+import { useFoods } from '@/api/useFoods';
+import { useCategories } from '@/api/useCategories';
+import { Food } from '@/types/food';
+import { swalSuccess } from '@/components/UI/SwalSuccess';
+
+type CategoryPicker = {
+  key: string;
+  label: string;
+};
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Item name is required' }),
-  category: z.array(z.string()).min(1, { message: 'Category is required' }),
+  categories: z
+    .array(z.string())
+    .min(1, { message: 'Categories are required' }),
   description: z.string().optional(),
+  cost: z.coerce.number().multipleOf(0.01).optional(),
   price: z.coerce
     .number()
     .multipleOf(0.01)
@@ -32,6 +44,7 @@ const FormSchema = z.object({
             name: z.string().min(1, { message: 'Sub Category is required' }),
             price: z.coerce
               .number()
+              .multipleOf(0.01)
               .min(0, { message: 'Price must be at least 0' }),
           }),
         ),
@@ -43,6 +56,13 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 const DynamicForm: FC = () => {
+  const { showSwal } = swalSuccess({
+    message: 'Item Added successfully',
+  });
+  const { uploadImage } = useUpload();
+  const { addFood } = useFoods();
+  const { getAllCategories } = useCategories();
+  const [categories, setCategories] = useState<CategoryPicker[]>([]);
   const Navigate = useNavigate();
   const { register, control, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
@@ -64,32 +84,36 @@ const DynamicForm: FC = () => {
     }
   }, [errors]);
 
+  const getCategories = async () => {
+    try {
+      const categories = await getAllCategories();
+      if (categories) {
+        const categoryOptions = categories.map((category: Category) => ({
+          key: category.id,
+          label: category.name,
+        }));
+        setCategories(categoryOptions);
+      }
+    } catch (error) {
+      console.error('Error getting categories:', error);
+    }
+  };
+
+  useEffect(() => {
+    getCategories();
+  }, []);
+
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     let imageUrl = data.image;
 
     if (imageFile) {
-      const formData = new FormData();
-      formData.append('file', imageFile);
-
       try {
-        const uploadUrl = (import.meta as any).env.VITE_UPLOAD_URL;
-        const response = await fetch(`${uploadUrl}`, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type',
-          },
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          imageUrl = result.fileUrl;
+        const respose = await uploadImage(imageFile);
+        if (respose) {
+          imageUrl = respose.fileUrl;
           setValue('image', imageUrl);
         } else {
-          console.error('Image upload failed');
-          return;
+          throw new Error('Failed to upload image');
         }
       } catch (error) {
         console.error('Error uploading image:', error);
@@ -97,10 +121,8 @@ const DynamicForm: FC = () => {
       }
     }
 
-    const transformedData = {
+    const transformedData: Food = {
       cafeId: 'cafe 1',
-      available: 0,
-      deleted: 0,
       ...data,
       image: imageUrl,
       features:
@@ -109,37 +131,32 @@ const DynamicForm: FC = () => {
           levels: feature.subCategories.map((sub) => sub.name),
           additionalPrices: feature.subCategories.map((sub) => sub.price),
         })) || [],
+      discountStatus: '',
+      discountId: '',
+      available: 1,
+      deleted: 0,
     };
 
     try {
-      const apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/food`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(transformedData),
-      });
-
-      if (response.ok) {
-        toast('Food item added successfully', { type: 'success' });
-        Navigate('/branch-manager/foods');
-      } else {
-        toast('Failed to add food item', { type: 'error' });
-        console.error('Failed to add food item:', response.statusText);
-      }
+      addFood(transformedData);
     } catch (error) {
       console.error('Error adding food item:', error);
-      toast('Failed to add food item', { type: 'error' });
+    } finally {
+      setTimeout(() => {
+        showSwal();
+        Navigate('/branch-manager/foods');
+      }, 2000);
     }
   };
 
-  const [categories] = useState<Category[]>([
-    { key: 'Non-Vegetarian', label: 'Non-Vegetarian' },
-    { key: 'Vegetarian', label: 'Vegetarian' },
-    { key: 'Other', label: 'Other' },
-  ]);
-
+  // const [categories] = useState<Category[]>([
+  //   { key: 'Non-Vegetarian', label: 'Non-Vegetarian' },
+  //   { key: 'Vegetarian', label: 'Vegetarian' },
+  //   { key: 'Other', label: 'Other' },
+  // ]);
+  if (!categories.length) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#000000]">
@@ -173,7 +190,7 @@ const DynamicForm: FC = () => {
                 <MultiSelect
                   categories={categories}
                   register={register}
-                  fieldname="category"
+                  fieldname="categories"
                   setValue={setValue}
                 />
               </label>
@@ -192,10 +209,24 @@ const DynamicForm: FC = () => {
                 )}
               </label>
               <label className="mb-6 block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">Cost</span>
+                <input
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
+                  type="number"
+                  step=".01"
+                  {...register('cost')}
+                  placeholder="Enter the production cost"
+                />
+                {errors.price && (
+                  <p className="text-red-600">{errors.price.message}</p>
+                )}
+              </label>
+              <label className="mb-6 block text-black dark:text-white">
                 <span className="block mb-1 text-gray-600">Price</span>
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                   type="number"
+                  step=".01"
                   {...register('price')}
                 />
                 {errors.price && (
@@ -271,6 +302,7 @@ const DynamicForm: FC = () => {
                         <input
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                           type="number"
+                          step=".01"
                           {...register(
                             `features.${index}.subCategories.${subIndex}.price`,
                           )}

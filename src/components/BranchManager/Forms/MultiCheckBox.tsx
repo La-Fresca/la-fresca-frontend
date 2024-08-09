@@ -1,10 +1,14 @@
 import { FC, useState, useEffect } from 'react';
 import { Select, SelectItem, Chip, SelectedItems } from '@nextui-org/react';
-import { Category } from '@/types/category';
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
+type ComboPicker = {
+  key: string;
+  label: string;
+};
+
 interface AppProps {
-  categories: Category[];
+  categories: ComboPicker[];
   fieldname: string;
   register: UseFormRegister<any>;
   setValue: UseFormSetValue<any>;
@@ -26,11 +30,15 @@ const getRandomColor = () => {
 const App: FC<AppProps> = ({ categories, register, fieldname, setValue }) => {
   const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
   const [chipColors, setChipColors] = useState<{ [key: string]: string }>({});
-  let value = Array.from(selectedKeys);
+  const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
 
   useEffect(() => {
-    setValue(fieldname, Array.from(selectedKeys));
-  }, [selectedKeys, setValue, fieldname]);
+    const labels = Array.from(selectedKeys).map(
+      (key) => categories.find((category) => category.key === key)?.label || '',
+    );
+    setSelectedLabels(labels);
+    setValue(fieldname, labels);
+  }, [selectedKeys, setValue, fieldname, categories]);
 
   const handleSelectionChange = (keys: Set<string> | any) => {
     const newKeys = keys instanceof Set ? keys : new Set(keys);
@@ -63,12 +71,12 @@ const App: FC<AppProps> = ({ categories, register, fieldname, setValue }) => {
                 base: 'max-w-full',
                 trigger: 'min-h-12 py-2',
               }}
-              renderValue={(items: SelectedItems<Category>) => (
+              renderValue={(items: SelectedItems<ComboPicker>) => (
                 <div className="flex flex-wrap gap-2">
                   {items.map((item) => (
                     <Chip
                       key={item.key}
-                      className={`${chipColors[item.key]} bg-opacity-25`}
+                      className={`${chipColors[String(item.key)]} bg-opacity-25`}
                     >
                       {item.textValue}
                     </Chip>
@@ -88,7 +96,11 @@ const App: FC<AppProps> = ({ categories, register, fieldname, setValue }) => {
                 </SelectItem>
               )}
             </Select>
-            <input type="hidden" value={value} {...register(fieldname)} />
+            <input
+              type="hidden"
+              value={selectedLabels.join(',')}
+              {...register(fieldname)}
+            />
           </div>
         </div>
       </div>

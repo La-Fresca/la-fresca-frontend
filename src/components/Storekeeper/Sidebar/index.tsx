@@ -114,14 +114,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <NavLink
-                  to="grn"
+                  to="stock"
                   className={`group relative flex items-center gap-2.5 rounded-xl px-4 py-2 font-medium text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    (pathname === 'grn' || pathname.includes('grn')) &&
+                    (pathname === 'stock' || pathname.includes('stock')) &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
                   <FolderPlusIcon className="w-6 h-6" />
-                  GRN
+                  Stock
                 </NavLink>
               </li>
 

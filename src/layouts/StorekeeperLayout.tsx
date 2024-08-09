@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from '@components/BranchManager/Header/index';
+import Header from '@components/Storekeeper/Header/index';
 import Sidebar from '@components/Storekeeper/Sidebar/index';
 
 const StorekeeperLayout: React.FC = () => {

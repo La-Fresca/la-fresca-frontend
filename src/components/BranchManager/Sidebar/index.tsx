@@ -10,6 +10,7 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import {
   ChartBarSquareIcon,
   RectangleGroupIcon,
+  StarIcon,
   TagIcon,
 } from '@heroicons/react/24/solid';
 
@@ -162,6 +163,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   <RectangleGroupIcon className="w-6 h-6" />
                   Food Combos
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/branch-manager/discountlist"
+                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    pathname.includes('/branch-manager/discountlist') &&
+                    'bg-yellow-100 dark:bg-meta-4'
+                  }`}
+                >
+                  <StarIcon className="w-6 h-6" />
+                  Discount List
                 </NavLink>
               </li>
               <li>

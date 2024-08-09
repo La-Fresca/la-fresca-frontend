@@ -1,15 +1,11 @@
-import { FC, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { z } from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import { TrashIcon } from '@heroicons/react/24/solid';
-import ImageInput from '@components/BranchManager/Inputs/ImageInput';
 import { Button } from '@nextui-org/react';
-import MultiSelect from '@components/BranchManager/Forms/MultiSelect';
-import { Category } from '@/types/category';
-import { toast } from 'react-toastify';
+import { useCategories } from '@/api/useCategories';
 import { useNavigate } from 'react-router-dom';
+import { swalSuccess } from '@/components/UI/SwalSuccess';
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Category name is required' }),
@@ -19,6 +15,10 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 function CategoryForm() {
+  const { showSwal } = swalSuccess({
+    message: 'Item Added successfully',
+  });
+  const { addCategory } = useCategories();
   const Navigate = useNavigate();
   const { register, handleSubmit, formState } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
@@ -33,27 +33,15 @@ function CategoryForm() {
   }, [errors]);
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
-    console.log('Form data:', data);
     try {
-      const apiUrl = (import.meta as any).env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/category`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        toast('Food item added successfully', { type: 'success' });
-        Navigate('/branch-manager/foods');
-      } else {
-        toast('Failed to add food item', { type: 'error' });
-        console.error('Failed to add food item:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error adding food item:', error);
-      toast('Failed to add food item', { type: 'error' });
+      await addCategory(data);
+    } catch (error: any) {
+      console.error(error);
+    } finally {
+      setTimeout(() => {
+        showSwal();
+        Navigate('/branch-manager/categories');
+      }, 2000);
     }
   };
 
