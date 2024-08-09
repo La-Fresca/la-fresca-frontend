@@ -396,7 +396,7 @@ function index() {
                     Subtotal
                   </dt>
                   <dd className="text-base font-medium text-gray-900 dark:text-white">
-                  Rs. 8,094.00
+                  Rs. 0
                   </dd>
                 </dl>
 
@@ -412,7 +412,7 @@ function index() {
                     Delivery fee
                   </dt>
                   <dd className="text-base font-medium text-gray-900 dark:text-white">
-                  Rs. 99
+                  Rs. 0
                   </dd>
                 </dl>
 
@@ -421,7 +421,7 @@ function index() {
                     Total
                   </dt>
                   <dd className="text-base font-bold text-gray-900 dark:text-white">
-                  Rs. 8,392.00
+                  Rs. 0
                   </dd>
                 </dl>
               </div>
