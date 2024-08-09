@@ -83,30 +83,134 @@ const Dashboard: React.FC = () => {
           orderStatus: 'PENDING',
           image:
             'https://simple-uploadddddddddd.iamtrazy.eu.org/uploads/1722279635684-bdba90a67b204831.png',
-        },
+        }
+      ],
+    },
+    {
+      id: '04',
+      orderId: 110,
+      orderType: 'ONLINE',
+      time: '2',
+      orderStatus: 'PENDING',
+      orderItems: [
         {
-          foodId: '02',
-          name: 'Chicken Pizza',
+          foodId: '01',
+          name: 'Cheese Pizza',
           quantity: 2,
           orderStatus: 'PENDING',
           image:
             'https://simple-uploadddddddddd.iamtrazy.eu.org/uploads/1722279635684-bdba90a67b204831.png',
-        },
+        }
+      ],
+    },
+    {
+      id: '05',
+      orderId: 181,
+      orderType: 'ONLINE',
+      time: '2',
+      orderStatus: 'PENDING',
+      orderItems: [
         {
-          foodId: '03',
-          name: 'Sausage Pizza',
-          quantity: 5,
+          foodId: '01',
+          name: 'Cheese Pizza',
+          quantity: 2,
           orderStatus: 'PENDING',
           image:
             'https://simple-uploadddddddddd.iamtrazy.eu.org/uploads/1722279635684-bdba90a67b204831.png',
-        },
+        }
+      ],
+    },
+    {
+      id: '06',
+      orderId: 115,
+      orderType: 'ONLINE',
+      time: '2',
+      orderStatus: 'PENDING',
+      orderItems: [
+        {
+          foodId: '01',
+          name: 'Cheese Pizza',
+          quantity: 2,
+          orderStatus: 'PENDING',
+          image:
+            'https://simple-uploadddddddddd.iamtrazy.eu.org/uploads/1722279635684-bdba90a67b204831.png',
+        }
+      ],
+    },
+    {
+      id: '07',
+      orderId: 125,
+      orderType: 'ONLINE',
+      time: '2',
+      orderStatus: 'PENDING',
+      orderItems: [
+        {
+          foodId: '01',
+          name: 'Cheese Pizza',
+          quantity: 2,
+          orderStatus: 'PENDING',
+          image:
+            'https://simple-uploadddddddddd.iamtrazy.eu.org/uploads/1722279635684-bdba90a67b204831.png',
+        }
+      ],
+    },
+    {
+      id: '08',
+      orderId: 135,
+      orderType: 'ONLINE',
+      time: '2',
+      orderStatus: 'PENDING',
+      orderItems: [
+        {
+          foodId: '01',
+          name: 'Cheese Pizza',
+          quantity: 2,
+          orderStatus: 'PENDING',
+          image:
+            'https://simple-uploadddddddddd.iamtrazy.eu.org/uploads/1722279635684-bdba90a67b204831.png',
+        }
+      ],
+    },
+    {
+      id: '09',
+      orderId: 145,
+      orderType: 'ONLINE',
+      time: '2',
+      orderStatus: 'PENDING',
+      orderItems: [
+        {
+          foodId: '01',
+          name: 'Cheese Pizza',
+          quantity: 2,
+          orderStatus: 'PENDING',
+          image:
+            'https://simple-uploadddddddddd.iamtrazy.eu.org/uploads/1722279635684-bdba90a67b204831.png',
+        }
+      ],
+    },
+    {
+      id: '10',
+      orderId: 155,
+      orderType: 'ONLINE',
+      time: '2',
+      orderStatus: 'PENDING',
+      orderItems: [
+        {
+          foodId: '01',
+          name: 'Cheese Pizza',
+          quantity: 2,
+          orderStatus: 'PENDING',
+          image:
+            'https://simple-uploadddddddddd.iamtrazy.eu.org/uploads/1722279635684-bdba90a67b204831.png',
+        }
       ],
     },
   ]);
 
+  const filterdOrders = orders.slice(0, 10);
   console.log(orders);
 
-  const colours = ['red', 'green', 'blue', 'yellow', 'white'];
+  const colours = ['red', 'green', 'blue', 'yellow', 'white', 'purple', 'orange', 'pink', 'brown', 'grey'];
 
   const updateOrderStatus = (orderId, itemId, newStatus) => {
     setOrders((prevOrders) =>
@@ -126,7 +230,7 @@ const Dashboard: React.FC = () => {
   };
 
   const getFilteredOrders = (status) => {
-    return orders
+    return filterdOrders
       .map((order) => ({
         ...order,
         orderItems: order.orderItems.filter(
@@ -157,7 +261,8 @@ const Dashboard: React.FC = () => {
           return (
             <div
               key={order.id}
-              className={`rounded-2xl px-2 py-2 mt-5 border-4 border-[${colours[originalOrderIndex]}]`}
+              className={`rounded-2xl px-2 py-2 mt-5 border-4`}
+              style={{borderColor: `${colours[originalOrderIndex]}`}}
             >
               <p className="text-center text-foodbg dark:text-white text-lg font-bold">
                 Order ID: {order.id.slice(-6).toUpperCase()}
@@ -215,7 +320,8 @@ const Dashboard: React.FC = () => {
           return (
             <div
               key={order.id}
-              className={`rounded-2xl px-2 py-2 mt-5 border-4 border-[${colours[originalOrderIndex]}]`}
+              className={`rounded-2xl px-2 py-2 mt-5 border-4`}
+              style={{borderColor: `${colours[originalOrderIndex]}`}}
             >
               <p className="text-center text-foodbg dark:text-white text-lg font-bold">
                 Order ID: {order.id.slice(-6).toUpperCase()}
@@ -285,7 +391,8 @@ const Dashboard: React.FC = () => {
           return (
             <div
               key={order.id}
-              className={`rounded-2xl px-2 py-2 mt-5 border-4 border-[${colours[originalOrderIndex]}]`}
+              className={`rounded-2xl px-2 py-2 mt-5 border-4`}
+              style={{borderColor: `${colours[originalOrderIndex]}`}}
             >
               <p className="text-center text-foodbg dark:text-white text-lg font-bold">
                 Order ID: {order.id.slice(-6).toUpperCase()}
