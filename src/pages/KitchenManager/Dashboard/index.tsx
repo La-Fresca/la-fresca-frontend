@@ -15,9 +15,8 @@ const Dashboard: React.FC = () => {
   });
 
   const updateOrderItemStatusMutation = useMutation({
-    mutationFn: async (orderItem: OrderItemStatus) => {
-      await updateOrderItemStatus(orderItem);
-    },
+    mutationFn: (orderItem: OrderItemStatus) =>
+      updateOrderItemStatus(orderItem),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
     },
