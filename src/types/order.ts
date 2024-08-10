@@ -33,3 +33,9 @@ export type AddedFeature = {
   level: string;
   additionalPrice: number;
 };
+
+export type OrderItemStatus = {
+  orderId: string;
+  itemId: string;
+  status: string;
+};

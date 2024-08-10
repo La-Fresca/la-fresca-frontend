@@ -1,4 +1,4 @@
-import { Order } from '@/types/order';
+import { Order, OrderItemStatus } from '@/types/order';
 import Cookies from 'js-cookie';
 
 const API_URL = (import.meta as any).env.VITE_API_URL;
@@ -117,13 +117,16 @@ export const useOrders = () => {
 
   const getPendingOrdersByDeliveryPersonId = async (id: string) => {
     try {
-      const response = await fetch(`${API_URL}/order/pendingordersbydeliverypersonid/${id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getToken()}`,
+      const response = await fetch(
+        `${API_URL}/order/pendingordersbydeliverypersonid/${id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+          },
         },
-      });
+      );
       if (!response.ok) {
         throw new Error('Failed to fetch orders');
       } else {
@@ -133,17 +136,20 @@ export const useOrders = () => {
       console.error(error);
       throw new Error(error);
     }
-  }
+  };
 
   const getCompletedOrdersByDeliveryPersonId = async (id: string) => {
     try {
-      const response = await fetch(`${API_URL}/order/completedordersbydeliverypersonid/${id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getToken()}`,
+      const response = await fetch(
+        `${API_URL}/order/completedordersbydeliverypersonid/${id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+          },
         },
-      });
+      );
       if (!response.ok) {
         throw new Error('Failed to fetch orders');
       } else {
@@ -153,7 +159,35 @@ export const useOrders = () => {
       console.error(error);
       throw new Error(error);
     }
-  }
+  };
 
-  return { getAllOrders, createOrder, getOrderById, updateOrder, deleteOrder, getPendingOrdersByDeliveryPersonId, getCompletedOrdersByDeliveryPersonId };
+  const updateOrderItemStatus = async (data: OrderItemStatus) => {
+    try {
+      const response = await fetch(`${API_URL}/order/updateOrderItemStatus`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update order item status');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
+  return {
+    getAllOrders,
+    createOrder,
+    getOrderById,
+    updateOrder,
+    deleteOrder,
+    getPendingOrdersByDeliveryPersonId,
+    getCompletedOrdersByDeliveryPersonId,
+    updateOrderItemStatus,
+  };
 };

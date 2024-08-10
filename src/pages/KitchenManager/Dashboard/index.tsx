@@ -1,15 +1,26 @@
 import React from 'react';
 import { Button } from '@nextui-org/react';
-import { useQuery } from '@tanstack/react-query';
-import { Order } from '@/types/order';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Order, OrderItemStatus } from '@/types/order';
 import { useOrders } from '@/api/useOrders';
 import timeAgo from '@/util/TimesAgo';
 
 const Dashboard: React.FC = () => {
-  const { getAllOrders } = useOrders();
+  const { getAllOrders, updateOrderItemStatus } = useOrders();
+  const queryClient = useQueryClient();
+
   const orderQuery = useQuery({
     queryKey: ['orders'],
     queryFn: getAllOrders,
+  });
+
+  const updateOrderItemStatusMutation = useMutation({
+    mutationFn: async (orderItem: OrderItemStatus) => {
+      await updateOrderItemStatus(orderItem);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['orders'] });
+    },
   });
 
   if (orderQuery.isLoading) {
@@ -101,7 +112,16 @@ const Dashboard: React.FC = () => {
                       <p className="text-xs">x{item.quantity}</p>
                     </div>
                     <div className="grid w-[100px]">
-                      <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
+                      <Button
+                        className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]"
+                        onClick={() => {
+                          updateOrderItemStatusMutation.mutate({
+                            orderId: order.id,
+                            itemId: item.foodId,
+                            status: 'PREPARING',
+                          });
+                        }}
+                      >
                         Next
                       </Button>
                     </div>
@@ -159,10 +179,28 @@ const Dashboard: React.FC = () => {
                       <p className="text-xs">x{item.quantity}</p>
                     </div>
                     <div className="grid w-[100px]">
-                      <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
+                      <Button
+                        className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]"
+                        onClick={() => {
+                          updateOrderItemStatusMutation.mutate({
+                            orderId: order.id,
+                            itemId: item.foodId,
+                            status: 'READY',
+                          });
+                        }}
+                      >
                         Next
                       </Button>
-                      <Button className="bg-gradient-to-r from-gray-600 to-gray-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
+                      <Button
+                        className="bg-gradient-to-r from-gray-600 to-gray-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]"
+                        onClick={() => {
+                          updateOrderItemStatusMutation.mutate({
+                            orderId: order.id,
+                            itemId: item.foodId,
+                            status: 'PENDING',
+                          });
+                        }}
+                      >
                         Back
                       </Button>
                     </div>
@@ -220,10 +258,16 @@ const Dashboard: React.FC = () => {
                       <p className="text-xs">x{item.quantity}</p>
                     </div>
                     <div className="grid w-[100px]">
-                      <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
-                        Next
-                      </Button>
-                      <Button className="bg-gradient-to-r from-gray-600 to-gray-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
+                      <Button
+                        className="bg-gradient-to-r from-gray-600 to-gray-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]"
+                        onClick={() => {
+                          updateOrderItemStatusMutation.mutate({
+                            orderId: order.id,
+                            itemId: item.foodId,
+                            status: 'PREPARING',
+                          });
+                        }}
+                      >
                         Back
                       </Button>
                     </div>
