@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import Star from '../FoodItem/Star';
 import { Button } from '@nextui-org/react';
 import { Link } from 'react-router-dom';
@@ -7,39 +6,36 @@ import { useFoods } from '@/api/useFoods';
 import { useCombos } from '@/api/useCombos';
 import { Food } from '@/types/food';
 import { FoodCombo } from '@/types/combo';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 function index() {
-  const [combos, setCombos] = useState<FoodCombo[]>([]);
-  const [foods, setFoods] = useState<Food[]>([]);
   const { getAllFoods } = useFoods();
   const { getAllCombos } = useCombos();
 
-  const fetchFoods = async () => {
-    try {
-      const data = await getAllFoods();
-      setFoods(data);
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
+  const foodQuery = useQuery({
+    queryKey: ['foods'],
+    queryFn: getAllFoods,
+  });
 
-  const fetchCombos = async () => {
-    try {
-      const data = await getAllCombos();
-      setCombos(data);
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
+  const comboQuery = useQuery({
+    queryKey: ['combos'],
+    queryFn: getAllCombos,
+  });
 
-  useEffect(() => {
-    fetchFoods();
-    fetchCombos();
-  }, []);
-
-  if (!foods) {
+  if (foodQuery.isLoading || comboQuery.isLoading) {
     return <div>Loading...</div>;
   }
+
+  if (foodQuery.isError) {
+    return <div>Error: {JSON.stringify(foodQuery.error)}</div>;
+  }
+
+  if (comboQuery.isError) {
+    return <div>Error: {JSON.stringify(comboQuery.error)}</div>;
+  }
+
+  const foods: Food[] = foodQuery.data;
+  const combos: FoodCombo[] = comboQuery.data;
 
   return (
     <div className="mx-auto max-w-screen-xl flex w-full flex-col">
@@ -94,7 +90,10 @@ function index() {
                             <div className="flex items-center pt-2">
                               {Array.from({ length: 5 }).map((j, i) => {
                                 return (
-                                  <Star key={`star-${i}`} highlight={i <= _.rating} />
+                                  <Star
+                                    key={`star-${i}`}
+                                    highlight={i <= _.rating}
+                                  />
                                 );
                               })}
                             </div>
