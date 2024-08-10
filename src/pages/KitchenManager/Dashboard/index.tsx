@@ -1,8 +1,9 @@
 import React from 'react';
 import { Button } from '@nextui-org/react';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Order } from '@/types/order';
 import { useOrders } from '@/api/useOrders';
+import timeAgo from '@/util/TimesAgo';
 
 const Dashboard: React.FC = () => {
   const { getAllOrders } = useOrders();
@@ -37,24 +38,7 @@ const Dashboard: React.FC = () => {
     'grey',
   ];
 
-  const updateOrderStatus = (orderId, itemId, newStatus) => {
-    setOrders((prevOrders) =>
-      prevOrders.map((order) =>
-        order.orderId === orderId
-          ? {
-              ...order,
-              orderItems: order.orderItems.map((item) =>
-                item.foodId === itemId
-                  ? { ...item, orderStatus: newStatus }
-                  : item,
-              ),
-            }
-          : order,
-      ),
-    );
-  };
-
-  const getFilteredOrders = (status) => {
+  const getFilteredOrders = (status: string) => {
     return filterdOrders
       .map((order) => ({
         ...order,
@@ -78,7 +62,7 @@ const Dashboard: React.FC = () => {
         }}
       >
         <p className="font-bold dark:text-white text-foodbg text-2xl pt-5 text-center">
-          Item Queue
+          Pending Orders
         </p>
         <div className="width-[100%] mt-2 mx-4 !overflow-scroll h-[70vh] px-2">
           {itemWaitingQueue.map((order) => {
@@ -103,8 +87,8 @@ const Dashboard: React.FC = () => {
                     }`}
                   >
                     {order.orderType}
-                  </b>{' '}
-                  | {order.time} min ago
+                  </b>
+                  | {timeAgo(order.createdAt)}
                 </p>
                 {order.orderItems.map((item) => (
                   <div
@@ -117,16 +101,7 @@ const Dashboard: React.FC = () => {
                       <p className="text-xs">x{item.quantity}</p>
                     </div>
                     <div className="grid w-[100px]">
-                      <Button
-                        onClick={() =>
-                          updateOrderStatus(
-                            order.orderId,
-                            item.foodId,
-                            'PREPARING',
-                          )
-                        }
-                        className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]"
-                      >
+                      <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
                         Next
                       </Button>
                     </div>
@@ -145,7 +120,7 @@ const Dashboard: React.FC = () => {
         }}
       >
         <p className="font-bold dark:text-white text-foodbg text-2xl pt-5 text-center">
-          Item Queue
+          Preparing Orders
         </p>
         <div className="width-[100%] mt-2 mx-4 !overflow-scroll h-[70vh] px-2">
           {itemPendingQueue.map((order) => {
@@ -170,8 +145,8 @@ const Dashboard: React.FC = () => {
                     }`}
                   >
                     {order.orderType}
-                  </b>{' '}
-                  | {order.time} min ago
+                  </b>
+                  | {timeAgo(order.createdAt)}
                 </p>
                 {order.orderItems.map((item) => (
                   <div
@@ -184,24 +159,10 @@ const Dashboard: React.FC = () => {
                       <p className="text-xs">x{item.quantity}</p>
                     </div>
                     <div className="grid w-[100px]">
-                      <Button
-                        onClick={() =>
-                          updateOrderStatus(order.orderId, item.foodId, 'READY')
-                        }
-                        className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]"
-                      >
+                      <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
                         Next
                       </Button>
-                      <Button
-                        onClick={() =>
-                          updateOrderStatus(
-                            order.orderId,
-                            item.foodId,
-                            'PENDING',
-                          )
-                        }
-                        className="bg-gradient-to-r from-gray-600 to-gray-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]"
-                      >
+                      <Button className="bg-gradient-to-r from-gray-600 to-gray-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
                         Back
                       </Button>
                     </div>
@@ -220,7 +181,7 @@ const Dashboard: React.FC = () => {
         }}
       >
         <p className="font-bold dark:text-white text-foodbg text-2xl pt-5 text-center">
-          Item Queue
+          Ready Orders
         </p>
         <div className="width-[100%] mt-2 mx-4 !overflow-scroll h-[70vh] px-2">
           {itemCompletedQueue.map((order) => {
@@ -245,8 +206,8 @@ const Dashboard: React.FC = () => {
                     }`}
                   >
                     {order.orderType}
-                  </b>{' '}
-                  | {order.time} min ago
+                  </b>
+                  | {timeAgo(order.createdAt)}
                 </p>
                 {order.orderItems.map((item) => (
                   <div
@@ -259,28 +220,10 @@ const Dashboard: React.FC = () => {
                       <p className="text-xs">x{item.quantity}</p>
                     </div>
                     <div className="grid w-[100px]">
-                      <Button
-                        onClick={() =>
-                          updateOrderStatus(
-                            order.orderId,
-                            item.foodId,
-                            'PREPARING',
-                          )
-                        }
-                        className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]"
-                      >
+                      <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
                         Next
                       </Button>
-                      <Button
-                        onClick={() =>
-                          updateOrderStatus(
-                            order.orderId,
-                            item.foodId,
-                            'PREPARING',
-                          )
-                        }
-                        className="bg-gradient-to-r from-gray-600 to-gray-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]"
-                      >
+                      <Button className="bg-gradient-to-r from-gray-600 to-gray-400 text-white shadow-lg rounded-lg text-xl scale-50 py-5 px-10 mb-[-10px] w-[130px] h-[50px]">
                         Back
                       </Button>
                     </div>
