@@ -79,7 +79,7 @@ function index() {
                           }}
                         >
                           <div className="h-50">
-                            <img src={_.image} alt="" className="w-[100%]" />
+                            <img src={_.image} alt="" className="w-[100%] h-[200px]" />
                           </div>
 
                           <div className="px-3 mt-2">
