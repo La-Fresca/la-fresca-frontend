@@ -4,7 +4,7 @@ import { useCombos } from '@/api/useCombos';
 import { Food } from '@/types/food';
 import { FoodCombo } from '@/types/combo';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import Item from './itemList';
+import Item from './ItemList';
 
 function index() {
   const { getAllFoods } = useFoods();
