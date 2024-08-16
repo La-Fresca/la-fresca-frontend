@@ -1,12 +1,10 @@
-import Star from '../FoodItem/Star';
-import { Button } from '@nextui-org/react';
-import { Link } from 'react-router-dom';
 import { Tabs, Tab, Card, CardBody } from '@nextui-org/react';
 import { useFoods } from '@/api/useFoods';
 import { useCombos } from '@/api/useCombos';
 import { Food } from '@/types/food';
 import { FoodCombo } from '@/types/combo';
 import { useQuery, useMutation } from '@tanstack/react-query';
+import Item from './ItemList';
 
 function index() {
   const { getAllFoods } = useFoods();
@@ -37,9 +35,16 @@ function index() {
   const foods: Food[] = foodQuery.data;
   const combos: FoodCombo[] = comboQuery.data;
 
+  const categories = ['Burger', 'Pizza', 'Coffee', 'Tea'];
+
   return (
     <div className="mx-auto max-w-screen-xl flex w-full flex-col">
-      <Tabs aria-label="Options" variant="underlined">
+      <Tabs
+        aria-label="Options"
+        variant="underlined"
+        color={'warning'}
+        radius="full"
+      >
         <Tab key="FoodItems" title="Food Items">
           <Card>
             <CardBody>
@@ -51,63 +56,71 @@ function index() {
                   Not ready to checkout? Continue Shopping
                 </div>
 
-                <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols- gap-5">
-                  {foods.map((_: Food) => {
-                    return (
-                      <Link
-                        to={`viewfood/${_.id}`}
-                        className="hover:scale-105 transition-transform duration-300 hover:cursor-pointer"
-                      >
-                        <Button
-                          className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-3xl min-w-5"
-                          style={{
-                            position: 'relative',
-                            left: '210px',
-                            top: '45px',
-                            zIndex: '1',
-                          }}
-                        >
-                          <b>+</b>
-                        </Button>
-                        <div
-                          className="dark:border rounded-2xl border-foodbg bg-foodbg  backdrop-blur-md w-55 h-850 p-2 py-2"
-                          style={{
-                            marginLeft: '10%',
-                            marginRight: '10%',
-                            boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
-                            backgroundColor: 'rgba(255, 255, 255, 0.01)',
-                          }}
-                        >
-                          <div className="h-50">
-                            <img src={_.image} alt="" className="w-[100%]" />
-                          </div>
-
-                          <div className="px-3 mt-2">
-                            <b className="text-foodbg dark:text-white text-xl">
-                              {_.name}
-                            </b>
-
-                            <div className="flex items-center pt-2">
-                              {Array.from({ length: 5 }).map((j, i) => {
-                                return (
-                                  <Star
-                                    key={`star-${i}`}
-                                    highlight={i <= _.rating}
-                                  />
-                                );
-                              })}
-                            </div>
-
-                            <div className="font-bold text-foodbg dark:text-white pt-2 text-xl">
-                              <span className="pr-2 text-orange-500">Rs.</span>
-                              {_.price}
-                            </div>
+                <Tabs
+                  aria-label="Options"
+                  variant="solid"
+                  color={'warning'}
+                  radius="full"
+                  size="lg"
+                  className="pt-6 dark:text-white text-foodbg"
+                >
+                  <Tab key="All" title="All">
+                    <Card>
+                      <CardBody>
+                        <div>
+                          <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols- gap-5">
+                            {foods.map((_: Food) => {
+                              return (
+                                <Item
+                                  id={_.id}
+                                  name={_.name}
+                                  rating={_.rating}
+                                  price={_.price}
+                                  image={_.image}
+                                  categories={_.categories}
+                                  discountStatus={_.discountStatus}
+                                  available={_.available}
+                                />
+                              );
+                            })}
                           </div>
                         </div>
-                      </Link>
+                      </CardBody>
+                    </Card>
+                  </Tab>
+
+                  {categories.map((category) => {
+                    return (
+                      <Tab key={category} title={category}>
+                        <Card>
+                          <CardBody>
+                            <div>
+                              <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols- gap-5">
+                                {foods.map((_: Food) => {
+                                  if (_.categories.includes(category)) {
+                                    return (
+                                      <Item
+                                        key={_.id}
+                                        id={_.id}
+                                        name={_.name}
+                                        rating={_.rating}
+                                        price={_.price}
+                                        image={_.image}
+                                        categories={_.categories}
+                                        discountStatus={_.discountStatus}
+                                        available={_.available}
+                                      />
+                                    );
+                                  }
+                                })}
+                              </div>
+                            </div>
+                          </CardBody>
+                        </Card>
+                      </Tab>
                     );
                   })}
-                </div>
+                </Tabs>
               </div>
             </CardBody>
           </Card>
@@ -126,54 +139,15 @@ function index() {
                 <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols- gap-5">
                   {combos.map((_: FoodCombo) => {
                     return (
-                      <Link
-                        to={`viewfood/${_.id}`}
-                        className="hover:scale-105 transition-transform duration-300 hover:cursor-pointer"
-                      >
-                        <Button
-                          className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-3xl min-w-5"
-                          style={{
-                            position: 'relative',
-                            left: '210px',
-                            top: '45px',
-                            zIndex: '1',
-                          }}
-                        >
-                          <b>+</b>
-                        </Button>
-                        <div
-                          className="dark:border rounded-2xl border-foodbg bg-foodbg  backdrop-blur-md w-55 h-850 p-2 py-2"
-                          style={{
-                            marginLeft: '10%',
-                            marginRight: '10%',
-                            boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)',
-                            backgroundColor: 'rgba(255, 255, 255, 0.01)',
-                          }}
-                        >
-                          <div className="h-50">
-                            <img src={_.image} alt="" className="w-[100%]" />
-                          </div>
-
-                          <div className="px-3 mt-2">
-                            <b className="text-foodbg dark:text-white text-xl">
-                              {_.name}
-                            </b>
-
-                            <div className="flex items-center pt-2">
-                              {Array.from({ length: 5 }).map((_, i) => {
-                                return (
-                                  <Star key={`star-${i}`} highlight={i !== 4} />
-                                );
-                              })}
-                            </div>
-
-                            <div className="font-bold text-foodbg dark:text-white pt-2 text-xl">
-                              <span className="pr-2 text-orange-500">Rs.</span>
-                              {_.price}
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
+                      <Item
+                        id={_.id}
+                        name={_.name}
+                        rating={_.rating}
+                        price={_.price}
+                        image={_.image}
+                        discountStatus={_.discountStatus}
+                        available={_.available}
+                      />
                     );
                   })}
                 </div>
