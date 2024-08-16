@@ -8,10 +8,11 @@ interface Props {
   rating: number;
   price: number;
   image: string;
+  categories?: string[];
   discountStatus?: string;
 }
 
-export default function ItemList({ id, name, rating, image, price, discountStatus }: Props) {
+export default function ItemList({ id, name, rating, image, price, discountStatus, categories }: Props) {
   return (
     <Link
       to={`viewfood/${id}`}
@@ -45,7 +46,7 @@ export default function ItemList({ id, name, rating, image, price, discountStatu
         )}
 
         <div className="h-50 rounded-xl">
-          <img src={image} alt="" className="w-[100%] h-[200px] rounded-2xl" />
+          <img src={image} alt="" className="w-[100%] h-[200px] rounded-xl" />
         </div>
 
         <div className="px-3 mt-2">

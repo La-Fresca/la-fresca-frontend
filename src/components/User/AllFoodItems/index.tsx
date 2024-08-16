@@ -1,4 +1,4 @@
-import {Tabs, Tab, Card, CardBody} from "@nextui-org/react";
+import { Tabs, Tab, Card, CardBody } from '@nextui-org/react';
 import { useFoods } from '@/api/useFoods';
 import { useCombos } from '@/api/useCombos';
 import { Food } from '@/types/food';
@@ -35,9 +35,16 @@ function index() {
   const foods: Food[] = foodQuery.data;
   const combos: FoodCombo[] = comboQuery.data;
 
+  const categories = ['Burger', 'Pizza', 'Coffee', 'Tea'];
+
   return (
     <div className="mx-auto max-w-screen-xl flex w-full flex-col">
-      <Tabs aria-label="Options" variant="underlined">
+      <Tabs
+        aria-label="Options"
+        variant="underlined"
+        color={'warning'}
+        radius="full"
+      >
         <Tab key="FoodItems" title="Food Items">
           <Card>
             <CardBody>
@@ -49,20 +56,69 @@ function index() {
                   Not ready to checkout? Continue Shopping
                 </div>
 
-                <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols- gap-5">
-                  {foods.map((_: Food) => {
+                <Tabs
+                  aria-label="Options"
+                  variant="solid"
+                  color={'warning'}
+                  radius="full"
+                  size="lg"
+                  className="pt-6 dark:text-white text-foodbg"
+                >
+                  <Tab key="All" title="All">
+                    <Card>
+                      <CardBody>
+                        <div>
+                          <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols- gap-5">
+                            {foods.map((_: Food) => {
+                              return (
+                                <Item
+                                  id={_.id}
+                                  name={_.name}
+                                  rating={_.rating}
+                                  price={_.price}
+                                  image={_.image}
+                                  categories={_.categories}
+                                  discountStatus={_.discountStatus}
+                                />
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Tab>
+
+                  {categories.map((category) => {
                     return (
-                      <Item
-                        id={_.id}
-                        name={_.name}
-                        rating={_.rating}
-                        price={_.price}
-                        image={_.image}
-                        discountStatus={_.discountStatus}
-                      />
+                      <Tab key={category} title={category}>
+                        <Card>
+                          <CardBody>
+                            <div>
+                              <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols- gap-5">
+                                {foods.map((_: Food) => {
+                                  if (_.categories.includes(category)) {
+                                    return (
+                                      <Item
+                                        key={_.id}
+                                        id={_.id}
+                                        name={_.name}
+                                        rating={_.rating}
+                                        price={_.price}
+                                        image={_.image}
+                                        categories={_.categories}
+                                        discountStatus={_.discountStatus}
+                                      />
+                                    );
+                                  }
+                                })}
+                              </div>
+                            </div>
+                          </CardBody>
+                        </Card>
+                      </Tab>
                     );
                   })}
-                </div>
+                </Tabs>
               </div>
             </CardBody>
           </Card>
