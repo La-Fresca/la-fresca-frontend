@@ -1,4 +1,4 @@
-import { Tabs, Tab, Card, CardBody } from '@nextui-org/react';
+import {Tabs, Tab, Card, CardBody} from "@nextui-org/react";
 import { useFoods } from '@/api/useFoods';
 import { useCombos } from '@/api/useCombos';
 import { Food } from '@/types/food';
