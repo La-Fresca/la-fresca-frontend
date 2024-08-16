@@ -10,9 +10,19 @@ interface Props {
   image: string;
   categories?: string[];
   discountStatus?: string;
+  available?: number;
 }
 
-export default function ItemList({ id, name, rating, image, price, discountStatus, categories }: Props) {
+export default function ItemList({
+  id,
+  name,
+  rating,
+  image,
+  price,
+  discountStatus,
+  categories,
+  available,
+}: Props) {
   return (
     <Link
       to={`viewfood/${id}`}
@@ -37,13 +47,19 @@ export default function ItemList({ id, name, rating, image, price, discountStatu
           <b>+</b>
         </Button>
 
-        {discountStatus == '1' && (
+        {available == 0 ? (
+          <div className="absolute p-2 w-[120px] h-2 rotate-[135deg] bg-gradient-to-t from-red-600 to-red-900 translate-x-[-35px] translate-y-[20px]">
+            <p className="rotate-180 text-xs translate-y-[-7.5px] translate-x-[-15px] text-white">
+              UNAVAILABLE
+            </p>
+          </div>
+        ) : discountStatus == '1' ? (
           <div className="absolute p-2 w-[120px] h-2 rotate-[135deg] bg-gradient-to-t from-red-600 to-red-900 translate-x-[-35px] translate-y-[20px]">
             <p className="rotate-180 text-xs translate-y-[-7.5px] translate-x-[-15px] text-white">
               PROMOTION
             </p>
           </div>
-        )}
+        ) : null}
 
         <div className="h-50 rounded-xl">
           <img src={image} alt="" className="w-[100%] h-[200px] rounded-xl" />

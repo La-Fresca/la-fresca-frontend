@@ -79,6 +79,7 @@ function index() {
                                   image={_.image}
                                   categories={_.categories}
                                   discountStatus={_.discountStatus}
+                                  available={_.available}
                                 />
                               );
                             })}
@@ -107,6 +108,7 @@ function index() {
                                         image={_.image}
                                         categories={_.categories}
                                         discountStatus={_.discountStatus}
+                                        available={_.available}
                                       />
                                     );
                                   }
@@ -144,6 +146,7 @@ function index() {
                         price={_.price}
                         image={_.image}
                         discountStatus={_.discountStatus}
+                        available={_.available}
                       />
                     );
                   })}
