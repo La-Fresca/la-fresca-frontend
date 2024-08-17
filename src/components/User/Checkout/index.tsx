@@ -241,7 +241,7 @@ function index() {
               </div>
 
               <div
-                className="w-[100%] h-[200px] rounded-xl bg-foodbg"
+                className="w-[100%] h-[200px] rounded-xl bg-foodbg outline-none active:outline-none focus:outline-none"
                 style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
               >
                 <iframe
@@ -252,7 +252,7 @@ function index() {
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  className="rounded-xl h-[200px] w-[100%]"
+                  className="rounded-xl h-[200px] w-[100%] outline-none active:outline-none focus:outline-none"
                 ></iframe>
               </div>
 
