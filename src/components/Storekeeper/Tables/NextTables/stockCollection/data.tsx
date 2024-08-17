@@ -16,7 +16,7 @@ const statusOptions = [
 const users = [
   {
     id: 1,
-    name: "Cofee Beans",
+    name: "Coffee Beans",
     qty: "20",
     PSDate: "2024/08/20",
     status: "High stock",
