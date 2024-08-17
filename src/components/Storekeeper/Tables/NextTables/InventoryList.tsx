@@ -29,12 +29,12 @@ import {
 import { capitalize } from './utils';
 
 const statusColorMap = {
-  active: 'success',
-  paused: 'danger',
-  vacation: 'warning',
+  'High stock': 'success',
+  'Out of stock': 'danger',
+  'Low stock': 'warning',
 };
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'role', 'status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = ['name', 'qty', 'PSDate', 'status', 'actions'];
 
 export default function App() {
   const [filterValue, setFilterValue] = React.useState('');
@@ -52,7 +52,7 @@ export default function App() {
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
-    if (visibleColumns === 'all') return columns;
+    if (visibleColumns instanceof Set && visibleColumns.size === columns.length) return columns;
     return columns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid),
     );
@@ -98,21 +98,22 @@ export default function App() {
     switch (columnKey) {
       case 'name':
         return (
-          <User
-            avatarProps={{ radius: 'lg', src: user.avatar }}
-            description={user.email}
-            name={cellValue}
-          >
-            {user.email}
-          </User>
+          <div className='flex items-center'>
+            <div className='w-[40px] h-[40px]'>
+              <img src={user.avatar} alt="" className='rounded-full' />
+            </div>
+            <div className='ml-5'>
+              <p className="text-bold text-small capitalize dark:text-white text-foodbg">
+                {cellValue}
+              </p>
+              <p className="text-bold text-[12px] capitalize">ID: {user.id}</p>
+            </div>
+          </div>
         );
-      case 'role':
+      case 'qty':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-400">
-              {user.team}
-            </p>
+            <p className="text-bold text-small capitalize">{cellValue} {user.unit}</p>
           </div>
         );
       case 'status':
@@ -192,15 +193,16 @@ export default function App() {
           <Input
             isClearable
             className="w-full sm:max-w-[44%] dark:bg-[#ffffff14] rounded-lg border dark:border-[#54545466] bg-[#c7c7c740] border-[#aaaaaa66]"
-            placeholder="Search by name..."
+            placeholder="Search by item name..."
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={onClear}
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Button className="rounded-xl dark:bg-[#ffffff1e] bg-[#c7c7c7] dark:text-[#bcbcbc] text-black">
-            <ArrowSmallDownIcon className="w-6 h-6 border-b scale-75" /> Download All
+            <Button className="rounded-xl dark:bg-[#ffffff1e] bg-[#c7c7c7] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa] hover:dark:bg-[#404040]">
+              <ArrowSmallDownIcon className="w-6 h-6 border-b scale-75" />{' '}
+              Download All
             </Button>
 
             <Dropdown>
@@ -208,7 +210,7 @@ export default function App() {
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
-                  className="rounded-xl dark:bg-[#ffffff1e] bg-[#c7c7c7] dark:text-[#bcbcbc] text-black"
+                  className="rounded-xl dark:bg-[#ffffff1e] bg-[#c7c7c7] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa] hover:dark:bg-[#404040]"
                 >
                   Status
                 </Button>
@@ -220,7 +222,7 @@ export default function App() {
                 selectedKeys={statusFilter}
                 selectionMode="multiple"
                 onSelectionChange={setStatusFilter}
-                className="dark:bg-[#373737] bg-[#c7c7c7] rounded-lg dark:text-white text-[#3a3a3a]"
+                className="dark:bg-[#373737] bg-[#c7c7c7] rounded-lg dark:text-white text-[#3a3a3a] border border-[#50505063]"
               >
                 {statusOptions.map((status) => (
                   <DropdownItem
@@ -237,7 +239,7 @@ export default function App() {
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
-                  className="rounded-xl dark:bg-[#ffffff1e] bg-[#c7c7c7] dark:text-[#bcbcbc] text-black"
+                  className="rounded-xl dark:bg-[#ffffff1e] bg-[#c7c7c7] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa] hover:dark:bg-[#404040]"
                 >
                   Columns
                 </Button>
@@ -249,7 +251,7 @@ export default function App() {
                 selectedKeys={visibleColumns}
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
-                className="dark:bg-[#373737] bg-[#c7c7c7] rounded-lg dark:text-white text-[#3a3a3a]"
+                className="dark:bg-[#373737] bg-[#c7c7c7] rounded-lg dark:text-white text-[#3a3a3a] border border-[#50505063]"
               >
                 {columns.map((column) => (
                   <DropdownItem
@@ -263,7 +265,7 @@ export default function App() {
             </Dropdown>
             <Button
               endContent={<PlusIcon />}
-              className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400"
+              className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600"
             >
               Add New
             </Button>
@@ -271,7 +273,7 @@ export default function App() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {users.length} users
+            Total {users.length} collections
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -316,7 +318,7 @@ export default function App() {
             size="sm"
             variant="flat"
             onPress={onPreviousPage}
-            className="rounded-lg dark:bg-[#ffffff1e] bg-[#c7c7c7] dark:text-[#bcbcbc] text-black py-[18px]"
+            className="rounded-lg dark:bg-[#ffffff1e] bg-[#c7c7c7] dark:text-[#bcbcbc] text-black py-[18px] hover:bg-[#aaaaaa] hover:dark:bg-[#404040]"
           >
             Previous
           </Button>
@@ -325,7 +327,7 @@ export default function App() {
             size="sm"
             variant="flat"
             onPress={onNextPage}
-            className="rounded-lg dark:bg-[#ffffff1e] bg-[#c7c7c7] dark:text-[#bcbcbc] text-black py-[18px]"
+            className="rounded-lg dark:bg-[#ffffff1e] bg-[#c7c7c7] dark:text-[#bcbcbc] text-black py-[18px] hover:bg-[#aaaaaa] hover:dark:bg-[#404040]"
           >
             Next
           </Button>
