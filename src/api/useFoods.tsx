@@ -15,7 +15,7 @@ function getToken() {
 export const useFoods = () => {
   const getAllFoods = async () => {
     try {
-      const response = await fetch(`${API_URL}/foodItem`, {
+      const response = await fetch(`${API_URL}/foodItem/getAll/cafe 1`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
