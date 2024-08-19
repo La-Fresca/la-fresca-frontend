@@ -1,14 +1,17 @@
 import { Tabs, Tab, Card, CardBody } from '@nextui-org/react';
 import { useFoods } from '@/api/useFoods';
 import { useCombos } from '@/api/useCombos';
+import { useCategories } from '@/api/useCategories';
 import { Food } from '@/types/food';
 import { FoodCombo } from '@/types/combo';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import Item from './ItemList';
+import { Category } from '@/types/category';
 
 function index() {
   const { getAllFoods } = useFoods();
   const { getAllCombos } = useCombos();
+  const { getAllCategories } = useCategories();
 
   const foodQuery = useQuery({
     queryKey: ['foods'],
@@ -20,7 +23,12 @@ function index() {
     queryFn: getAllCombos,
   });
 
-  if (foodQuery.isLoading || comboQuery.isLoading) {
+  const categoryQuery = useQuery({
+    queryKey: ['categories'],
+    queryFn: getAllCategories,
+  });
+
+  if (foodQuery.isLoading || comboQuery.isLoading || categoryQuery.isLoading) {
     return <div>Loading...</div>;
   }
 
@@ -32,10 +40,15 @@ function index() {
     return <div>Error: {JSON.stringify(comboQuery.error)}</div>;
   }
 
+  if (categoryQuery.isError) {
+    return <div>Error: {JSON.stringify(categoryQuery.error)}</div>;
+  }
+
   const foods: Food[] = foodQuery.data;
   const combos: FoodCombo[] = comboQuery.data;
+  const categoriesObject: Category[] = categoryQuery.data;
 
-  const categories = ['Burger', 'Pizza', 'Coffee', 'Tea'];
+  const categories = categoriesObject.map((category) => category.name);
 
   return (
     <div className="mx-auto max-w-screen-xl flex w-full flex-col">
