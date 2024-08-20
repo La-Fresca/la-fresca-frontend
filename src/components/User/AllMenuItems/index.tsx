@@ -35,6 +35,8 @@ function index() {
   const foods: Food[] = foodQuery.data;
   const combos: FoodCombo[] = comboQuery.data;
 
+  console.log(combos);
+
   const categories = ['Burger', 'Pizza', 'Coffee', 'Tea'];
 
   return (
@@ -80,6 +82,7 @@ function index() {
                                   categories={_.categories}
                                   discountStatus={_.discountStatus}
                                   available={_.available}
+                                  type={'fooditem'}
                                 />
                               );
                             })}
@@ -109,6 +112,7 @@ function index() {
                                         categories={_.categories}
                                         discountStatus={_.discountStatus}
                                         available={_.available}
+                                        type={'fooditem'}
                                       />
                                     );
                                   }
@@ -147,6 +151,7 @@ function index() {
                         image={_.image}
                         discountStatus={_.discountStatus}
                         available={_.available}
+                        type={'foodcombo'}
                       />
                     );
                   })}

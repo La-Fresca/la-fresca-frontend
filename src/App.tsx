@@ -63,6 +63,7 @@ import ViewInventory from '@/pages/Storekeeper/InventoryList';
 import AddInventory from '@/pages/Storekeeper/AddInventory';
 import EditInventory from '@/pages/Storekeeper/EditInventory';
 import ViewGrnByCollection from '@/pages/Storekeeper/GrnListByCollection';
+import FoodCombo from './pages/FoodCombo';
 
 const { refresh } = useAuth();
 const cookieProtocol = (import.meta as any).env.VITE_COOKIE_PROTOCOL;
@@ -192,22 +193,31 @@ const routes = createRoutesFromElements(
             </>
           }
         />
-        <Route path="fooditems">
+        <Route path="menuitems">
           <Route
             index
             element={
               <>
-                <PageTitle title="La Fresca | Food Items" />
+                <PageTitle title="La Fresca | Menu Items" />
                 <AllFoodItems />
               </>
             }
           />
           <Route
-            path="viewfood/:itemId"
+            path="viewfooditem/:itemId"
             element={
               <>
                 <PageTitle title="La Fresca | Food Item" />
                 <FoodItem />
+              </>
+            }
+          />
+          <Route
+            path="viewfoodcombo/:itemId"
+            element={
+              <>
+                <PageTitle title="La Fresca | Food Item" />
+                <FoodCombo />
               </>
             }
           />
