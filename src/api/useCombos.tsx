@@ -1,6 +1,7 @@
-import Cookies from 'js-cookie';
-const API_URL = (import.meta as any).env.VITE_API_URL;
 import { FoodCombo } from '@/types/combo';
+import Cookies from 'js-cookie';
+
+const API_URL = (import.meta as any).env.VITE_API_URL;
 
 function getToken() {
   try {

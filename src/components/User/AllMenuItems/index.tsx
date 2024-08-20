@@ -48,7 +48,9 @@ function index() {
   const combos: FoodCombo[] = comboQuery.data;
   const categoriesObject: Category[] = categoryQuery.data;
 
-  const categories = categoriesObject.map((category) => category.name);
+  console.log(combos);
+
+  const categories = ['Burger', 'Pizza', 'Coffee', 'Tea'];
 
   return (
     <div className="mx-auto max-w-screen-xl flex w-full flex-col">
@@ -93,6 +95,7 @@ function index() {
                                   categories={_.categories}
                                   discountStatus={_.discountStatus}
                                   available={_.available}
+                                  type={'fooditem'}
                                 />
                               );
                             })}
@@ -122,6 +125,7 @@ function index() {
                                         categories={_.categories}
                                         discountStatus={_.discountStatus}
                                         available={_.available}
+                                        type={'fooditem'}
                                       />
                                     );
                                   }
@@ -160,6 +164,7 @@ function index() {
                         image={_.image}
                         discountStatus={_.discountStatus}
                         available={_.available}
+                        type={'foodcombo'}
                       />
                     );
                   })}
