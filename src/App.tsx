@@ -213,7 +213,7 @@ const routes = createRoutesFromElements(
             }
           />
           <Route
-            path="viewfoodcombo/:itemId"
+            path="viewfoodcombo/:comboId"
             element={
               <>
                 <PageTitle title="La Fresca | Food Item" />

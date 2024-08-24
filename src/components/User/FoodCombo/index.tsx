@@ -65,7 +65,8 @@ function FoodComboForm({ id }: Props) {
 
   const fetchFoodCombo = async () => {
     try {
-      const combo = await getComboById(id?.toString() || '');
+      console.log('fetching id:', id);
+      const combo = await getComboById(id || '');
       setFoodCombo(combo);
       setPrice(combo.price);
       setValue(
@@ -127,8 +128,12 @@ function FoodComboForm({ id }: Props) {
           backgroundColor: 'rgba(255, 255, 255, 0.01)',
         }}
       >
-        <div className='w-[50%] h-[100%] p-10'>
-          <img src={combo.image} alt="" className="w-[100%] h-[100%] rounded-xl" />
+        <div className="w-[50%] h-[100%] p-10">
+          <img
+            src={combo.image}
+            alt=""
+            className="w-[100%] h-[100%] rounded-xl"
+          />
         </div>
 
         <div className="w-[50%]">
