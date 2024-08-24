@@ -35,7 +35,7 @@ const UserTable: React.FC<UserTableProps> = ({ filterStatus, toggleEditModal }) 
             <th className="px-2 py-3 text-left text-sm font-bold text-white uppercase tracking-wider">Status</th>
             <th className="px-2 py-3 text-left text-sm font-bold text-white uppercase tracking-wider">Location</th>
             <th className="px-2 py-3 text-left text-sm font-bold text-white uppercase tracking-wider">Phone</th>
-            <th className="px-2 py-3 text-left text-sm font-bold text-white uppercase tracking-wider">Role</th>
+            <th className="px-2 py-3 text-left text-sm font-bold text-white uppercase tracking-wider">Job category</th>
             <th className="px-2 py-3"></th>
           </tr>
         </thead>
