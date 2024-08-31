@@ -11,6 +11,7 @@ import { useUpload } from '@/api/useUpload';
 import { useCombos } from '@/api/useCombos';
 import { useFoods } from '@/api/useFoods';
 import { Food } from '@/types/food';
+import { swalSuccess } from '@/components/UI/SwalSuccess';
 
 type ComboPicker = {
   key: string;
@@ -34,6 +35,9 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 function ComboEditForm({ id = '' }: { id?: string }) {
+  const { showSwal } = swalSuccess({
+    message: 'Item Added successfully',
+  });
   const Navigate = useNavigate();
   const { updateCombo } = useCombos();
   const { getComboById } = useCombos();
@@ -124,9 +128,13 @@ function ComboEditForm({ id = '' }: { id?: string }) {
 
     try {
       updateCombo(id, transformedData);
-      Navigate('/branch-manager/food-combos');
     } catch (error) {
       console.error('Error adding food combo:', error);
+    } finally {
+      setTimeout(() => {
+        showSwal();
+        Navigate('/branch-manager/food-combos');
+      }, 2000);
     }
   };
 

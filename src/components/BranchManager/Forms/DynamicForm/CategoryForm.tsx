@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
 import { useCategories } from '@/api/useCategories';
 import { useNavigate } from 'react-router-dom';
+import { swalSuccess } from '@/components/UI/SwalSuccess';
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Category name is required' }),
@@ -14,6 +15,9 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 function CategoryForm() {
+  const { showSwal } = swalSuccess({
+    message: 'Item Added successfully',
+  });
   const { addCategory } = useCategories();
   const Navigate = useNavigate();
   const { register, handleSubmit, formState } = useForm<FormSchemaType>({
@@ -31,9 +35,13 @@ function CategoryForm() {
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
       await addCategory(data);
-      Navigate('/branch-manager/categories');
     } catch (error: any) {
       console.error(error);
+    } finally {
+      setTimeout(() => {
+        showSwal();
+        Navigate('/branch-manager/categories');
+      }, 2000);
     }
   };
 

@@ -13,6 +13,7 @@ import { useUpload } from '@/api/useUpload';
 import { useFoods } from '@/api/useFoods';
 import { useCategories } from '@/api/useCategories';
 import { Food } from '@/types/food';
+import { swalSuccess } from '@/components/UI/SwalSuccess';
 
 type CategoryPicker = {
   key: string;
@@ -25,7 +26,7 @@ const FormSchema = z.object({
     .array(z.string())
     .min(1, { message: 'Categories are required' }),
   description: z.string().optional(),
-  cost: z.coerce.number().optional(),
+  cost: z.coerce.number().multipleOf(0.01).optional(),
   price: z.coerce
     .number()
     .multipleOf(0.01)
@@ -43,6 +44,7 @@ const FormSchema = z.object({
             name: z.string().min(1, { message: 'Sub Category is required' }),
             price: z.coerce
               .number()
+              .multipleOf(0.01)
               .min(0, { message: 'Price must be at least 0' }),
           }),
         ),
@@ -54,6 +56,9 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 const DynamicForm: FC = () => {
+  const { showSwal } = swalSuccess({
+    message: 'Item Added successfully',
+  });
   const { uploadImage } = useUpload();
   const { addFood } = useFoods();
   const { getAllCategories } = useCategories();
@@ -134,9 +139,13 @@ const DynamicForm: FC = () => {
 
     try {
       addFood(transformedData);
-      Navigate('/branch-manager/foods');
     } catch (error) {
       console.error('Error adding food item:', error);
+    } finally {
+      setTimeout(() => {
+        showSwal();
+        Navigate('/branch-manager/foods');
+      }, 2000);
     }
   };
 
@@ -204,6 +213,7 @@ const DynamicForm: FC = () => {
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                   type="number"
+                  step=".01"
                   {...register('cost')}
                   placeholder="Enter the production cost"
                 />
@@ -216,6 +226,7 @@ const DynamicForm: FC = () => {
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                   type="number"
+                  step=".01"
                   {...register('price')}
                 />
                 {errors.price && (
@@ -291,6 +302,7 @@ const DynamicForm: FC = () => {
                         <input
                           className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                           type="number"
+                          step=".01"
                           {...register(
                             `features.${index}.subCategories.${subIndex}.price`,
                           )}

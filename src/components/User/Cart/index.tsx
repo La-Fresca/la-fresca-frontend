@@ -2,11 +2,13 @@ import { useState, useEffect, useCallback } from 'react';
 import Food from '@images/product/pizza.png';
 import { Checkbox, Button } from '@nextui-org/react';
 import QtySelector from './QtySelector';
-import { Link, useNavigate } from 'react-router-dom';
+import { json, Link, useNavigate } from 'react-router-dom';
 import { useCart } from '@/api/useCart';
+import { useOrders } from '@/api/useOrders';
 import { CartItem } from '@/types/cartItem';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { swalConfirm } from '@/components/UI/SwalDelete';
+import { Order } from '@/types/order';
 
 function Index() {
   const { showSwal } = swalConfirm({
@@ -14,10 +16,12 @@ function Index() {
     buttonText: 'Remove',
     afterString: 'Item removed successfully',
   });
+  const navigate = useNavigate();
   const userId = (useAuthUser() as { userId: string }).userId;
   const { getCartByUserId, removeCartItem } = useCart();
   const [Loading, setLoading] = useState<boolean>(true);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { createOrder } = useOrders();
   // const [items, setItems] = useState<Cart[]>([]);
   const [selectedItems, setSelectedItems] = useState<
     Record<string, { price: number; quantity: number }>
@@ -38,6 +42,35 @@ function Index() {
   useEffect(() => {
     fetchCart();
   }, []);
+
+  const newOrder = async () => {
+    try {
+      const transformedData: Order = {
+        orderType: 'ONLINE',
+        orderStatus: 'PENDING',
+        totalAmount: price,
+        location: 'Colombo',
+        cafeId: '1',
+        contactNo: '0712345678',
+        customerId: userId,
+        orderItems: cartItems.map((item) => ({
+          name: item.name,
+          quantity: item.quantity,
+          totalPrice: item.itemTotalPrice,
+          foodId: item.menuItemId,
+          addedFeatures: item.customFeatures.map((feature) => ({
+            name: feature.name,
+            level: feature.level,
+          })),
+          menuItemType: item.menuItemType,
+        })),
+      };
+      createOrder(transformedData);
+      console.log(JSON.stringify(transformedData));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleConfirmDelete = (id: any) => {
     showSwal(() => removeCartItem(id));
@@ -86,8 +119,6 @@ function Index() {
   useEffect(() => {
     calculateTotalPrice();
   }, [selectedItems, calculateTotalPrice]);
-
-  const navigate = useNavigate();
 
   // const items = [
   //   {
@@ -192,7 +223,7 @@ function Index() {
                       <a href="#" className="shrink-0 md:order-1">
                         <img
                           className="h-30 w-30"
-                          src={Food}
+                          src={item.image}
                           alt="food image"
                         />
                       </a>
@@ -344,21 +375,12 @@ function Index() {
 
                     <dl className="flex items-center justify-between gap-4 pt-3">
                       <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                        Delivery Charge
+                        Delivery fee
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
                         Rs. 0
                       </dd>
                     </dl>
-
-                    {/* <dl className="flex items-center justify-between gap-4 pt-3">
-                      <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                        Tax
-                      </dt>
-                      <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        $0
-                      </dd>
-                    </dl> */}
                   </div>
 
                   <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-5 dark:border-gray-700">
@@ -366,7 +388,7 @@ function Index() {
                       Total
                     </dt>
                     <dd className="text-base font-bold text-gray-900 dark:text-white">
-                      Rs.{price}
+                      Rs. {price}
                     </dd>
                   </dl>
                 </div>
@@ -378,7 +400,7 @@ function Index() {
                   Proceed to Checkout
                 </Button>
 
-                <div className="flex items-center justify-center gap-2">
+                {/* <div className="flex items-center justify-center gap-2">
                   <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
                     {' '}
                     or{' '}
@@ -404,8 +426,8 @@ function Index() {
                         d="M19 12H5m14 0-4 4m4-4-4-4"
                       />
                     </svg>
-                  </Button>
-                </div>
+                  </a>
+                </div> */}
               </div>
             </div>
           </div>
