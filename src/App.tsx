@@ -477,6 +477,18 @@ const routes = createRoutesFromElements(
           }
         ></Route>
       </Route>
+      <Route path="system-admin/*" element={<WaiterLayout />}>
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="system admin | Dashboard" />
+              <WaiterDashboard />
+            </>
+          }
+        />
+        {/* -------------- Routes to add ---------------- */}
+      </Route>
       <Route path="cashier/*" element={<CashierLayout />}>
         <Route
           index
