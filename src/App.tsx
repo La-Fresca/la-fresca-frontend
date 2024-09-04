@@ -64,6 +64,9 @@ import AddInventory from '@/pages/Storekeeper/AddInventory';
 import EditInventory from '@/pages/Storekeeper/EditInventory';
 import ViewGrnByCollection from '@/pages/Storekeeper/GrnListByCollection';
 import FoodCombo from './pages/FoodCombo';
+import TopManagerLayout from './layouts/TopManagerLayout';
+import BranchList from './pages/TopManager/Branches/BranchList';
+import AddBranches from './pages/TopManager/Branches/AddBranch';
 
 // Top level manager
 import Dashboard_TLM from '@/pages/TopLevelManager/Dashboard';
@@ -709,6 +712,18 @@ const routes = createRoutesFromElements(
           }
         ></Route>
       </Route>
+      <Route path="system-admin/*" element={<WaiterLayout />}>
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="system admin | Dashboard" />
+              <WaiterDashboard />
+            </>
+          }
+        />
+        {/* -------------- Routes to add ---------------- */}
+      </Route>
       <Route path="cashier/*" element={<CashierLayout />}>
         <Route
           index
@@ -768,6 +783,44 @@ const routes = createRoutesFromElements(
               <>
                 <PageTitle title="Delivery | Order Queue" />
                 <OrderQueue />
+              </>
+            }
+          />
+        </Route>
+      </Route>
+      <Route path="top-manager/*" element={<TopManagerLayout />}>
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="La Fresca | Top Manager" />
+            </>
+          }
+        />
+        <Route path="branches">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Top Manager | Branch List" />
+                <BranchList />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Top Manager | Add Branch " />
+                <AddBranches />
+              </>
+            }
+          />
+          <Route
+            path="edit/:categoryId"
+            element={
+              <>
+                <PageTitle title="La Fresca | Edit Branch " />
               </>
             }
           />
