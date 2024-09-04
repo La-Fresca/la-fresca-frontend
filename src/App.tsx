@@ -65,6 +65,15 @@ import EditInventory from '@/pages/Storekeeper/EditInventory';
 import ViewGrnByCollection from '@/pages/Storekeeper/GrnListByCollection';
 import FoodCombo from './pages/FoodCombo';
 
+// Top level manager
+import Dashboard_TLM from '@/pages/TopLevelManager/Dashboard';
+import BranchDasboard_TLM from '@/pages/TopLevelManager/Branches/view';
+import AddBranch_LTM from '@/pages/TopLevelManager/Branches/add';
+import EditBranch_LTM from '@/pages/TopLevelManager/Branches/edit';
+import AllBranches from '@/pages/TopLevelManager/Branches/index';
+import Inventory_TLM from '@/pages/TopLevelManager/Inventory';
+import TopLevelManagerLayout from '@/layouts/TopLevelManager';
+
 const { refresh } = useAuth();
 const cookieProtocol = (import.meta as any).env.VITE_COOKIE_PROTOCOL;
 
@@ -223,6 +232,229 @@ const routes = createRoutesFromElements(
           />
         </Route>
       </Route>
+      
+      <Route path="top-level-manager/*" element={<TopLevelManagerLayout />}>
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="Top-level Manager | Dashboard" />
+              <Dashboard_TLM />
+            </>
+          }
+        />s
+        <Route
+          path="sales"
+          element={
+            <>
+              <PageTitle title="Top-level Manager | Sales" />
+              <Sales />
+            </>
+          }
+        />
+        <Route path="categories">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Top-level Manager | Food Categories" />
+                <ViewCategories />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="La Fresca | Add Food Categories " />
+                <AddCategories />
+              </>
+            }
+          />
+          <Route
+            path="edit/:categoryId"
+            element={
+              <>
+                <PageTitle title="La Fresca | Edit Food Categories " />
+                <EditCategory />
+              </>
+            }
+          />
+        </Route>
+        <Route path="foods">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="La Fresca | Food List" />
+                <FoodList />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Top-level Manager | Add Food" />
+                <AddFoods />
+              </>
+            }
+          />
+          <Route
+            path="edit/:foodId"
+            element={
+              <>
+                <PageTitle title="Top-level Manager | Edit Food" />
+                <EditFoods />
+              </>
+            }
+          />
+        </Route>
+        <Route path="food-combos">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Top-level Manager | Food Combos" />
+                <Combos />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Top-level Manager | Add Food Combo" />
+                <AddCombos />
+              </>
+            }
+          />
+          <Route
+            path="edit/:comboId"
+            element={
+              <>
+                <PageTitle title="Top-level Manager | Edit Food Combo" />
+                <EditCombos />
+              </>
+            }
+          />
+        </Route>
+        <Route path="users">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Top-level Manager | Users" />
+                <User />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Top-level Manager | Add User" />
+                <UserAdd />
+              </>
+            }
+          />
+          <Route
+            path="edit/:userId"
+            element={
+              <>
+                <PageTitle title="Top-level Manager | Edit User" />
+                <UserEdit />
+              </>
+            }
+          />
+        </Route>
+        <Route path="branches">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Top-level Manager | Branches" />
+                <AllBranches />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Top-level Manager | Add Branch" />
+                <AddBranch_LTM />
+              </>
+            }
+          />
+          <Route
+            path="edit/:userId"
+            element={
+              <>
+                <PageTitle title="Top-level Manager | Edit Branch" />
+                <EditBranch_LTM />
+              </>
+            }
+          />
+          <Route
+            path="view/:branchId"
+            element={
+              <>
+                <PageTitle title="Top-level Manager | View Branch" />
+                <BranchDasboard_TLM />
+              </>
+            }
+          />
+        </Route>
+        <Route path="inventory">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Top-level Manager | Inventory" />
+                <Inventory_TLM />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Top-level Manager | Add Branch" />
+                <AddBranch_LTM />
+              </>
+            }
+          />
+          <Route
+            path="edit/:userId"
+            element={
+              <>
+                <PageTitle title="Top-level Manager | Edit Branch" />
+                <EditBranch_LTM />
+              </>
+            }
+          />
+          <Route
+            path="view/:branchId"
+            element={
+              <>
+                <PageTitle title="Top-level Manager | View Branch" />
+                <BranchDasboard_TLM />
+              </>
+            }
+          />
+        </Route>
+        <Route
+          path="discountlist"
+          element={
+            <>
+              <PageTitle title="Top-level Manager | Discount List" />
+              <DiscountList />
+            </>
+          }
+        />
+      </Route>
+      
       <Route path="branch-manager/*" element={<BranchManagerLayout />}>
         <Route
           index
