@@ -29,224 +29,113 @@ import { AiOutlineSearch as SearchIcon } from "react-icons/ai";
 // import { capitalize } from "utils";
 
 const columns = [
-  {name: "ID", uid: "id", sortable: true},
-  {name: "NAME", uid: "name", sortable: true},
-  {name: "AGE", uid: "age", sortable: true},
-  {name: "ROLE", uid: "role", sortable: true},
-  {name: "TEAM", uid: "team"},
-  {name: "EMAIL", uid: "email"},
-  {name: "STATUS", uid: "status", sortable: true},
-  {name: "ACTIONS", uid: "actions"},
+  { name: "Time", uid: "time", sortable: true },
+  { name: "User ID", uid: "userId", sortable: true },
+  { name: "User", uid: "user", sortable: true },
+  { name: "Role", uid: "role", sortable: true },
+  { name: "Branch", uid: "branch" },
+  { name: "Description", uid: "description" },
 ];
 
-const statusOptions = [
-  {name: "Active", uid: "active"},
-  {name: "Paused", uid: "paused"},
-  {name: "Vacation", uid: "vacation"},
-];
+// const statusOptions = [
+//   {name: "Active", uid: "active"},
+//   {name: "Paused", uid: "paused"},
+//   {name: "Vacation", uid: "vacation"},
+// ];
 
-const users = [
+const logs = [
   {
-    id: 1,
-    name: "Tony Reichert",
+    time: "2024-09-01 08:30",
+    userId: 1,
+    user: "Tony Reichert",
     role: "CEO",
-    team: "Management",
-    status: "active",
-    age: "29",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+    branch: "Head Office",
+    description: "Created Maharagama Branch",
     email: "tony.reichert@example.com",
   },
   {
-    id: 2,
-    name: "Zoey Lang",
-    role: "Tech Lead",
-    team: "Development",
-    status: "paused",
-    age: "25",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-    email: "zoey.lang@example.com",
-  },
-  {
-    id: 3,
-    name: "Jane Fisher",
-    role: "Sr. Dev",
-    team: "Development",
-    status: "active",
-    age: "22",
-    avatar: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-    email: "jane.fisher@example.com",
-  },
-  {
-    id: 4,
-    name: "William Howard",
-    role: "C.M.",
-    team: "Marketing",
-    status: "vacation",
-    age: "28",
-    avatar: "https://i.pravatar.cc/150?u=a048581f4e29026701d",
-    email: "william.howard@example.com",
-  },
-  {
-    id: 5,
-    name: "Kristen Copper",
-    role: "S. Manager",
-    team: "Sales",
-    status: "active",
-    age: "24",
-    avatar: "https://i.pravatar.cc/150?u=a092581d4ef9026700d",
-    email: "kristen.cooper@example.com",
-  },
-  {
-    id: 6,
-    name: "Brian Kim",
-    role: "P. Manager",
-    team: "Management",
-    age: "29",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-    email: "brian.kim@example.com",
-    status: "active",
-  },
-  {
-    id: 7,
-    name: "Michael Hunt",
-    role: "Designer",
-    team: "Design",
-    status: "paused",
-    age: "27",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e29027007d",
-    email: "michael.hunt@example.com",
-  },
-  {
-    id: 8,
-    name: "Samantha Brooks",
-    role: "HR Manager",
-    team: "HR",
-    status: "active",
-    age: "31",
-    avatar: "https://i.pravatar.cc/150?u=a042581f4e27027008d",
-    email: "samantha.brooks@example.com",
-  },
-  {
-    id: 9,
-    name: "Frank Harrison",
-    role: "F. Manager",
-    team: "Finance",
-    status: "vacation",
-    age: "33",
-    avatar: "https://i.pravatar.cc/150?img=4",
-    email: "frank.harrison@example.com",
-  },
-  {
-    id: 10,
-    name: "Emma Adams",
-    role: "Ops Manager",
-    team: "Operations",
-    status: "active",
-    age: "35",
-    avatar: "https://i.pravatar.cc/150?img=5",
-    email: "emma.adams@example.com",
-  },
-  {
-    id: 11,
-    name: "Brandon Stevens",
-    role: "Jr. Dev",
-    team: "Development",
-    status: "active",
-    age: "22",
-    avatar: "https://i.pravatar.cc/150?img=8",
-    email: "brandon.stevens@example.com",
-  },
-  {
-    id: 12,
-    name: "Megan Richards",
-    role: "P. Manager",
-    team: "Product",
-    status: "paused",
-    age: "28",
-    avatar: "https://i.pravatar.cc/150?img=10",
-    email: "megan.richards@example.com",
-  },
-  {
-    id: 13,
-    name: "Oliver Scott",
-    role: "S. Manager",
-    team: "Security",
-    status: "active",
-    age: "37",
-    avatar: "https://i.pravatar.cc/150?img=12",
-    email: "oliver.scott@example.com",
-  },
-  {
-    id: 14,
-    name: "Grace Allen",
-    role: "M. Specialist",
-    team: "Marketing",
-    status: "active",
-    age: "30",
-    avatar: "https://i.pravatar.cc/150?img=16",
-    email: "grace.allen@example.com",
-  },
-  {
-    id: 15,
-    name: "Noah Carter",
-    role: "IT Specialist",
-    team: "I. Technology",
-    status: "paused",
-    age: "31",
-    avatar: "https://i.pravatar.cc/150?img=15",
-    email: "noah.carter@example.com",
-  },
-  {
-    id: 16,
-    name: "Ava Perez",
+    time: "2024-09-02 09:15",
+    userId: 2,
+    user: "Sarah Parker",
     role: "Manager",
-    team: "Sales",
-    status: "active",
-    age: "29",
-    avatar: "https://i.pravatar.cc/150?img=20",
-    email: "ava.perez@example.com",
+    branch: "Maharagama",
+    description: "Updated menu items",
+    email: "sarah.parker@example.com",
   },
   {
-    id: 17,
-    name: "Liam Johnson",
-    role: "Data Analyst",
-    team: "Analysis",
-    status: "active",
-    age: "28",
-    avatar: "https://i.pravatar.cc/150?img=33",
+    time: "2024-09-02 10:00",
+    userId: 3,
+    user: "Michael Smith",
+    role: "Barista",
+    branch: "Colombo 7",
+    description: "Prepared coffee orders",
+    email: "michael.smith@example.com",
+  },
+  {
+    time: "2024-09-02 11:30",
+    userId: 4,
+    user: "Laura Johnson",
+    role: "Waitress",
+    branch: "Kandy",
+    description: "Served breakfast orders",
+    email: "laura.johnson@example.com",
+  },
+  {
+    time: "2024-09-03 08:45",
+    userId: 5,
+    user: "David Wilson",
+    role: "Chef",
+    branch: "Galle",
+    description: "Prepared lunch specials",
+    email: "david.wilson@example.com",
+  },
+  {
+    time: "2024-09-03 14:20",
+    userId: 6,
+    user: "Emily Davis",
+    role: "Manager",
+    branch: "Matara",
+    description: "Reviewed employee schedules",
+    email: "emily.davis@example.com",
+  },
+  {
+    time: "2024-09-04 07:00",
+    userId: 7,
+    user: "Chris Lee",
+    role: "Cleaner",
+    branch: "Nugegoda",
+    description: "Cleaned the cafe premises",
+    email: "chris.lee@example.com",
+  },
+  {
+    time: "2024-09-04 12:10",
+    userId: 8,
+    user: "Emma Brown",
+    role: "Cashier",
+    branch: "Kurunegala",
+    description: "Processed payment for orders",
+    email: "emma.brown@example.com",
+  },
+  {
+    time: "2024-09-05 09:30",
+    userId: 9,
+    user: "Liam Johnson",
+    role: "Barista",
+    branch: "Kandy",
+    description: "Made espresso drinks",
     email: "liam.johnson@example.com",
   },
   {
-    id: 18,
-    name: "Sophia Taylor",
-    role: "QA Analyst",
-    team: "Testing",
-    status: "active",
-    age: "27",
-    avatar: "https://i.pravatar.cc/150?img=29",
-    email: "sophia.taylor@example.com",
-  },
-  {
-    id: 19,
-    name: "Lucas Harris",
-    role: "Administrator",
-    team: "Information Technology",
-    status: "paused",
-    age: "32",
-    avatar: "https://i.pravatar.cc/150?img=50",
-    email: "lucas.harris@example.com",
-  },
-  {
-    id: 20,
-    name: "Mia Robinson",
-    role: "Coordinator",
-    team: "Operations",
-    status: "active",
-    age: "26",
-    avatar: "https://i.pravatar.cc/150?img=45",
-    email: "mia.robinson@example.com",
+    time: "2024-09-05 13:45",
+    userId: 10,
+    user: "Sophia Martinez",
+    role: "Manager",
+    branch: "Colombo 7",
+    description: "Handled customer complaints",
+    email: "sophia.martinez@example.com",
   },
 ];
+
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -258,16 +147,16 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
   vacation: "warning",
 };
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["time","userId","name", "role", "branch", "description","user"];
 
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  avatar: string;
+type Log = {
+  time: string;
+  userId: string;
+  user: string;
   role: string;
-  team: string;
-  status: string;
+  branch: string;
+  description: string;
+  email: string;
 };
 
 export default function LogsTable() {
@@ -282,7 +171,7 @@ export default function LogsTable() {
   });
   const [page, setPage] = React.useState<number>(1);
 
-  const pages = Math.ceil(users.length / rowsPerPage);
+  const pages = Math.ceil(logs.length / rowsPerPage);
 
   const hasSearchFilter = Boolean(filterValue);
 
@@ -293,18 +182,14 @@ export default function LogsTable() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
+    let filteredUsers = [...logs];
 
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase()),
+        user.user.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status),
-      );
-    }
+    
 
     return filteredUsers;
   }, [filterValue, statusFilter]);
@@ -317,23 +202,23 @@ export default function LogsTable() {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as unknown as number;
-      const second = b[sortDescriptor.column as keyof User] as unknown as number;
+    return [...items].sort((a: Log, b: Log) => {
+      const first = a[sortDescriptor.column as keyof Log] as unknown as number;
+      const second = b[sortDescriptor.column as keyof Log] as unknown as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof User];
+  const renderCell = React.useCallback((user: Log, columnKey: React.Key) => {
+    const cellValue = user[columnKey as keyof Log];
 
     switch (columnKey) {
       case "name":
         return (
           <UserComponent
-            avatarProps={{ radius: "full", size: "sm", src: user.avatar }}
+            // avatarProps={{ radius: "full", size: "sm", src: user.avatar }}
             classNames={{
               description: "text-default-500",
             }}
@@ -361,23 +246,6 @@ export default function LogsTable() {
             {cellValue as string}
           </Chip>
         );
-      case "actions":
-        return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown className="bg-background border-1 border-default-200">
-              <DropdownTrigger>
-                <Button isIconOnly radius="full" size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-400" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        );
       default:
         return cellValue;
     }
@@ -400,6 +268,7 @@ export default function LogsTable() {
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
+        <h1 className="text-2xl text-white font-bold">System Logs</h1>
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable
@@ -423,31 +292,6 @@ export default function LogsTable() {
                   size="sm"
                   variant="flat"
                 >
-                  Status
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  size="sm"
-                  variant="flat"
-                >
                   Columns
                 </Button>
               </DropdownTrigger>
@@ -458,6 +302,7 @@ export default function LogsTable() {
                 selectedKeys={visibleColumns}
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
+                className="bg-black text-white"
               >
                 {columns.map((column) => (
                   <DropdownItem key={column.uid} className="capitalize">
@@ -466,17 +311,11 @@ export default function LogsTable() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              className="bg-foreground text-background"
-              endContent={<PlusIcon />}
-              size="sm"
-            >
-              Add New
-            </Button>
+            
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {users.length} users</span>
+          <span className="text-default-400 text-small">Total {logs.length} users</span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -497,7 +336,7 @@ export default function LogsTable() {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    users.length,
+    logs.length,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -516,11 +355,11 @@ export default function LogsTable() {
           onChange={setPage}
         />
         <span className="text-default-400">
-          {page}-{pages} of {users.length}
+          {page}-{pages} of {logs.length}
         </span>
       </div>
     );
-  }, [page, pages, users.length, hasSearchFilter]);
+  }, [page, pages, logs.length, hasSearchFilter]);
 
   return (
     <Table
@@ -545,7 +384,7 @@ export default function LogsTable() {
       </TableHeader>
       <TableBody emptyContent={"No users found"}>
         {sortedItems.map((user) => (
-          <TableRow key={user.id}>
+          <TableRow key={user.userId}>
             {(columnKey) => <TableCell>{renderCell(user, columnKey)}</TableCell>}
           </TableRow>
         ))}

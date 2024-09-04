@@ -3,8 +3,8 @@ import LogsTable from '../../components/SystemAdmin/Tables/table'
 
 const SystemLogs = () => {
   return (
-    <><div>systemLogs</div>
-    <LogsTable /></>
+    // <><div>systemLogs</div>
+    <LogsTable />
 
   )
 }
