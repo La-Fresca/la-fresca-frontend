@@ -232,20 +232,20 @@ export default function LogsTable() {
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">{cellValue as string}</p>
-            <p className="text-bold text-tiny capitalize text-default-500">{user.team}</p>
+            {/* <p className="text-bold text-tiny capitalize text-default-500">{user.role}</p> */}
           </div>
         );
-      case "status":
-        return (
-          <Chip
-            className="capitalize border-none gap-1 text-default-600"
-            color={statusColorMap[user.status]}
-            size="sm"
-            variant="dot"
-          >
-            {cellValue as string}
-          </Chip>
-        );
+      // case "status":
+      //   return (
+      //     <Chip
+      //       className="capitalize border-none gap-1 text-default-600"
+      //       color={statusColorMap[user.status]}
+      //       size="sm"
+      //       variant="dot"
+      //     >
+      //       {cellValue as string}
+      //     </Chip>
+      //   );
       default:
         return cellValue;
     }
@@ -384,7 +384,10 @@ export default function LogsTable() {
       </TableHeader>
       <TableBody emptyContent={"No users found"}>
         {sortedItems.map((user) => (
-          <TableRow key={user.userId}>
+          <TableRow 
+            key={user.userId}
+            className="border-b border-slate-700" 
+          >
             {(columnKey) => <TableCell>{renderCell(user, columnKey)}</TableCell>}
           </TableRow>
         ))}
