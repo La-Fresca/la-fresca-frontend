@@ -35,10 +35,10 @@ export default function App() {
                 classNames: {
                   base: 'max-w-full mt-4',
                   content:
-                    'p-0 border-small border-divider bg-[#252828] bg-opacity-70 rounded-md text-white',
+                    'p-0 border-small border-divider bg-[#252828] rounded-md text-white',
                 },
                 placement: 'bottom', // Ensures dropdown always opens downward
-                shouldFlip: false, // Prevents dropdown from flipping when it reaches viewport bounds
+                //shouldFlip: false, // Prevents dropdown from flipping when it reaches viewport bounds
               }}
               renderValue={(items) => {
                 return items.map((item) => (
