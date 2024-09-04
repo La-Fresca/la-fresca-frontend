@@ -21,6 +21,7 @@ type BranchPicker = {
 
 // Zod schema for form validation
 const FormSchema = z.object({
+  name: z.string().min(1, { message: 'Name is required' }),
   address: z.string().min(1, { message: 'Address is required' }),
   contactNo: z
     .string()
@@ -77,6 +78,17 @@ const BranchForm: FC = () => {
         >
           <div className="w-full md:w-3/7 space-y-4 p-6.5">
             <div className="w-full">
+              <label className="mb-3 block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">Branch Name</span>
+                <input
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
+                  type="text"
+                  {...register('name')}
+                />
+                {errors.address && (
+                  <p className="text-red-600 mb-1">{errors.name?.message}</p>
+                )}
+              </label>
               <label className="mb-3 block text-black dark:text-white">
                 <span className="block mb-1 text-gray-600">Branch Address</span>
                 <input
