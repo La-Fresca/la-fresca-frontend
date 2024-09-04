@@ -64,6 +64,8 @@ import AddInventory from '@/pages/Storekeeper/AddInventory';
 import EditInventory from '@/pages/Storekeeper/EditInventory';
 import ViewGrnByCollection from '@/pages/Storekeeper/GrnListByCollection';
 import FoodCombo from './pages/FoodCombo';
+import SystemAdminLayout from './layouts/SystemAdminLayout';
+import SystemLogs from './pages/SystemAdmin/systemLogs';
 import TopManagerLayout from './layouts/TopManagerLayout';
 import BranchList from './pages/TopManager/Branches/BranchList';
 import AddBranches from './pages/TopManager/Branches/AddBranch';
@@ -235,7 +237,7 @@ const routes = createRoutesFromElements(
           />
         </Route>
       </Route>
-      
+
       <Route path="top-level-manager/*" element={<TopLevelManagerLayout />}>
         <Route
           index
@@ -245,7 +247,8 @@ const routes = createRoutesFromElements(
               <Dashboard_TLM />
             </>
           }
-        />s
+        />
+        s
         <Route
           path="sales"
           element={
@@ -457,7 +460,7 @@ const routes = createRoutesFromElements(
           }
         />
       </Route>
-      
+
       <Route path="branch-manager/*" element={<BranchManagerLayout />}>
         <Route
           index
@@ -712,13 +715,40 @@ const routes = createRoutesFromElements(
           }
         ></Route>
       </Route>
-      <Route path="system-admin/*" element={<WaiterLayout />}>
+      <Route path="system-admin/*" element={<SystemAdminLayout />}>
         <Route
           index
           element={
             <>
               <PageTitle title="system admin | Dashboard" />
-              <WaiterDashboard />
+              <Dashboard />
+            </>
+          }
+        />
+        <Route
+          path="system-logs"
+          element={
+            <>
+              <PageTitle title="system admin | System Logs" />
+              <SystemLogs />
+            </>
+          }
+        />
+        <Route
+          path="reports"
+          element={
+            <>
+              <PageTitle title="system admin | Reports" />
+              <Sales />
+            </>
+          }
+        />
+        <Route
+          path="backups"
+          element={
+            <>
+              <PageTitle title="system admin | Backup & Restore" />
+              <Sales />
             </>
           }
         />
