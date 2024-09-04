@@ -1,4 +1,4 @@
-import BranchForm from '@/components/TopManager/DynamicForms/AddBranch';
+import BranchForm from '@/components/TopLevelManager/DynamicForms/AddBranch';
 
 const AddBranches: React.FC = () => {
   return (

@@ -142,9 +142,13 @@ export default function BranchListTable() {
                   <VerticalDotsIcon className="text-default-300" />
                 </Button>
               </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
+              <DropdownMenu className="bg-black text-white">
+                <DropdownItem onClick={() => navigate(`view/123`)}>
+                  View
+                </DropdownItem>
+                <DropdownItem onClick={() => navigate(`add`)}>
+                  Edit
+                </DropdownItem>
                 <DropdownItem>Delete</DropdownItem>
               </DropdownMenu>
             </Dropdown>

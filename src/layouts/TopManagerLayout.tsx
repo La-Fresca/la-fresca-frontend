@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from '@components/TopManager/Header/index';
-import Sidebar from '@components/TopManager/Sidebar/index';
+import Header from '@/components/TopLevelManager/Header/index';
+import Sidebar from '@/components/TopLevelManager/Sidebar/index';
 
 const TopManagerLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
