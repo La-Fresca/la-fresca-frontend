@@ -64,6 +64,7 @@ import AddInventory from '@/pages/Storekeeper/AddInventory';
 import EditInventory from '@/pages/Storekeeper/EditInventory';
 import ViewGrnByCollection from '@/pages/Storekeeper/GrnListByCollection';
 import FoodCombo from './pages/FoodCombo';
+import SystemAdminLayout from './layouts/SystemAdminLayout';
 
 const { refresh } = useAuth();
 const cookieProtocol = (import.meta as any).env.VITE_COOKIE_PROTOCOL;
@@ -477,13 +478,40 @@ const routes = createRoutesFromElements(
           }
         ></Route>
       </Route>
-      <Route path="system-admin/*" element={<WaiterLayout />}>
+      <Route path="system-admin/*" element={<SystemAdminLayout />}>
         <Route
           index
           element={
             <>
               <PageTitle title="system admin | Dashboard" />
-              <WaiterDashboard />
+              <Dashboard />
+            </>
+          }
+        />
+        <Route
+          path="system-logs"
+          element={
+            <>
+              <PageTitle title="system admin | System Logs" />
+              <Sales />
+            </>
+          }
+        />
+        <Route
+          path="reports"
+          element={
+            <>
+              <PageTitle title="system admin | Reports" />
+              <Sales />
+            </>
+          }
+        />
+        <Route
+          path="backups"
+          element={
+            <>
+              <PageTitle title="system admin | Backup & Restore" />
+              <Sales />
             </>
           }
         />
