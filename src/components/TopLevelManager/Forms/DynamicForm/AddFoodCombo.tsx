@@ -12,6 +12,7 @@ import { useCombos } from '@/api/useCombos';
 import { useFoods } from '@/api/useFoods';
 import { Food } from '@/types/food';
 import { swalSuccess } from '@/components/UI/SwalSuccess';
+import Select from './Select/App';
 
 type ComboPicker = {
   key: string;
@@ -139,6 +140,12 @@ const ComboForm: FC = () => {
                 {errors.name && (
                   <p className="text-red-600 mb-1">{errors.name.message}</p>
                 )}
+              </label>
+              <label className="mb-3 block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">
+                  Select Branches
+                </span>
+                <Select />
               </label>
               <label className="mb-3 block text-black dark:text-white">
                 <span className="block mb-1 text-gray-600">
