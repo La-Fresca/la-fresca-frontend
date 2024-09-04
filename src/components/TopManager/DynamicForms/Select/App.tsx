@@ -33,10 +33,12 @@ export default function App() {
               }}
               popoverProps={{
                 classNames: {
-                  base: 'max-w-full',
-                  content: 'p-0 border-small border-divider bg-background',
+                  base: 'max-w-full mt-4',
+                  content:
+                    'p-0 border-small border-divider bg-[#252828] bg-opacity-70 rounded-md text-white',
                 },
-                placement: 'top', // Ensures dropdown always opens downward
+                placement: 'bottom', // Ensures dropdown always opens downward
+                shouldFlip: false, // Prevents dropdown from flipping when it reaches viewport bounds
               }}
               renderValue={(items) => {
                 return items.map((item) => (
