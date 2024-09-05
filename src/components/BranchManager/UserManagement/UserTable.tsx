@@ -17,9 +17,9 @@ interface UserTableProps {
 }
 
 const users: User[] = [
-  { id: 1, name: 'Tom Cooper', email: 'cooper@gmail.com', status: 'Active', location: 'United States', phone: '+65 9308 4744', group: 'Design' },
-  { id: 2, name: 'Leslie Alexander', email: 'lawson@gmail.com', status: 'Active', location: 'Canada', phone: '+65 8689 9346', group: 'Development' },
-  { id: 3, name: 'Kristin Watson', email: 'watson@gmail.com', status: 'Inactive', location: 'Germany', phone: '+62-896-5554-32', group: 'Marketing' },
+  { id: 1, name: 'Tom Cooper', email: 'cooper@gmail.com', status: 'Active', location: 'Battaramulla', phone: '+94 78 596 8986', group: 'Waiter' },
+  { id: 2, name: 'Leslie Alexander', email: 'lawson@gmail.com', status: 'Active', location: 'Borella', phone: '+94 71 596 2521', group: 'Delivery person' },
+  { id: 3, name: 'Kristin Watson', email: 'watson@gmail.com', status: 'Inactive', location: 'Havelock', phone: '+94 76 596 4378', group: 'Cashier' },
   // Add more users as needed
 ];
 
