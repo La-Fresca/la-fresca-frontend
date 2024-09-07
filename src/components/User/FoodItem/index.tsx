@@ -118,18 +118,18 @@ function FoodForm({ id }: Props) {
   return (
     <div className="flex items-center h-110vh lg:h-[calc(100vh-120px)]">
       <div
-        className="ml-[10%] flex flex-col lg:flex-row flex-grow items-center justify-between px-4 py-4 rounded-2xl border border-foodbg bg-foodbg backdrop-blur-md"
+        className="ml-[10%] flex flex-col lg:flex-row flex-grow items-center justify-between px-4 py-4 rounded-2xl border border-foodbg bg-foodbg backdrop-blur-md h-[calc(100vh - 20px)]"
         style={{
           marginLeft: '10%',
           marginRight: '10%',
           backgroundColor: 'rgba(255, 255, 255, 0.01)',
         }}
       >
-        <div>
-          <img src={food.image} alt="" className="w-[100%]" />
+        <div className='w-[50%] h-[100%] p-10'>
+          <img src={food.image} alt="" className="w-[100%] h-[100%] rounded-xl" />
         </div>
 
-        <div className="w-[70%]">
+        <div className="w-[50%]">
           <div className="text-4xl font-bold text-white">{food.name}</div>
           <div className="pt-3">{food.description}</div>
 

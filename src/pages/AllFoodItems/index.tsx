@@ -1,7 +1,7 @@
-import AllFoodItem from '@components/User/AllFoodItems/index.tsx';
+import AllMenuItem from '@/components/User/AllMenuItems';
 
 function index() {
-  return <AllFoodItem />;
+  return <AllMenuItem />;
 }
 
 export default index;

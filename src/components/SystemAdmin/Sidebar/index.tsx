@@ -2,12 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '@images/logo/la-fresca.png';
-import { Bars3Icon, UserIcon, ClockIcon, Squares2X2Icon, PhotoIcon, ReceiptPercentIcon } from '@heroicons/react/24/outline';
-
+import { Bars3Icon, UserIcon } from '@heroicons/react/24/outline';
+import { Squares2X2Icon } from '@heroicons/react/24/outline';
 import { CakeIcon } from '@heroicons/react/24/outline';
-import { QueueListIcon } from '@heroicons/react/24/outline';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
-import { RectangleGroupIcon, TagIcon } from '@heroicons/react/24/solid';
+import { HomeIcon, DocumentTextIcon, ArchiveBoxIcon, ShieldExclamationIcon } from '@heroicons/react/24/outline';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -64,7 +62,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col lg:hidden overflow-y-hidden bg-white duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-white duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
@@ -101,75 +99,52 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <ul className="mb-6 flex flex-col gap-1.5">
               <li>
                 <NavLink
-                  to="/"
+                  to="/system-admin"
                   className={`group relative flex items-center gap-2.5 rounded-xl px-4 py-2 font-medium text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    (pathname === '/branch-manager' ||
+                    (pathname === '/system-admin' ||
                       pathname.includes('dashboard')) &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
                   <Squares2X2Icon className="w-6 h-6" />
-                  Home
+                  Dashboard
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/menuItems"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/food-combos') &&
+                  to="system-logs"
+                  className={`group relative flex items-center gap-2.5 rounded-xl px-4 py-2 font-medium text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    (pathname === '/system-logs' || pathname.includes('sales')) &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <RectangleGroupIcon className="w-6 h-6" />
-                  Foods
+                  <ArchiveBoxIcon className="w-6 h-6" />
+                  
+                  System Logs
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/orderhistory"
+                  to="/system-admin/reports"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/users') &&
+                    pathname.includes('/system-admin/reports') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <ClockIcon className="w-6 h-6" />
-                  Order History
+                  <DocumentTextIcon className="w-6 h-6" />
+                  Reports
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/gallery"
+                  to="/system-admin/backups"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/users') &&
+                    pathname.includes('/branch-manager/foods') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <PhotoIcon className="w-6 h-6" />
-                  Gallery
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/promotions"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/users') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <ReceiptPercentIcon className="w-6 h-6" />
-                  Promotions
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/branch-manager/users"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/users') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <UserIcon className="w-6 h-6" />
-                  Contact Us
+                  <ShieldExclamationIcon className="w-6 h-6" />
+                  Backup & Restore
                 </NavLink>
               </li>
             </ul>

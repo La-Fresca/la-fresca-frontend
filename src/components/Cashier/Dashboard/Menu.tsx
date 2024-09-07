@@ -1,22 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Item } from '@components/Cashier/Dashboard/Type';
+import { Item } from '@/types/item';
 import SearchBar from '@components/Cashier/Dashboard/Search';
-import Image from '@images/product/pizza.png';
 import ItemCustomCard from '@/components/User/FoodItem/index';
 
 interface MenuProps {
-  image: string;
   items: Item[];
   searchTerm: string;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   selectedCategory: string;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
   addItemToOrder: (item: Item) => void;
+  categories: string[];
 }
 
 const Menu: React.FC<MenuProps> = ({
-  image,
   items,
+  categories,
   searchTerm,
   setSearchTerm,
   selectedCategory,
@@ -25,21 +24,11 @@ const Menu: React.FC<MenuProps> = ({
 }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
-
-  const categories = [
-    'All',
-    'Pizza',
-    'Pasta',
-    'Rice Bowl',
-    'Side Dish',
-    'Soup',
-    'Noodles',
-  ];
-
   const filteredItems = items.filter(
     (item) =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (selectedCategory === 'All' || item.category === selectedCategory),
+      (selectedCategory === 'All' ||
+        item.categories.includes(selectedCategory)),
   );
 
   const togglePopup = () => {

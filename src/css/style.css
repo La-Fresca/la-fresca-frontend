@@ -237,3 +237,23 @@ span.flatpickr-weekday,
   border-color: #FDB241 !important; /* Yellow border */
   outline: none; /* Remove default outline */
 }
+
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+

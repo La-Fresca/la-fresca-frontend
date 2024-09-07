@@ -63,6 +63,10 @@ import ViewInventory from '@/pages/Storekeeper/InventoryList';
 import AddInventory from '@/pages/Storekeeper/AddInventory';
 import EditInventory from '@/pages/Storekeeper/EditInventory';
 import ViewGrnByCollection from '@/pages/Storekeeper/GrnListByCollection';
+import FoodCombo from './pages/FoodCombo';
+import SystemAdminLayout from './layouts/SystemAdminLayout';
+import SystemLogs from './pages/SystemAdmin/systemLogs';
+import Backup from './pages/SystemAdmin/backup';
 
 const { refresh } = useAuth();
 const cookieProtocol = (import.meta as any).env.VITE_COOKIE_PROTOCOL;
@@ -192,22 +196,31 @@ const routes = createRoutesFromElements(
             </>
           }
         />
-        <Route path="fooditems">
+        <Route path="menuitems">
           <Route
             index
             element={
               <>
-                <PageTitle title="La Fresca | Food Items" />
+                <PageTitle title="La Fresca | Menu Items" />
                 <AllFoodItems />
               </>
             }
           />
           <Route
-            path="viewfood/:itemId"
+            path="viewfooditem/:itemId"
             element={
               <>
                 <PageTitle title="La Fresca | Food Item" />
                 <FoodItem />
+              </>
+            }
+          />
+          <Route
+            path="viewfoodcombo/:comboId"
+            element={
+              <>
+                <PageTitle title="La Fresca | Food Item" />
+                <FoodCombo />
               </>
             }
           />
@@ -466,6 +479,45 @@ const routes = createRoutesFromElements(
             </>
           }
         ></Route>
+      </Route>
+      <Route path="system-admin/*" element={<SystemAdminLayout />}>
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="system admin | Dashboard" />
+              <Dashboard />
+            </>
+          }
+        />
+        <Route
+          path="system-logs"
+          element={
+            <>
+              <PageTitle title="system admin | System Logs" />
+              <SystemLogs />
+            </>
+          }
+        />
+        <Route
+          path="reports"
+          element={
+            <>
+              <PageTitle title="system admin | Reports" />
+              <Sales />
+            </>
+          }
+        />
+        <Route
+          path="backups"
+          element={
+            <>
+              <PageTitle title="system admin | Backup & Restore" />
+              <Backup />
+            </>
+          }
+        />
+        {/* -------------- Routes to add ---------------- */}
       </Route>
       <Route path="cashier/*" element={<CashierLayout />}>
         <Route
