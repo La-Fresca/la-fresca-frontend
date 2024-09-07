@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Table,
   TableHeader,
@@ -26,14 +26,15 @@ import { useNavigate } from 'react-router-dom';
 import { Stock } from '@/types/stock';
 import { useStocks } from '@/api/useStocks';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
+import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
 
 const INITIAL_VISIBLE_COLUMNS = [
-  'id',
-  'name',
+  'branchID',
+  'collectionName',
   'supplier',
-  'quantity',
-  'expire',
-  'actions',
+  'uuuuuu',
+  'aaaaa',
+  'gggggg',
 ];
 
 export default function StockListByCollection({
@@ -42,7 +43,7 @@ export default function StockListByCollection({
   collectionName?: string;
 }) {
   const { showSwal } = swalConfirm();
-  const [stocks, setStocks] = useState<Stock[]>([]);
+  const [users, setStocks] = useState<Stock[]>([]);
   const { getStockyByCollection, deleteStock } = useStocks();
   const [loading, setLoading] = useState(true);
 
@@ -74,112 +75,124 @@ export default function StockListByCollection({
     fetchStocks();
   }, []);
 
-  const navigate = useNavigate();
+  console.log(users);
+
   const [filterValue, setFilterValue] = useState('');
-  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
-  const [visibleColumns, setVisibleColumns] = useState<Selection>(
+  const [visibleColumns, setVisibleColumns] = useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
+  const [statusFilter, setStatusFilter] = useState('all');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: 'id',
-    direction: 'descending',
+  const [sortDescriptor, setSortDescriptor] = useState({
+    column: 'age',
+    direction: 'ascending',
   });
   const [page, setPage] = useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = useMemo(() => {
-    if (visibleColumns === 'all') return columns;
-
+    if (visibleColumns instanceof Set && visibleColumns.size === columns.length)
+      return columns;
     return columns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid),
     );
   }, [visibleColumns]);
 
   const filteredItems = useMemo(() => {
-    let filteredStocks = [...stocks];
-
+    let filteredUsers = [...users];
     if (hasSearchFilter) {
-      filteredStocks = filteredStocks.filter((stock) =>
-        stock.batchId.toLowerCase().includes(filterValue.toLowerCase()),
+      filteredUsers = filteredUsers.filter((user) =>
+        user.stockCollectionName
+          .toLowerCase()
+          .includes(filterValue.toLowerCase()),
       );
     }
-    return filteredStocks;
-  }, [stocks, filterValue]);
+    if (
+      statusFilter !== 'all' &&
+      Array.from(statusFilter).length !== statusOptions.length
+    ) {
+      filteredUsers = filteredUsers.filter((user) =>
+        Array.from(statusFilter).includes(user.status),
+      );
+    }
+    return filteredUsers;
+  }, [users, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = useMemo(() => {
-    return [...items].sort((a: Stock, b: Stock) => {
-      const first = a[sortDescriptor.column as keyof Stock] as number;
-      const second = b[sortDescriptor.column as keyof Stock] as number;
+    return [...items].sort((a, b) => {
+      const first = a[sortDescriptor.column];
+      const second = b[sortDescriptor.column];
       const cmp = first < second ? -1 : first > second ? 1 : 0;
-
       return sortDescriptor.direction === 'descending' ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = useCallback((stock: Stock, columnKey: React.Key) => {
-    const cellValue = stock[columnKey as keyof Stock];
-
+  const renderCell = useCallback((user, columnKey) => {
+    console.log(renderCell);
+    const cellValue = user[columnKey];
     switch (columnKey) {
-      case 'id':
+      case 'batchId':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small">{stock.batchId}</p>
+            <p className="text-bold text-small capitalize">
+              {user.batchId}
+            </p>
           </div>
         );
       case 'name':
         return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">
-              {stock.stockCollectionName}
-            </p>
+          <div className="flex items-center">
+            <div className="w-[40px] h-[40px]">
+              <img src={user.avatar} alt="" className="rounded-full" />
+            </div>
+            <div className="ml-5">
+              <p className="text-bold text-small capitalize dark:text-white text-foodbg">
+                {cellValue}
+              </p>
+              <p className="text-bold text-[12px] capitalize">ID: {user.id}</p>
+            </div>
           </div>
         );
-      case 'supplier':
+      case 'qty':
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">
-              {stock.supplierName}
+              {cellValue} {user.unit}
             </p>
           </div>
         );
-      case 'quantity':
+      case 'UPrice':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small">{stock.initialAmount}</p>
-          </div>
-        );
-      case 'expire':
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small">{stock.expiryDate}</p>
+            <p className="text-bold text-small capitalize">Rs. {cellValue}</p>
           </div>
         );
       case 'actions':
         return (
           <div className="relative flex justify-end items-center gap-2">
-            <Dropdown className="bg-background border-1 border-default-200">
+            <Dropdown>
               <DropdownTrigger>
-                <Button isIconOnly radius="full" size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-400" />
+                <Button isIconOnly size="sm" variant="light">
+                  <VerticalDotsIcon className="text-default-300" />
                 </Button>
               </DropdownTrigger>
-              <DropdownMenu className="bg-black text-white">
-                {/* <DropdownItem>View</DropdownItem> */}
-                <DropdownItem onClick={() => navigate(`edit/${stock.id}`)}>
+              <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]">
+                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">
+                  View
+                </DropdownItem>
+                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">
                   Edit
                 </DropdownItem>
-                <DropdownItem onClick={() => handleConfirmDelete(stock.id)}>
+                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">
                   Delete
                 </DropdownItem>
               </DropdownMenu>
@@ -191,15 +204,24 @@ export default function StockListByCollection({
     }
   }, []);
 
-  const onRowsPerPageChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setRowsPerPage(Number(e.target.value));
-      setPage(1);
-    },
-    [],
-  );
+  const onNextPage = React.useCallback(() => {
+    if (page < pages) {
+      setPage(page + 1);
+    }
+  }, [page, pages]);
 
-  const onSearchChange = useCallback((value?: string) => {
+  const onPreviousPage = React.useCallback(() => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  }, [page]);
+
+  const onRowsPerPageChange = React.useCallback((e) => {
+    setRowsPerPage(Number(e.target.value));
+    setPage(1);
+  }, []);
+
+  const onSearchChange = React.useCallback((value) => {
     if (value) {
       setFilterValue(value);
       setPage(1);
@@ -208,56 +230,62 @@ export default function StockListByCollection({
     }
   }, []);
 
+  const onClear = React.useCallback(() => {
+    setFilterValue('');
+    setPage(1);
+  }, []);
+
   const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable
-            classNames={{
-              base: 'w-full sm:max-w-[44%]',
-              inputWrapper: 'border-1',
-            }}
-            placeholder="Search by name..."
-            size="sm"
-            startContent={<SearchIcon className="text-default-300" />}
+            className="w-full sm:max-w-[44%] dark:bg-[#ffffff14] rounded-lg border bg-[#aaaaaa14] border-[#aaaaaa66] dark:border-[#54545466]"
+            placeholder="Search by item name..."
+            startContent={<SearchIcon />}
             value={filterValue}
-            variant="bordered"
-            onClear={() => setFilterValue('')}
+            onClear={onClear}
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
+            <Button className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]">
+              <ArrowSmallDownIcon className="w-6 h-6 border-b scale-75" />{' '}
+              Download All
+            </Button>
+
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
-                  size="sm"
                   variant="flat"
+                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
                 >
                   Columns
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
-                className="bg-black text-white"
                 disallowEmptySelection
                 aria-label="Table Columns"
                 closeOnSelect={false}
                 selectedKeys={visibleColumns}
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
+                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
               >
                 {columns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
+                  <DropdownItem
+                    key={column.uid}
+                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
+                  >
                     {capitalize(column.name)}
                   </DropdownItem>
                 ))}
               </DropdownMenu>
             </Dropdown>
             <Button
-              className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg"
-              color="primary"
               endContent={<PlusIcon />}
-              onClick={() => navigate('add')}
+              className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600"
             >
               Add New
             </Button>
@@ -265,7 +293,7 @@ export default function StockListByCollection({
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {stocks.length} inventory items
+            Total {users.length} items
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -283,10 +311,11 @@ export default function StockListByCollection({
     );
   }, [
     filterValue,
+    statusFilter,
     visibleColumns,
-    onSearchChange,
     onRowsPerPageChange,
-    stocks.length,
+    users.length,
+    onSearchChange,
     hasSearchFilter,
   ]);
 
@@ -297,61 +326,49 @@ export default function StockListByCollection({
           isCompact
           showControls
           showShadow
+          color="primary"
           page={page}
           total={pages}
-          color="primary"
           onChange={setPage}
+          radius="full"
+          className="text-[#c6c6c6]"
         />
-        <span className="text-small text-default-400">
-          {selectedKeys === 'all'
-            ? 'All items selected'
-            : `${selectedKeys.size} of ${items.length} selected`}
-        </span>
+        <div className="hidden sm:flex w-[30%] justify-end gap-2">
+          <Button
+            isDisabled={pages === 1}
+            size="sm"
+            variant="flat"
+            onPress={onPreviousPage}
+            className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040] py-[18px]"
+          >
+            Previous
+          </Button>
+          <Button
+            isDisabled={pages === 1}
+            size="sm"
+            variant="flat"
+            onPress={onNextPage}
+            className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040] py-[18px]"
+          >
+            Next
+          </Button>
+        </div>
       </div>
     );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+  }, [page, pages, hasSearchFilter]);
 
-  const classNames = useMemo(
-    () => ({
-      wrapper: ['max-h-[382px]', 'max-w-3xl'],
-      th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],
-      td: [
-        // changing the rows border radius
-        // first
-        'group-data-[first=true]:first:before:rounded-none',
-        'group-data-[first=true]:last:before:rounded-none',
-        // middle
-        'group-data-[middle=true]:before:rounded-none',
-        // last
-        'group-data-[last=true]:first:before:rounded-none',
-        'group-data-[last=true]:last:before:rounded-none',
-      ],
-    }),
-    [],
-  );
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
   return (
     <Table
-      isCompact
-      removeWrapper
       aria-label="Example table with custom cells, pagination and sorting"
+      isHeaderSticky
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
-      checkboxesProps={{
-        classNames: {
-          wrapper: 'after:bg-foreground after:text-background text-background',
-        },
+      classNames={{
+        wrapper: 'max-h-[382px]',
       }}
-      classNames={classNames}
-      selectedKeys={selectedKeys}
-      selectionMode="multiple"
       sortDescriptor={sortDescriptor}
       topContent={topContent}
       topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
       onSortChange={setSortDescriptor}
     >
       <TableHeader columns={headerColumns}>
@@ -360,12 +377,13 @@ export default function StockListByCollection({
             key={column.uid}
             align={column.uid === 'actions' ? 'center' : 'start'}
             allowsSorting={column.sortable}
+            className="dark:bg-[#373737] translate-y-[-16px] bg-[#aaaaaa20] dark:text-white text-[#3a3a3a] h-[45px]"
           >
             {column.name}
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No inventory items found'} items={sortedItems}>
+      <TableBody emptyContent={'No users found'} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (
