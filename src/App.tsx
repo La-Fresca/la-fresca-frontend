@@ -66,6 +66,7 @@ import ViewGrnByCollection from '@/pages/Storekeeper/GrnListByCollection';
 import FoodCombo from './pages/FoodCombo';
 import SystemAdminLayout from './layouts/SystemAdminLayout';
 import SystemLogs from './pages/SystemAdmin/systemLogs';
+import Backup from './pages/SystemAdmin/backup';
 
 const { refresh } = useAuth();
 const cookieProtocol = (import.meta as any).env.VITE_COOKIE_PROTOCOL;
@@ -512,7 +513,7 @@ const routes = createRoutesFromElements(
           element={
             <>
               <PageTitle title="system admin | Backup & Restore" />
-              <Sales />
+              <Backup />
             </>
           }
         />
