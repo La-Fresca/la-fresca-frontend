@@ -3,4 +3,6 @@ export type Inventory = {
   name: string;
   availableAmount: number;
   lowerLimit: number;
+  unit: string;
+  cafeId: string;
 };
