@@ -14,7 +14,7 @@ function getToken() {
 export const useStocks = () => {
   const getAllStocks = async () => {
     try {
-      const response = await fetch(`${API_URL}/stock/cafe 1`, {
+      const response = await fetch(`${API_URL}/stock/cafe1`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ export const useStocks = () => {
   const getStockyByCollection = async (collectionName: string) => {
     try {
       const response = await fetch(
-        `${API_URL}/stock/collection/${collectionName}`,
+        `${API_URL}/stock/cafe1/${collectionName}`,
         {
           method: 'GET',
           headers: {

@@ -76,15 +76,6 @@ export default function App() {
 
 
 
-
-console.log(inventory);
-
-
-
-
-
-
-
   const navigate = useNavigate();
 
   const handleAddUser = () => {
@@ -96,12 +87,6 @@ console.log(inventory);
       navigate(`view/${id}`);
     }
   };
-
-
-
-
-
-
 
   const [filterValue, setFilterValue] = React.useState('');
   const [visibleColumns, setVisibleColumns] = React.useState(
