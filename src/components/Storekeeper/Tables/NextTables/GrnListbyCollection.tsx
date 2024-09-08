@@ -76,6 +76,7 @@ export default function StockListByCollection({
   }, []);
 
   console.log(users);
+  console.log("hello");
 
   const [filterValue, setFilterValue] = useState('');
   const [visibleColumns, setVisibleColumns] = useState(

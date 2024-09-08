@@ -14,7 +14,7 @@ function getToken() {
 export const useStocks = () => {
   const getAllStocks = async () => {
     try {
-      const response = await fetch(`${API_URL}/stock`, {
+      const response = await fetch(`${API_URL}/stock/cafe 1`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
