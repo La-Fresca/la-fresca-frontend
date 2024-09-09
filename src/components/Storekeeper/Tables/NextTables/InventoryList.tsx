@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Table,
   TableHeader,
@@ -13,30 +13,81 @@ import {
   DropdownMenu,
   DropdownItem,
   Chip,
-  User,
   Pagination,
 } from '@nextui-org/react';
-import { PlusIcon } from '@components/Storekeeper/Tables/PlusIcon';
-import { VerticalDotsIcon } from '@components/Storekeeper/Tables/VerticalDotsIcon';
-import { SearchIcon } from '@components/Storekeeper/Tables/SearchIcon';
-import { ChevronDownIcon } from '@components/Storekeeper/Tables/ChevronDownIcon';
+import { PlusIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/PlusIcon';
+import { VerticalDotsIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/VerticalDotsIcon';
+import { SearchIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/SearchIcon';
+import { ChevronDownIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/ChevronDownIcon';
 import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
 import {
   columns,
-  users,
   statusOptions,
-} from '@components/Storekeeper/Tables/data';
+} from '@/components/Storekeeper/Tables/NextTables/stockCollection/data';
 import { capitalize } from './utils';
 
+
+import { Link, useNavigate } from 'react-router-dom';
+import { Inventory } from '@/types/inventory';
+import { useInventory } from '@/api/useInventory';
+import { swalConfirm } from '@/components/UI/SwalConfirm';
+
 const statusColorMap = {
-  active: 'success',
-  paused: 'danger',
-  vacation: 'warning',
+  'High stock': 'success',
+  'Out of stock': 'danger',
+  'Low stock': 'warning',
 };
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'role', 'status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = ['Name', 'AvailableAmount', 'PredictedStockoutDate', 'Status', 'actions'];
 
 export default function App() {
+
+  const { showSwal } = swalConfirm();
+  const [inventory, setInventory] = useState<Inventory[]>([]);
+  const { getAllInventory, deleteInventory } = useInventory();
+  const [loading, setLoading] = useState(true);
+
+  const fetchInventory = async () => {
+    try {
+      const data = await getAllInventory();
+      setInventory(data);
+      setLoading(false);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteInventory = async (id: string) => {
+    try {
+      await deleteInventory(id);
+      fetchInventory();
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  const handleConfirmDelete = (id: any) => {
+    showSwal(() => handleDeleteInventory(id));
+  };
+
+  useEffect(() => {
+    fetchInventory();
+  }, []);
+
+
+
+  const navigate = useNavigate();
+
+  const handleAddUser = () => {
+    navigate('add');
+  };
+
+  const viewItem = (id: String | null) => {
+    if (id) {
+      navigate(`view/${id}`);
+    }
+  };
+
   const [filterValue, setFilterValue] = React.useState('');
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
@@ -52,16 +103,17 @@ export default function App() {
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
-    if (visibleColumns === 'all') return columns;
+    if (visibleColumns instanceof Set && visibleColumns.size === columns.length)
+      return columns;
     return columns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid),
     );
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
+    let filteredinventory = [...inventory];
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
+      filteredinventory = filteredinventory.filter((user) =>
         user.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
@@ -69,12 +121,12 @@ export default function App() {
       statusFilter !== 'all' &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status),
+      filteredinventory = filteredinventory.filter((user) =>
+        Array.from(statusFilter).includes(user.Status),
       );
     }
-    return filteredUsers;
-  }, [users, filterValue, statusFilter]);
+    return filteredinventory;
+  }, [inventory, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -96,30 +148,33 @@ export default function App() {
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
     switch (columnKey) {
-      case 'name':
+      case 'Name':
         return (
-          <User
-            avatarProps={{ radius: 'lg', src: user.avatar }}
-            description={user.email}
-            name={cellValue}
-          >
-            {user.email}
-          </User>
+          <div className="flex items-center">
+            <div className="w-[40px] h-[40px]">
+              <img src={user.avatar} alt="" className="rounded-full" />
+            </div>
+            <div className="ml-5">
+              <p className="text-bold text-small capitalize dark:text-white text-foodbg">
+                {cellValue}
+              </p>
+              <p className="text-bold text-[12px] capitalize">ID: {user.id}</p>
+            </div>
+          </div>
         );
-      case 'role':
+      case 'AvailableAmount':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-400">
-              {user.team}
+            <p className="text-bold text-small capitalize">
+              {cellValue} {user.Unit}
             </p>
           </div>
         );
-      case 'status':
+      case 'Status':
         return (
           <Chip
-            className="capitalize"
-            color={statusColorMap[user.status]}
+            // className="capitalize"
+            color={statusColorMap[user.Status]}
             size="sm"
             variant="flat"
           >
@@ -135,14 +190,14 @@ export default function App() {
                   <VerticalDotsIcon className="text-default-300" />
                 </Button>
               </DropdownTrigger>
-              <DropdownMenu className="dark:bg-[#373737] bg-[#c7c7c7] rounded-lg dark:text-white text-[#3a3a3a]">
-                <DropdownItem className="hover:bg-[#9e9e9e] rounded-lg hover:text-white">
+              <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]">
+                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => viewItem(user.Name)}>
                   View
                 </DropdownItem>
-                <DropdownItem className="hover:bg-[#9e9e9e] rounded-lg hover:text-whit">
+                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">
                   Edit
                 </DropdownItem>
-                <DropdownItem className="hover:bg-[#9e9e9e] rounded-lg hover:text-whit">
+                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">
                   Delete
                 </DropdownItem>
               </DropdownMenu>
@@ -191,16 +246,17 @@ export default function App() {
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable
-            className="w-full sm:max-w-[44%] dark:bg-[#ffffff14] rounded-lg border dark:border-[#54545466] bg-[#c7c7c740] border-[#aaaaaa66]"
-            placeholder="Search by name..."
+            className="w-full sm:max-w-[44%] dark:bg-[#ffffff14] rounded-lg border bg-[#aaaaaa14] border-[#aaaaaa66] dark:border-[#54545466]"
+            placeholder="Search by item name..."
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={onClear}
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Button className="rounded-xl dark:bg-[#ffffff1e] bg-[#c7c7c7] dark:text-[#bcbcbc] text-black">
-            <ArrowSmallDownIcon className="w-6 h-6 border-b scale-75" /> Download All
+            <Button className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]">
+              <ArrowSmallDownIcon className="w-6 h-6 border-b scale-75" />{' '}
+              Download All
             </Button>
 
             <Dropdown>
@@ -208,7 +264,7 @@ export default function App() {
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
-                  className="rounded-xl dark:bg-[#ffffff1e] bg-[#c7c7c7] dark:text-[#bcbcbc] text-black"
+                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
                 >
                   Status
                 </Button>
@@ -220,12 +276,12 @@ export default function App() {
                 selectedKeys={statusFilter}
                 selectionMode="multiple"
                 onSelectionChange={setStatusFilter}
-                className="dark:bg-[#373737] bg-[#c7c7c7] rounded-lg dark:text-white text-[#3a3a3a]"
+                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
               >
                 {statusOptions.map((status) => (
                   <DropdownItem
                     key={status.uid}
-                    className="capitalize hover:bg-[#9e9e9e] rounded-lg hover:text-white"
+                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
                   >
                     {capitalize(status.name)}
                   </DropdownItem>
@@ -237,7 +293,7 @@ export default function App() {
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
-                  className="rounded-xl dark:bg-[#ffffff1e] bg-[#c7c7c7] dark:text-[#bcbcbc] text-black"
+                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
                 >
                   Columns
                 </Button>
@@ -249,12 +305,12 @@ export default function App() {
                 selectedKeys={visibleColumns}
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
-                className="dark:bg-[#373737] bg-[#c7c7c7] rounded-lg dark:text-white text-[#3a3a3a]"
+                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
               >
                 {columns.map((column) => (
                   <DropdownItem
                     key={column.uid}
-                    className="capitalize hover:bg-[#9e9e9e] rounded-lg hover:text-white"
+                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
                   >
                     {capitalize(column.name)}
                   </DropdownItem>
@@ -263,7 +319,7 @@ export default function App() {
             </Dropdown>
             <Button
               endContent={<PlusIcon />}
-              className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400"
+              className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600"
             >
               Add New
             </Button>
@@ -271,7 +327,7 @@ export default function App() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {users.length} users
+            Total {inventory.length} collections
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -292,7 +348,7 @@ export default function App() {
     statusFilter,
     visibleColumns,
     onRowsPerPageChange,
-    users.length,
+    inventory.length,
     onSearchChange,
     hasSearchFilter,
   ]);
@@ -309,6 +365,7 @@ export default function App() {
           total={pages}
           onChange={setPage}
           radius="full"
+          className="text-[#c6c6c6]"
         />
         <div className="hidden sm:flex w-[30%] justify-end gap-2">
           <Button
@@ -316,7 +373,7 @@ export default function App() {
             size="sm"
             variant="flat"
             onPress={onPreviousPage}
-            className="rounded-lg dark:bg-[#ffffff1e] bg-[#c7c7c7] dark:text-[#bcbcbc] text-black py-[18px]"
+            className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040] py-[18px]"
           >
             Previous
           </Button>
@@ -325,7 +382,7 @@ export default function App() {
             size="sm"
             variant="flat"
             onPress={onNextPage}
-            className="rounded-lg dark:bg-[#ffffff1e] bg-[#c7c7c7] dark:text-[#bcbcbc] text-black py-[18px]"
+            className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040] py-[18px]"
           >
             Next
           </Button>
@@ -354,13 +411,13 @@ export default function App() {
             key={column.uid}
             align={column.uid === 'actions' ? 'center' : 'start'}
             allowsSorting={column.sortable}
-            className="dark:bg-[#373737] translate-y-[-16px] bg-[#c7c7c7] dark:text-white text-[#3a3a3a] h-[45px]"
+            className="dark:bg-[#373737] translate-y-[-16px] bg-[#aaaaaa20] dark:text-white text-[#3a3a3a] h-[45px]"
           >
             {column.name}
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No users found'} items={sortedItems}>
+      <TableBody emptyContent={'No inventory found'} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

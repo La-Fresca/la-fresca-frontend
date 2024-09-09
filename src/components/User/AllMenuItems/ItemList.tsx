@@ -11,6 +11,7 @@ interface Props {
   categories?: string[];
   discountStatus?: string;
   available?: number;
+  type: string;
 }
 
 export default function ItemList({
@@ -22,10 +23,17 @@ export default function ItemList({
   discountStatus,
   categories,
   available,
+  type,
 }: Props) {
   return (
     <Link
-      to={`viewfood/${id}`}
+      to={
+        type === 'fooditem'
+          ? `viewfooditem/${id}`
+          : type === 'foodcombo'
+          ? `viewfoodcombo/${id}`
+          : ''
+      }
       className="hover:scale-105 transition-transform duration-300 hover:cursor-pointer mx-[10%] mt-[50px]"
     >
       <div
