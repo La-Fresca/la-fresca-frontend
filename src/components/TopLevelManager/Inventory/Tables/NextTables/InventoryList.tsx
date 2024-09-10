@@ -38,7 +38,7 @@ const statusColorMap = {
   'Low stock': 'warning',
 };
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'availableAmount', 'predictedStockDate', 'status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = ['Name', 'AvailableAmount', 'PredictedStockoutDate', 'Status', 'actions'];
 
 export default function App() {
 
@@ -75,15 +75,6 @@ export default function App() {
   }, []);
 
 
-console.log(inventory);
-
-
-
-
-
-
-
-
 
   const navigate = useNavigate();
 
@@ -91,17 +82,11 @@ console.log(inventory);
     navigate('add');
   };
 
-  const viewItem = (id: String | null) => {
-    if (id) {
-      navigate(`view/${id}`);
+  const viewItem = (collectionName: String | null) => {
+    if (collectionName) {
+      navigate(`../viewCollections/${collectionName}`);
     }
   };
-
-
-
-
-
-
 
   const [filterValue, setFilterValue] = React.useState('');
   const [visibleColumns, setVisibleColumns] = React.useState(
@@ -137,7 +122,7 @@ console.log(inventory);
       Array.from(statusFilter).length !== statusOptions.length
     ) {
       filteredinventory = filteredinventory.filter((user) =>
-        Array.from(statusFilter).includes(user.status),
+        Array.from(statusFilter).includes(user.Status),
       );
     }
     return filteredinventory;
@@ -163,7 +148,7 @@ console.log(inventory);
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
     switch (columnKey) {
-      case 'name':
+      case 'Name':
         return (
           <div className="flex items-center">
             <div className="w-[40px] h-[40px]">
@@ -177,19 +162,19 @@ console.log(inventory);
             </div>
           </div>
         );
-      case 'availableAmount':
+      case 'AvailableAmount':
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">
-              {cellValue} {user.unit}
+              {cellValue} {user.Unit}
             </p>
           </div>
         );
-      case 'status':
+      case 'Status':
         return (
           <Chip
             // className="capitalize"
-            color={statusColorMap[user.status]}
+            color={statusColorMap[user.Status]}
             size="sm"
             variant="flat"
           >
@@ -198,26 +183,21 @@ console.log(inventory);
         );
       case 'actions':
         return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]">
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => viewItem(user.name)}>
-                  View
-                </DropdownItem>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">
-                  Edit
-                </DropdownItem>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">
-                  Delete
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
+          <div className="relative flex justify-center items-center gap-2 hover:cursor-pointer bg-foodbg rounded-lg py-2 hover:bg-transparent border border-foodbg" onClick={() => viewItem(user.Name)}>
+          {/* <Dropdown>
+            <DropdownTrigger>
+              <Button isIconOnly size="sm" variant="light">
+                <VerticalDotsIcon className="text-default-300" />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu className="bg-black text-white">
+              <DropdownItem onClick={() => navigate(`view/123`)}>
+                View
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown> */}
+          View
+        </div>
         );
       default:
         return cellValue;
@@ -332,12 +312,6 @@ console.log(inventory);
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              endContent={<PlusIcon />}
-              className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600"
-            >
-              Add New
-            </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">

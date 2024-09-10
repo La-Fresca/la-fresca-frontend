@@ -29,12 +29,11 @@ import { swalConfirm } from '@/components/UI/SwalConfirm';
 import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
 
 const INITIAL_VISIBLE_COLUMNS = [
-  'branchID',
-  'collectionName',
-  'supplier',
-  'uuuuuu',
-  'aaaaa',
-  'gggggg',
+  'stockCollectionName',
+  'supplierName',
+  'initialAmount',
+  'expiryDate',
+  'actions',
 ];
 
 export default function StockListByCollection({
@@ -43,7 +42,7 @@ export default function StockListByCollection({
   collectionName?: string;
 }) {
   const { showSwal } = swalConfirm();
-  const [users, setStocks] = useState<Stock[]>([]);
+  const [stocks, setStocks] = useState<Stock[]>([]);
   const { getStockyByCollection, deleteStock } = useStocks();
   const [loading, setLoading] = useState(true);
 
@@ -75,7 +74,7 @@ export default function StockListByCollection({
     fetchStocks();
   }, []);
 
-  console.log(users);
+  console.log(collectionName);
 
   const [filterValue, setFilterValue] = useState('');
   const [visibleColumns, setVisibleColumns] = useState(
@@ -100,10 +99,10 @@ export default function StockListByCollection({
   }, [visibleColumns]);
 
   const filteredItems = useMemo(() => {
-    let filteredUsers = [...users];
+    let filteredstocks = [...stocks];
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.stockCollectionName
+      filteredstocks = filteredstocks.filter((stock) =>
+        stock.stockCollectionName
           .toLowerCase()
           .includes(filterValue.toLowerCase()),
       );
@@ -112,12 +111,12 @@ export default function StockListByCollection({
       statusFilter !== 'all' &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status),
+      filteredstocks = filteredstocks.filter((stock) =>
+        Array.from(statusFilter).includes(stock.status),
       );
     }
-    return filteredUsers;
-  }, [users, filterValue, statusFilter]);
+    return filteredstocks;
+  }, [stocks, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -136,37 +135,28 @@ export default function StockListByCollection({
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = useCallback((user, columnKey) => {
-    console.log(renderCell);
-    const cellValue = user[columnKey];
+  const renderCell = useCallback((stock, columnKey) => {
+    const cellValue = stock[columnKey];
     switch (columnKey) {
-      case 'batchId':
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">
-              {user.batchId}
-            </p>
-          </div>
-        );
-      case 'name':
+      case 'stockCollectionName':
         return (
           <div className="flex items-center">
             <div className="w-[40px] h-[40px]">
-              <img src={user.avatar} alt="" className="rounded-full" />
+              <img src={stock.avatar} alt="" className="rounded-full" />
             </div>
             <div className="ml-5">
               <p className="text-bold text-small capitalize dark:text-white text-foodbg">
                 {cellValue}
               </p>
-              <p className="text-bold text-[12px] capitalize">ID: {user.id}</p>
+              <p className="text-bold text-[12px] capitalize">Batch ID: {stock.batchId}</p>
             </div>
           </div>
         );
-      case 'qty':
+      case 'initialAmount':
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">
-              {cellValue} {user.unit}
+              {cellValue} {stock.unit}
             </p>
           </div>
         );
@@ -283,17 +273,11 @@ export default function StockListByCollection({
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              endContent={<PlusIcon />}
-              className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600"
-            >
-              Add New
-            </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {users.length} items
+            Total {stocks.length} items
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -314,7 +298,7 @@ export default function StockListByCollection({
     statusFilter,
     visibleColumns,
     onRowsPerPageChange,
-    users.length,
+    stocks.length,
     onSearchChange,
     hasSearchFilter,
   ]);
@@ -383,7 +367,7 @@ export default function StockListByCollection({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No users found'} items={sortedItems}>
+      <TableBody emptyContent={'No stocks found'} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

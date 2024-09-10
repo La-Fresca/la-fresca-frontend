@@ -135,8 +135,8 @@ export default function BranchListTable() {
         );
       case 'actions':
         return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown>
+          <div className="relative flex justify-center items-center gap-2 hover:cursor-pointer bg-foodbg rounded-lg py-2 hover:bg-transparent border border-foodbg" onClick={() => navigate(`view`)}>
+            {/* <Dropdown>
               <DropdownTrigger>
                 <Button isIconOnly size="sm" variant="light">
                   <VerticalDotsIcon className="text-default-300" />
@@ -147,7 +147,8 @@ export default function BranchListTable() {
                   View
                 </DropdownItem>
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
+            View
           </div>
         );
       default:
@@ -251,14 +252,6 @@ export default function BranchListTable() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg"
-              color="primary"
-              endContent={<PlusIcon />}
-              onClick={() => navigate('add')}
-            >
-              Add New
-            </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">

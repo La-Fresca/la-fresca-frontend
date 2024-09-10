@@ -38,7 +38,7 @@ const statusColorMap = {
   'Low stock': 'warning',
 };
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'availableAmount', 'predictedStockDate', 'status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = ['Name', 'AvailableAmount', 'PredictedStockoutDate', 'Status', 'actions'];
 
 export default function App() {
 
@@ -75,15 +75,6 @@ export default function App() {
   }, []);
 
 
-console.log(inventory);
-
-
-
-
-
-
-
-
 
   const navigate = useNavigate();
 
@@ -96,12 +87,6 @@ console.log(inventory);
       navigate(`view/${id}`);
     }
   };
-
-
-
-
-
-
 
   const [filterValue, setFilterValue] = React.useState('');
   const [visibleColumns, setVisibleColumns] = React.useState(
@@ -137,7 +122,7 @@ console.log(inventory);
       Array.from(statusFilter).length !== statusOptions.length
     ) {
       filteredinventory = filteredinventory.filter((user) =>
-        Array.from(statusFilter).includes(user.status),
+        Array.from(statusFilter).includes(user.Status),
       );
     }
     return filteredinventory;
@@ -163,7 +148,7 @@ console.log(inventory);
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
     switch (columnKey) {
-      case 'name':
+      case 'Name':
         return (
           <div className="flex items-center">
             <div className="w-[40px] h-[40px]">
@@ -177,19 +162,19 @@ console.log(inventory);
             </div>
           </div>
         );
-      case 'availableAmount':
+      case 'AvailableAmount':
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">
-              {cellValue} {user.unit}
+              {cellValue} {user.Unit}
             </p>
           </div>
         );
-      case 'status':
+      case 'Status':
         return (
           <Chip
             // className="capitalize"
-            color={statusColorMap[user.status]}
+            color={statusColorMap[user.Status]}
             size="sm"
             variant="flat"
           >
@@ -206,7 +191,7 @@ console.log(inventory);
                 </Button>
               </DropdownTrigger>
               <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]">
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => viewItem(user.name)}>
+                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => viewItem(user.Name)}>
                   View
                 </DropdownItem>
                 <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">

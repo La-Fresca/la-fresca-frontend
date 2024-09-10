@@ -1,10 +1,11 @@
 const columns = [
   {name: "ID", uid: "id", sortable: true},
-  {name: "Item Name", uid: "name", sortable: true},
-  {name: "Quantity", uid: "availableAmount", sortable: true},
-  {name: "Predicted Stockout Date", uid: "predictedStockDate"},
-  {name: "Status", uid: "status", sortable: true},
+  {name: "Item Name", uid: "Name", sortable: true},
+  {name: "Quantity", uid: "AvailableAmount", sortable: true},
+  {name: "Predicted Stockout Date", uid: "PredictedStockoutDate"},
+  {name: "Status", uid: "Status", sortable: true},
   {name: "Actions", uid: "actions"},
+  {name: "Unit", uid: "Unit"},
 ];
 
 const statusOptions = [

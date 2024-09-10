@@ -1,17 +1,11 @@
 import React from 'react';
-import ChartThree from '@components/TopLevelManager/Charts/ChartThree';
-import ChartFour from '@/components/TopLevelManager/Charts/ChartFour';
-import ChartFive from '@/components/TopLevelManager/Charts/ChartFive';
-import TableOne from '@/components/TopLevelManager/Tables/TableOne';
-import ChartSix from '@/components/TopLevelManager/Charts/ChartSix';
-
-import CardDataStats from '@components/TopLevelManager/CardDataStats';
+import InventoryList from '@/components/TopLevelManager/Inventory/Tables/NextTables/InventoryList';
 
 const Dashboard: React.FC = () => {
   return (
-    <>
-    view
-    </>
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-1 md:gap-6 xl:grid-cols-1 2xl:gap-7.5">
+      <InventoryList />
+    </div>
   );
 };
 
