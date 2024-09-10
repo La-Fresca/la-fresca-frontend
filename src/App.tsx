@@ -78,6 +78,10 @@ import Inventory_TLM from '@/pages/TopLevelManager/Inventory';
 import AddFoods_TLM from './pages/TopLevelManager/Foods/AddFood';
 import AddCombos_TLM from './pages/TopLevelManager/FoodCombos/Add';
 
+
+import ViewInventory_TLM from './pages/TopLevelManager/Inventory/view';
+import AddInventory_TLM from './pages/TopLevelManager/Inventory/add';
+
 const { refresh } = useAuth();
 const cookieProtocol = (import.meta as any).env.VITE_COOKIE_PROTOCOL;
 
@@ -780,6 +784,7 @@ const routes = createRoutesFromElements(
             element={
               <>
                 <PageTitle title="Top Manager | Add Branch" />
+                <AddInventory_TLM />
               </>
             }
           />
@@ -796,7 +801,7 @@ const routes = createRoutesFromElements(
             element={
               <>
                 <PageTitle title="Top Manager | View Branch" />
-                <BranchDasboard_TLM />
+                <ViewInventory_TLM />
               </>
             }
           />

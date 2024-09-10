@@ -12,112 +12,86 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Chip,
   Pagination,
+  Selection,
+  SortDescriptor,
 } from '@nextui-org/react';
-import { PlusIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/PlusIcon';
-import { VerticalDotsIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/VerticalDotsIcon';
-import { SearchIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/SearchIcon';
-import { ChevronDownIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/ChevronDownIcon';
-import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
-import {
-  columns,
-  statusOptions,
-} from '@/components/Storekeeper/Tables/NextTables/stockCollection/data';
+import { PlusIcon } from '@components/BranchManager/Tables/NextTable/PlusIcon';
+import { VerticalDotsIcon } from '@components/BranchManager/Tables/NextTable/VerticalDotsIcon';
+import { ChevronDownIcon } from '@components/BranchManager/Tables/NextTable/ChevronDownIcon';
+import { SearchIcon } from '@components/BranchManager/Tables/NextTable/SearchIcon';
+import { columns } from './columnStocks';
 import { capitalize } from './utils';
-
-
-import { Link, useNavigate } from 'react-router-dom';
-import { Inventory } from '@/types/inventory';
-import { useInventory } from '@/api/useInventory';
+import { useNavigate } from 'react-router-dom';
+import { Stock } from '@/types/stock';
+import { useStocks } from '@/api/useStocks';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
+import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
 
-const statusColorMap = {
-  'High stock': 'success',
-  'Out of stock': 'danger',
-  'Low stock': 'warning',
-};
+const INITIAL_VISIBLE_COLUMNS = [
+  'branchID',
+  'collectionName',
+  'supplier',
+  'uuuuuu',
+  'aaaaa',
+  'gggggg',
+];
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'availableAmount', 'predictedStockDate', 'status', 'actions'];
-
-export default function App() {
-
+export default function StockListByCollection({
+  collectionName = '',
+}: {
+  collectionName?: string;
+}) {
   const { showSwal } = swalConfirm();
-  const [inventory, setInventory] = useState<Inventory[]>([]);
-  const { getAllInventory, deleteInventory } = useInventory();
+  const [users, setStocks] = useState<Stock[]>([]);
+  const { getStockyByCollection, deleteStock } = useStocks();
   const [loading, setLoading] = useState(true);
 
-  const fetchInventory = async () => {
+  const fetchStocks = async () => {
     try {
-      const data = await getAllInventory();
-      setInventory(data);
+      setLoading(true);
+      const data = await getStockyByCollection(collectionName);
+      setStocks(data);
       setLoading(false);
     } catch (error: any) {
       console.error(error);
     }
   };
 
-  const handleDeleteInventory = async (id: string) => {
+  const handleDeleteStock = async (id: string) => {
     try {
-      await deleteInventory(id);
-      fetchInventory();
+      await deleteStock(id);
+      fetchStocks();
     } catch (error: any) {
       console.error(error);
     }
   };
 
   const handleConfirmDelete = (id: any) => {
-    showSwal(() => handleDeleteInventory(id));
+    showSwal(() => handleDeleteStock(id));
   };
 
   useEffect(() => {
-    fetchInventory();
+    fetchStocks();
   }, []);
 
+  console.log(users);
 
-console.log(inventory);
-
-
-
-
-
-
-
-
-
-  const navigate = useNavigate();
-
-  const handleAddUser = () => {
-    navigate('add');
-  };
-
-  const viewItem = (id: String | null) => {
-    if (id) {
-      navigate(`view/${id}`);
-    }
-  };
-
-
-
-
-
-
-
-  const [filterValue, setFilterValue] = React.useState('');
-  const [visibleColumns, setVisibleColumns] = React.useState(
+  const [filterValue, setFilterValue] = useState('');
+  const [visibleColumns, setVisibleColumns] = useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
-  const [statusFilter, setStatusFilter] = React.useState('all');
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [sortDescriptor, setSortDescriptor] = React.useState({
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sortDescriptor, setSortDescriptor] = useState({
     column: 'age',
     direction: 'ascending',
   });
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
 
-  const headerColumns = React.useMemo(() => {
+  const headerColumns = useMemo(() => {
     if (visibleColumns instanceof Set && visibleColumns.size === columns.length)
       return columns;
     return columns.filter((column) =>
@@ -125,33 +99,35 @@ console.log(inventory);
     );
   }, [visibleColumns]);
 
-  const filteredItems = React.useMemo(() => {
-    let filteredinventory = [...inventory];
+  const filteredItems = useMemo(() => {
+    let filteredUsers = [...users];
     if (hasSearchFilter) {
-      filteredinventory = filteredinventory.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase()),
+      filteredUsers = filteredUsers.filter((user) =>
+        user.stockCollectionName
+          .toLowerCase()
+          .includes(filterValue.toLowerCase()),
       );
     }
     if (
       statusFilter !== 'all' &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredinventory = filteredinventory.filter((user) =>
+      filteredUsers = filteredUsers.filter((user) =>
         Array.from(statusFilter).includes(user.status),
       );
     }
-    return filteredinventory;
-  }, [inventory, filterValue, statusFilter]);
+    return filteredUsers;
+  }, [users, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
-  const items = React.useMemo(() => {
+  const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
-  const sortedItems = React.useMemo(() => {
+  const sortedItems = useMemo(() => {
     return [...items].sort((a, b) => {
       const first = a[sortDescriptor.column];
       const second = b[sortDescriptor.column];
@@ -160,9 +136,18 @@ console.log(inventory);
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user, columnKey) => {
+  const renderCell = useCallback((user, columnKey) => {
+    console.log(renderCell);
     const cellValue = user[columnKey];
     switch (columnKey) {
+      case 'batchId':
+        return (
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">
+              {user.batchId}
+            </p>
+          </div>
+        );
       case 'name':
         return (
           <div className="flex items-center">
@@ -177,7 +162,7 @@ console.log(inventory);
             </div>
           </div>
         );
-      case 'availableAmount':
+      case 'qty':
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">
@@ -185,16 +170,11 @@ console.log(inventory);
             </p>
           </div>
         );
-      case 'status':
+      case 'UPrice':
         return (
-          <Chip
-            // className="capitalize"
-            color={statusColorMap[user.status]}
-            size="sm"
-            variant="flat"
-          >
-            {cellValue}
-          </Chip>
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">Rs. {cellValue}</p>
+          </div>
         );
       case 'actions':
         return (
@@ -206,7 +186,7 @@ console.log(inventory);
                 </Button>
               </DropdownTrigger>
               <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]">
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => viewItem(user.name)}>
+                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">
                   View
                 </DropdownItem>
                 <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">
@@ -255,7 +235,7 @@ console.log(inventory);
     setPage(1);
   }, []);
 
-  const topContent = React.useMemo(() => {
+  const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
@@ -274,35 +254,6 @@ console.log(inventory);
               Download All
             </Button>
 
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
-                >
-                  Status
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem
-                    key={status.uid}
-                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
-                  >
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -342,7 +293,7 @@ console.log(inventory);
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {inventory.length} collections
+            Total {users.length} items
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -363,12 +314,12 @@ console.log(inventory);
     statusFilter,
     visibleColumns,
     onRowsPerPageChange,
-    inventory.length,
+    users.length,
     onSearchChange,
     hasSearchFilter,
   ]);
 
-  const bottomContent = React.useMemo(() => {
+  const bottomContent = useMemo(() => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
         <Pagination
@@ -432,7 +383,7 @@ console.log(inventory);
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No inventory found'} items={sortedItems}>
+      <TableBody emptyContent={'No users found'} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

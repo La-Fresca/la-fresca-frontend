@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React from 'react';
 import {
   Table,
   TableHeader,
@@ -13,122 +13,61 @@ import {
   DropdownMenu,
   DropdownItem,
   Chip,
+  User,
   Pagination,
+  Selection,
+  ChipProps,
+  SortDescriptor,
 } from '@nextui-org/react';
-import { PlusIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/PlusIcon';
-import { VerticalDotsIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/VerticalDotsIcon';
-import { SearchIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/SearchIcon';
-import { ChevronDownIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/ChevronDownIcon';
-import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
-import {
-  columns,
-  statusOptions,
-} from '@/components/Storekeeper/Tables/NextTables/stockCollection/data';
+import { PlusIcon } from './PlusIcon';
+import { VerticalDotsIcon } from './VerticalDotsIcon';
+import { ChevronDownIcon } from './ChevronDownIcon';
+import { SearchIcon } from './SearchIcon';
+import { columns, users, statusOptions } from './MockData';
 import { capitalize } from './utils';
 
-
-import { Link, useNavigate } from 'react-router-dom';
-import { Inventory } from '@/types/inventory';
-import { useInventory } from '@/api/useInventory';
-import { swalConfirm } from '@/components/UI/SwalConfirm';
-
-const statusColorMap = {
-  'High stock': 'success',
-  'Out of stock': 'danger',
-  'Low stock': 'warning',
+const statusColorMap: Record<string, ChipProps['color']> = {
+  active: 'success',
+  paused: 'danger',
+  vacation: 'warning',
 };
 
-const INITIAL_VISIBLE_COLUMNS = ['name', 'availableAmount', 'predictedStockDate', 'status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = ['name', 'role', 'status', 'actions'];
+
+type User = (typeof users)[0];
 
 export default function App() {
-
-  const { showSwal } = swalConfirm();
-  const [inventory, setInventory] = useState<Inventory[]>([]);
-  const { getAllInventory, deleteInventory } = useInventory();
-  const [loading, setLoading] = useState(true);
-
-  const fetchInventory = async () => {
-    try {
-      const data = await getAllInventory();
-      setInventory(data);
-      setLoading(false);
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
-
-  const handleDeleteInventory = async (id: string) => {
-    try {
-      await deleteInventory(id);
-      fetchInventory();
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
-
-  const handleConfirmDelete = (id: any) => {
-    showSwal(() => handleDeleteInventory(id));
-  };
-
-  useEffect(() => {
-    fetchInventory();
-  }, []);
-
-
-console.log(inventory);
-
-
-
-
-
-
-
-
-
-  const navigate = useNavigate();
-
-  const handleAddUser = () => {
-    navigate('add');
-  };
-
-  const viewItem = (id: String | null) => {
-    if (id) {
-      navigate(`view/${id}`);
-    }
-  };
-
-
-
-
-
-
-
   const [filterValue, setFilterValue] = React.useState('');
-  const [visibleColumns, setVisibleColumns] = React.useState(
+  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
+    new Set([]),
+  );
+  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
-  const [statusFilter, setStatusFilter] = React.useState('all');
+  const [statusFilter, setStatusFilter] = React.useState<Selection>('all');
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [sortDescriptor, setSortDescriptor] = React.useState({
+  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: 'age',
     direction: 'ascending',
   });
+
   const [page, setPage] = React.useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
-    if (visibleColumns instanceof Set && visibleColumns.size === columns.length)
-      return columns;
+    if (visibleColumns === 'all') return columns;
+
     return columns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid),
     );
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredinventory = [...inventory];
+    let filteredUsers = [...users];
+
     if (hasSearchFilter) {
-      filteredinventory = filteredinventory.filter((user) =>
+      filteredUsers = filteredUsers.filter((user) =>
         user.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
@@ -136,59 +75,60 @@ console.log(inventory);
       statusFilter !== 'all' &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredinventory = filteredinventory.filter((user) =>
+      filteredUsers = filteredUsers.filter((user) =>
         Array.from(statusFilter).includes(user.status),
       );
     }
-    return filteredinventory;
-  }, [inventory, filterValue, statusFilter]);
+
+    return filteredUsers;
+  }, [users, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
+
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a, b) => {
-      const first = a[sortDescriptor.column];
-      const second = b[sortDescriptor.column];
+    return [...items].sort((a: User, b: User) => {
+      const first = a[sortDescriptor.column as keyof User] as number;
+      const second = b[sortDescriptor.column as keyof User] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
+
       return sortDescriptor.direction === 'descending' ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
+  const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
+    const cellValue = user[columnKey as keyof User];
+
     switch (columnKey) {
       case 'name':
         return (
-          <div className="flex items-center">
-            <div className="w-[40px] h-[40px]">
-              <img src={user.avatar} alt="" className="rounded-full" />
-            </div>
-            <div className="ml-5">
-              <p className="text-bold text-small capitalize dark:text-white text-foodbg">
-                {cellValue}
-              </p>
-              <p className="text-bold text-[12px] capitalize">ID: {user.id}</p>
-            </div>
-          </div>
+          <User
+            avatarProps={{ radius: 'lg', src: user.avatar }}
+            description={user.email}
+            name={cellValue}
+          >
+            {user.email}
+          </User>
         );
-      case 'availableAmount':
+      case 'role':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">
-              {cellValue} {user.unit}
+            <p className="text-bold text-small capitalize">{cellValue}</p>
+            <p className="text-bold text-tiny capitalize text-default-400">
+              {user.team}
             </p>
           </div>
         );
       case 'status':
         return (
           <Chip
-            // className="capitalize"
+            className="capitalize"
             color={statusColorMap[user.status]}
             size="sm"
             variant="flat"
@@ -205,16 +145,10 @@ console.log(inventory);
                   <VerticalDotsIcon className="text-default-300" />
                 </Button>
               </DropdownTrigger>
-              <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]">
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => viewItem(user.name)}>
-                  View
-                </DropdownItem>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">
-                  Edit
-                </DropdownItem>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">
-                  Delete
-                </DropdownItem>
+              <DropdownMenu>
+                <DropdownItem>View</DropdownItem>
+                <DropdownItem>Edit</DropdownItem>
+                <DropdownItem>Delete</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -236,12 +170,15 @@ console.log(inventory);
     }
   }, [page]);
 
-  const onRowsPerPageChange = React.useCallback((e) => {
-    setRowsPerPage(Number(e.target.value));
-    setPage(1);
-  }, []);
+  const onRowsPerPageChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setRowsPerPage(Number(e.target.value));
+      setPage(1);
+    },
+    [],
+  );
 
-  const onSearchChange = React.useCallback((value) => {
+  const onSearchChange = React.useCallback((value?: string) => {
     if (value) {
       setFilterValue(value);
       setPage(1);
@@ -261,25 +198,19 @@ console.log(inventory);
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable
-            className="w-full sm:max-w-[44%] dark:bg-[#ffffff14] rounded-lg border bg-[#aaaaaa14] border-[#aaaaaa66] dark:border-[#54545466]"
-            placeholder="Search by item name..."
+            className="w-full sm:max-w-[44%]"
+            placeholder="Search by name..."
             startContent={<SearchIcon />}
             value={filterValue}
-            onClear={onClear}
+            onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Button className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]">
-              <ArrowSmallDownIcon className="w-6 h-6 border-b scale-75" />{' '}
-              Download All
-            </Button>
-
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
-                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
                 >
                   Status
                 </Button>
@@ -291,13 +222,9 @@ console.log(inventory);
                 selectedKeys={statusFilter}
                 selectionMode="multiple"
                 onSelectionChange={setStatusFilter}
-                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
               >
                 {statusOptions.map((status) => (
-                  <DropdownItem
-                    key={status.uid}
-                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
-                  >
+                  <DropdownItem key={status.uid} className="capitalize">
                     {capitalize(status.name)}
                   </DropdownItem>
                 ))}
@@ -308,7 +235,6 @@ console.log(inventory);
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
-                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
                 >
                   Columns
                 </Button>
@@ -320,29 +246,22 @@ console.log(inventory);
                 selectedKeys={visibleColumns}
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
-                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
               >
                 {columns.map((column) => (
-                  <DropdownItem
-                    key={column.uid}
-                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
-                  >
+                  <DropdownItem key={column.uid} className="capitalize">
                     {capitalize(column.name)}
                   </DropdownItem>
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              endContent={<PlusIcon />}
-              className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600"
-            >
+            <Button color="primary" endContent={<PlusIcon />}>
               Add New
             </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {inventory.length} collections
+            Total {users.length} users
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -362,15 +281,20 @@ console.log(inventory);
     filterValue,
     statusFilter,
     visibleColumns,
-    onRowsPerPageChange,
-    inventory.length,
     onSearchChange,
+    onRowsPerPageChange,
+    users.length,
     hasSearchFilter,
   ]);
 
   const bottomContent = React.useMemo(() => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
+        <span className="w-[30%] text-small text-default-400">
+          {selectedKeys === 'all'
+            ? 'All items selected'
+            : `${selectedKeys.size} of ${filteredItems.length} selected`}
+        </span>
         <Pagination
           isCompact
           showControls
@@ -379,8 +303,6 @@ console.log(inventory);
           page={page}
           total={pages}
           onChange={setPage}
-          radius="full"
-          className="text-[#c6c6c6]"
         />
         <div className="hidden sm:flex w-[30%] justify-end gap-2">
           <Button
@@ -388,7 +310,6 @@ console.log(inventory);
             size="sm"
             variant="flat"
             onPress={onPreviousPage}
-            className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040] py-[18px]"
           >
             Previous
           </Button>
@@ -397,14 +318,13 @@ console.log(inventory);
             size="sm"
             variant="flat"
             onPress={onNextPage}
-            className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040] py-[18px]"
           >
             Next
           </Button>
         </div>
       </div>
     );
-  }, [page, pages, hasSearchFilter]);
+  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
   return (
     <Table
@@ -415,9 +335,12 @@ console.log(inventory);
       classNames={{
         wrapper: 'max-h-[382px]',
       }}
+      selectedKeys={selectedKeys}
+      selectionMode="multiple"
       sortDescriptor={sortDescriptor}
       topContent={topContent}
       topContentPlacement="outside"
+      onSelectionChange={setSelectedKeys}
       onSortChange={setSortDescriptor}
     >
       <TableHeader columns={headerColumns}>
@@ -426,13 +349,12 @@ console.log(inventory);
             key={column.uid}
             align={column.uid === 'actions' ? 'center' : 'start'}
             allowsSorting={column.sortable}
-            className="dark:bg-[#373737] translate-y-[-16px] bg-[#aaaaaa20] dark:text-white text-[#3a3a3a] h-[45px]"
           >
             {column.name}
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No inventory found'} items={sortedItems}>
+      <TableBody emptyContent={'No users found'} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

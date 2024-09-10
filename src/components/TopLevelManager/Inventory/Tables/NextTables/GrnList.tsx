@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React from 'react';
 import {
   Table,
   TableHeader,
@@ -12,97 +12,23 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Chip,
   Pagination,
 } from '@nextui-org/react';
-import { PlusIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/PlusIcon';
-import { VerticalDotsIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/VerticalDotsIcon';
-import { SearchIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/SearchIcon';
-import { ChevronDownIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/ChevronDownIcon';
+import { PlusIcon } from '@/components/Storekeeper/Tables/NextTables/stock/PlusIcon';
+import { VerticalDotsIcon } from '@/components/Storekeeper/Tables/NextTables/stock/VerticalDotsIcon';
+import { SearchIcon } from '@/components/Storekeeper/Tables/NextTables/stock/SearchIcon';
+import { ChevronDownIcon } from '@/components/Storekeeper/Tables/NextTables/stock/ChevronDownIcon';
 import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
 import {
   columns,
+  users,
   statusOptions,
-} from '@/components/Storekeeper/Tables/NextTables/stockCollection/data';
+} from '@/components/Storekeeper/Tables/NextTables/stock/data';
 import { capitalize } from './utils';
 
-
-import { Link, useNavigate } from 'react-router-dom';
-import { Inventory } from '@/types/inventory';
-import { useInventory } from '@/api/useInventory';
-import { swalConfirm } from '@/components/UI/SwalConfirm';
-
-const statusColorMap = {
-  'High stock': 'success',
-  'Out of stock': 'danger',
-  'Low stock': 'warning',
-};
-
-const INITIAL_VISIBLE_COLUMNS = ['name', 'availableAmount', 'predictedStockDate', 'status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = ['name', 'qty', 'EXPDate', 'supplier', 'UPrice','actions'];
 
 export default function App() {
-
-  const { showSwal } = swalConfirm();
-  const [inventory, setInventory] = useState<Inventory[]>([]);
-  const { getAllInventory, deleteInventory } = useInventory();
-  const [loading, setLoading] = useState(true);
-
-  const fetchInventory = async () => {
-    try {
-      const data = await getAllInventory();
-      setInventory(data);
-      setLoading(false);
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
-
-  const handleDeleteInventory = async (id: string) => {
-    try {
-      await deleteInventory(id);
-      fetchInventory();
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
-
-  const handleConfirmDelete = (id: any) => {
-    showSwal(() => handleDeleteInventory(id));
-  };
-
-  useEffect(() => {
-    fetchInventory();
-  }, []);
-
-
-console.log(inventory);
-
-
-
-
-
-
-
-
-
-  const navigate = useNavigate();
-
-  const handleAddUser = () => {
-    navigate('add');
-  };
-
-  const viewItem = (id: String | null) => {
-    if (id) {
-      navigate(`view/${id}`);
-    }
-  };
-
-
-
-
-
-
-
   const [filterValue, setFilterValue] = React.useState('');
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
@@ -118,17 +44,16 @@ console.log(inventory);
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
-    if (visibleColumns instanceof Set && visibleColumns.size === columns.length)
-      return columns;
+    if (visibleColumns instanceof Set && visibleColumns.size === columns.length) return columns;
     return columns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid),
     );
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredinventory = [...inventory];
+    let filteredUsers = [...users];
     if (hasSearchFilter) {
-      filteredinventory = filteredinventory.filter((user) =>
+      filteredUsers = filteredUsers.filter((user) =>
         user.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
@@ -136,12 +61,12 @@ console.log(inventory);
       statusFilter !== 'all' &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredinventory = filteredinventory.filter((user) =>
+      filteredUsers = filteredUsers.filter((user) =>
         Array.from(statusFilter).includes(user.status),
       );
     }
-    return filteredinventory;
-  }, [inventory, filterValue, statusFilter]);
+    return filteredUsers;
+  }, [users, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -165,11 +90,11 @@ console.log(inventory);
     switch (columnKey) {
       case 'name':
         return (
-          <div className="flex items-center">
-            <div className="w-[40px] h-[40px]">
-              <img src={user.avatar} alt="" className="rounded-full" />
+          <div className='flex items-center'>
+            <div className='w-[40px] h-[40px]'>
+              <img src={user.avatar} alt="" className='rounded-full' />
             </div>
-            <div className="ml-5">
+            <div className='ml-5'>
               <p className="text-bold text-small capitalize dark:text-white text-foodbg">
                 {cellValue}
               </p>
@@ -177,24 +102,17 @@ console.log(inventory);
             </div>
           </div>
         );
-      case 'availableAmount':
+      case 'qty':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">
-              {cellValue} {user.unit}
-            </p>
+            <p className="text-bold text-small capitalize">{cellValue} {user.unit}</p>
           </div>
         );
-      case 'status':
+      case 'UPrice':
         return (
-          <Chip
-            // className="capitalize"
-            color={statusColorMap[user.status]}
-            size="sm"
-            variant="flat"
-          >
-            {cellValue}
-          </Chip>
+          <div className="flex flex-col">
+            <p className="text-bold text-small capitalize">Rs. {cellValue}</p>
+          </div>
         );
       case 'actions':
         return (
@@ -206,7 +124,7 @@ console.log(inventory);
                 </Button>
               </DropdownTrigger>
               <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]">
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => viewItem(user.name)}>
+                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">
                   View
                 </DropdownItem>
                 <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">
@@ -281,35 +199,6 @@ console.log(inventory);
                   variant="flat"
                   className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
                 >
-                  Status
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem
-                    key={status.uid}
-                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
-                  >
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
-                >
                   Columns
                 </Button>
               </DropdownTrigger>
@@ -342,7 +231,7 @@ console.log(inventory);
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {inventory.length} collections
+            Total {users.length} items
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -363,7 +252,7 @@ console.log(inventory);
     statusFilter,
     visibleColumns,
     onRowsPerPageChange,
-    inventory.length,
+    users.length,
     onSearchChange,
     hasSearchFilter,
   ]);
@@ -380,7 +269,7 @@ console.log(inventory);
           total={pages}
           onChange={setPage}
           radius="full"
-          className="text-[#c6c6c6]"
+          className='text-[#c6c6c6]'
         />
         <div className="hidden sm:flex w-[30%] justify-end gap-2">
           <Button
@@ -432,7 +321,7 @@ console.log(inventory);
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No inventory found'} items={sortedItems}>
+      <TableBody emptyContent={'No users found'} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (
