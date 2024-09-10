@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from '@components/TopLevelManager/Header/index';
-import Sidebar from '@components/TopLevelManager/Sidebar/index';
+import Header from '@/components/TopLevelManager/Header/index';
+import Sidebar from '@/components/TopLevelManager/Sidebar/index';
 
-const TopLevelManagerLayout: React.FC = () => {
+const TopManagerLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -35,4 +35,4 @@ const TopLevelManagerLayout: React.FC = () => {
   );
 };
 
-export default TopLevelManagerLayout;
+export default TopManagerLayout;

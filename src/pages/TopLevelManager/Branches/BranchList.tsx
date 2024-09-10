@@ -1,4 +1,4 @@
-import BranchListTable from '@/components/TopLevelManager/Inventory/Branches/Table01/App';
+import BranchListTable from '@/components/TopLevelManager/Tables/Table01/App';
 
 const BranchList: React.FC = () => {
   return (

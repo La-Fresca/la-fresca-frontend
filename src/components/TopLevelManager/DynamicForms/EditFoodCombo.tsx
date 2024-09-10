@@ -12,7 +12,6 @@ import { useCombos } from '@/api/useCombos';
 import { useFoods } from '@/api/useFoods';
 import { Food } from '@/types/food';
 import { swalSuccess } from '@/components/UI/SwalSuccess';
-import Select from './Select/App';
 
 type ComboPicker = {
   key: string;
@@ -35,15 +34,19 @@ const FormSchema = z.object({
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-const ComboForm: FC = () => {
+function ComboEditForm({ id = '' }: { id?: string }) {
   const { showSwal } = swalSuccess({
     message: 'Item Added successfully',
   });
-  const { addCombo } = useCombos();
-  const { getAllFoods } = useFoods();
-  const { uploadImage } = useUpload();
-  const [foods, setFoods] = useState<ComboPicker[]>([]);
   const Navigate = useNavigate();
+  const { updateCombo } = useCombos();
+  const { getComboById } = useCombos();
+  const { uploadImage } = useUpload();
+  const { getAllFoods } = useFoods();
+
+  const [foods, setFoods] = useState<ComboPicker[]>([]);
+  const [item, setItem] = useState<FoodCombo | null>(null);
+
   const { register, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
       resolver: zodResolver(FormSchema),
@@ -59,6 +62,26 @@ const ComboForm: FC = () => {
     }
   }, [errors]);
 
+  const getCombo = async () => {
+    try {
+      const data: FoodCombo = await getComboById(id);
+      if (data) {
+        setItem(data);
+        setValue('name', data.name);
+        setValue('description', data.description || '');
+        setValue('price', data.price);
+        setValue('image', data.image);
+        setValue('foodIds', data.foodIds);
+      }
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getCombo();
+  }, [id]);
+
   const getFoods = async () => {
     try {
       const foods = await getAllFoods();
@@ -70,7 +93,7 @@ const ComboForm: FC = () => {
         setFoods(foodOptions);
       }
     } catch (error) {
-      console.error('Error getting foods:', error);
+      console.error('Error getting categories:', error);
     }
   };
 
@@ -82,9 +105,9 @@ const ComboForm: FC = () => {
     let imageUrl = data.image;
     if (imageFile) {
       try {
-        const response = await uploadImage(imageFile);
-        if (response) {
-          imageUrl = response.fileUrl;
+        const respose = await uploadImage(imageFile);
+        if (respose) {
+          imageUrl = respose.fileUrl;
           setValue('image', imageUrl);
         } else {
           throw new Error('Failed to upload image');
@@ -94,6 +117,7 @@ const ComboForm: FC = () => {
         return;
       }
     }
+
     const transformedData: FoodCombo = {
       cafeId: 'cafe 1',
       available: 0,
@@ -101,10 +125,11 @@ const ComboForm: FC = () => {
       ...data,
       image: imageUrl,
     };
+
     try {
-      addCombo(transformedData);
+      updateCombo(id, transformedData);
     } catch (error) {
-      console.error('Error adding food item:', error);
+      console.error('Error adding food combo:', error);
     } finally {
       setTimeout(() => {
         showSwal();
@@ -113,14 +138,17 @@ const ComboForm: FC = () => {
     }
   };
 
-  if (!foods) {
+  if (!item || !foods.length) {
     return <div>Loading...</div>;
   }
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#000000]">
         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-          <h3 className="font-medium text-xl text-black dark:text-white">
+          <h3
+            className="font-medium text-xl
+           text-black dark:text-white"
+          >
             Add Food Combos
           </h3>
         </div>
@@ -143,12 +171,6 @@ const ComboForm: FC = () => {
               </label>
               <label className="mb-3 block text-black dark:text-white">
                 <span className="block mb-1 text-gray-600">
-                  Select Branches
-                </span>
-                <Select />
-              </label>
-              <label className="mb-3 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">
                   Describe food combo
                 </span>
                 <textarea
@@ -167,7 +189,6 @@ const ComboForm: FC = () => {
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                   type="number"
-                  step="0.01"
                   {...register('price')}
                 />
                 {errors.price && (
@@ -193,6 +214,7 @@ const ComboForm: FC = () => {
                   fieldname="image"
                   register={register}
                   setImageFile={setImageFile}
+                  urlPreview={item.image}
                   height={'h-150'}
                 />
               </label>
@@ -213,6 +235,6 @@ const ComboForm: FC = () => {
       </div>
     </div>
   );
-};
+}
 
-export default ComboForm;
+export default ComboEditForm;
