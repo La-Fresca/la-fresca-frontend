@@ -80,7 +80,8 @@ import AddCombos_TLM from './pages/TopLevelManager/FoodCombos/Add';
 
 import ViewInventory_TLM from './pages/TopLevelManager/Inventory/view';
 import ViewInventoryByName_TLM from './pages/TopLevelManager/Inventory/viewByName';
-import AddInventory_TLM from './pages/TopLevelManager/Inventory/add';
+import Stock_TLM from '@/pages/TopLevelManager/Stock/view';
+import StockBranchList_TLM from '@/pages/TopLevelManager/Stock';
 
 const { refresh } = useAuth();
 const cookieProtocol = (import.meta as any).env.VITE_COOKIE_PROTOCOL;
@@ -797,20 +798,32 @@ const routes = createRoutesFromElements(
               </>
             }
           />
+        </Route>
+        <Route path="stock">
           <Route
-            path="add"
+            index
             element={
               <>
-                <PageTitle title="Top Manager | Add Branch" />
-                <AddInventory_TLM />
+                <PageTitle title="Top Manager | Stock" />
+                <StockBranchList_TLM />
               </>
             }
           />
           <Route
-            path="edit/:userId"
+            path="view"
             element={
               <>
-                <PageTitle title="Top Manager | Edit Branch" />
+                <PageTitle title="Top Manager | View Stock" />
+                <Stock_TLM />
+              </>
+            }
+          />
+          <Route
+            path="viewCollections/:collection"
+            element={
+              <>
+                <PageTitle title="Top Manager | View Inventory By Name" />
+                <ViewInventoryByName_TLM />
               </>
             }
           />

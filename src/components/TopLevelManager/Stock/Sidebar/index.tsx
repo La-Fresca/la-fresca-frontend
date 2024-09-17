@@ -1,18 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '@images/logo/la-fresca.png';
-import { Bars3Icon, UserIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon } from '@heroicons/react/24/outline';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
-import { CakeIcon } from '@heroicons/react/24/outline';
-import { CurrencyDollarIcon } from '@heroicons/react/24/outline';
-import { QueueListIcon } from '@heroicons/react/24/outline';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import {
   ChartBarSquareIcon,
-  RectangleGroupIcon,
-  StarIcon,
-  TagIcon,
+  FolderPlusIcon,
+  InboxStackIcon,
 } from '@heroicons/react/24/solid';
 
 interface SidebarProps {
@@ -107,117 +101,34 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <ul className="mb-6 flex flex-col gap-1.5">
               <li>
                 <NavLink
-                  to="/top-level-manager"
+                  to="/storekeeper"
                   className={`group relative flex items-center gap-2.5 rounded-xl px-4 py-2 font-medium text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    (pathname === '/top-level-manager' ||
-                      pathname.includes('dashboard')) &&
+                    (pathname === '/storekeeper' ||
+                      pathname.includes('inventory')) &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <Squares2X2Icon className="w-6 h-6" />
-                  Dashboard
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="branches"
-                  className={`group relative flex items-center gap-2.5 rounded-xl px-4 py-2 font-medium text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    (pathname === '/sales' || pathname.includes('branches')) &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <ChartBarSquareIcon className="w-6 h-6" />
-                  Branches
-                </NavLink>
-              </li>
-              {/* <li>
-                <NavLink
-                  to="/top-level-manager/categories"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/top-level-manager/categories') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <TagIcon className="w-6 h-6" />
-                  Categories
-                </NavLink>
-              </li> */}
-              <li>
-                <NavLink
-                  to="/top-level-manager/foods"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/top-level-manager/foods') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <CakeIcon className="w-6 h-6" />
-                  Foods
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/top-level-manager/food-combos"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/top-level-manager/food-combos') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <RectangleGroupIcon className="w-6 h-6" />
-                  Food Combos
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/top-level-manager/discountlist"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/top-level-manager/discountlist') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <CurrencyDollarIcon className="w-6 h-6" />
-                  Discount List
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/top-level-manager/inventory"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/top-level-manager/inventory') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <StarIcon className="w-6 h-6" />
+                  <InboxStackIcon className="w-6 h-6" />
                   Inventory
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/top-level-manager/stock"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/top-level-manager/stock') &&
+                  to="stock"
+                  className={`group relative flex items-center gap-2.5 rounded-xl px-4 py-2 font-medium text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    (pathname === 'stock' || pathname.includes('stock')) &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <StarIcon className="w-6 h-6" />
+                  <FolderPlusIcon className="w-6 h-6" />
                   Stock
                 </NavLink>
               </li>
-              {/* <li>
-                <NavLink
-                  to="/top-level-manager/users"
-                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/top-level-manager/users') &&
-                    'bg-yellow-100 dark:bg-meta-4'
-                  }`}
-                >
-                  <UserIcon className="w-6 h-6" />
-                  Manage Users
-                </NavLink>
-              </li> */}
+
               {/* <SidebarLinkGroup
                 activeCondition={
-                  pathname === '/top-level-manager/forms' ||
-                  pathname.includes('/top-level-manager/forms')
+                  pathname === '/branch-manager/forms' ||
+                  pathname.includes('/branch-manager/forms')
                 }
               >
                 {(handleClick, open) => {
@@ -226,7 +137,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       <NavLink
                         to="#"
                         className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                          (pathname === '/top-level-manager/forms' ||
+                          (pathname === '/branch-manager/forms' ||
                             pathname.includes('forms')) &&
                           'bg-yellow-100 dark:bg-meta-4'
                         }`}
@@ -256,7 +167,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                           <li>
                             <NavLink
-                              to="/top-level-manager/forms/form-elements"
+                              to="/branch-manager/forms/form-elements"
                               className={({ isActive }) =>
                                 'group relative flex items-center h-10 gap-2.5 rounded-lg px-4 font-medium hover:bg-yellow-100 hover:dark:bg-meta-4 text-black dark:text-white duration-300 ease-in-out' +
                                 isActive
@@ -267,7 +178,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li>
                           <li>
                             <NavLink
-                              to="/top-level-manager/forms/form-layout"
+                              to="/branch-manager/forms/form-layout"
                               className={({ isActive }) =>
                                 'group relative flex items-center h-10 gap-2.5 rounded-lg px-4 font-medium hover:bg-yellow-100 hover:dark:bg-meta-4 text-black dark:text-white duration-600 ease-in-out ' +
                                 isActive
