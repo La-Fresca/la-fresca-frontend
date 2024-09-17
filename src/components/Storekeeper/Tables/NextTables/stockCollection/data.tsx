@@ -5,7 +5,7 @@ const columns = [
   {name: "Predicted Stockout Date", uid: "PredictedStockoutDate"},
   {name: "Status", uid: "Status", sortable: true},
   {name: "Actions", uid: "actions"},
-  {name: "Unit", uid: "Unit"},
+  {name: "Unit", uid: "Unit"}
 ];
 
 const statusOptions = [

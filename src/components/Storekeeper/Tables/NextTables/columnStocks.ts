@@ -1,9 +1,9 @@
 const columns = [
-  { name: 'Item Name', uid: 'stockCollectionName', sortable: true },
-  { name: 'Supplier', uid: 'supplierName', sortable: true },
-  { name: 'Initial Amount', uid: 'initialAmount', sortable: true },
+  { name: 'Item Name', uid: 'StockCollectionName', sortable: true },
+  { name: 'Supplier', uid: 'SupplierName', sortable: true },
+  { name: 'Initial Amount', uid: 'InitialAmount', sortable: true },
   { name: 'Unit Price', uid: 'UnitPrice', sortable: true },
-  { name: 'Expiry Date', uid: 'expiryDate' },
+  { name: 'Expiry Date', uid: 'ExpiryDate' },
   { name: 'Actions', uid: 'actions' },
 ];
 
