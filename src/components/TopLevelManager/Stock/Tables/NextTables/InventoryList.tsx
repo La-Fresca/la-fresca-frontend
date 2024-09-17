@@ -33,14 +33,10 @@ const INITIAL_VISIBLE_COLUMNS = [
   'SupplierName',
   'InitialAmount',
   'ExpiryDate',
-  'actions',
+  'Actions',
 ];
 
-export default function StockListByCollection({
-  collectionName = '',
-}: {
-  collectionName?: string;
-}) {
+export default function StockListByCollection() {
   const { showSwal } = swalConfirm();
   const [stocks, setStocks] = useState<Stock[]>([]);
   const { getAllStocks, deleteStock } = useStocks();
@@ -74,20 +70,7 @@ export default function StockListByCollection({
     fetchStocks();
   }, []);
 
-
   console.log(stocks);
-
-  const navigate = useNavigate();
-
-  const handleAddUser = () => {
-    navigate('add');
-  };
-
-  const UpdateItem = (id: String | null) => {
-    if (id) {
-      navigate(`edit/${id}`);
-    }
-  };
 
   const [filterValue, setFilterValue] = useState('');
   const [visibleColumns, setVisibleColumns] = useState(
@@ -154,7 +137,7 @@ export default function StockListByCollection({
       case 'StockCollectionName':
         return (
           <div className="flex items-center">
-            <div className="w-[40px] h-[40px] flex justify-center overflow-hidden">
+            <div className="w-[40px] h-[40px] overflow-hidden flex justify-center">
               <img src={stock.Image} alt="" className="rounded-full" />
             </div>
             <div className="ml-5">
@@ -165,38 +148,18 @@ export default function StockListByCollection({
             </div>
           </div>
         );
-      case 'initialAmount':
+      case 'InitialAmount':
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small">
-              {cellValue} {stock.unit}
+              {cellValue} {stock.Unit}
             </p>
           </div>
         );
-      case 'UPrice':
+      case 'UnitPrice':
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">Rs. {cellValue}</p>
-          </div>
-        );
-      case 'actions':
-        return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]" onClick={() => viewItem(stock.Id)}>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => UpdateItem(stock.id)}>
-                  Edit
-                </DropdownItem>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => handleConfirmDelete(stock.id)}>
-                  Delete
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
           </div>
         );
       default:
@@ -283,13 +246,6 @@ export default function StockListByCollection({
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              onClick={() => handleAddUser()}
-              endContent={<PlusIcon />}
-              className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600"
-            >
-              Add New
-            </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -297,7 +253,7 @@ export default function StockListByCollection({
             Total {stocks.length} items
           </span>
           <label className="flex items-center text-default-400 text-small">
-            Rows per page:
+            Rows per page: &nbsp;
             <select
               className="bg-transparent outline-none text-default-400 text-small"
               onChange={onRowsPerPageChange}
