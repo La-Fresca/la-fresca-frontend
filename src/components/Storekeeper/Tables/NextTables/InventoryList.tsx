@@ -75,6 +75,7 @@ export default function App() {
   }, []);
 
 
+  console.log(inventory);
 
   const navigate = useNavigate();
 
@@ -85,6 +86,13 @@ export default function App() {
   const viewItem = (id: String | null) => {
     if (id) {
       navigate(`view/${id}`);
+    }
+  };
+
+  const UpdateItem = (id: String | null) => {
+    console.log(id);
+    if (id) {
+      navigate(`edit/${id}`);
     }
   };
 
@@ -151,8 +159,8 @@ export default function App() {
       case 'Name':
         return (
           <div className="flex items-center">
-            <div className="w-[40px] h-[40px]">
-              <img src={user.avatar} alt="" className="rounded-full" />
+            <div className="w-[40px] h-[40px] flex justify-center overflow-hidden">
+              <img src={user.Image} alt="" className="rounded-full" />
             </div>
             <div className="ml-5">
               <p className="text-bold text-small capitalize dark:text-white text-foodbg">
@@ -165,7 +173,7 @@ export default function App() {
       case 'AvailableAmount':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">
+            <p className="text-bold text-small">
               {cellValue} {user.Unit}
             </p>
           </div>
@@ -194,10 +202,10 @@ export default function App() {
                 <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => viewItem(user.Name)}>
                   View
                 </DropdownItem>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">
+                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => UpdateItem(user.id)}>
                   Edit
                 </DropdownItem>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg">
+                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => handleConfirmDelete(user.id)}>
                   Delete
                 </DropdownItem>
               </DropdownMenu>
@@ -320,6 +328,7 @@ export default function App() {
             <Button
               endContent={<PlusIcon />}
               className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600"
+              onClick={() => handleAddUser()}
             >
               Add New
             </Button>
