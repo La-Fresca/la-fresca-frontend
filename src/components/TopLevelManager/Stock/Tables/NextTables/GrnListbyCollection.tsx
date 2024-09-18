@@ -29,10 +29,10 @@ import { swalConfirm } from '@/components/UI/SwalConfirm';
 import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
 
 const INITIAL_VISIBLE_COLUMNS = [
-  'StockCollectionName',
-  'SupplierName',
-  'InitialAmount',
-  'ExpiryDate',
+  'stockCollectionName',
+  'supplierName',
+  'initialAmount',
+  'expiryDate',
   'actions',
 ];
 
@@ -43,13 +43,13 @@ export default function StockListByCollection({
 }) {
   const { showSwal } = swalConfirm();
   const [stocks, setStocks] = useState<Stock[]>([]);
-  const { getAllStocks, deleteStock } = useStocks();
+  const { getStockyByCollection, deleteStock } = useStocks();
   const [loading, setLoading] = useState(true);
 
   const fetchStocks = async () => {
     try {
       setLoading(true);
-      const data = await getAllStocks();
+      const data = await getStockyByCollection(collectionName);
       setStocks(data);
       setLoading(false);
     } catch (error: any) {
@@ -74,20 +74,7 @@ export default function StockListByCollection({
     fetchStocks();
   }, []);
 
-
   console.log(stocks);
-
-  const navigate = useNavigate();
-
-  const handleAddUser = () => {
-    navigate('add');
-  };
-
-  const UpdateItem = (id: String | null) => {
-    if (id) {
-      navigate(`edit/${id}`);
-    }
-  };
 
   const [filterValue, setFilterValue] = useState('');
   const [visibleColumns, setVisibleColumns] = useState(
@@ -151,24 +138,24 @@ export default function StockListByCollection({
   const renderCell = useCallback((stock, columnKey) => {
     const cellValue = stock[columnKey];
     switch (columnKey) {
-      case 'StockCollectionName':
+      case 'stockCollectionName':
         return (
           <div className="flex items-center">
-            <div className="w-[40px] h-[40px] flex justify-center overflow-hidden">
-              <img src={stock.Image} alt="" className="rounded-full" />
+            <div className="w-[40px] h-[40px]">
+              <img src={stock.avatar} alt="" className="rounded-full" />
             </div>
             <div className="ml-5">
               <p className="text-bold text-small capitalize dark:text-white text-foodbg">
                 {cellValue}
               </p>
-              <p className="text-bold text-[12px] capitalize">Batch ID: {stock.BatchId}</p>
+              <p className="text-bold text-[12px] capitalize">Batch ID: {stock.batchId}</p>
             </div>
           </div>
         );
       case 'initialAmount':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small">
+            <p className="text-bold text-small capitalize">
               {cellValue} {stock.unit}
             </p>
           </div>
@@ -177,26 +164,6 @@ export default function StockListByCollection({
         return (
           <div className="flex flex-col">
             <p className="text-bold text-small capitalize">Rs. {cellValue}</p>
-          </div>
-        );
-      case 'actions':
-        return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]" onClick={() => viewItem(stock.Id)}>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => UpdateItem(stock.id)}>
-                  Edit
-                </DropdownItem>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => handleConfirmDelete(stock.id)}>
-                  Delete
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
           </div>
         );
       default:
@@ -283,13 +250,6 @@ export default function StockListByCollection({
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              onClick={() => handleAddUser()}
-              endContent={<PlusIcon />}
-              className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600"
-            >
-              Add New
-            </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
