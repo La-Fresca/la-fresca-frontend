@@ -83,7 +83,7 @@ function index() {
         <b>Promotions</b>
       </div>
       <div className="mt-2 mx-auto max-w-screen-xl px-4 2xl:px-0">
-        Not ready to checkout? Continue Shopping
+        Enjoy great savings with exclusive deals and offers available on your favorite items.
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 mx-auto max-w-screen-xl mt-10">
