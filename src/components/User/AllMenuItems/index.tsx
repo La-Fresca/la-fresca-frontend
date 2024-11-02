@@ -68,7 +68,7 @@ function index() {
                   <b>Food Items</b>
                 </div>
                 <div className="mt-2 mx-auto max-w-screen px-4 2xl:px-0">
-                  Not ready to checkout? Continue Shopping
+                  Deliciously crafted meals and treats to complement every coffee moment.
                 </div>
 
                 <Tabs
