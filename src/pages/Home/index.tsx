@@ -14,12 +14,10 @@ const HomePage: React.FC = () => {
         <div className="flex items-center lg:w-1/2">
           <div className="max-w-2xl mx-15 my-25">
             <h1 className="text-2xl py-4 font-bold leading-snug tracking-tight text-gray-800 lg:text-4xl lg:leading-tight xl:text-6xl xl:leading-tight text-yellow-500">
-              Seamless Café Operations
+              Savor the moment, share the experience.
             </h1>
             <p className="mb-2 py-5 text-xl leading-normal text-gray-500 lg:text-xl xl:text-2xl text-white">
-              Optimize your café operations with our comprehensive management
-              system, designed to enhance efficiency and elevate customer
-              satisfaction.
+              La Fresca is inspired by the joy of bringing people together over exceptional coffee. With a passion for quality, paired with a welcoming vibe, we’re here to make each cup and each moment memorable.
             </p>
 
             <div className="flex flex-col items-start space-y-3 sm:space-x-4 sm:space-y-0 sm:items-center sm:flex-row">
@@ -47,12 +45,11 @@ const HomePage: React.FC = () => {
             <div className="w-150 text-xl">
               <ReadMore
                 id="read-more-text"
-                text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, 
-                              illum quaerat eaque illo dolor officiis. Temporibus odit, pariatur corporis ipsa odio officia tenetur? 
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, 
-                              illum quaerat eaque illo dolor officiis. Temporibus odit, pariatur corporis ipsa odio officia tenetur? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                              Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, illum quaerat eaque illo dolor officiis. Temporibus odit, pariatur corporis ipsa odio officia tenetur? 
-                              tetur adipisicing elit. Beatae perspiciatis eligendi, similique quisquam esse aliquam possimus, illum quaerat eaque illo dolor officiis"
+                text="At La Fresca, we’re more than just a cafe; we’re a place where great coffee meets warm hospitality. 
+                Our journey began with a commitment to quality and customer satisfaction, and it’s that dedication that 
+                has quickly made us a favorite among coffee lovers. As we continue to grow, our focus remains on delivering 
+                a consistent, high-quality experience across all our locations. Blending traditional charm with a modern approach 
+                to cafe culture, La Fresca is where passion for good coffee and great service come together."
               />
             </div>
           </div>
