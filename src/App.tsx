@@ -38,6 +38,7 @@ import ViewCategories from '@/pages/BranchManager/Categories/ViewCategories';
 import AddCombos from '@/pages/BranchManager/FoodCombos/Add';
 import Combos from '@/pages/BranchManager/FoodCombos';
 import Discount from '@/pages/Discount';
+import ContactUs from '@/pages/ContactUs';
 import EditCombos from '@/pages/BranchManager/FoodCombos/Edit';
 import Sales from '@/pages/BranchManager/Sales';
 import StorekeeperLayout from '@/layouts/StorekeeperLayout';
@@ -194,7 +195,16 @@ const routes = createRoutesFromElements(
           }
         />
         <Route
-          path="orderhistory"
+          path="contactUs"
+          element={
+            <>
+              <PageTitle title="La Fresca | Contact Us" />
+              <ContactUs />
+            </>
+          }
+        />
+        <Route
+          path="orderHistory"
           element={
             <>
               <PageTitle title="La Fresca | Order History" />
