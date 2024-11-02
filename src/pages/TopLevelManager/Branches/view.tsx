@@ -5,12 +5,17 @@ import ChartFive from '@/components/TopLevelManager/Charts/ChartFive';
 import TableOne from '@/components/TopLevelManager/Tables/TableOne';
 import ChartSix from '@/components/TopLevelManager/Charts/ChartSix';
 
+import DropDown from '@/components/TopLevelManager/BranchDropdown';
+import { useParams } from 'react-router-dom';
+
 import CardDataStats from '@components/TopLevelManager/CardDataStats';
 
 const Dashboard: React.FC = () => {
+  const { branchId } = useParams<{ branchId: string }>();
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5 mt-10">
+        <DropDown id={branchId} />
         <CardDataStats title="Employees" total="6">
           <svg
             // className="fill-primary dark:fill-white"

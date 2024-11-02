@@ -48,7 +48,7 @@ function index() {
   const combos: FoodCombo[] = comboQuery.data;
   const categoriesObject: Category[] = categoryQuery.data;
 
-  console.log(combos);
+  console.log(foods);
 
   const categories = ['Burger', 'Pizza', 'Coffee', 'Tea'];
 
