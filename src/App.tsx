@@ -82,6 +82,7 @@ import ViewInventory_TLM from './pages/TopLevelManager/Inventory/view';
 import ViewInventoryByName_TLM from './pages/TopLevelManager/Inventory/viewByName';
 import Stock_TLM from '@/pages/TopLevelManager/Stock/view';
 import StockBranchList_TLM from '@/pages/TopLevelManager/Stock';
+import Backup from './pages/SystemAdmin/backup';
 
 const { refresh } = useAuth();
 const cookieProtocol = (import.meta as any).env.VITE_COOKIE_PROTOCOL;
@@ -528,7 +529,7 @@ const routes = createRoutesFromElements(
           element={
             <>
               <PageTitle title="system admin | Backup & Restore" />
-              <Sales />
+              <Backup />
             </>
           }
         />
