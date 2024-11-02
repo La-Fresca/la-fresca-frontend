@@ -29,22 +29,30 @@ const Gallery = () => {
         "https://images.unsplash.com/photo-1651981101695-219fa3653bf1?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 
     ];
-    return (
 
+    return (
         <div className="dark:bg-black bg-white h-screen relative">
-            <ImagesSlider className="" images={images}>
+            <ImagesSlider className="h-full w-full sm:w-auto" images={images}>
                 <motion.div
                     initial={{ opacity: 0, y: -80 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="z-50 flex flex-col justify-center items-center"
+                    className="z-50 flex flex-col justify-center items-center px-4 md:px-8"
                 >
-                    <motion.p className="font-bold text-xl md:text-6xl text-start bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 py-4">
+                    <motion.p className="font-bold text-2xl sm:text-3xl md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 py-4">
                         {/* Image Gallery */}
                     </motion.p>
                 </motion.div>
             </ImagesSlider>
-            <TitleBox title={"gallery"} subtitle={"la Fresca cafe"} button={"view more"} ClassName={"absolute bottom-0 right-0 w-fit h-[40%] px-20 bg-yellow-500 "} URLLink="/gallery" />
+            <TitleBox
+                title={"gallery"}
+                subtitle={"la Fresca cafe"}
+                button={"view more"}
+                ClassName={
+                    "absolute bottom-4 sm:bottom-8 md:bottom-12 right-4 sm:right-2 md:right-12 w-fit h-auto px-6 py-4 md:px-20 md:py-10 bg-yellow-500 text-xs sm:text-sm md:text-base lg:text-lg"
+                }
+                URLLink="/gallery"
+            />
         </div>
     );
 }
