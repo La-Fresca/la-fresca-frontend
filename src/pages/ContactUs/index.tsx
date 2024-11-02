@@ -1,7 +1,7 @@
-import Discount from '@components/User/Discount/index.tsx';
+import ContactUs from '@components/User/ContactUs/index.tsx';
 
 function index() {
-  return <Discount />;
+  return <ContactUs />;
 }
 
 export default index;
