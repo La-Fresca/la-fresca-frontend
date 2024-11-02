@@ -1,6 +1,7 @@
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
 import DarkModeSwitcher from './DarkModeSwitcher';
+import LogoIcon from '@/images/logo/la-fresca.png';
 import { Link } from 'react-router-dom';
 import Cart from './Cart';
 
@@ -65,10 +66,11 @@ const Header = (props: {
         
         <div className="hidden sm:flex items-center">
           <div
-            className="text-black font-bold pl-2 pr-12 dark:text-white mr-4"
-            style={{ fontFamily: 'Cormorant Upright, serif', fontSize: '30px' }}
+            className="text-black font-bold pl-2 pr-12 dark:text-white mr-4 flex items-center"
+            style={{ fontFamily: '', fontSize: '30px' }}
           >
-            La Fresca
+            {/* <img className="h-[40px] w-[40px]" src={LogoIcon} alt="Background" /> */}
+            <span className="ml-5">La Fresca</span>
           </div>
         </div>
 

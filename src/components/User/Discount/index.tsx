@@ -77,6 +77,7 @@ function index() {
       limited: 1,
     },
   ];
+  
   return (
     <div>
       <div className="text-4xl text-foodbg dark:text-white mx-auto max-w-screen-xl px-4 2xl:px-0">
