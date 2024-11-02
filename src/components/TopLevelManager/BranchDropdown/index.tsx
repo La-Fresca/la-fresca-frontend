@@ -29,7 +29,7 @@ export default function BranchDropdown({ id }: Props) {
 
   const view = (branchId: string | null) => {
     if (branchId) {
-      navigate(`branches/view/${branchId}`);
+      navigate(`/top-level-manager/branches/view/${branchId}`);
     }
   };
 
@@ -49,7 +49,7 @@ export default function BranchDropdown({ id }: Props) {
   }
 
   return (
-    <div className="absolute top-[85px] z-50 border rounded-xl border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#2d2d2d]">
+    <div className="absolute top-[85px] z-50 border rounded-xl text-black border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#2d2d2d] dark:text-white">
       <Dropdown>
         <DropdownTrigger>
           <Button variant="bordered">{branchName || 'Overall'}</Button>
@@ -59,7 +59,7 @@ export default function BranchDropdown({ id }: Props) {
             branches.map((branch) => (
               <DropdownItem
                 key={branch.id}
-                className={branch.id === id ? "bg-[#aaaaaa] rounded-lg text-white" : "hover:bg-[#aaaaaa17] rounded-lg"}
+                className={branch.id === id ? "bg-[#aaaaaa5b] rounded-lg text-[#535353] dark:text-white" : "hover:bg-[#aaaaaa17] rounded-lg"}
                 onClick={() => view(branch.id)}
               >
                 {branch.address}
