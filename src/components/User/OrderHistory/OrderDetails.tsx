@@ -61,8 +61,8 @@ export const OrderDetails = ({ order }: { order: any }) => {
   }
   if (order.orderStatus == 'Delivering') {
     col = "warning";
-    // btn = <button className='bg-primary text-white rounded-md px-4'>Track Order</button>
-    btn = <button onClick={() => setIsDialogOpen(true)} className='bg-primary text-white rounded-md px-4'>Track Order</button>;
+    // btn = <button className='bg-primary  text-black dark:text-white rounded-md px-4'>Track Order</button>
+    btn = <button onClick={() => setIsDialogOpen(true)} className='bg-primary  text-black dark:text-white rounded-md px-4'>Track Order</button>;
     map = <GoogleMap />;
 
   }
@@ -81,17 +81,17 @@ export const OrderDetails = ({ order }: { order: any }) => {
         }}
       >
         <div className='flex flex-col md:flex-row justify-between'>
-          <h1 className='text-2xl text-white mb-2 md:mb-0'>Order No: #{order.orderId}</h1>
+          <h1 className='text-2xl  text-black dark:text-white mb-2 md:mb-0'>Order No: #{order.orderId}</h1>
           <div className='flex flex-row gap-2'>
             {btn}
           </div>
         </div>
 
         <div className='flex flex-col md:flex-row justify-left gap-2 mb-5'>
-          <p className='text-white'>Order Date: {order.orderDate}</p>
-          <p className='text-white hidden md:block'>|</p>
-          <TbTruckDelivery className='text-white text-2xl hidden md:block' />
-          <p className='text-white'>Estimated delivery: {order.deliveryDate}</p>
+          <p className=' text-black dark:text-white'>Order Date: {order.orderDate}</p>
+          <p className=' text-black dark:text-white hidden md:block'>|</p>
+          <TbTruckDelivery className=' text-black dark:text-white text-2xl hidden md:block' />
+          <p className=' text-black dark:text-white'>Estimated delivery: {order.deliveryDate}</p>
         </div>
 
         <div className='hidden md:block'>
@@ -108,37 +108,37 @@ export const OrderDetails = ({ order }: { order: any }) => {
 
           <div className='flex flex-col md:flex-row justify-between'>
             <div className='flex flex-col gap-2 mb-4 md:mb-0'>
-              <p className='text-white text-xl'>Payment</p>
+              <p className=' text-black dark:text-white text-xl'>Payment</p>
               <div className='flex flex-row gap-5'>
-                <p className='text-white text-xs'>{order.payment.method} {order.payment.cardNumber}</p>
+                <p className=' text-black dark:text-white text-xs'>{order.payment.method} {order.payment.cardNumber}</p>
                 <FaCcVisa color="white" size={15} />
               </div>
             </div>
 
             <div className='flex flex-col gap-2 mb-4 md:mb-0'>
-              <p className='text-white text-xl'>Delivery</p>
-              <p className='text-white text-xs font-light'>Address</p>
+              <p className=' text-black dark:text-white text-xl'>Delivery</p>
+              <p className=' text-black dark:text-white text-xs font-light'>Address</p>
               {addressParts.map((part: string, index: React.Key | null | undefined) => (
-                <p key={index} className='text-white text-sm'>{part.trim()}</p>
+                <p key={index} className=' text-black dark:text-white text-sm'>{part.trim()}</p>
               ))}
             </div>
           </div>
 
           <div className='flex flex-col justify-between'>
-            <p className='text-white text-xl mb-2'>Order Summary</p>
+            <p className=' text-black dark:text-white text-xl mb-2'>Order Summary</p>
             <div className='flex flex-col md:flex-row md:justify-between w-full'>
               <div className='flex flex-col gap-2 w-full md:w-full'>
                 <div className='flex justify-between w-full'>
-                  <p className='text-white text-lg'>Subtotal</p>
-                  <p className='text-white text-lg'>${order.orderSummary.subtotal.toFixed(2)}</p>
+                  <p className=' text-black dark:text-white text-lg'>Subtotal</p>
+                  <p className=' text-black dark:text-white text-lg'>${order.orderSummary.subtotal.toFixed(2)}</p>
                 </div>
                 <div className='flex justify-between w-full'>
-                  <p className='text-white text-lg'>Shipping</p>
-                  <p className='text-white text-lg'>${order.orderSummary.shipping.toFixed(2)}</p>
+                  <p className=' text-black dark:text-white text-lg'>Shipping</p>
+                  <p className=' text-black dark:text-white text-lg'>${order.orderSummary.shipping.toFixed(2)}</p>
                 </div>
                 <div className='flex justify-between w-full'>
-                  <p className='text-white text-lg'>Discount</p>
-                  <p className='text-white text-lg'>({order.orderSummary.discount.toFixed(2)})</p>
+                  <p className=' text-black dark:text-white text-lg'>Discount</p>
+                  <p className=' text-black dark:text-white text-lg'>({order.orderSummary.discount.toFixed(2)})</p>
                 </div>
               </div>
             </div>
@@ -146,10 +146,10 @@ export const OrderDetails = ({ order }: { order: any }) => {
             <hr className='my-2 border-t border-white' />
             <div className='flex justify-between'>
               <div className='flex flex-col gap-2'>
-                <p className='text-white text-lg'>Total</p>
+                <p className=' text-black dark:text-white text-lg'>Total</p>
               </div>
               <div className='flex flex-col gap-2'>
-                <p className='text-white text-lg'>${order.orderSummary.total.toFixed(2)}</p>
+                <p className=' text-black dark:text-white text-lg'>${order.orderSummary.total.toFixed(2)}</p>
               </div>
             </div>
           </div>

@@ -23,7 +23,7 @@ const HomePage: React.FC = () => {
         Toggle {isLightMode ? 'Dark' : 'Light'} Mode
       </button>
 
-      <Container className={`flex flex-wrap ${isLightMode ? 'bg-[#EEEEEE]' : 'bg-transparent'} p-5 md:p-10`}>
+      <Container className={`flex flex-wrap p-5 md:p-10`}>
         <div className="flex items-center w-full lg:w-1/2 mb-5 lg:mb-0">
           <div className="max-w-full lg:max-w-2xl mx-5 lg:mx-15 my-10 lg:my-25">
             <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-bold leading-snug tracking-tight text-gray-800 text-yellow-500 py-4">
@@ -51,7 +51,7 @@ const HomePage: React.FC = () => {
         </div>
       </Container>
 
-      <Container className={`flex flex-wrap ${isLightMode ? 'bg-[#EEEEEE]' : 'bg-transparent'} p-5 md:p-10`}>
+      <Container className={`flex flex-wrap  p-5 md:p-10`}>
         <div className="flex items-center w-full lg:w-1/2 mb-5 lg:mb-0">
           <div className="max-w-full lg:max-w-2xl mx-5 lg:mx-15 my-10 lg:my-25">
             <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-bold leading-snug tracking-tight text-gray-800 text-yellow-500 py-4">
@@ -83,7 +83,7 @@ const HomePage: React.FC = () => {
         <Gallery />
       </Container>
 
-      <Container className={`flex flex-wrap ${isLightMode ? 'bg-[#EEEEEE]' : 'bg-transparent'} p-5 md:p-10`}>
+      <Container className={`flex flex-wrap  p-5 md:p-10`}>
         <div className="flex items-center justify-center w-full lg:w-1/2 mb-5 lg:mb-0">
           <img src={ContactUs} alt="Contact Us" width={450} height={450} className="w-full max-w-xs sm:max-w-md lg:max-w-lg" />
         </div>

@@ -37,15 +37,15 @@ export const OrderCard = ({ order }:{order:any}) => {
                 }}
             >
                 <div className='flex flex-row justify-between'>
-                    <h1 className='text-2xl text-white'>Order No: #{order.order.orderId}</h1>
+                    <h1 className='text-2xl text-black dark:text-white'>Order No: #{order.order.orderId}</h1>
                     <Chip color={col} variant="flat">{order.order.orderStatus}</Chip>
                 </div>
                 
                 <div className='flex justify-left gap-2 flex-row mb-5'>
-                    <p className='text-white'>Order Date: {order.order.orderDate}</p>
-                    <p className='text-white'>|</p>
-                    <TbTruckDelivery className='text-white text-2xl' />
-                    <p className='text-white'>Estimated delivery: {order.order.deliveryDate}</p>
+                    <p className='text-black dark:text-white'>Order Date: {order.order.orderDate}</p>
+                    <p className='text-black dark:text-white'>|</p>
+                    <TbTruckDelivery className='text-black dark:text-white text-2xl' />
+                    <p className='text-black dark:text-white'>Estimated delivery: {order.order.deliveryDate}</p>
                 </div>
                 
                 {/* Show stepper only on larger screens */}
