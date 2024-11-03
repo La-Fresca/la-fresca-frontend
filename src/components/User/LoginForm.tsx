@@ -18,6 +18,8 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 interface ourJwtPayload extends JwtPayload {
   role?: string;
   userId?: string;
+  username?: string;
+  name?: string;
 }
 
 const LoginForm = () => {
@@ -45,6 +47,12 @@ const LoginForm = () => {
         const refreshToken = json.refresh_token;
         const role = (jwtDecode(accessToken) as ourJwtPayload).role;
         const userId = (jwtDecode(accessToken) as ourJwtPayload).userId;
+        const username = (jwtDecode(accessToken) as ourJwtPayload).username;
+        const name = (jwtDecode(accessToken) as ourJwtPayload).name;
+
+        window.localStorage.setItem("name", name);
+
+
         signIn({
           auth: {
             token: accessToken,
@@ -54,6 +62,8 @@ const LoginForm = () => {
           userState: {
             role: role,
             userId: userId,
+            username: username,
+            name: name
           },
         });
       } else {
