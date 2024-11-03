@@ -31,7 +31,7 @@ export const OrderCard = ({ order }:{order:any}) => {
         <div className="">
             <div
                 onClick={handleClick}
-                className="w-[100%] flex flex-col lg:flex-col flex-grow items-left align-middle justify-between my-2 px-4 py-4 rounded-2xl border border-foodbg bg-foodbg backdrop-blur-md cursor-pointer"
+                className="w-[100%] flex flex-col lg:flex-col flex-grow items-left align-middle justify-between my-2 px-4 py-4 rounded-2xl border border-foodbg bg-foodbg backdrop-blur-md cursor-pointer hover:shadow-lg hover:shadow-[1px_1px_5px_#000000] dark:hover:shadow-[1px_1px_5px_#F59E0B] dark:bg-[#1E1E1E] dark:border-[#1E1E1E]"
                 style={{
                     backgroundColor: 'rgba(255, 255, 255, 0.01)',
                 }}
