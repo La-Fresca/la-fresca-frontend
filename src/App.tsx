@@ -67,6 +67,7 @@ import FoodCombo from '@/pages/FoodCombo';
 import SystemAdminLayout from '@/layouts/SystemAdminLayout';
 import SystemLogs from '@/pages/SystemAdmin/systemLogs';
 import TopManagerLayout from '@/layouts/TopManagerLayout';
+import { OrderHistoryDetails } from '@/components/User/OrderHistory/OrderHistoryDetails';
 
 // Top level manager
 import Dashboard_TLM from '@/pages/TopLevelManager/Dashboard';
@@ -198,6 +199,15 @@ const routes = createRoutesFromElements(
             <>
               <PageTitle title="La Fresca | Order History" />
               <OrderHistory />
+            </>
+          }
+        />
+        <Route
+          path="orderhistory/:orderId"
+          element={
+            <>
+              <PageTitle title="La Fresca | Order History Details" />
+              <OrderHistoryDetails />
             </>
           }
         />
