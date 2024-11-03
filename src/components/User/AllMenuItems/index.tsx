@@ -68,7 +68,7 @@ function index() {
                   <b>Food Items</b>
                 </div>
                 <div className="mt-2 mx-auto max-w-screen px-4 2xl:px-0">
-                  Not ready to checkout? Continue Shopping
+                  Deliciously crafted meals and treats to complement every coffee moment.
                 </div>
 
                 <Tabs
@@ -150,7 +150,7 @@ function index() {
                   <b>Food Combos</b>
                 </div>
                 <div className="mt-2 mx-auto max-w-screen px-4 2xl:px-0">
-                  Not ready to checkout? Continue Shopping
+                  Perfectly paired meals created for maximum flavor and satisfaction.
                 </div>
 
                 <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols- gap-5">

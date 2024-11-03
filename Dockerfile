@@ -1,9 +1,9 @@
 FROM node:20-alpine
 WORKDIR /app
-COPY package.json .
-RUN npm install
-RUN npm i -g serve
+RUN npm i -g serve pnpm
+COPY package.json pnpm-lock.yaml .
+RUN pnpm i
 COPY . .
-RUN npm run build
+RUN pnpm build
 EXPOSE 3000
 CMD [ "serve", "-s", "dist" ]
