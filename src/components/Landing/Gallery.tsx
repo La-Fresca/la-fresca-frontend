@@ -32,20 +32,28 @@ const Gallery = () => {
     return (
 
         <div className="dark:bg-black bg-white h-screen relative">
-            <ImagesSlider className="" images={images}>
-                <motion.div
-                    initial={{ opacity: 0, y: -80 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    className="z-50 flex flex-col justify-center items-center"
-                >
-                    <motion.p className="font-bold text-xl md:text-6xl text-start bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 py-4">
-                        {/* Image Gallery */}
-                    </motion.p>
-                </motion.div>
-            </ImagesSlider>
-            <TitleBox title={"gallery"} subtitle={"la Fresca cafe"} button={"view more"} ClassName={"absolute bottom-0 right-0 w-fit h-[40%] px-20 bg-yellow-500 "} URLLink="/gallery" />
-        </div>
+    <ImagesSlider className="" images={images}>
+        <motion.div
+            initial={{ opacity: 0, y: -80 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="z-50 flex flex-col justify-center items-center"
+        >
+            <motion.p className="font-bold text-2xl md:text-6xl text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 py-4">
+                {/* Image Gallery */}
+            </motion.p>
+        </motion.div>
+    </ImagesSlider>
+
+    <TitleBox
+        title={"gallery"}
+        subtitle={"la Fresca cafe"}
+        button={"view more"}
+        ClassName={"absolute bottom-4 right-4 md:bottom-8 md:right-8 w-fit h-[20%] md:h-[40%] px-4 md:px-20 bg-yellow-500"}
+        URLLink="/gallery"
+    />
+</div>
+
     );
 }
 
