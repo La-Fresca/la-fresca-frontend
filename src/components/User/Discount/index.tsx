@@ -5,35 +5,6 @@ import Food from '../../../assets/food.jpg';
 import TextButton from './TextButton';
 
 function index() {
-  // const [item, setItem] = useState<any>(null); // Adjusted initial state to null
-
-  // const fetchItems = async () => {
-  //   try {
-  //     let apiUrl = (import.meta as any).env.VITE_API_URL;
-  //     const response = await fetch(`${apiUrl}/discount`);
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch item');
-  //     }
-  //     const data = await response.json();
-  //     return data;
-  //   } catch (error) {
-  //     console.error('Error fetching item:', error);
-  //   }
-  // };
-
-  // const getItem = async () => {
-  //   const item = await fetchItems();
-  //   setItem(item);
-  //   console.log(item);
-  // };
-
-  // useEffect(() => {
-  //   getItem();
-  // }, []);
-
-  // if (!item) {
-  //   return <div>Loading...</div>;
-  // }
 
   const item = [
     {
