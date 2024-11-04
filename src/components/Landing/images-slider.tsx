@@ -3,6 +3,16 @@ import { cn } from '../../../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
+interface ImagesSliderProps {
+  images: string[];
+  children: React.ReactNode;
+  overlay?: boolean;
+  overlayClassName?: string;
+  className?: string;
+  autoplay?: boolean;
+  direction?: 'up' | 'down';
+}
+
 export const ImagesSlider = ({
   images,
   children,
@@ -11,29 +21,17 @@ export const ImagesSlider = ({
   className,
   autoplay = true,
   direction = 'up',
-}: {
-  images: string[];
-  children: React.ReactNode;
-  overlay?: React.ReactNode;
-  overlayClassName?: string;
-  className?: string;
-  autoplay?: boolean;
-  direction?: 'up' | 'down';
-}) => {
+}: ImagesSliderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [loadedImages, setLoadedImages] = useState<string[]>([]);
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex + 1 === images.length ? 0 : prevIndex + 1,
-    );
+    setCurrentIndex((prevIndex) => (prevIndex + 1 === images.length ? 0 : prevIndex + 1));
   };
 
   const handlePrevious = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex - 1 < 0 ? images.length - 1 : prevIndex - 1,
-    );
+    setCurrentIndex((prevIndex) => (prevIndex - 1 < 0 ? images.length - 1 : prevIndex - 1));
   };
 
   useEffect(() => {
@@ -58,18 +56,15 @@ export const ImagesSlider = ({
       })
       .catch((error) => console.error('Failed to load images', error));
   };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight') {
-        handleNext();
-      } else if (event.key === 'ArrowLeft') {
-        handlePrevious();
-      }
+      if (event.key === 'ArrowRight') handleNext();
+      else if (event.key === 'ArrowLeft') handlePrevious();
     };
 
     window.addEventListener('keydown', handleKeyDown);
 
-    // autoplay
     let interval: any;
     if (autoplay) {
       interval = setInterval(() => {
@@ -84,34 +79,15 @@ export const ImagesSlider = ({
   }, []);
 
   const slideVariants = {
-    initial: {
-      scale: 0,
-      opacity: 0,
-      rotateX: 45,
-    },
+    initial: { scale: 0, opacity: 0, rotateX: 45 },
     visible: {
       scale: 1,
       rotateX: 0,
       opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: [0.645, 0.045, 0.355, 1.0],
-      },
+      transition: { duration: 0.5, ease: [0.645, 0.045, 0.355, 1.0] },
     },
-    upExit: {
-      opacity: 1,
-      y: '-150%',
-      transition: {
-        duration: 1,
-      },
-    },
-    downExit: {
-      opacity: 1,
-      y: '150%',
-      transition: {
-        duration: 1,
-      },
-    },
+    upExit: { opacity: 1, y: '-150%', transition: { duration: 1 } },
+    downExit: { opacity: 1, y: '150%', transition: { duration: 1 } },
   };
 
   const areImagesLoaded = loadedImages.length > 0;
@@ -141,14 +117,26 @@ export const ImagesSlider = ({
           <motion.img
             key={currentIndex}
             src={loadedImages[currentIndex]}
+            alt={`Slide ${currentIndex + 1}`}
             initial="initial"
             animate="visible"
             exit={direction === 'up' ? 'upExit' : 'downExit'}
             variants={slideVariants}
-            className="image h-full w-full absolute inset-0 object-cover object-center"
+            className="image h-full w-full absolute inset-0 object-cover object-center
+                      sm:h-auto sm:w-full sm:object-fill md:object-contain lg:object-cover"
           />
         </AnimatePresence>
       )}
+
+      {/* Mobile Controls */}
+      <div className="absolute bottom-4 flex space-x-4 justify-center md:hidden">
+        <button onClick={handlePrevious} className="p-2 bg-gray-700 rounded-full">
+          ‹
+        </button>
+        <button onClick={handleNext} className="p-2 bg-gray-700 rounded-full">
+          ›
+        </button>
+      </div>
     </div>
   );
 };
