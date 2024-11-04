@@ -8,7 +8,7 @@ export const Gallery = () => {
   return (
     <div className='bg-transparent'>
         {/* <h1 className='text-xl'>Gallery</h1> */}
-        <TitleBox title='gallery' subtitle='la Fresca cafe' button='' ClassName='relative top-0 lect-0 w-screen h-fit px-20 mb-10 bg-white ' URLLink='' />
+        <TitleBox title='gallery' subtitle='la Fresca cafe' button='' ClassName='relative top-0 lect-0 w-screen h-fit px-20 mb-10 bg-white dark:bg-yellow-500' URLLink='' />
         {/* <Button color="primary" variant="bordered">
         Bordered
       </Button>   */}
