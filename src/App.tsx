@@ -72,8 +72,9 @@ import { OrderHistoryDetails } from '@/components/User/OrderHistory/OrderHistory
 
 // Top level manager
 import Dashboard_TLM from '@/pages/TopLevelManager/Dashboard';
-import BranchDasboard_TLM from '@/pages/TopLevelManager/Branches/view';
+import BranchDasboard_TLM from '@/pages/TopLevelManager/Branches/ViewBranch';
 import BranchList from '@/pages/TopLevelManager/Branches/BranchList';
+import EditBranch from './pages/TopLevelManager/Branches/EditBranch';
 import AddBranches from '@/pages/TopLevelManager/Branches/AddBranch';
 import Inventory_TLM from '@/pages/TopLevelManager/Inventory';
 
@@ -653,6 +654,7 @@ const routes = createRoutesFromElements(
             element={
               <>
                 <PageTitle title="Top Manager | Edit Branch " />
+                <EditBranch />
               </>
             }
           />

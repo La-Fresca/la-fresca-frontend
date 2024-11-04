@@ -3,10 +3,9 @@ import { z } from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
-import { useStocks } from '@/api/useStocks';
 import { useNavigate } from 'react-router-dom';
-import { useInventory } from '@/api/useInventory';
-import { Inventory } from '@/types/inventory';
+import { useBranches } from '@/api/useBranches';
+import { Branch } from '@/types/branch';
 import MultiSelect from '@components/Storekeeper/Forms/MultiCheckBox';
 
 type CollectionPicker = {
@@ -15,23 +14,23 @@ type CollectionPicker = {
 };
 
 const FormSchema = z.object({
-  stockCollectionName: z
+  name: z.string().min(1, { message: 'Branch Name is required' }),
+  address: z.string().min(1, { message: 'Address is required' }),
+  branchManager: z
     .string()
-    .min(1, { message: 'Inventory Name is required' }),
-  batchId: z.string().min(1, { message: 'Batch ID is required' }),
-  supplierName: z.string().min(1, { message: 'Supplier Name is required' }),
-  initialAmount: z.coerce.number().min(1, { message: 'Quantity is required' }),
-  expiryDate: z.string().min(1, { message: 'Date is Required' }),
-  unitPrice: z.string().min(1, { message: 'Unit Price is Required' }),
-  cafeId: z.string().min(1, { message: 'Cafe id is Required' }),
+    .min(1, { message: 'Branch Manager Name is required' }),
+  contactNo: z.string().min(1, { message: 'Contact number is required' }),
+  longitude: z.coerce.number().min(1, { message: 'Longitude is Required' }),
+  latitude: z.coerce.number().min(1, { message: 'Latitude is Required' }),
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-function StockForm() {
-  const { addStock } = useStocks();
-  const { getAllInventory } = useInventory();
-  const [inventory, setInventory] = useState<CollectionPicker[]>([]);
+function BranchEditForm({ id = '' }: { id?: string }) {
+  const { getAllBranches } = useBranches();
+  const { updateBranch } = useBranches();
+  const { getBranchById } = useBranches();
+  const [branch, setBranch] = useState<CollectionPicker[]>([]);
   const Navigate = useNavigate();
   const { register, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
@@ -46,17 +45,15 @@ function StockForm() {
     }
   }, [errors]);
 
-  console.log(inventory);
-
-  const getInventory = async () => {
+  const getBranches = async () => {
     try {
-      const inventory = await getAllInventory();
-      if (inventory) {
-        const inventoryOptions = inventory.map((inventory: Inventory) => ({
-          key: inventory.id,
-          label: inventory.Name,
+      const branch = await getAllBranches();
+      if (branch) {
+        const branchOptions = branch.map((branch: Branch) => ({
+          key: branch.id,
+          label: branch.name,
         }));
-        setInventory(inventoryOptions);
+        setBranch(branchOptions);
       }
     } catch (error: any) {
       console.error(error);
@@ -64,22 +61,43 @@ function StockForm() {
   };
 
   useEffect(() => {
-    getInventory();
+    getBranches();
   }, []);
 
-  const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
+  const getBranch = async () => {
     try {
-      await addStock(data);
-      Navigate('/storekeeper/stock');
+      const data: Branch = await getBranchById(id);
+      if (data) {
+        setValue('name', data.name);
+        setValue('address', data.address);
+        setValue('branchManager', data.branchManager);
+        setValue('contactNo', data.contactNo);
+        setValue('longitude', data.longitude);
+        setValue('latitude', data.latitude);
+      }
     } catch (error: any) {
       console.error(error);
     }
   };
 
-  if (!inventory) {
+  useEffect(() => {
+    getBranch();
+  }, [id]);
+
+  const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
+    try {
+        console.log(id);
+        console.log(data);
+      await updateBranch(id, data);
+      Navigate('/top-level-manager/branches');
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  if (!branch.length) {
     return <div>Loading...</div>;
   }
-  
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#000000]">
@@ -88,7 +106,7 @@ function StockForm() {
             className="font-medium text-xl
            text-black dark:text-white"
           >
-            Add Stocks
+            Edit Stock batch
           </h3>
         </div>
         <form
@@ -98,67 +116,53 @@ function StockForm() {
           <div className="w-full md:w-3/7 space-y-4 p-6.5">
             <div className="w-full">
               <label className="mb-3 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">
-                  Stock Item name
-                </span>
-                <MultiSelect
-                  categories={inventory}
-                  register={register}
-                  fieldname="stockCollectionName"
-                  setValue={setValue}
+                <span className="block mb-1 text-gray-600">Name</span>
+                <input
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
+                  type="text"
+                  {...register('name')}
                 />
-                {errors.stockCollectionName && (
-                  <p className="text-red-600 mb-1">
-                    {errors.stockCollectionName.message}
-                  </p>
+                {errors.name && (
+                  <p className="text-red-600 mb-1">{errors.name.message}</p>
+                )}
+              </label>
+
+              <label className="mb-6 block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">Address</span>
+                <input
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
+                  type="text"
+                  {...register('address')}
+                />
+                {errors.address && (
+                  <p className="text-red-600">{errors.address.message}</p>
+                )}
+              </label>
+
+              <label className="mb-6 block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">Contact Number</span>
+                <input
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
+                  type="text"
+                  {...register('contactNo')}
+                />
+                {errors.contactNo && (
+                  <p className="text-red-600">{errors.contactNo.message}</p>
                 )}
               </label>
 
               <label className="mb-3 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Batch ID</span>
-                <input
-                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
-                  type="text"
-                  {...register('batchId')}
+                <span className="block mb-1 text-gray-600">Branch manager</span>
+                <MultiSelect
+                  categories={branch}
+                  register={register}
+                  fieldname="branchManager"
+                  setValue={setValue}
                 />
-                {errors.batchId && (
-                  <p className="text-red-600 mb-1">{errors.batchId.message}</p>
-                )}
-              </label>
-
-              <label className="mb-6 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Initial Amount</span>
-                <input
-                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
-                  type="number"
-                  {...register('initialAmount')}
-                />
-                {errors.initialAmount && (
-                  <p className="text-red-600">{errors.initialAmount.message}</p>
-                )}
-              </label>
-
-              <label className="mb-6 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Unit Price</span>
-                <input
-                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
-                  type="number"
-                  {...register('unitPrice')}
-                />
-                {errors.unitPrice && (
-                  <p className="text-red-600">{errors.unitPrice.message}</p>
-                )}
-              </label>
-
-              <label className="mb-6 block text-black dark:text-white">
-                <input
-                  type="text"
-                  value="cafe1"
-                  hidden
-                  {...register('cafeId')}
-                />
-                {errors.cafeId && (
-                  <p className="text-red-600">{errors.cafeId.message}</p>
+                {errors.branchManager && (
+                  <p className="text-red-600 mb-1">
+                    {errors.branchManager.message}
+                  </p>
                 )}
               </label>
             </div>
@@ -166,27 +170,29 @@ function StockForm() {
           <div className="w-full md:w-4/7 flex p-6.5">
             <div className="w-full">
               <label className="mb-3 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Supplier Name</span>
+                <span className="block mb-1 text-gray-600">Latitude</span>
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
-                  type="text"
-                  {...register('supplierName')}
+                  type="number"
+                  {...register('latitude')}
                 />
-                {errors.supplierName && (
-                  <p className="text-red-600">{errors.supplierName.message}</p>
+                {errors.latitude && (
+                  <p className="text-red-600">{errors.latitude.message}</p>
                 )}
               </label>
+
               <label className="mb-6 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Expire Date</span>
+                <span className="block mb-1 text-gray-600">Longitude</span>
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
-                  type="date"
-                  {...register('expiryDate')}
+                  type="number"
+                  {...register('longitude')}
                 />
-                {errors.expiryDate && (
-                  <p className="text-red-600">{errors.expiryDate.message}</p>
+                {errors.longitude && (
+                  <p className="text-red-600">{errors.longitude.message}</p>
                 )}
               </label>
+
               <div className="flex justify-center gap-12 mt-16">
                 <Button className="flex w-full justify-center rounded-lg bg-[#b1bfd0] text-white shadow-lg min-w-0 h-16">
                   Cancel
@@ -195,7 +201,7 @@ function StockForm() {
                   className="flex w-full justify-center rounded-lg bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg min-w-0 h-16"
                   type="submit"
                 >
-                  Add Stock
+                  Edit Stock
                 </Button>
               </div>
             </div>
@@ -206,4 +212,4 @@ function StockForm() {
   );
 }
 
-export default StockForm;
+export default BranchEditForm;

@@ -11,7 +11,7 @@ const HomePage: React.FC = () => {
   const [isLightMode, setIsLightMode] = useState(true); // Local state for light/dark mode
 
   const toggleMode = () => {
-    setIsLightMode(prevMode => !prevMode); // Toggle the mode
+    setIsLightMode((prevMode) => !prevMode); // Toggle the mode
   };
 
   return (
@@ -47,7 +47,13 @@ const HomePage: React.FC = () => {
           </div>
         </div>
         <div className="flex items-center justify-center w-full lg:w-1/2">
-          <img src={HeroImg} alt="Hero Image" width={325} height={325} className="w-full max-w-xs sm:max-w-md lg:max-w-lg" />
+          <img
+            src={HeroImg}
+            alt="Hero Image"
+            width={325}
+            height={325}
+            className="w-full max-w-xs sm:max-w-md lg:max-w-lg"
+          />
         </div>
       </Container>
 
@@ -71,7 +77,13 @@ const HomePage: React.FC = () => {
           </div>
         </div>
         <div className="flex items-center justify-center w-full lg:w-1/2">
-          <img src={chefImg} alt="Chef Image" width={325} height={325} className="w-full max-w-xs sm:max-w-md lg:max-w-lg" />
+          <img
+            src={chefImg}
+            alt="Chef Image"
+            width={325}
+            height={325}
+            className="w-full max-w-xs sm:max-w-md lg:max-w-lg"
+          />
         </div>
       </Container>
 
@@ -83,10 +95,14 @@ const HomePage: React.FC = () => {
         <Gallery />
       </Container>
 
-      <Container className={`flex flex-wrap  p-5 md:p-10`}>
-        <div className="flex items-center justify-center w-full lg:w-1/2 mb-5 lg:mb-0">
-          <img src={ContactUs} alt="Contact Us" width={450} height={450} className="w-full max-w-xs sm:max-w-md lg:max-w-lg" />
+      <Container>
+        <div className="flex bg-[red] w-[100vw] h-[200px] absolute left-0">
+          <div className="bg-[green] w-[30vw]"></div>
+          <div className="bg-[blue] w-[70vw]"></div>
         </div>
+        {/* <div className="flex items-center justify-center w-full lg:w-1/2 mb-5 lg:mb-0">
+      <img src={ContactUs} alt="contact us" width={450} height={450} className="w-full max-w-xs sm:max-w-md lg:max-w-lg" />
+    </div>
 
         <div className="flex items-center w-full lg:w-1/2">
           <div className="max-w-full lg:max-w-2xl mx-5 lg:mx-15 my-10 lg:my-25">
@@ -106,14 +122,14 @@ const HomePage: React.FC = () => {
               789, GHI Road, RST City, Country
             </p>
 
-            <h3 className="text-lg md:text-xl xl:text-2xl font-bold tracking-tight text-gray-800 py-4">
-              Contact Us
-            </h3>
-            <p className="text-lg md:text-xl lg:text-xl xl:text-2xl leading-normal text-gray-600 py-5 mb-2">
-              011-1234567 | 011-1234567 | 011-1234567
-            </p>
-          </div>
-        </div>
+        <h3 className="text-lg md:text-xl xl:text-2xl font-bold tracking-tight text-yellow-500 py-4">
+          Contact Us
+        </h3>
+        <p className="text-lg md:text-xl lg:text-xl xl:text-2xl leading-normal text-gray-500 text-white py-5 mb-2">
+          011-1234567 | 011-1234567 | 011-1234567
+        </p>
+      </div>
+    </div> */}
       </Container>
     </>
   );

@@ -1,42 +1,34 @@
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
-import Select from './Select/App';
-import { swalSuccess } from '@/components/UI/SwalSuccess';
-import GoogleMap from '@/components/User/OrderHistory/trackOrder';
+import { useNavigate } from 'react-router-dom';
+import { useBranches } from '@/api/useBranches';
+import { Branch } from '@/types/branch';
+import MultiSelect from '@components/Storekeeper/Forms/MultiCheckBox';
 
-// Dummy data for branch managers
-const dummyBranchManagers = [
-  { key: 'manager1', label: 'John Doe' },
-  { key: 'manager2', label: 'Jane Smith' },
-  { key: 'manager3', label: 'Alice Johnson' },
-];
-
-type BranchPicker = {
+type CollectionPicker = {
   key: string;
   label: string;
 };
 
-// Zod schema for form validation
 const FormSchema = z.object({
-  name: z.string().min(1, { message: 'Name is required' }),
+  name: z.string().min(1, { message: 'Branch Name is required' }),
   address: z.string().min(1, { message: 'Address is required' }),
-  contactNo: z
-    .string()
-    .min(10, { message: 'Contact number must be at least 10 digits' }),
-  branchManager: z.string().min(1, { message: 'Branch manager is required' }),
-  location: z.string().optional(), // To store the picked location from the map
+  branchManager: z.string().min(1, { message: 'Branch Manager Name is required' }),
+  contactNo: z.string().min(1, { message: 'Contact number is required' }),
+  longitude: z.coerce.number().min(1, { message: 'Longitude is Required' }),
+  latitude: z.coerce.number().min(1, { message: 'Latitude is Required' }),
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-const BranchForm: FC = () => {
-  const { showSwal } = swalSuccess({
-    message: 'Branch Added successfully',
-  });
-
+function BranchForm() {
+  const { addBranch } = useBranches();
+  const { getAllBranches } = useBranches();
+  const [Branch, setBranch] = useState<CollectionPicker[]>([]);
+  const Navigate = useNavigate();
   const { register, handleSubmit, formState, setValue } =
     useForm<FormSchemaType>({
       resolver: zodResolver(FormSchema),
@@ -50,26 +42,49 @@ const BranchForm: FC = () => {
     }
   }, [errors]);
 
-  const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
+  console.log(Branch);
+
+  const getBranch = async () => {
     try {
-      // Here you would typically send the form data to your API
-      console.log('Form data:', data);
-    } catch (error) {
-      console.error('Error adding branch:', error);
-    } finally {
-      setTimeout(() => {
-        showSwal();
-        // Navigate to a different page if needed
-      }, 2000);
+      const Branch = await getAllBranches();
+      if (Branch) {
+        const BranchOptions = Branch.map((Branch: Branch) => ({
+          key: Branch.id,
+          label: Branch.address,
+        }));
+        setBranch(BranchOptions);
+      }
+    } catch (error: any) {
+      console.error(error);
     }
   };
 
+  useEffect(() => {
+    getBranch();
+  }, []);
+
+  const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
+    try {
+      await addBranch(data);
+      Navigate('/top-level-manager/branches');
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  if (!Branch) {
+    return <div>Loading...</div>;
+  }
+  
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#000000]">
         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-          <h3 className="font-medium text-xl text-black dark:text-white">
-            Add New Branch
+          <h3
+            className="font-medium text-xl
+           text-black dark:text-white"
+          >
+            Add Branch
           </h3>
         </div>
         <form
@@ -79,28 +94,30 @@ const BranchForm: FC = () => {
           <div className="w-full md:w-3/7 space-y-4 p-6.5">
             <div className="w-full">
               <label className="mb-3 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Branch Name</span>
+                <span className="block mb-1 text-gray-600">Name</span>
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                   type="text"
                   {...register('name')}
                 />
-                {errors.address && (
-                  <p className="text-red-600 mb-1">{errors.name?.message}</p>
+                {errors.name && (
+                  <p className="text-red-600 mb-1">{errors.name.message}</p>
                 )}
               </label>
-              <label className="mb-3 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Branch Address</span>
+
+              <label className="mb-6 block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">Address</span>
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
                   type="text"
                   {...register('address')}
                 />
                 {errors.address && (
-                  <p className="text-red-600 mb-1">{errors.address.message}</p>
+                  <p className="text-red-600">{errors.address.message}</p>
                 )}
               </label>
-              <label className="mb-3 block text-black dark:text-white">
+
+              <label className="mb-6 block text-black dark:text-white">
                 <span className="block mb-1 text-gray-600">Contact Number</span>
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
@@ -108,31 +125,63 @@ const BranchForm: FC = () => {
                   {...register('contactNo')}
                 />
                 {errors.contactNo && (
-                  <p className="text-red-600 mb-1">
-                    {errors.contactNo.message}
-                  </p>
+                  <p className="text-red-600">{errors.contactNo.message}</p>
                 )}
               </label>
+
               <label className="mb-3 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Branch Manager</span>
-                <Select />
+                <span className="block mb-1 text-gray-600">
+                  Branch manager
+                </span>
+                <MultiSelect
+                  categories={Branch}
+                  register={register}
+                  fieldname="branchManager"
+                  setValue={setValue}
+                />
+                {errors.branchManager && (
+                  <p className="text-red-600 mb-1">
+                    {errors.branchManager.message}
+                  </p>
+                )}
               </label>
             </div>
           </div>
           <div className="w-full md:w-4/7 flex p-6.5">
             <div className="w-full">
               <label className="mb-3 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">Location</span>
-                <div className="w-full h-96 rounded-lg overflow-hidden">
-                  <GoogleMap />
-                </div>
+                <span className="block mb-1 text-gray-600">Latitude</span>
+                <input
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
+                  type="number"
+                  {...register('latitude')}
+                />
+                {errors.latitude && (
+                  <p className="text-red-600">{errors.latitude.message}</p>
+                )}
               </label>
-              <div className="w-full flex justify-center items-center">
+
+              <label className="mb-6 block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">Longitude</span>
+                <input
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
+                  type="number"
+                  {...register('longitude')}
+                />
+                {errors.longitude && (
+                  <p className="text-red-600">{errors.longitude.message}</p>
+                )}
+              </label>
+
+              <div className="flex justify-center gap-12 mt-16">
+                <Button className="flex w-full justify-center rounded-lg bg-[#b1bfd0] text-white shadow-lg min-w-0 h-16">
+                  Cancel
+                </Button>
                 <Button
                   className="flex w-full justify-center rounded-lg bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg min-w-0 h-16"
                   type="submit"
                 >
-                  Add Branch
+                  Add Stock
                 </Button>
               </div>
             </div>
@@ -141,6 +190,6 @@ const BranchForm: FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default BranchForm;

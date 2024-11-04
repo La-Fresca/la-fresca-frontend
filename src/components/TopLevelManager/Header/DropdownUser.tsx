@@ -13,7 +13,7 @@ const DropdownUser = () => {
   const clientSignOut = useSignOut();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const name = window.localStorage.getItem("role");
+  const name = window.localStorage.getItem("name");
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">

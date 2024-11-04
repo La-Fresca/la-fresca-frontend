@@ -1,13 +1,12 @@
+
 export type Branch = {
-    id: string;
+    id?: string;
+    name: string
     address: string;
-    cost?: number;
-    dailyCost?: number;
     contactNo: string;
-    latitude?: number;
-    income?: number;
     branchManager: string;
-    dailyIncome?: number;
+    latitude: number;
+    longitude: number;
     deleted?: boolean;
-    longitude?: number;
+    status?: string;
   };

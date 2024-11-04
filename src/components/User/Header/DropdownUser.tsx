@@ -13,7 +13,18 @@ const DropdownUser = () => {
   const clientSignOut = useSignOut();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const name = window.localStorage.getItem("role");
+
+  function getCookie(name: string): string | null {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    
+    if (parts.length === 2) {
+      return parts.pop()?.split(';').shift() || null;
+    }
+    return null;
+  }
+
+  const name = window.localStorage.getItem("name");
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
