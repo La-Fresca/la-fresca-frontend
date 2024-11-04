@@ -71,8 +71,12 @@ const HomePage: React.FC = () => {
     <Gallery />
   </Container>
 
-  <Container className="flex flex-wrap bg-transparent p-5 md:p-10">
-    <div className="flex items-center justify-center w-full lg:w-1/2 mb-5 lg:mb-0">
+  <Container>
+    <div className="flex bg-[red] w-[100vw] h-[200px] absolute left-0">
+      <div className='bg-[green] w-[30vw]'></div>
+      <div className='bg-[blue] w-[70vw]'></div>
+    </div>
+    {/* <div className="flex items-center justify-center w-full lg:w-1/2 mb-5 lg:mb-0">
       <img src={ContactUs} alt="contact us" width={450} height={450} className="w-full max-w-xs sm:max-w-md lg:max-w-lg" />
     </div>
 
@@ -101,7 +105,7 @@ const HomePage: React.FC = () => {
           011-1234567 | 011-1234567 | 011-1234567
         </p>
       </div>
-    </div>
+    </div> */}
   </Container>
 </>
 
