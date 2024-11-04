@@ -32,12 +32,12 @@ import { useBranches } from '@/api/useBranches';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 const statusColorMap = {
-  Open: 'success',
-  Close: 'danger',
+  OPEN: 'success',
+  CLOSE: 'danger',
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
-  'branchName',
+  'name',
   'address',
   'contactNo',
   'status',
@@ -47,7 +47,7 @@ const INITIAL_VISIBLE_COLUMNS = [
 export default function App() {
   const { showSwal } = swalConfirm();
   const [branch, setBranch] = useState<Branch[]>([]);
-  const { getAllBranches } = useBranches();
+  const { getAllBranches, deleteBranch } = useBranches();
   const [loading, setLoading] = useState(true);
 
   const fetchBranch = async () => {
@@ -60,18 +60,18 @@ export default function App() {
     }
   };
 
-  // const handleDeletebranch = async (id: string) => {
-  //   try {
-  //     await deletebranch(id);
-  //     fetchbranch();
-  //   } catch (error: any) {
-  //     console.error(error);
-  //   }
-  // };
+  const handleDeleteBranch = async (id: string) => {
+    try {
+      await deleteBranch(id);
+      fetchBranch();
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
 
-  // const handleConfirmDelete = (id: any) => {
-  //   showSwal(() => handleDeletebranch(id));
-  // };
+  const handleConfirmDelete = (id: any) => {
+    showSwal(() => handleDeleteBranch(id));
+  };
 
   useEffect(() => {
     fetchBranch();
@@ -124,7 +124,7 @@ export default function App() {
     let filteredbranch = [...branch];
     if (hasSearchFilter) {
       filteredbranch = filteredbranch.filter((branchData) =>
-        branchData.branchName.toLowerCase().includes(filterValue.toLowerCase()),
+        branchData.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
     if (
@@ -132,7 +132,7 @@ export default function App() {
       Array.from(statusFilter).length !== statusOptions.length
     ) {
       filteredbranch = filteredbranch.filter((branchData) =>
-        Array.from(statusFilter).includes(branchData.Status),
+        Array.from(statusFilter).includes(branchData.status),
       );
     }
     return filteredbranch;
@@ -156,20 +156,19 @@ export default function App() {
   }, [sortDescriptor, items]);
 
   const colours = ["#ff7171", "#b9b037", "#37b939", "#4e4ee3", "#e34ecd", "#e3914e"];
-  const name = "N";
 
   const renderCell = React.useCallback((branchData, columnKey) => {
     const cellValue = branchData[columnKey];
     switch (columnKey) {
-      case 'branchName':
+      case 'name':
         return (
           <div className="flex items-center">
             <div className="w-[40px] h-[40px] flex justify-center overflow-hidden">
-              <div className={`rounded-full w-full h-full flex justify-center items-center bg-[${colours[Math.floor(Math.random() * 6)]}] text-white font-bold`}>{name.split(" ").map(word => word.charAt(0)).join("")}</div>
+              <div className="rounded-full w-full h-full flex justify-center items-center text-white font-bold" style={{backgroundColor: `${colours[Math.floor(Math.random() * 6)]}`}}>{cellValue.split(" ").map(word => word.charAt(0)).join("")}</div>
             </div>
             <div className="ml-5">
               <p className="text-bold text-small capitalize dark:text-white text-foodbg">
-                {/* {cellValue} */}Nugegoda
+                {cellValue}
               </p>
               <p className="text-bold text-[12px] capitalize">
                 ID: {branchData.id}
@@ -177,11 +176,10 @@ export default function App() {
             </div>
           </div>
         );
-      case 'Status':
+      case 'status':
         return (
           <Chip
-            // className="capitalize"
-            color={statusColorMap[branchData.Status]}
+            color={statusColorMap[branchData.status]}
             size="sm"
             variant="flat"
           >
@@ -210,9 +208,9 @@ export default function App() {
                 >
                   Edit
                 </DropdownItem>
-                {/* <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => handleConfirmDelete(branchData.id)}>
+                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => handleConfirmDelete(branchData.id)}>
                   Delete
-                </DropdownItem> */}
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>

@@ -1,6 +1,6 @@
 const columns = [
   {name: "ID", uid: "id", sortable: true},
-  {name: "Branch Name", uid: "branchName", sortable: true},
+  {name: "Branch Name", uid: "name", sortable: true},
   {name: "Address", uid: "address", sortable: true},
   {name: "Contact Number", uid: "contactNo"},
   {name: "Status", uid: "status", sortable: true},
@@ -8,8 +8,8 @@ const columns = [
 ];
 
 const statusOptions = [
-  {name: "Open", uid: "Open"},
-  {name: "Close", uid: "Close"},
+  {name: "Open", uid: "OPEN"},
+  {name: "Close", uid: "CLOSE"},
 ];
 
 export {columns, statusOptions};
