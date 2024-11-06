@@ -19,13 +19,10 @@ import {
   ChipProps,
   SortDescriptor
 } from "@nextui-org/react";
-import { PlusIcon } from "./PlusIcon";
 import { VerticalDotsIcon } from "./VerticalDotsIcon";
-import { ChevronDownIcon } from "./ChevronDownIcon";
 import { SearchIcon } from "./SearchIcon";
 // Import discountData instead of users
 // import { discountData } from "./data"; // assuming you have the data in data.js
-import { capitalize } from "./utils";
 
 // Define columns for Discount data
 const columns = [
@@ -341,7 +338,7 @@ export default function App() {
             onValueChange={onSearchChange}
           />
           <Button className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 mt-8 px-10">
-            Add New Discount
+          Add New Discount
           </Button>
         </div>
         <div className="flex justify-between items-center">

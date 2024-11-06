@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '@images/logo/la-fresca.png';
-import { Bars3Icon } from '@heroicons/react/24/outline';
+import { Bars3Icon,UserIcon } from '@heroicons/react/24/outline';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
 import {
   ChartBarSquareIcon,
@@ -122,6 +122,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   <FolderPlusIcon className="w-6 h-6" />
                   Stock
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/storekeeper/profile"
+                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    pathname.includes('/storekeeper/profile') &&
+                    'bg-yellow-100 dark:bg-meta-4'
+                  }`}
+                >
+                  <UserIcon className="w-6 h-6" />
+                  Profile
                 </NavLink>
               </li>
 

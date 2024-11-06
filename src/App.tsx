@@ -423,7 +423,18 @@ const routes = createRoutesFromElements(
               </>
             }
           />
+          
         </Route>
+
+        <Route
+          path="profile"
+          element={
+            <>
+              <PageTitle title="Store Keeper | profile" />
+              <UserProfile />
+            </>
+          }
+        ></Route>
       </Route>
       <Route path="kitchen-manager/*" element={<KitchenManagerLayout />}>
         <Route
@@ -446,6 +457,17 @@ const routes = createRoutesFromElements(
             }
           />
         </Route>
+
+        <Route
+          path="profile"
+          element={
+            <>
+              <PageTitle title="Waiter | profile" />
+              <UserProfile />
+            </>
+          }
+        ></Route>
+       
       </Route>
       <Route path="waiter/*" element={<WaiterLayout />}>
         <Route
@@ -463,6 +485,15 @@ const routes = createRoutesFromElements(
             <>
               <PageTitle title="Waiter | served-orders" />
               <ServedOrders />
+            </>
+          }
+        ></Route>
+        <Route
+          path="profile"
+          element={
+            <>
+              <PageTitle title="Waiter | profile" />
+              <UserProfile />
             </>
           }
         ></Route>
