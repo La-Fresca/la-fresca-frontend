@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container } from '../../components/User/Container';
 import HeroImg from '../../images/Landing/Hero.png';
 import ContactUs from '../../images/Landing/contact.png';
@@ -12,20 +12,32 @@ import IG from '@images/footer/IG.svg';
 import X from '@images/footer/X.svg';
 
 const HomePage: React.FC = () => {
+  const [isLightMode, setIsLightMode] = useState(true); // Local state for light/dark mode
+
+  const toggleMode = () => {
+    setIsLightMode((prevMode) => !prevMode); // Toggle the mode
+  };
+
   return (
     <>
-      <Container className="flex flex-wrap bg-transparent p-5 md:p-10">
+      <button
+        onClick={toggleMode}
+        className="fixed top-5 right-5 px-4 py-2 bg-blue-500 text-white rounded"
+      >
+        Toggle {isLightMode ? 'Dark' : 'Light'} Mode
+      </button>
+
+      <Container className={`flex flex-wrap p-5 md:p-10`}>
         <div className="flex items-center w-full lg:w-1/2 mb-5 lg:mb-0">
           <div className="max-w-full lg:max-w-2xl mx-5 lg:mx-15 my-10 lg:my-25">
             <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-bold leading-snug tracking-tight text-gray-800 text-yellow-500 py-4">
               Seamless Café Operations
             </h1>
-            <p className="text-lg md:text-xl lg:text-xl xl:text-2xl leading-normal text-gray-500 text-white py-5 mb-2">
+            <p className="text-lg md:text-xl lg:text-xl xl:text-2xl leading-normal text-gray-600 py-5 mb-2">
               Optimize your café operations with our comprehensive management
               system, designed to enhance efficiency and elevate customer
               satisfaction.
             </p>
-
             <div className="flex flex-col sm:flex-row sm:space-x-4 items-start sm:items-center space-y-3 sm:space-y-0">
               <a
                 href="https://web3templates.com/templates/nextly-landing-page-template-for-startups"
@@ -49,7 +61,7 @@ const HomePage: React.FC = () => {
         </div>
       </Container>
 
-      <Container className="flex flex-wrap bg-transparent p-5 md:p-10">
+      <Container className={`flex flex-wrap  p-5 md:p-10`}>
         <div className="flex items-center w-full lg:w-1/2 mb-5 lg:mb-0">
           <div className="max-w-full lg:max-w-2xl mx-5 lg:mx-15 my-10 lg:my-25">
             <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-bold leading-snug tracking-tight text-gray-800 text-yellow-500 py-4">
@@ -71,7 +83,7 @@ const HomePage: React.FC = () => {
         <div className="flex items-center justify-center w-full lg:w-1/2">
           <img
             src={chefImg}
-            alt="Hero Image"
+            alt="Chef Image"
             width={325}
             height={325}
             className="w-full max-w-xs sm:max-w-md lg:max-w-lg"
@@ -125,23 +137,23 @@ const HomePage: React.FC = () => {
       <img src={ContactUs} alt="contact us" width={450} height={450} className="w-full max-w-xs sm:max-w-md lg:max-w-lg" />
     </div>
 
-    <div className="flex items-center w-full lg:w-1/2">
-      <div className="max-w-full lg:max-w-2xl mx-5 lg:mx-15 my-10 lg:my-25">
-        <h3 className="text-lg md:text-xl xl:text-2xl font-bold tracking-tight text-yellow-500 py-4">
-          Working Hours
-        </h3>
-        <p className="text-lg md:text-xl lg:text-xl xl:text-2xl leading-normal text-gray-500 text-white py-5 mb-2">
-          Optimize your café operations with our comprehensive management
-          system,
-        </p>
+        <div className="flex items-center w-full lg:w-1/2">
+          <div className="max-w-full lg:max-w-2xl mx-5 lg:mx-15 my-10 lg:my-25">
+            <h3 className="text-lg md:text-xl xl:text-2xl font-bold tracking-tight text-gray-800 py-4">
+              Working Hours
+            </h3>
+            <p className="text-lg md:text-xl lg:text-xl xl:text-2xl leading-normal text-gray-600 py-5 mb-2">
+              Optimize your café operations with our comprehensive management
+              system,
+            </p>
 
-        <h3 className="text-lg md:text-xl xl:text-2xl font-bold tracking-tight text-yellow-500 py-4">
-          Locations
-        </h3>
-        <p className="text-lg md:text-xl lg:text-xl xl:text-2xl leading-normal text-gray-500 text-white py-5 mb-2">
-          123, ABC Road, XYZ City, Country 256, DEF Road, UVW City, Country
-          789, GHI Road, RST City, Country
-        </p>
+            <h3 className="text-lg md:text-xl xl:text-2xl font-bold tracking-tight text-gray-800 py-4">
+              Locations
+            </h3>
+            <p className="text-lg md:text-xl lg:text-xl xl:text-2xl leading-normal text-gray-600 py-5 mb-2">
+              123, ABC Road, XYZ City, Country 256, DEF Road, UVW City, Country
+              789, GHI Road, RST City, Country
+            </p>
 
         <h3 className="text-lg md:text-xl xl:text-2xl font-bold tracking-tight text-yellow-500 py-4">
           Contact Us
@@ -155,4 +167,5 @@ const HomePage: React.FC = () => {
     </>
   );
 };
+
 export default HomePage;
