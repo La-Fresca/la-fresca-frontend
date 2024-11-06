@@ -176,6 +176,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Manage Users
                 </NavLink>
               </li>
+
+              <li>
+                <NavLink
+                  to="/branch-manager/discounts"
+                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    pathname.includes('/branch-manager/discounts') &&
+                    'bg-yellow-100 dark:bg-meta-4'
+                  }`}
+                >
+                  <TagIcon className="w-6 h-6" />
+                  Discount List
+                </NavLink>
+              </li>
               {/* <SidebarLinkGroup
                 activeCondition={
                   pathname === '/branch-manager/forms' ||

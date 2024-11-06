@@ -23,7 +23,7 @@ import FoodItem from '@/pages/FoodItem';
 import AllFoodItems from '@/pages/AllFoodItems';
 import FoodList from '@/pages/BranchManager/FoodList';
 import { Gallery } from '@/components/Gallery/Gallery';
-import DiscountList from '@/pages/BranchManager/FoodList/DiscountList';
+//import DiscountList from '@/pages/BranchManager/FoodList/DiscountList';
 import Cart from '@/pages/Cart';
 import Checkout from '@/pages/Checkout';
 import { OrderHistory } from '@/components/User/OrderHistory/OrderHistory';
@@ -31,6 +31,9 @@ import User from '@/pages/BranchManager/Users';
 import UserAdd from '@/pages/BranchManager/Users/AddUser';
 import UserEdit from '@/pages/BranchManager/Users/EditUser';
 import EditFoods from '@/pages/BranchManager/Foods/EditFood';
+import DiscountList from '@/pages//BranchManager/Discounts';
+import DiscountAdd from '@/pages/BranchManager/Discounts/AddDiscounts';
+import DiscountEdit from '@/pages/BranchManager/Discounts/EditDiscounts';
 import AddCategories from '@/pages/BranchManager/Categories/AddCategories';
 import EditCategory from '@/pages/BranchManager/Categories/EditCategory';
 import ViewCategories from '@/pages/BranchManager/Categories/ViewCategories';
@@ -346,15 +349,35 @@ const routes = createRoutesFromElements(
             }
           />
         </Route>
-        <Route
-          path="discountlist"
-          element={
-            <>
-              <PageTitle title="Branch Manager | Discount List" />
-              <DiscountList />
-            </>
-          }
-        />
+        <Route path="discounts">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Branch Manager | DiscountList" />
+                <DiscountList />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Add Discounts" />
+                <DiscountAdd />
+              </>
+            }
+          />
+          <Route
+            path="edit/:Id"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Edit Discounts" />
+                <DiscountEdit />
+              </>
+            }
+          />
+        </Route>
       </Route>
       <Route path="storekeeper/*" element={<StorekeeperLayout />}>
         <Route
