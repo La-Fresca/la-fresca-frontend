@@ -14,7 +14,7 @@ function getToken() {
 export const useInventory = () => {
   const getAllInventory = async () => {
     try {
-      const response = await fetch(`${API_URL}/stockCollection`, {
+      const response = await fetch(`${API_URL}/stockCollection/cafe1`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -90,6 +90,27 @@ export const useInventory = () => {
     }
   };
 
+  const deleteInventory = async (id: string) => {
+    try {
+      const response = await fetch(`${API_URL}/stockCollection/delete/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify({
+          deleted: 1,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete stock');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   const unsafeDeleteInventory = async (id: string) => {
     try {
       const response = await fetch(`${API_URL}/stockCollection/${id}`, {
@@ -113,6 +134,7 @@ export const useInventory = () => {
     addInventory,
     getInventoryById,
     updateInventory,
+    deleteInventory,
     unsafeDeleteInventory,
   };
 };

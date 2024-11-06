@@ -8,4 +8,8 @@ export type FoodCombo = {
   cafeId: string;
   deleted: 0;
   foodIds: string[];
+  discountStatus?: string;
+  discountId?: string;
+  rating: number;
+  foodNames?: string[];
 };

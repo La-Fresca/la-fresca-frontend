@@ -15,7 +15,7 @@ function getToken() {
 export const useFoods = () => {
   const getAllFoods = async () => {
     try {
-      const response = await fetch(`${API_URL}/food`, {
+      const response = await fetch(`${API_URL}/foodItem/getAll/cafe 1`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ export const useFoods = () => {
 
   const addFood = async (data: Food) => {
     try {
-      const response = await fetch(`${API_URL}/food`, {
+      const response = await fetch(`${API_URL}/foodItem`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export const useFoods = () => {
 
   const getFoodById = async (id: string) => {
     try {
-      const response = await fetch(`${API_URL}/food/${id}`, {
+      const response = await fetch(`${API_URL}/foodItem/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ export const useFoods = () => {
 
   const updateFood = async (id: string, data: Food) => {
     try {
-      const response = await fetch(`${API_URL}/food/${id}`, {
+      const response = await fetch(`${API_URL}/foodItem/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ export const useFoods = () => {
 
   const deleteFood = async (id: string) => {
     try {
-      const response = await fetch(`${API_URL}/food/${id}`, {
+      const response = await fetch(`${API_URL}/foodItem/delete/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -101,9 +101,6 @@ export const useFoods = () => {
         },
         body: JSON.stringify({
           deleted: 1,
-          available: 0,
-          discountStatus: 0,
-          rating: 0,
         }),
       });
       if (!response.ok) {

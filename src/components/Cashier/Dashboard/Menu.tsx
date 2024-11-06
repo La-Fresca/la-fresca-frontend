@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Item } from '@/types/item';
 import SearchBar from '@components/Cashier/Dashboard/Search';
-import ItemCustomCard from '@/components/Cashier/Dashboard/FoodCustomize';
-import { Food } from '@/types/food';
-import { useCategories } from '@/api/useCategories';
-import { Category } from '@/types/category';
+import ItemCustomCard from '@/components/User/FoodItem/index';
 
 interface MenuProps {
   items: Food[];
@@ -11,11 +9,13 @@ interface MenuProps {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   selectedCategory: string;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
-  addItemToOrder: (item: Food) => void;
+  addItemToOrder: (item: Item) => void;
+  categories: string[];
 }
 
 const Menu: React.FC<MenuProps> = ({
   items,
+  categories,
   searchTerm,
   setSearchTerm,
   selectedCategory,
@@ -24,26 +24,11 @@ const Menu: React.FC<MenuProps> = ({
 }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const {getAllCategories} = useCategories(); 
-
-  const fetchCategories = async () => {
-    try {
-      const categories = await getAllCategories();
-      setCategories(categories);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-  }
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
   const filteredItems = items.filter(
     (item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) && item.categories &&
-      (selectedCategory === 'All' || item.categories[0] === selectedCategory),
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (selectedCategory === 'All' ||
+        item.categories.includes(selectedCategory)),
   );
 
   const togglePopup = () => {
@@ -110,9 +95,9 @@ const Menu: React.FC<MenuProps> = ({
             <button
               onClick={(event: React.SyntheticEvent) => {
                 event.stopPropagation();
-                addItemToOrder(item)
+                addItemToOrder(item);
               }}
-              className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400 text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700 "
+              className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400 text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700"
             >
               Add to Order
             </button>

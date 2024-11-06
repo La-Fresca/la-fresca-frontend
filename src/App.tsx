@@ -15,6 +15,7 @@ import PageTitle from '@/components/PageTitle';
 import Home from '@/pages/Home';
 import Dashboard from '@/pages/BranchManager/Dashboard';
 import BranchManagerLayout from '@/layouts/BranchManagerLayout';
+import KitchenManagerLayout from '@/layouts/KitchenManagerLayout';
 import LoginPage from '@/pages/User/LogIn';
 import RegistrationPage from '@/pages/User/Registration';
 import UserLayout from '@/layouts/UserLayout';
@@ -40,6 +41,7 @@ import ViewCategories from '@/pages/BranchManager/Categories/ViewCategories';
 import AddCombos from '@/pages/BranchManager/FoodCombos/Add';
 import Combos from '@/pages/BranchManager/FoodCombos';
 import Discount from '@/pages/Discount';
+import ContactUs from '@/pages/ContactUs';
 import EditCombos from '@/pages/BranchManager/FoodCombos/Edit';
 import Sales from '@/pages/BranchManager/Sales';
 import StorekeeperLayout from '@/layouts/StorekeeperLayout';
@@ -65,14 +67,36 @@ import ViewInventory from '@/pages/Storekeeper/InventoryList';
 import AddInventory from '@/pages/Storekeeper/AddInventory';
 import EditInventory from '@/pages/Storekeeper/EditInventory';
 import ViewGrnByCollection from '@/pages/Storekeeper/GrnListByCollection';
+import FoodCombo from '@/pages/FoodCombo';
+import SystemAdminLayout from '@/layouts/SystemAdminLayout';
+import SystemLogs from '@/pages/SystemAdmin/systemLogs';
+import TopManagerLayout from '@/layouts/TopManagerLayout';
+
+// Top level manager
+import Dashboard_TLM from '@/pages/TopLevelManager/Dashboard';
+import BranchDasboard_TLM from '@/pages/TopLevelManager/Branches/ViewBranch';
+import BranchList from '@/pages/TopLevelManager/Branches/BranchList';
+import EditBranch from './pages/TopLevelManager/Branches/EditBranch';
+import AddBranches from '@/pages/TopLevelManager/Branches/AddBranch';
+import Inventory_TLM from '@/pages/TopLevelManager/Inventory';
+
+import AddFoods_TLM from './pages/TopLevelManager/Foods/AddFood';
+import AddCombos_TLM from './pages/TopLevelManager/FoodCombos/Add';
+
+import ViewInventory_TLM from './pages/TopLevelManager/Inventory/view';
+import ViewInventoryByName_TLM from './pages/TopLevelManager/Inventory/viewByName';
+import Stock_TLM from '@/pages/TopLevelManager/Stock/view';
+import StockBranchList_TLM from '@/pages/TopLevelManager/Stock';
+import Backup from './pages/SystemAdmin/backup';
 
 const { refresh } = useAuth();
+const cookieProtocol = (import.meta as any).env.VITE_COOKIE_PROTOCOL;
 
 const store = createStore({
   authName: '_auth',
   authType: 'cookie',
   cookieDomain: window.location.hostname,
-  cookieSecure: window.location.protocol === 'http:',
+  cookieSecure: window.location.protocol === cookieProtocol,
   refresh: refresh,
 });
 
@@ -88,7 +112,7 @@ const routes = createRoutesFromElements(
           </>
         }
       />
-      </Route>
+    </Route>
     <Route path="/">
       <Route
         path="login"
@@ -175,7 +199,16 @@ const routes = createRoutesFromElements(
           }
         />
         <Route
-          path="orderhistory"
+          path="contactUs"
+          element={
+            <>
+              <PageTitle title="La Fresca | Contact Us" />
+              <ContactUs />
+            </>
+          }
+        />
+        <Route
+          path="orderHistory"
           element={
             <>
               <PageTitle title="La Fresca | Order History" />
@@ -193,22 +226,31 @@ const routes = createRoutesFromElements(
             </>
           }
         />
-        <Route path="fooditems">
+        <Route path="menuitems">
           <Route
             index
             element={
               <>
-                <PageTitle title="La Fresca | Food Items" />
+                <PageTitle title="La Fresca | Menu Items" />
                 <AllFoodItems />
               </>
             }
           />
           <Route
-            path="viewfood/:itemId"
+            path="viewfooditem/:itemId"
             element={
               <>
                 <PageTitle title="La Fresca | Food Item" />
                 <FoodItem />
+              </>
+            }
+          />
+          <Route
+            path="viewfoodcombo/:comboId"
+            element={
+              <>
+                <PageTitle title="La Fresca | Food Item" />
+                <FoodCombo />
               </>
             }
           />
@@ -446,7 +488,7 @@ const routes = createRoutesFromElements(
           />
         </Route>
       </Route>
-      <Route path="kitchen-manager/*" element={<StorekeeperLayout />}>
+      <Route path="kitchen-manager/*" element={<KitchenManagerLayout />}>
         <Route
           index
           element={
@@ -487,6 +529,45 @@ const routes = createRoutesFromElements(
             </>
           }
         ></Route>
+      </Route>
+      <Route path="system-admin/*" element={<SystemAdminLayout />}>
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="system admin | Dashboard" />
+              <Dashboard />
+            </>
+          }
+        />
+        <Route
+          path="system-logs"
+          element={
+            <>
+              <PageTitle title="system admin | System Logs" />
+              <SystemLogs />
+            </>
+          }
+        />
+        <Route
+          path="reports"
+          element={
+            <>
+              <PageTitle title="system admin | Reports" />
+              <Sales />
+            </>
+          }
+        />
+        <Route
+          path="backups"
+          element={
+            <>
+              <PageTitle title="system admin | Backup & Restore" />
+              <Backup />
+            </>
+          }
+        />
+        {/* -------------- Routes to add ---------------- */}
       </Route>
       <Route path="cashier/*" element={<CashierLayout />}>
         <Route
@@ -551,6 +632,247 @@ const routes = createRoutesFromElements(
             }
           />
         </Route>
+      </Route>
+      <Route path="top-level-manager/*" element={<TopManagerLayout />}>
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="La Fresca | Top Level Manager" />
+              <Dashboard_TLM />
+            </>
+          }
+        />
+        <Route path="branches">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Top Manager | Branch List" />
+                <BranchList />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Top Manager | Add Branch " />
+                <AddBranches />
+              </>
+            }
+          />
+          <Route
+            path="edit/:branchId"
+            element={
+              <>
+                <PageTitle title="Top Manager | Edit Branch " />
+                <EditBranch />
+              </>
+            }
+          />
+          <Route
+            path="view/:branchId"
+            element={
+              <>
+                <PageTitle title="Top Manager | View Branch" />
+                <BranchDasboard_TLM />
+              </>
+            }
+          />
+        </Route>
+        <Route
+          path="sales"
+          element={
+            <>
+              <PageTitle title="Top Manager | Sales" />
+              <Sales />
+            </>
+          }
+        />
+        <Route path="categories">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Top Manager | Food Categories" />
+                <ViewCategories />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="La Fresca | Add Food Categories " />
+                <AddCategories />
+              </>
+            }
+          />
+          <Route
+            path="edit/:categoryId"
+            element={
+              <>
+                <PageTitle title="La Fresca | Edit Food Categories " />
+                <EditCategory />
+              </>
+            }
+          />
+        </Route>
+        <Route path="foods">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="La Fresca | Food List" />
+                <FoodList />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Top Manager | Add Food" />
+                <AddFoods_TLM />
+              </>
+            }
+          />
+          <Route
+            path="edit/:foodId"
+            element={
+              <>
+                <PageTitle title="Top Manager | Edit Food" />
+                <EditFoods />
+              </>
+            }
+          />
+        </Route>
+        <Route path="food-combos">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Top Manager | Food Combos" />
+                <Combos />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Top Manager | Add Food Combo" />
+                <AddCombos_TLM />
+              </>
+            }
+          />
+          <Route
+            path="edit/:comboId"
+            element={
+              <>
+                <PageTitle title="Top Manager | Edit Food Combo" />
+                <EditCombos />
+              </>
+            }
+          />
+        </Route>
+        <Route path="users">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Top Manager | Users" />
+                <User />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Top Manager | Add User" />
+                <UserAdd />
+              </>
+            }
+          />
+          <Route
+            path="edit/:userId"
+            element={
+              <>
+                <PageTitle title="Top Manager | Edit User" />
+                <UserEdit />
+              </>
+            }
+          />
+        </Route>
+        <Route path="inventory">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Top Manager | Inventory" />
+                <Inventory_TLM />
+              </>
+            }
+          />
+          <Route
+            path="view"
+            element={
+              <>
+                <PageTitle title="Top Manager | View Inventory" />
+                <ViewInventory_TLM />
+              </>
+            }
+          />
+          <Route
+            path="viewCollections/:collection"
+            element={
+              <>
+                <PageTitle title="Top Manager | View Inventory By Name" />
+                <ViewInventoryByName_TLM />
+              </>
+            }
+          />
+        </Route>
+        <Route path="stock">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Top Manager | Stock" />
+                <StockBranchList_TLM />
+              </>
+            }
+          />
+          <Route
+            path="view"
+            element={
+              <>
+                <PageTitle title="Top Manager | View Stock" />
+                <Stock_TLM />
+              </>
+            }
+          />
+          <Route
+            path="viewCollections/:collection"
+            element={
+              <>
+                <PageTitle title="Top Manager | View Inventory By Name" />
+                <ViewInventoryByName_TLM />
+              </>
+            }
+          />
+        </Route>
+        <Route
+          path="discountlist"
+          element={
+            <>
+              <PageTitle title="Top Manager | Discount List" />
+              <DiscountList />
+            </>
+          }
+        />
       </Route>
     </Route>
   </Route>,

@@ -1,17 +1,22 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
 import { useInventory } from '@/api/useInventory';
 import { useNavigate } from 'react-router-dom';
+import ImageInput from '@components/BranchManager/Inputs/ImageInput';
+import { Inventory } from '@/types/inventory';
+import { useUpload } from '@/api/useUpload';
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
-  availableAmount: z.coerce
-    .number()
-    .min(1, { message: 'Quantity is required' }),
   lowerLimit: z.coerce.number().min(1, { message: 'Lower Limit required' }),
+  unit: z.string().min(1, { message: 'Unit is required' }),
+  image: z.coerce
+    .string({ message: 'Should be a string' })
+    .optional()
+    .default('test'),
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
@@ -19,11 +24,15 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 function InventoryForm() {
   const { addInventory } = useInventory();
   const Navigate = useNavigate();
-  const { register, handleSubmit, formState } = useForm<FormSchemaType>({
+  const { register, handleSubmit, formState, setValue } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
   });
 
+  const { uploadImage } = useUpload();
+
   const { errors } = formState;
+
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (Object.keys(errors).length) {
@@ -32,8 +41,37 @@ function InventoryForm() {
   }, [errors]);
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
+    console.log("submitted data", data);
+    let imageUrl = data.image;
+
+    if (imageFile) {
+      try {
+        const respose = await uploadImage(imageFile);
+        if (respose) {
+          imageUrl = respose.fileUrl;
+          setValue('image', imageUrl);
+        } else {
+          throw new Error('Failed to upload image');
+        }
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        return;
+      }
+    }
+
+    const transformedData: Inventory = {
+      cafeId: 'cafe1',
+      ...data,
+      image: imageUrl,
+      deleted: 0,
+      predictedStockoutDate: "",
+      status: "",
+      availableAmount: 0,
+    };
+
+
     try {
-      await addInventory(data);
+      await addInventory(transformedData);
       Navigate('/storekeeper');
     } catch (error: any) {
       console.error(error);
@@ -72,25 +110,6 @@ function InventoryForm() {
               </label>
 
               <label className="mb-6 block text-black dark:text-white">
-                <span className="block mb-1 text-gray-600">
-                  Available Amount
-                </span>
-                <input
-                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
-                  type="number"
-                  {...register('availableAmount')}
-                />
-                {errors.availableAmount && (
-                  <p className="text-red-600">
-                    {errors.availableAmount.message}
-                  </p>
-                )}
-              </label>
-            </div>
-          </div>
-          <div className="w-full md:w-4/7 flex p-6.5">
-            <div className="w-full">
-              <label className="mb-6 block text-black dark:text-white">
                 <span className="block mb-1 text-gray-600">Lower Limit</span>
                 <input
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
@@ -100,6 +119,31 @@ function InventoryForm() {
                 {errors.lowerLimit && (
                   <p className="text-red-600">{errors.lowerLimit.message}</p>
                 )}
+              </label>
+
+              <label className="mb-6 block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">Unit</span>
+                <input
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
+                  type="text"
+                  {...register('unit')}
+                />
+                {errors.unit && (
+                  <p className="text-red-600">{errors.unit.message}</p>
+                )}
+              </label>
+            </div>
+          </div>
+          <div className="w-full md:w-4/7 flex p-6.5">
+            <div className="w-full">
+            <label className="block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">Upload Image</span>
+                <ImageInput
+                  fieldname="image"
+                  register={register}
+                  setImageFile={setImageFile}
+                  height={'h-50'}
+                />
               </label>
               <div className="flex justify-center gap-12 mt-16">
                 <Button className="flex w-full justify-center rounded-lg bg-[#b1bfd0] text-white shadow-lg min-w-0 h-16">

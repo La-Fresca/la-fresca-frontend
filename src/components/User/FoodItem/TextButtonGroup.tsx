@@ -6,7 +6,8 @@ interface Props {
   levels: string[];
   defaultPrice: number;
   prices: number[];
-  setPrice: (newPrice: number) => void;
+  setSelectedIndex: (index: number) => void;
+  adjustPrice: (priceDelta: number) => void;
 }
 
 export default function TextButtonGroup({
@@ -14,14 +15,26 @@ export default function TextButtonGroup({
   levels,
   defaultPrice,
   prices,
-  setPrice,
+  setSelectedIndex,
+  adjustPrice,
 }: Props) {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [localSelectedIndex, setLocalSelectedIndex] = useState<number | null>(
+    null,
+  );
 
-  const handleIncrement = (index: number) => {
-    setPrice(defaultPrice + prices[index]);
-    setSelectedIndex(index);
-    console.log(defaultPrice);
+  const handleSelect = (index: number) => {
+    if (localSelectedIndex === index) {
+      adjustPrice(-prices[index]);
+      setSelectedIndex(-1);
+      setLocalSelectedIndex(null);
+    } else {
+      if (localSelectedIndex !== null) {
+        adjustPrice(-prices[localSelectedIndex]);
+      }
+      adjustPrice(prices[index]);
+      setSelectedIndex(index);
+      setLocalSelectedIndex(index);
+    }
   };
 
   return (
@@ -39,7 +52,7 @@ export default function TextButtonGroup({
             buttonClass += ' rounded-r-lg';
           }
 
-          if (selectedIndex === index) {
+          if (localSelectedIndex === index) {
             buttonClass += ' bg-foodbg text-white';
           }
 
@@ -47,9 +60,9 @@ export default function TextButtonGroup({
             <Button
               key={index}
               className={buttonClass}
-              onClick={() => handleIncrement(index)}
+              onClick={() => handleSelect(index)}
             >
-              {level}({prices[index]})
+              {level}
             </Button>
           );
         })}

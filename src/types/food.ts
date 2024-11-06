@@ -1,9 +1,10 @@
 export type Food = {
-  id?: number;
+  id?: string;
   foodId?: string;
   name: string;
   description?: string;
   image: string;
+  cost?: number;
   price: number;
   available?: number;
   deleted?: number;
@@ -11,6 +12,6 @@ export type Food = {
   categories: string[];
   discountStatus?: string;
   discountId?: string;
-  rating?: number;
+  rating: number;
   features: { name: string; levels: string[]; additionalPrices: number[] }[];
 };

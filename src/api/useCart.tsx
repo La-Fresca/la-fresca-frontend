@@ -52,5 +52,23 @@ export const useCart = () => {
     }
   };
 
-  return { getCartByUserId, addCartItem };
+  const removeCartItem = async (cartId: string) => {
+    try {
+      const response = await fetch(`${API_URL}/cart/${cartId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to remove cart item');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
+  return { getCartByUserId, addCartItem, removeCartItem };
 };

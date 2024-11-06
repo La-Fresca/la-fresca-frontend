@@ -22,6 +22,8 @@ const FormSchema = z.object({
   supplierName: z.string().min(1, { message: 'Supplier Name is required' }),
   initialAmount: z.coerce.number().min(1, { message: 'Quantity is required' }),
   expiryDate: z.string().min(1, { message: 'Date is Required' }),
+  unitPrice: z.string().min(1, { message: 'Unit Price is Required' }),
+  cafeId: z.string().min(1, { message: 'Cafe id is Required' }),
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
@@ -44,13 +46,15 @@ function StockForm() {
     }
   }, [errors]);
 
+  console.log(inventory);
+
   const getInventory = async () => {
     try {
       const inventory = await getAllInventory();
       if (inventory) {
         const inventoryOptions = inventory.map((inventory: Inventory) => ({
           key: inventory.id,
-          label: inventory.name,
+          label: inventory.Name,
         }));
         setInventory(inventoryOptions);
       }
@@ -66,14 +70,16 @@ function StockForm() {
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
       await addStock(data);
-      Navigate('/storekeeper/stocks');
+      Navigate('/storekeeper/stock');
     } catch (error: any) {
       console.error(error);
     }
   };
+
   if (!inventory) {
     return <div>Loading...</div>;
   }
+  
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#000000]">
@@ -119,6 +125,7 @@ function StockForm() {
                   <p className="text-red-600 mb-1">{errors.batchId.message}</p>
                 )}
               </label>
+
               <label className="mb-6 block text-black dark:text-white">
                 <span className="block mb-1 text-gray-600">Initial Amount</span>
                 <input
@@ -128,6 +135,30 @@ function StockForm() {
                 />
                 {errors.initialAmount && (
                   <p className="text-red-600">{errors.initialAmount.message}</p>
+                )}
+              </label>
+
+              <label className="mb-6 block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">Unit Price</span>
+                <input
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
+                  type="number"
+                  {...register('unitPrice')}
+                />
+                {errors.unitPrice && (
+                  <p className="text-red-600">{errors.unitPrice.message}</p>
+                )}
+              </label>
+
+              <label className="mb-6 block text-black dark:text-white">
+                <input
+                  type="text"
+                  value="cafe1"
+                  hidden
+                  {...register('cafeId')}
+                />
+                {errors.cafeId && (
+                  <p className="text-red-600">{errors.cafeId.message}</p>
                 )}
               </label>
             </div>

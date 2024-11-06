@@ -1,6 +1,7 @@
-import Cookies from 'js-cookie';
-const API_URL = (import.meta as any).env.VITE_API_URL;
 import { FoodCombo } from '@/types/combo';
+import Cookies from 'js-cookie';
+
+const API_URL = (import.meta as any).env.VITE_API_URL;
 
 function getToken() {
   try {
@@ -14,7 +15,7 @@ function getToken() {
 export const useCombos = () => {
   const getAllCombos = async () => {
     try {
-      const response = await fetch(`${API_URL}/foodCombo`, {
+      const response = await fetch(`${API_URL}/foodCombo/getAll/cafe 1`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +93,7 @@ export const useCombos = () => {
 
   const deleteCombo = async (id: string) => {
     try {
-      const response = await fetch(`${API_URL}/foodCombo/${id}`, {
+      const response = await fetch(`${API_URL}/foodCombo/delete/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -100,9 +101,6 @@ export const useCombos = () => {
         },
         body: JSON.stringify({
           deleted: 1,
-          price: 0,
-          image: '',
-          available: 0,
         }),
       });
       if (!response.ok) {
