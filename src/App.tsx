@@ -80,6 +80,7 @@ import Inventory_TLM from '@/pages/TopLevelManager/Inventory';
 
 import AddFoods_TLM from './pages/TopLevelManager/Foods/AddFood';
 import AddCombos_TLM from './pages/TopLevelManager/FoodCombos/Add';
+import FoodList_TLM from './pages/TopLevelManager/Foods/index';
 
 import ViewInventory_TLM from './pages/TopLevelManager/Inventory/view';
 import ViewInventoryByName_TLM from './pages/TopLevelManager/Inventory/viewByName';
@@ -711,8 +712,8 @@ const routes = createRoutesFromElements(
             index
             element={
               <>
-                <PageTitle title="La Fresca | Food List" />
-                <FoodList />
+                <PageTitle title="La Fresca | Food Item List" />
+                <FoodList_TLM />
               </>
             }
           />
@@ -720,7 +721,7 @@ const routes = createRoutesFromElements(
             path="add"
             element={
               <>
-                <PageTitle title="Top Manager | Add Food" />
+                <PageTitle title="Top Manager | Add Food Item" />
                 <AddFoods_TLM />
               </>
             }
@@ -729,7 +730,7 @@ const routes = createRoutesFromElements(
             path="edit/:foodId"
             element={
               <>
-                <PageTitle title="Top Manager | Edit Food" />
+                <PageTitle title="Top Manager | Edit Food Item" />
                 <EditFoods />
               </>
             }
