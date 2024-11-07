@@ -33,6 +33,26 @@ export const useCombos = () => {
     }
   };
 
+  const getAllCombosForTLM = async () => {
+    try {
+      const response = await fetch(`${API_URL}/foodCombo/getAllForTLM`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch item');
+      } else {
+        return response.json();
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   const addCombo = async (data: FoodCombo) => {
     try {
       const response = await fetch(`${API_URL}/foodCombo`, {
@@ -91,6 +111,42 @@ export const useCombos = () => {
     }
   };
 
+  const approveCombo = async (id: string) => {
+    try {
+      const response = await fetch(`${API_URL}/foodCombo/approve/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Failed to approve food combo');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
+  const rejectCombo = async (id: string) => {
+    try {
+      const response = await fetch(`${API_URL}/foodCombo/reject/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Failed to reject food combo');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   const deleteCombo = async (id: string) => {
     try {
       const response = await fetch(`${API_URL}/foodCombo/delete/${id}`, {
@@ -137,5 +193,8 @@ export const useCombos = () => {
     updateCombo,
     deleteCombo,
     unsafeDeleteCombo,
+    getAllCombosForTLM,
+    approveCombo,
+    rejectCombo
   };
 };

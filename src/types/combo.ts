@@ -4,12 +4,12 @@ export type FoodCombo = {
   description?: string;
   price: number;
   image: string;
-  available: 0;
+  available?: number;
   cafeId: string;
-  deleted: 0;
   foodIds: string[];
   discountStatus?: string;
   discountId?: string;
   rating: number;
   foodNames?: string[];
+  status?: number;
 };

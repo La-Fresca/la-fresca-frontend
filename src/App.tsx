@@ -78,8 +78,8 @@ import EditBranch from './pages/TopLevelManager/Branches/EditBranch';
 import AddBranches from '@/pages/TopLevelManager/Branches/AddBranch';
 import Inventory_TLM from '@/pages/TopLevelManager/Inventory';
 
-import AddCombos_TLM from './pages/TopLevelManager/FoodCombos/Add';
 import FoodList_TLM from './pages/TopLevelManager/Foods/index';
+import ComboList_TLM from './pages/TopLevelManager/FoodCombos/index';
 
 import ViewInventory_TLM from './pages/TopLevelManager/Inventory/view';
 import ViewInventoryByName_TLM from './pages/TopLevelManager/Inventory/viewByName';
@@ -723,25 +723,7 @@ const routes = createRoutesFromElements(
             element={
               <>
                 <PageTitle title="Top Level Manager | Food Combos" />
-                <Combos />
-              </>
-            }
-          />
-          <Route
-            path="add"
-            element={
-              <>
-                <PageTitle title="Top Level Manager | Add Food Combo" />
-                <AddCombos_TLM />
-              </>
-            }
-          />
-          <Route
-            path="edit/:comboId"
-            element={
-              <>
-                <PageTitle title="Top Level Manager | Edit Food Combo" />
-                <EditCombos />
+                <ComboList_TLM />
               </>
             }
           />
