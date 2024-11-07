@@ -186,7 +186,7 @@ export default function App() {
         } else if (cellValue === 1) {
           return (
             <div className="dark:text-[#43ff39c5] dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full">
-              Aplicable
+              Applicable
             </div>
           );
         }
