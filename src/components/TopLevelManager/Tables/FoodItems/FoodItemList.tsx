@@ -46,7 +46,7 @@ export default function App() {
     try {
       const data = await getAllFoodsForTLM();
       setFood(data);
-      setLoading(false);
+      setLoading(true);
     } catch (error: any) {
       console.error(error);
     }
@@ -164,13 +164,13 @@ export default function App() {
       case 'available':
         if (cellValue === 0) {
           return (
-            <div className="text-[#ff0000] bg-[#ff000018] border border-[#ff000044] flex justify-center rounded-full">
+            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center w-[110px] rounded-full">
               Not Available
             </div>
           );
         } else if (cellValue === 1) {
           return (
-            <div className="dark:text-[#43ff39c5] dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full">
+            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center w-[80px] rounded-full">
               Available
             </div>
           );
@@ -179,13 +179,13 @@ export default function App() {
       case 'discountStatus':
         if (cellValue === 0) {
           return (
-            <div className="text-[orange] bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full">
-              N/A
+            <div className="text-warning bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full w-[120px]">
+              Not Applicable
             </div>
           );
         } else if (cellValue === 1) {
           return (
-            <div className="dark:text-[#43ff39c5] dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full">
+            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full w-[90px]">
               Applicable
             </div>
           );
@@ -194,19 +194,19 @@ export default function App() {
       case 'status':
         if (cellValue === 2) {
           return (
-            <div className="text-[orange] bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full">
+            <div className="text-warning bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full w-[80px]">
               Pending
             </div>
           );
         } else if (cellValue === 0) {
           return (
-            <div className="dark:text-[#43ff39c5] dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full">
+            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full w-[90px]">
               Approved
             </div>
           );
         } else if (cellValue === 3) {
           return (
-            <div className="text-[#ff2020] bg-[#ff000018] border border-[#ff000044] flex justify-center rounded-full">
+            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center rounded-full">
               Rejected
             </div>
           );
@@ -225,18 +225,66 @@ export default function App() {
         if (foodData.status === 2) {
           return (
             <div className="relative flex justify-center items-center gap-2">
-              <Button className="rounded-full dark:text-[#43ff39c5] dark:bg-[#00ff2213] border-2 dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] scale-90 min-w-[20px]" onClick={() => handleConfirmApprove(foodData.id)}>
-                <img src={checkIcon} className="w-[20px]" alt="" />
+              <Button
+                className="rounded-full dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] scale-90 min-w-[20px] max-h-[30px] px-1"
+                onClick={() => handleConfirmApprove(foodData.id)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m4.5 12.75 6 6 9-13.5"
+                  />
+                </svg>
               </Button>
-              <Button className="rounded-full text-[#ff1414] bg-[#ff000027] border-2 border-[#ff000078] scale-90 min-w-[5px]" onClick={() => handleConfirmReject(foodData.id)}>
-                <img src={crossIcon} className="w-[20px]" alt="" />
+              <Button
+                className="rounded-full text-danger bg-[#ff000027] border border-[#ff000078] scale-90 min-w-[20px] max-h-[30px] px-1"
+                onClick={() => handleConfirmReject(foodData.id)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
               </Button>
             </div>
           );
         } else if (foodData.status === 0) {
           return (
-            <Button className="rounded-full text-[#ff1414] bg-[#ff000027] border-2 border-[#ff000078] scale-90 min-w-[5px]" onClick={() => handleConfirmReject(foodData.id)}>
-              <img src={crossIcon} className="w-[20px]" alt="" />
+            <Button
+              className="rounded-full text-danger bg-[#ff000027] border border-[#ff000078] scale-90 min-w-[20px] max-h-[30px] px-1"
+              onClick={() => handleConfirmReject(foodData.id)}
+            >
+              <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
             </Button>
           );
         }
@@ -439,15 +487,7 @@ export default function App() {
         {(column) => (
           <TableColumn
             key={column.uid}
-            align={
-              column.uid === 'actions' ||
-              column.uid === 'discountStatus' ||
-              column.uid === 'available' ||
-              column.uid === 'price' ||
-              column.uid === 'status'
-                ? 'center'
-                : 'start'
-            }
+            align={column.uid === 'actions' ? 'center' : 'start'}
             allowsSorting={column.sortable}
             className="dark:bg-[#373737] translate-y-[-16px] bg-[#aaaaaa20] dark:text-white text-[#3a3a3a] h-[45px]"
           >

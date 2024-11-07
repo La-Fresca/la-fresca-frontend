@@ -35,7 +35,7 @@ export const useFoods = () => {
 
   const getAllFoodsForTLM = async () => {
     try {
-      const response = await fetch(`${API_URL}/foodItem/getAllForTLM/cafe 1`, {
+      const response = await fetch(`${API_URL}/foodItem/getAllForTLM`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
