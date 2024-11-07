@@ -25,7 +25,7 @@ import { capitalize } from './utils';
 import { Food } from '@/types/food';
 import { useFoods } from '@/api/useFoods';
 import checkIcon from '@images/icon/check.png';
-import crossIcon from '@images/icon/cross1.png';
+import crossIcon from '@images/icon/cross2.png';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 const INITIAL_VISIBLE_COLUMNS = [
