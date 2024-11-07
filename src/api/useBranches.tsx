@@ -52,9 +52,9 @@ export const useBranches = () => {
     }
   }; 
 
-  const getBranchStat = async () => {
+  const getBranchStat = async (id: string | undefined) => {
     try {
-      const response = await fetch(`${API_URL}/branch/branchStatistics/cafe 1`, {
+      const response = await fetch(`${API_URL}/branch/branchStatistics/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

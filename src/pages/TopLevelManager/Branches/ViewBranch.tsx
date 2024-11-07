@@ -15,32 +15,33 @@ import CardDataStats from '@components/TopLevelManager/CardDataStats';
 
 const Dashboard: React.FC = () => {
   const { branchId } = useParams<{ branchId: string }>();
-  const [branchStats, setCategories] = useState<BranchStat[]>([]);
+  const [branchStats, setBranchStats] = useState<BranchStat[]>([]);
   const { getBranchStat } = useBranches();
   const [loading, setLoading] = useState(true);
 
-  const fetchCategories = async () => {
+  const fetchBranchStats = async (id: string) => {
     try {
       setLoading(true);
-      const data = await getBranchStat();
-      setCategories(data);
-      setLoading(false);
+      const data = await getBranchStat(id);
+      setBranchStats(data);
     } catch (error: any) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  console.log(branchStats);
+    if (branchId) {
+      fetchBranchStats(branchId);
+    }
+  }, [branchId]);
 
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5 mt-10">
         <DropDown id={branchId} />
-        <CardDataStats title="Employees" total={branchStats.employeeCount}>
+        <CardDataStats title="Employees" total={loading ? "Loading..." : branchStats.employeeCount}>
           <svg
             // className="fill-primary dark:fill-white"
             width="22"
@@ -63,7 +64,7 @@ const Dashboard: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Menu Items" total={branchStats.menuItemCount}>
+        <CardDataStats title="Menu Items" total={loading ? "Loading..." : branchStats.menuItemCount}>
           <svg
             // className="fill-primary dark:fill-white"
             width="22"
@@ -82,7 +83,7 @@ const Dashboard: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Stock Collections" total={branchStats.stockCollectionCount}>
+        <CardDataStats title="Stock Collections" total={loading ? "Loading..." : branchStats.stockCollectionCount}>
           <svg
             // className="fill-primary"
             width="20"
