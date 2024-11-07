@@ -170,7 +170,7 @@ export default function App() {
           );
         } else if (cellValue === 1) {
           return (
-            <div className="text-[#43ff39c5] bg-[#00ff2213] border border-[#43ff3952] flex justify-center rounded-full">
+            <div className="dark:text-[#43ff39c5] dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full">
               Available
             </div>
           );
@@ -185,7 +185,7 @@ export default function App() {
           );
         } else if (cellValue === 1) {
           return (
-            <div className="text-[#43ff39c5] bg-[#00ff2213] border border-[#43ff3952] flex justify-center rounded-full">
+            <div className="dark:text-[#43ff39c5] dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full">
               Aplicable
             </div>
           );
@@ -200,7 +200,7 @@ export default function App() {
           );
         } else if (cellValue === 0) {
           return (
-            <div className="text-[#43ff39c5] bg-[#00ff2213] border border-[#43ff3952] flex justify-center rounded-full">
+            <div className="dark:text-[#43ff39c5] dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full">
               Approved
             </div>
           );
@@ -225,7 +225,7 @@ export default function App() {
         if (foodData.status === 2) {
           return (
             <div className="relative flex justify-center items-center gap-2">
-              <Button className="rounded-full text-[#43ff39c5] bg-[#00ff2213] border-2 border-[#43ff3952] scale-90 min-w-[20px]" onClick={() => handleConfirmApprove(foodData.id)}>
+              <Button className="rounded-full dark:text-[#43ff39c5] dark:bg-[#00ff2213] border-2 dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] scale-90 min-w-[20px]" onClick={() => handleConfirmApprove(foodData.id)}>
                 <img src={checkIcon} className="w-[20px]" alt="" />
               </Button>
               <Button className="rounded-full text-[#ff1414] bg-[#ff000027] border-2 border-[#ff000078] scale-90 min-w-[5px]" onClick={() => handleConfirmReject(foodData.id)}>

@@ -78,7 +78,6 @@ import EditBranch from './pages/TopLevelManager/Branches/EditBranch';
 import AddBranches from '@/pages/TopLevelManager/Branches/AddBranch';
 import Inventory_TLM from '@/pages/TopLevelManager/Inventory';
 
-import AddFoods_TLM from './pages/TopLevelManager/Foods/AddFood';
 import AddCombos_TLM from './pages/TopLevelManager/FoodCombos/Add';
 import FoodList_TLM from './pages/TopLevelManager/Foods/index';
 
@@ -636,7 +635,7 @@ const routes = createRoutesFromElements(
             index
             element={
               <>
-                <PageTitle title="Top Manager | Branch List" />
+                <PageTitle title="Top Level Manager | Branch List" />
                 <BranchList />
               </>
             }
@@ -645,7 +644,7 @@ const routes = createRoutesFromElements(
             path="add"
             element={
               <>
-                <PageTitle title="Top Manager | Add Branch " />
+                <PageTitle title="Top Level Manager | Add Branch " />
                 <AddBranches />
               </>
             }
@@ -654,7 +653,7 @@ const routes = createRoutesFromElements(
             path="edit/:branchId"
             element={
               <>
-                <PageTitle title="Top Manager | Edit Branch " />
+                <PageTitle title="Top Level Manager | Edit Branch " />
                 <EditBranch />
               </>
             }
@@ -663,7 +662,7 @@ const routes = createRoutesFromElements(
             path="view/:branchId"
             element={
               <>
-                <PageTitle title="Top Manager | View Branch" />
+                <PageTitle title="Top Level Manager | View Branch" />
                 <BranchDasboard_TLM />
               </>
             }
@@ -673,7 +672,7 @@ const routes = createRoutesFromElements(
           path="sales"
           element={
             <>
-              <PageTitle title="Top Manager | Sales" />
+              <PageTitle title="Top Level Manager | Sales" />
               <Sales />
             </>
           }
@@ -683,7 +682,7 @@ const routes = createRoutesFromElements(
             index
             element={
               <>
-                <PageTitle title="Top Manager | Food Categories" />
+                <PageTitle title="Top Level Manager | Food Categories" />
                 <ViewCategories />
               </>
             }
@@ -712,26 +711,8 @@ const routes = createRoutesFromElements(
             index
             element={
               <>
-                <PageTitle title="La Fresca | Food Item List" />
+                <PageTitle title="Top Level Manager | Food Item List" />
                 <FoodList_TLM />
-              </>
-            }
-          />
-          <Route
-            path="add"
-            element={
-              <>
-                <PageTitle title="Top Manager | Add Food Item" />
-                <AddFoods_TLM />
-              </>
-            }
-          />
-          <Route
-            path="edit/:foodId"
-            element={
-              <>
-                <PageTitle title="Top Manager | Edit Food Item" />
-                <EditFoods />
               </>
             }
           />
@@ -741,7 +722,7 @@ const routes = createRoutesFromElements(
             index
             element={
               <>
-                <PageTitle title="Top Manager | Food Combos" />
+                <PageTitle title="Top Level Manager | Food Combos" />
                 <Combos />
               </>
             }
@@ -750,7 +731,7 @@ const routes = createRoutesFromElements(
             path="add"
             element={
               <>
-                <PageTitle title="Top Manager | Add Food Combo" />
+                <PageTitle title="Top Level Manager | Add Food Combo" />
                 <AddCombos_TLM />
               </>
             }
@@ -759,7 +740,7 @@ const routes = createRoutesFromElements(
             path="edit/:comboId"
             element={
               <>
-                <PageTitle title="Top Manager | Edit Food Combo" />
+                <PageTitle title="Top Level Manager | Edit Food Combo" />
                 <EditCombos />
               </>
             }
@@ -770,7 +751,7 @@ const routes = createRoutesFromElements(
             index
             element={
               <>
-                <PageTitle title="Top Manager | Users" />
+                <PageTitle title="Top Level Manager | Users" />
                 <User />
               </>
             }
@@ -779,7 +760,7 @@ const routes = createRoutesFromElements(
             path="add"
             element={
               <>
-                <PageTitle title="Top Manager | Add User" />
+                <PageTitle title="Top Level Manager | Add User" />
                 <UserAdd />
               </>
             }
@@ -788,7 +769,7 @@ const routes = createRoutesFromElements(
             path="edit/:userId"
             element={
               <>
-                <PageTitle title="Top Manager | Edit User" />
+                <PageTitle title="Top Level Manager | Edit User" />
                 <UserEdit />
               </>
             }
@@ -799,7 +780,7 @@ const routes = createRoutesFromElements(
             index
             element={
               <>
-                <PageTitle title="Top Manager | Inventory" />
+                <PageTitle title="Top Level Manager | Inventory" />
                 <Inventory_TLM />
               </>
             }
@@ -808,7 +789,7 @@ const routes = createRoutesFromElements(
             path="view"
             element={
               <>
-                <PageTitle title="Top Manager | View Inventory" />
+                <PageTitle title="Top Level Manager | View Inventory" />
                 <ViewInventory_TLM />
               </>
             }
@@ -817,7 +798,7 @@ const routes = createRoutesFromElements(
             path="viewCollections/:collection"
             element={
               <>
-                <PageTitle title="Top Manager | View Inventory By Name" />
+                <PageTitle title="Top Level Manager | View Inventory By Name" />
                 <ViewInventoryByName_TLM />
               </>
             }
@@ -828,7 +809,7 @@ const routes = createRoutesFromElements(
             index
             element={
               <>
-                <PageTitle title="Top Manager | Stock" />
+                <PageTitle title="Top Level Manager | Stock" />
                 <StockBranchList_TLM />
               </>
             }
@@ -837,7 +818,7 @@ const routes = createRoutesFromElements(
             path="view"
             element={
               <>
-                <PageTitle title="Top Manager | View Stock" />
+                <PageTitle title="Top Level Manager | View Stock" />
                 <Stock_TLM />
               </>
             }
@@ -846,7 +827,7 @@ const routes = createRoutesFromElements(
             path="viewCollections/:collection"
             element={
               <>
-                <PageTitle title="Top Manager | View Inventory By Name" />
+                <PageTitle title="Top Level Manager | View Inventory By Name" />
                 <ViewInventoryByName_TLM />
               </>
             }
@@ -856,7 +837,7 @@ const routes = createRoutesFromElements(
           path="discountlist"
           element={
             <>
-              <PageTitle title="Top Manager | Discount List" />
+              <PageTitle title="Top Level Manager | Discount List" />
               <DiscountList />
             </>
           }
