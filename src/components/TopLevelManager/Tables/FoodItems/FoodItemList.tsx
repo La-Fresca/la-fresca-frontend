@@ -24,9 +24,10 @@ import {
 import { capitalize } from './utils';
 import { Food } from '@/types/food';
 import { useFoods } from '@/api/useFoods';
-import checkIcon from '@images/icon/check.png';
-import crossIcon from '@images/icon/cross2.png';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
+
+import { Branch } from '@/types/branch';
+import { useBranches } from '@/api/useBranches';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'name',
@@ -40,6 +41,10 @@ export default function App() {
   const { showSwalApprove, showSwalReject } = swalConfirm();
   const [food, setFood] = useState<Food[]>([]);
   const { getAllFoodsForTLM, approveFood, rejectFood } = useFoods();
+
+  const [branches, setBranch] = useState<Branch[]>([]);
+  const { getAllBranches } = useBranches();
+
   const [loading, setLoading] = React.useState(true);
 
   const fetchFood = async () => {
@@ -52,9 +57,36 @@ export default function App() {
     }
   };
 
+  const fetchBranch = async () => {
+    try {
+      const data = await getAllBranches();
+      setBranch(data);
+      setLoading(false);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     fetchFood();
+    fetchBranch();
   }, []);
+
+  const additionalBranches = [
+    { name: "Branch 3", id: "cafe 1" },
+    { name: "Branch 4", id: "cafe1" }
+  ];
+  
+  const branchOptions = branches.map((branch) => ({
+    name: branch.name,
+    uid: branch.id
+  })).concat(additionalBranches.map((branch) => ({
+    name: branch.name,
+    uid: branch.id
+  })));
+  
+
+  console.log(branchOptions);
 
   // Approve food item
   const handleApproveFood = async (id: string) => {
@@ -91,6 +123,7 @@ export default function App() {
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
   const [statusFilter, setStatusFilter] = React.useState('all');
+  const [branchFilter, setBranchFilter] = React.useState('all');
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
     direction: 'ascending',
@@ -122,8 +155,16 @@ export default function App() {
         Array.from(statusFilter).includes(foodData.status),
       );
     }
+    if (
+      branchFilter !== 'all' &&
+      Array.from(branchFilter).length !== branchOptions.length
+    ) {
+      filteredfood = filteredfood.filter((foodData) =>
+        Array.from(branchFilter).includes(foodData.cafeId),
+      );
+    }
     return filteredfood;
-  }, [food, filterValue, statusFilter]);
+  }, [food, filterValue, statusFilter, branchFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -340,6 +381,36 @@ export default function App() {
           />
           <div className="flex gap-3">
             <Dropdown>
+            <DropdownTrigger className="hidden sm:flex">
+                <Button
+                  endContent={<ChevronDownIcon className="text-small" />}
+                  variant="flat"
+                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
+                >
+                  Branch
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                aria-label="Table Columns"
+                closeOnSelect={false}
+                selectedKeys={branchFilter}
+                selectionMode="multiple"
+                onSelectionChange={setBranchFilter}
+                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
+              >
+                {branchOptions.map((status) => (
+                  <DropdownItem
+                    key={status.uid}
+                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
+                  >
+                    {capitalize(status.name)}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+
+            <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
@@ -368,6 +439,7 @@ export default function App() {
                 ))}
               </DropdownMenu>
             </Dropdown>
+
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -424,6 +496,7 @@ export default function App() {
   }, [
     filterValue,
     statusFilter,
+    branchFilter,
     visibleColumns,
     onRowsPerPageChange,
     food.length,
