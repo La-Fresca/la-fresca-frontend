@@ -9,7 +9,7 @@ const columns = [
 
 const statusOptions = [
   {name: "Open", uid: "OPEN"},
-  {name: "Close", uid: "CLOSE"},
+  {name: "Closed", uid: "CLOSED"},
 ];
 
 export {columns, statusOptions};

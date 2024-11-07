@@ -33,7 +33,7 @@ import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 const statusColorMap = {
   OPEN: 'success',
-  CLOSE: 'danger',
+  CLOSED: 'danger',
 };
 
 const INITIAL_VISIBLE_COLUMNS = [

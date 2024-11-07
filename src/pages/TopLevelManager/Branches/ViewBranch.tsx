@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import ChartThree from '@components/TopLevelManager/Charts/ChartThree';
 import ChartFour from '@/components/TopLevelManager/Charts/ChartFour';
 import ChartFive from '@/components/TopLevelManager/Charts/ChartFive';
 import TableOne from '@/components/TopLevelManager/Tables/TableOne';
 import ChartSix from '@/components/TopLevelManager/Charts/ChartSix';
+
+import { BranchStat } from '@/types/branchStat';
+import { useBranches } from '@/api/useBranches';
 
 import DropDown from '@/components/TopLevelManager/BranchDropdown';
 import { useParams } from 'react-router-dom';
@@ -12,11 +15,33 @@ import CardDataStats from '@components/TopLevelManager/CardDataStats';
 
 const Dashboard: React.FC = () => {
   const { branchId } = useParams<{ branchId: string }>();
+  const [branchStats, setBranchStats] = useState<BranchStat[]>([]);
+  const { getBranchStat } = useBranches();
+  const [loading, setLoading] = useState(true);
+
+  const fetchBranchStats = async (id: string) => {
+    try {
+      setLoading(true);
+      const data = await getBranchStat(id);
+      setBranchStats(data);
+    } catch (error: any) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (branchId) {
+      fetchBranchStats(branchId);
+    }
+  }, [branchId]);
+
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5 mt-10">
         <DropDown id={branchId} />
-        <CardDataStats title="Employees" total="6">
+        <CardDataStats title="Employees" total={loading ? "Loading..." : branchStats.employeeCount}>
           <svg
             // className="fill-primary dark:fill-white"
             width="22"
@@ -39,7 +64,7 @@ const Dashboard: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Menu Items" total="50">
+        <CardDataStats title="Menu Items" total={loading ? "Loading..." : branchStats.menuItemCount}>
           <svg
             // className="fill-primary dark:fill-white"
             width="22"
@@ -58,7 +83,7 @@ const Dashboard: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Stock Collections" total="20">
+        <CardDataStats title="Stock Collections" total={loading ? "Loading..." : branchStats.stockCollectionCount}>
           <svg
             // className="fill-primary"
             width="20"

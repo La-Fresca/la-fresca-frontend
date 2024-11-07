@@ -51,6 +51,26 @@ export const useBranches = () => {
       throw new Error(error);
     }
   }; 
+
+  const getBranchStat = async (id: string | undefined) => {
+    try {
+      const response = await fetch(`${API_URL}/branch/branchStatistics/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch item');
+      } else {
+        return response.json();
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  }; 
   
   const addBranch = async (data: Branch) => {
     try {
@@ -137,6 +157,7 @@ export const useBranches = () => {
     updateBranch,
     getBranchById,
     deleteBranch,
-    getAvailableBranchManagers
+    getAvailableBranchManagers,
+    getBranchStat
   };
 };

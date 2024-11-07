@@ -24,9 +24,10 @@ import {
 import { capitalize } from './utils';
 import { Food } from '@/types/food';
 import { useFoods } from '@/api/useFoods';
-import checkIcon from '@images/icon/check.png';
-import crossIcon from '@images/icon/cross2.png';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
+
+import { Branch } from '@/types/branch';
+import { useBranches } from '@/api/useBranches';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'name',
@@ -40,12 +41,26 @@ export default function App() {
   const { showSwalApprove, showSwalReject } = swalConfirm();
   const [food, setFood] = useState<Food[]>([]);
   const { getAllFoodsForTLM, approveFood, rejectFood } = useFoods();
+
+  const [branches, setBranch] = useState<Branch[]>([]);
+  const { getAllBranches } = useBranches();
+
   const [loading, setLoading] = React.useState(true);
 
   const fetchFood = async () => {
     try {
       const data = await getAllFoodsForTLM();
       setFood(data);
+      setLoading(true);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  const fetchBranch = async () => {
+    try {
+      const data = await getAllBranches();
+      setBranch(data);
       setLoading(false);
     } catch (error: any) {
       console.error(error);
@@ -54,7 +69,24 @@ export default function App() {
 
   useEffect(() => {
     fetchFood();
+    fetchBranch();
   }, []);
+
+  const additionalBranches = [
+    { name: "Branch 3", id: "cafe 1" },
+    { name: "Branch 4", id: "cafe1" }
+  ];
+  
+  const branchOptions = branches.map((branch) => ({
+    name: branch.name,
+    uid: branch.id
+  })).concat(additionalBranches.map((branch) => ({
+    name: branch.name,
+    uid: branch.id
+  })));
+  
+
+  console.log(branchOptions);
 
   // Approve food item
   const handleApproveFood = async (id: string) => {
@@ -91,6 +123,7 @@ export default function App() {
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
   const [statusFilter, setStatusFilter] = React.useState('all');
+  const [branchFilter, setBranchFilter] = React.useState('all');
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
     direction: 'ascending',
@@ -122,8 +155,16 @@ export default function App() {
         Array.from(statusFilter).includes(foodData.status),
       );
     }
+    if (
+      branchFilter !== 'all' &&
+      Array.from(branchFilter).length !== branchOptions.length
+    ) {
+      filteredfood = filteredfood.filter((foodData) =>
+        Array.from(branchFilter).includes(foodData.cafeId),
+      );
+    }
     return filteredfood;
-  }, [food, filterValue, statusFilter]);
+  }, [food, filterValue, statusFilter, branchFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -164,13 +205,13 @@ export default function App() {
       case 'available':
         if (cellValue === 0) {
           return (
-            <div className="text-[#ff0000] bg-[#ff000018] border border-[#ff000044] flex justify-center rounded-full">
+            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center w-[110px] rounded-full">
               Not Available
             </div>
           );
         } else if (cellValue === 1) {
           return (
-            <div className="dark:text-[#43ff39c5] dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full">
+            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center w-[80px] rounded-full">
               Available
             </div>
           );
@@ -179,14 +220,14 @@ export default function App() {
       case 'discountStatus':
         if (cellValue === 0) {
           return (
-            <div className="text-[orange] bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full">
-              N/A
+            <div className="text-warning bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full w-[120px]">
+              Not Applicable
             </div>
           );
         } else if (cellValue === 1) {
           return (
-            <div className="dark:text-[#43ff39c5] dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full">
-              Aplicable
+            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full w-[90px]">
+              Applicable
             </div>
           );
         }
@@ -194,19 +235,19 @@ export default function App() {
       case 'status':
         if (cellValue === 2) {
           return (
-            <div className="text-[orange] bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full">
+            <div className="text-warning bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full w-[80px]">
               Pending
             </div>
           );
         } else if (cellValue === 0) {
           return (
-            <div className="dark:text-[#43ff39c5] dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full">
+            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full w-[90px]">
               Approved
             </div>
           );
         } else if (cellValue === 3) {
           return (
-            <div className="text-[#ff2020] bg-[#ff000018] border border-[#ff000044] flex justify-center rounded-full">
+            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center rounded-full">
               Rejected
             </div>
           );
@@ -225,18 +266,66 @@ export default function App() {
         if (foodData.status === 2) {
           return (
             <div className="relative flex justify-center items-center gap-2">
-              <Button className="rounded-full dark:text-[#43ff39c5] dark:bg-[#00ff2213] border-2 dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] scale-90 min-w-[20px]" onClick={() => handleConfirmApprove(foodData.id)}>
-                <img src={checkIcon} className="w-[20px]" alt="" />
+              <Button
+                className="rounded-full dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] scale-90 min-w-[20px] max-h-[30px] px-1"
+                onClick={() => handleConfirmApprove(foodData.id)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m4.5 12.75 6 6 9-13.5"
+                  />
+                </svg>
               </Button>
-              <Button className="rounded-full text-[#ff1414] bg-[#ff000027] border-2 border-[#ff000078] scale-90 min-w-[5px]" onClick={() => handleConfirmReject(foodData.id)}>
-                <img src={crossIcon} className="w-[20px]" alt="" />
+              <Button
+                className="rounded-full text-danger bg-[#ff000027] border border-[#ff000078] scale-90 min-w-[20px] max-h-[30px] px-1"
+                onClick={() => handleConfirmReject(foodData.id)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
               </Button>
             </div>
           );
         } else if (foodData.status === 0) {
           return (
-            <Button className="rounded-full text-[#ff1414] bg-[#ff000027] border-2 border-[#ff000078] scale-90 min-w-[5px]" onClick={() => handleConfirmReject(foodData.id)}>
-              <img src={crossIcon} className="w-[20px]" alt="" />
+            <Button
+              className="rounded-full text-danger bg-[#ff000027] border border-[#ff000078] scale-90 min-w-[20px] max-h-[30px] px-1"
+              onClick={() => handleConfirmReject(foodData.id)}
+            >
+              <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
             </Button>
           );
         }
@@ -292,6 +381,36 @@ export default function App() {
           />
           <div className="flex gap-3">
             <Dropdown>
+            <DropdownTrigger className="hidden sm:flex">
+                <Button
+                  endContent={<ChevronDownIcon className="text-small" />}
+                  variant="flat"
+                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
+                >
+                  Branch
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                aria-label="Table Columns"
+                closeOnSelect={false}
+                selectedKeys={branchFilter}
+                selectionMode="multiple"
+                onSelectionChange={setBranchFilter}
+                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
+              >
+                {branchOptions.map((status) => (
+                  <DropdownItem
+                    key={status.uid}
+                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
+                  >
+                    {capitalize(status.name)}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+
+            <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
@@ -320,6 +439,7 @@ export default function App() {
                 ))}
               </DropdownMenu>
             </Dropdown>
+
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -376,6 +496,7 @@ export default function App() {
   }, [
     filterValue,
     statusFilter,
+    branchFilter,
     visibleColumns,
     onRowsPerPageChange,
     food.length,
@@ -439,15 +560,7 @@ export default function App() {
         {(column) => (
           <TableColumn
             key={column.uid}
-            align={
-              column.uid === 'actions' ||
-              column.uid === 'discountStatus' ||
-              column.uid === 'available' ||
-              column.uid === 'price' ||
-              column.uid === 'status'
-                ? 'center'
-                : 'start'
-            }
+            align={column.uid === 'actions' ? 'center' : 'start'}
             allowsSorting={column.sortable}
             className="dark:bg-[#373737] translate-y-[-16px] bg-[#aaaaaa20] dark:text-white text-[#3a3a3a] h-[45px]"
           >
