@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 import { useBranches } from '@/api/useBranches';
-import { Branch } from '@/types/branch';
+import { User } from '@/types/user';
 import MultiSelect from '@components/Storekeeper/Forms/MultiCheckBox';
 
 type CollectionPicker = {
@@ -16,7 +16,9 @@ type CollectionPicker = {
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Branch Name is required' }),
   address: z.string().min(1, { message: 'Address is required' }),
-  branchManager: z.string().min(1, { message: 'Branch Manager Name is required' }),
+  branchManager: z
+    .string()
+    .min(1, { message: 'Branch Manager Name is required' }),
   contactNo: z.string().min(1, { message: 'Contact number is required' }),
   longitude: z.coerce.number().min(1, { message: 'Longitude is Required' }),
   latitude: z.coerce.number().min(1, { message: 'Latitude is Required' }),
@@ -26,7 +28,7 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 
 function BranchForm() {
   const { addBranch } = useBranches();
-  const { getAllBranches } = useBranches();
+  const { getAvailableBranchManagers } = useBranches();
   const [Branch, setBranch] = useState<CollectionPicker[]>([]);
   const Navigate = useNavigate();
   const { register, handleSubmit, formState, setValue } =
@@ -42,17 +44,19 @@ function BranchForm() {
     }
   }, [errors]);
 
-  console.log(Branch);
-
   const getBranch = async () => {
     try {
-      const Branch = await getAllBranches();
-      if (Branch) {
-        const BranchOptions = Branch.map((Branch: Branch) => ({
-          key: Branch.id,
-          label: Branch.address,
-        }));
-        setBranch(BranchOptions);
+      const branchManagers = await getAvailableBranchManagers();
+
+      console.log(branchManagers);
+      if (branchManagers) {
+        const BranchManagerOptions = branchManagers.map(
+          (branchManagers: User) => ({
+            key: branchManagers.id,
+            label: branchManagers.firstName + ' ' + branchManagers.lastName,
+          }),
+        );
+        setBranch(BranchManagerOptions);
       }
     } catch (error: any) {
       console.error(error);
@@ -75,7 +79,7 @@ function BranchForm() {
   if (!Branch) {
     return <div>Loading...</div>;
   }
-  
+
   return (
     <div className="flex flex-col gap-4">
       <div className="rounded-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-[#000000]">
@@ -130,6 +134,26 @@ function BranchForm() {
               </label>
 
               <label className="mb-3 block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">Branch Manager</span>
+                <select
+                  {...register('branchManager')}
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:text-white dark:focus:border-primary"
+                >
+                  <option hidden value="">Select a branch manager</option>
+                  {Branch.map((manager) => (
+                    <option key={manager.key} value={manager.key} className='dark:bg-black bg-white dark:text-white text-black hover:bg-foodbg border border-black'>
+                      {manager.label}
+                    </option>
+                  ))}
+                </select>
+                {errors.branchManager && (
+                  <p className="text-red-600 mb-1">
+                    {errors.branchManager.message}
+                  </p>
+                )}
+              </label>
+
+              {/* <label className="mb-3 block text-black dark:text-white">
                 <span className="block mb-1 text-gray-600">
                   Branch manager
                 </span>
@@ -144,7 +168,7 @@ function BranchForm() {
                     {errors.branchManager.message}
                   </p>
                 )}
-              </label>
+              </label> */}
             </div>
           </div>
           <div className="w-full md:w-4/7 flex p-6.5">
@@ -181,7 +205,7 @@ function BranchForm() {
                   className="flex w-full justify-center rounded-lg bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg min-w-0 h-16"
                   type="submit"
                 >
-                  Add Stock
+                  Add Branch
                 </Button>
               </div>
             </div>

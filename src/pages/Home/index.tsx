@@ -6,6 +6,10 @@ import chefImg from '@/images/Landing/chef.png';
 import Gallery from '@/components/Landing/Gallery';
 import Menus from '@/components/Landing/Menus';
 import { ReadMore } from '@/components/User/NavbarHome/readMore';
+import { Link } from 'react-router-dom';
+import FB from '@images/footer/FB.svg';
+import IG from '@images/footer/IG.svg';
+import X from '@images/footer/X.svg';
 
 const HomePage: React.FC = () => {
   const [isLightMode, setIsLightMode] = useState(true); // Local state for light/dark mode
@@ -96,9 +100,38 @@ const HomePage: React.FC = () => {
       </Container>
 
       <Container>
-        <div className="flex bg-[red] w-[100vw] h-[200px] absolute left-0">
-          <div className="bg-[green] w-[30vw]"></div>
-          <div className="bg-[blue] w-[70vw]"></div>
+        <div className="grid bg-[black] w-[100vw] h-[350px] absolute left-0">
+          <div className="flex text-[#e3e3e3]">
+            <div className="w-[30vw] grid justify-center m-auto bg-[black] leading-loose">
+              <div className="text-5xl font-black">GET IN TOUCH</div>
+              <div className="mt-4">Phone: 0123456789</div>
+              <div>
+                or <Link to="">send us an email</Link>
+              </div>
+              <div className="flex mt-4">
+                <div className="rounded-full h-[35px] w-[35px] bg-foodbg flex justify-center items-center mx-1">
+                  <img className="w-[20px] h-[20px]" src={FB} alt="" />
+                </div>
+                <div className="rounded-full h-[35px] w-[35px] bg-foodbg flex justify-center items-center mx-1">
+                  <img className="w-[20px] h-[20px]" src={IG} alt="" />
+                </div>
+                <div className="rounded-full h-[35px] w-[35px] bg-foodbg flex justify-center items-center mx-1">
+                  <img className="w-[20px] h-[20px]" src={X} alt="" />
+                </div>
+              </div>
+            </div>
+            <div className="w-[70vw] bg-[url('@images/footer/footer.jpg')] bg-no-repeat bg-cover bg-center">
+              <div className="bg-gradient-to-r from-[black] to-[#00000084] w-[100%] h-[100%] pt-[85px] pl-[200px]">
+                <div className="text-5xl font-black">WE'RE HIRING!</div>
+                <div className="mt-4">
+                  Want a job?{' '}
+                  <Link to="mailto:" className="italic underline text-warning">
+                    Email your CV
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         {/* <div className="flex items-center justify-center w-full lg:w-1/2 mb-5 lg:mb-0">
       <img src={ContactUs} alt="contact us" width={450} height={450} className="w-full max-w-xs sm:max-w-md lg:max-w-lg" />

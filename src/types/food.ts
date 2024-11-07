@@ -7,7 +7,7 @@ export type Food = {
   cost?: number;
   price: number;
   available?: number;
-  deleted?: number;
+  status?: number;
   cafeId: string;
   categories: string[];
   discountStatus?: string;

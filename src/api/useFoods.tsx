@@ -33,6 +33,26 @@ export const useFoods = () => {
     }
   };
 
+  const getAllFoodsForTLM = async () => {
+    try {
+      const response = await fetch(`${API_URL}/foodItem/getAllForTLM/cafe 1`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch item');
+      } else {
+        return response.json();
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   const addFood = async (data: Food) => {
     try {
       const response = await fetch(`${API_URL}/foodItem`, {
@@ -91,6 +111,42 @@ export const useFoods = () => {
     }
   };
 
+  const approveFood = async (id: string) => {
+    try {
+      const response = await fetch(`${API_URL}/foodItem/approve/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Failed to approve food');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
+  const rejectFood = async (id: string) => {
+    try {
+      const response = await fetch(`${API_URL}/foodItem/reject/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Failed to reject food');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   const deleteFood = async (id: string) => {
     try {
       const response = await fetch(`${API_URL}/foodItem/delete/${id}`, {
@@ -112,5 +168,14 @@ export const useFoods = () => {
     }
   };
 
-  return { getAllFoods, addFood, getFoodById, updateFood, deleteFood };
+  return {
+    getAllFoods,
+    addFood,
+    getFoodById,
+    updateFood,
+    deleteFood,
+    getAllFoodsForTLM,
+    approveFood,
+    rejectFood,
+  };
 };
