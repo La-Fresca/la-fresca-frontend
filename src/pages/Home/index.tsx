@@ -20,12 +20,12 @@ const HomePage: React.FC = () => {
 
   return (
     <>
-      <button
+      {/* <button
         onClick={toggleMode}
         className="fixed top-5 right-5 px-4 py-2 bg-blue-500 text-white rounded"
       >
         Toggle {isLightMode ? 'Dark' : 'Light'} Mode
-      </button>
+      </button> */}
 
       <Container className={`flex flex-wrap p-5 md:p-10`}>
         <div className="flex items-center w-full lg:w-1/2 mb-5 lg:mb-0">
