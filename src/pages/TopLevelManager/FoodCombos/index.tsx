@@ -1,13 +1,13 @@
-import ComboList from '@/components/BranchManager/Tables/NextTable/ComboList';
+import CombosList from '@/components/TopLevelManager/Tables/FoodCombos/FoodComboList';
 
-const Combos: React.FC = () => {
+const ComboList: React.FC = () => {
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-1 md:gap-6 xl:grid-cols-1 2xl:gap-7.5">
-        <ComboList />
+        <CombosList />
       </div>
     </>
   );
 };
 
-export default Combos;
+export default ComboList;
