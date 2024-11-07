@@ -4,7 +4,6 @@ const columns = [
   {name: "Price", uid: "price", sortable: true},
   {name: "Availability", uid: "available", sortable: true},
   {name: "Discount", uid: "discountStatus"},
-  {name: "Features", uid: "features", sortable: true},
   {name: "Status", uid: "status", sortable: true},
   {name: "Actions", uid: "actions"}
 ];
