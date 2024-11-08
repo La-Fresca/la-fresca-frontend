@@ -203,6 +203,12 @@ export default function App() {
             </div>
           </div>
         );
+        case 'price':
+        return (
+          <div className="flex items-center">
+            Rs. {cellValue}
+          </div>
+        );
       case 'available':
         if (cellValue === 0) {
           return (

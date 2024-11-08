@@ -73,20 +73,23 @@ export default function App() {
   }, []);
 
   const additionalBranches = [
-    { name: "Branch 3", id: "cafe 1" },
-    { name: "Branch 4", id: "cafe1" }
+    { name: 'Branch 3', id: 'cafe 1' },
+    { name: 'Branch 4', id: 'cafe1' },
   ];
-  
-  const branchOptions = branches.map((branch) => ({
-    name: branch.name,
-    uid: branch.id
-  })).concat(additionalBranches.map((branch) => ({
-    name: branch.name,
-    uid: branch.id
-  })));
-  
 
-  console.log(branchOptions);
+  const branchOptions = branches
+    .map((branch) => ({
+      name: branch.name,
+      uid: branch.id,
+    }))
+    .concat(
+      additionalBranches.map((branch) => ({
+        name: branch.name,
+        uid: branch.id,
+      })),
+    );
+
+    console.log(food);
 
   // Approve food item
   const handleApproveFood = async (id: string) => {
@@ -152,7 +155,7 @@ export default function App() {
       Array.from(statusFilter).length !== statusOptions.length
     ) {
       filteredfood = filteredfood.filter((foodData) =>
-        Array.from(statusFilter).includes(foodData.status),
+        Array.from(statusFilter).includes(foodData.status.toString()),
       );
     }
     if (
@@ -313,19 +316,19 @@ export default function App() {
               onClick={() => handleConfirmReject(foodData.id)}
             >
               <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18 18 6M6 6l12 12"
-                  />
-                </svg>
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                />
+              </svg>
             </Button>
           );
         }
@@ -381,7 +384,7 @@ export default function App() {
           />
           <div className="flex gap-3">
             <Dropdown>
-            <DropdownTrigger className="hidden sm:flex">
+              <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
