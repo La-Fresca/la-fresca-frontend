@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '@images/logo/la-fresca.png';
+import InventoryIcon from '@images/icon/inventory.png';
+import InventoryIconWhite from '@images/icon/inventory-white.png';
+import StockIcon from '@images/icon/stock.png';
+import StockIconWhite from '@images/icon/stock-white.png';
 import { Bars3Icon } from '@heroicons/react/24/outline';
-import { Squares2X2Icon } from '@heroicons/react/24/outline';
+
 import {
   ChartBarSquareIcon,
   FolderPlusIcon,
@@ -108,7 +112,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <InboxStackIcon className="w-6 h-6" />
+                  <img src={InventoryIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={InventoryIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
                   Inventory
                 </NavLink>
               </li>
@@ -120,8 +125,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <FolderPlusIcon className="w-6 h-6" />
-                  Stock
+                  <img src={StockIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={StockIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  Stocks
                 </NavLink>
               </li>
 
