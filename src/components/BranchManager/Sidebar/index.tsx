@@ -10,6 +10,12 @@ import BurgerFriesIcon from '@images/icon/burger-fries.png';
 import BurgerFriesIconWhite from '@images/icon/burger-fries-white.png';
 import DiscountIcon from '@images/icon/discount.png';
 import DiscountIconWhite from '@images/icon/discount-white.png';
+import InventoryIcon from '@images/icon/inventory.png';
+import InventoryIconWhite from '@images/icon/inventory-white.png';
+import StockIcon from '@images/icon/stock.png';
+import StockIconWhite from '@images/icon/stock-white.png';
+import ComplaintIcon from '@images/icon/complaint.png';
+import ComplaintIconWhite from '@images/icon/complaint-white.png';
 import { Bars3Icon, UserIcon, TagIcon } from '@heroicons/react/24/outline';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
 
@@ -151,7 +157,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   <img src={BurgerIcon} alt="" className="w-6 h-6 dark:hidden block" />
                   <img src={BurgerIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
-                  Foods
+                  Food Items
                 </NavLink>
               </li>
               <li>
@@ -182,6 +188,45 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <NavLink
+                  to="/branch-manager/foods"
+                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    pathname.includes('/branch-manager/foods') &&
+                    'bg-yellow-100 dark:bg-meta-4'
+                  }`}
+                >
+                  <img src={InventoryIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={InventoryIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  Inventory
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/branch-manager/food-combos"
+                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    pathname.includes('/branch-manager/food-combos') &&
+                    'bg-yellow-100 dark:bg-meta-4'
+                  }`}
+                >
+                  <img src={StockIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={StockIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  Stocks
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/branch-manager/discountlist"
+                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    pathname.includes('/branch-manager/discountlist') &&
+                    'bg-yellow-100 dark:bg-meta-4'
+                  }`}
+                >
+                  <img src={ComplaintIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={ComplaintIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  Complaints
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
                   to="/branch-manager/users"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
                     pathname.includes('/branch-manager/users') &&
@@ -192,74 +237,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Manage Users
                 </NavLink>
               </li>
-              {/* <SidebarLinkGroup
-                activeCondition={
-                  pathname === '/branch-manager/forms' ||
-                  pathname.includes('/branch-manager/forms')
-                }
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <NavLink
-                        to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                          (pathname === '/branch-manager/forms' ||
-                            pathname.includes('forms')) &&
-                          'bg-yellow-100 dark:bg-meta-4'
-                        }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
-                        }}
-                      >
-                        <QueueListIcon className="w-6 h-6" />
-                        Forms
-                        <span className="ml-auto">
-                          {open ? (
-                            <ChevronUpIcon className="w-4 h-4" />
-                          ) : (
-                            <ChevronDownIcon className="w-4 h-4" />
-                          )}
-                        </span>
-                      </NavLink>
-                      
-                      <div
-                        className={`translate transform overflow-hidden ${
-                          !open && 'hidden'
-                        }`}
-                      >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                          <li>
-                            <NavLink
-                              to="/branch-manager/forms/form-elements"
-                              className={({ isActive }) =>
-                                'group relative flex items-center h-10 gap-2.5 rounded-lg px-4 font-medium hover:bg-yellow-100 hover:dark:bg-meta-4 text-black dark:text-white duration-300 ease-in-out' +
-                                isActive
-                              }
-                            >
-                              Form Elements
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/branch-manager/forms/form-layout"
-                              className={({ isActive }) =>
-                                'group relative flex items-center h-10 gap-2.5 rounded-lg px-4 font-medium hover:bg-yellow-100 hover:dark:bg-meta-4 text-black dark:text-white duration-600 ease-in-out ' +
-                                isActive
-                              }
-                            >
-                              Form Layout
-                            </NavLink>
-                          </li>
-                        </ul>
-                      </div>
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup> */}
+              
             </ul>
           </div>
         </nav>

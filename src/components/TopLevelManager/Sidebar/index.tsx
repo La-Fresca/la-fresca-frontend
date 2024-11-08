@@ -17,13 +17,6 @@ import ReportIconWhite from '@images/icon/report-white.png';
 import { BuildingOffice2Icon } from '@heroicons/react/24/outline';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
-
-import {
-  ChartBarSquareIcon,
-  RectangleGroupIcon,
-  StarIcon,
-  TagIcon,
-} from '@heroicons/react/24/solid';
  
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -162,7 +155,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   <img src={BurgerIcon} alt="" className="w-6 h-6 dark:hidden block" />
                   <img src={BurgerIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
-                  Foods
+                  Food Items
                 </NavLink>
               </li>
               <li>
@@ -214,7 +207,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   <img src={StockIcon} alt="" className="w-6 h-6 dark:hidden block" />
                   <img src={StockIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
-                  Stock
+                  Stocks
                 </NavLink>
               </li>
               <li>
@@ -227,7 +220,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   <img src={ReportIcon} alt="" className="w-6 h-6 dark:hidden block" />
                   <img src={ReportIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
-                  Report
+                  Reports
                 </NavLink>
               </li>
             </ul>
