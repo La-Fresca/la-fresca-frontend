@@ -1,22 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import { Link } from 'react-router-dom';
-// import { Button } from '@nextui-org/react';
-// import Food from '../../../assets/food.jpg';
-
-// const handleAddFeature = () => {
-//   setFeatures([...features, { name: '', options: [{ label: '', price: 0 }] }]);
-// };
-
-// const handleFeatureChange = (index: number, newFeature: Feature) => {
-//   const updatedFeatures = features.map((feature, i) => (i === index ? newFeature : feature));
-//   setFeatures(updatedFeatures);
-// };
-
-// const handleSubmit = (e: React.FormEvent) => {
-//   e.preventDefault();
-//   // Handle form submission logic here
-//   console.log({ name, description, price, available, features });
-// };
 
 function index() {
   const branches = [

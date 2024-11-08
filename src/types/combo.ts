@@ -11,5 +11,5 @@ export type FoodCombo = {
   discountId?: string;
   rating: number;
   foodNames?: string[];
-  status?: number;
+  status: number;
 };

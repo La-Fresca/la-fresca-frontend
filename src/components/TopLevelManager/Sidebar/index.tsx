@@ -2,19 +2,22 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '@images/logo/la-fresca.png';
-import { Bars3Icon, UserIcon } from '@heroicons/react/24/outline';
+import BurgerIcon from '@images/icon/burger.png';
+import BurgerIconWhite from '@images/icon/burger-white.png';
+import BurgerFriesIcon from '@images/icon/burger-fries.png';
+import BurgerFriesIconWhite from '@images/icon/burger-fries-white.png';
+import DiscountIcon from '@images/icon/discount.png';
+import DiscountIconWhite from '@images/icon/discount-white.png';
+import InventoryIcon from '@images/icon/inventory.png';
+import InventoryIconWhite from '@images/icon/inventory-white.png';
+import StockIcon from '@images/icon/stock.png';
+import StockIconWhite from '@images/icon/stock-white.png';
+import ReportIcon from '@images/icon/report.png';
+import ReportIconWhite from '@images/icon/report-white.png';
+import { BuildingOffice2Icon } from '@heroicons/react/24/outline';
+import { Bars3Icon } from '@heroicons/react/24/outline';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
-import { CakeIcon } from '@heroicons/react/24/outline';
-import { CurrencyDollarIcon } from '@heroicons/react/24/outline';
-import { QueueListIcon } from '@heroicons/react/24/outline';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
-import {
-  ChartBarSquareIcon,
-  RectangleGroupIcon,
-  StarIcon,
-  TagIcon,
-} from '@heroicons/react/24/solid';
-
+ 
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -126,7 +129,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <ChartBarSquareIcon className="w-6 h-6" />
+                  <BuildingOffice2Icon className="w-6 h-6" />
                   Branches
                 </NavLink>
               </li>
@@ -150,8 +153,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <CakeIcon className="w-6 h-6" />
-                  Foods
+                  <img src={BurgerIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={BurgerIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  Food Items
                 </NavLink>
               </li>
               <li>
@@ -162,7 +166,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <RectangleGroupIcon className="w-6 h-6" />
+                  <img src={BurgerFriesIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={BurgerFriesIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
                   Food Combos
                 </NavLink>
               </li>
@@ -174,7 +179,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <CurrencyDollarIcon className="w-6 h-6" />
+                  <img src={DiscountIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={DiscountIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
                   Discount List
                 </NavLink>
               </li>
@@ -186,7 +192,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <StarIcon className="w-6 h-6" />
+                  <img src={InventoryIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={InventoryIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
                   Inventory
                 </NavLink>
               </li>
@@ -198,90 +205,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <StarIcon className="w-6 h-6" />
-                  Stock
+                  <img src={StockIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={StockIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  Stocks
                 </NavLink>
               </li>
-              {/* <li>
+              <li>
                 <NavLink
-                  to="/top-level-manager/users"
+                  to="/top-level-manager/report"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/top-level-manager/users') &&
+                    pathname.includes('/top-level-manager/report') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <UserIcon className="w-6 h-6" />
-                  Manage Users
+                  <img src={ReportIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={ReportIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  Reports
                 </NavLink>
-              </li> */}
-              {/* <SidebarLinkGroup
-                activeCondition={
-                  pathname === '/top-level-manager/forms' ||
-                  pathname.includes('/top-level-manager/forms')
-                }
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <NavLink
-                        to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                          (pathname === '/top-level-manager/forms' ||
-                            pathname.includes('forms')) &&
-                          'bg-yellow-100 dark:bg-meta-4'
-                        }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
-                        }}
-                      >
-                        <QueueListIcon className="w-6 h-6" />
-                        Forms
-                        <span className="ml-auto">
-                          {open ? (
-                            <ChevronUpIcon className="w-4 h-4" />
-                          ) : (
-                            <ChevronDownIcon className="w-4 h-4" />
-                          )}
-                        </span>
-                      </NavLink>
-                      
-                      <div
-                        className={`translate transform overflow-hidden ${
-                          !open && 'hidden'
-                        }`}
-                      >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                          <li>
-                            <NavLink
-                              to="/top-level-manager/forms/form-elements"
-                              className={({ isActive }) =>
-                                'group relative flex items-center h-10 gap-2.5 rounded-lg px-4 font-medium hover:bg-yellow-100 hover:dark:bg-meta-4 text-black dark:text-white duration-300 ease-in-out' +
-                                isActive
-                              }
-                            >
-                              Form Elements
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/top-level-manager/forms/form-layout"
-                              className={({ isActive }) =>
-                                'group relative flex items-center h-10 gap-2.5 rounded-lg px-4 font-medium hover:bg-yellow-100 hover:dark:bg-meta-4 text-black dark:text-white duration-600 ease-in-out ' +
-                                isActive
-                              }
-                            >
-                              Form Layout
-                            </NavLink>
-                          </li>
-                        </ul>
-                      </div>
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup> */}
+              </li>
             </ul>
           </div>
         </nav>
