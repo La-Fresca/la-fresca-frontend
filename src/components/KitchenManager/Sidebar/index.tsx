@@ -4,6 +4,10 @@ import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '@images/logo/la-fresca.png';
 import { Bars3Icon, UserIcon } from '@heroicons/react/24/outline';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
+import WaiterIcon from '@images/icon/waiter.png';
+import WaiterIconWhite from '@images/icon/waiter-white.png';
+import DeliveryIcon from '@images/icon/delivery.png';
+import DeliveryIconWhite from '@images/icon/delivery-white.png';
 import { CakeIcon } from '@heroicons/react/24/outline';
 import { QueueListIcon } from '@heroicons/react/24/outline';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
@@ -114,6 +118,32 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   <Squares2X2Icon className="w-6 h-6" />
                   Dashboard
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/kitchen-manager/waiters"
+                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    pathname.includes('/kitchen-manager/waiters') &&
+                    'bg-yellow-100 dark:bg-meta-4'
+                  }`}
+                >
+                  <img src={WaiterIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={WaiterIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  Waiters
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/kitchen-manager/delivery-person"
+                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    pathname.includes('/kitchen-manager/delivery-person') &&
+                    'bg-yellow-100 dark:bg-meta-4'
+                  }`}
+                >
+                  <img src={DeliveryIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={DeliveryIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  Delivery Persons
                 </NavLink>
               </li>
             </ul>
