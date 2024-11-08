@@ -2,17 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '@images/logo/la-fresca.png';
-import { Bars3Icon, UserIcon } from '@heroicons/react/24/outline';
+import SalesIcon from '@images/icon/sales.png';
+import SalesIconWhite from '@images/icon/sales-white.png';
+import BurgerIcon from '@images/icon/burger.png';
+import BurgerIconWhite from '@images/icon/burger-white.png';
+import BurgerFriesIcon from '@images/icon/burger-fries.png';
+import BurgerFriesIconWhite from '@images/icon/burger-fries-white.png';
+import DiscountIcon from '@images/icon/discount.png';
+import DiscountIconWhite from '@images/icon/discount-white.png';
+import { Bars3Icon, UserIcon, TagIcon } from '@heroicons/react/24/outline';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
-import { CakeIcon } from '@heroicons/react/24/outline';
-import { QueueListIcon } from '@heroicons/react/24/outline';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
-import {
-  ChartBarSquareIcon,
-  RectangleGroupIcon,
-  StarIcon,
-  TagIcon,
-} from '@heroicons/react/24/solid';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -125,7 +124,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <ChartBarSquareIcon className="w-6 h-6" />
+                  <img src={SalesIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={SalesIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
                   Sales
                 </NavLink>
               </li>
@@ -149,7 +149,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <CakeIcon className="w-6 h-6" />
+                  <img src={BurgerIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={BurgerIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
                   Foods
                 </NavLink>
               </li>
@@ -161,7 +162,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <RectangleGroupIcon className="w-6 h-6" />
+                  <img src={BurgerFriesIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={BurgerFriesIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
                   Food Combos
                 </NavLink>
               </li>
@@ -173,7 +175,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <StarIcon className="w-6 h-6" />
+                  <img src={DiscountIcon} alt="" className="w-6 h-6 dark:hidden block" />
+                  <img src={DiscountIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
                   Discount List
                 </NavLink>
               </li>
