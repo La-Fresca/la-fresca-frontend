@@ -161,35 +161,46 @@ export const OrderHistory = () => {
   };
 
   return (
-    <div className="flex flex-col-reverse lg:flex-row w-full lg:w-screen px-4 lg:px-10">
-      {/* For smaller screens, set the width to 100% and for larger screens, use 40% width */}
-      <div className="w-full lg:w-[40%] flex flex-col space-y-4 mx-2 lg:mx-10 mb-4 lg:mb-0">
-        {Orders.map((order, index) => {
-          let stageIndex = 1;
-          if (order.orderStatus === 'Cooking') {
-            stageIndex = 2;
-          } else if (order.orderStatus === 'Delivering') {
-            stageIndex = 3;
-          } else if (order.orderStatus === 'Delivered') {
-            stageIndex = 4;
-          }
-
-          const completionTimesArray = steps.map((_, i) =>
-            i < stageIndex ? order.completionTimes[i] : '',
-          );
-
-          return (
-            <div onClick={() => clickFunction(index)} key={order.orderId}>
-              <OrderCard order={{ order, completionTimesArray, stageIndex }} />
-            </div>
-          );
-        })}
+    <>
+      <div className="text-4xl text-foodbg dark:text-white mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <b>Order History</b>
       </div>
-
-      {/* For smaller screens, set the width to 100% and for larger screens, use 60% width */}
-      <div className="hidden lg:block w-full lg:w-[60%] flex flex-col mx-2 lg:mx-10 mt-4 lg:mt-0">
-        <OrderDetails order={Orders[item]} />
+      <div className="mt-2 mx-auto max-w-screen-xl px-4 2xl:px-0">
+        Keep track of all past orders effortlessly, making reordering favorites
+        quick and simple.
       </div>
-    </div>
+      <div className="flex flex-col-reverse lg:flex-row w-full lg:w-screen px-4 lg:px-10 mt-10">
+        {/* For smaller screens, set the width to 100% and for larger screens, use 40% width */}
+        <div className="w-full lg:w-[40%] flex flex-col space-y-4 mx-2 lg:mx-10 mb-4 lg:mb-0">
+          {Orders.map((order, index) => {
+            let stageIndex = 1;
+            if (order.orderStatus === 'Cooking') {
+              stageIndex = 2;
+            } else if (order.orderStatus === 'Delivering') {
+              stageIndex = 3;
+            } else if (order.orderStatus === 'Delivered') {
+              stageIndex = 4;
+            }
+
+            const completionTimesArray = steps.map((_, i) =>
+              i < stageIndex ? order.completionTimes[i] : '',
+            );
+
+            return (
+              <div onClick={() => clickFunction(index)} key={order.orderId}>
+                <OrderCard
+                  order={{ order, completionTimesArray, stageIndex }}
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* For smaller screens, set the width to 100% and for larger screens, use 60% width */}
+        <div className="hidden lg:block w-full lg:w-[60%] flex flex-col mx-2 lg:mx-10 mt-4 lg:mt-0">
+          <OrderDetails order={Orders[item]} />
+        </div>
+      </div>
+    </>
   );
 };
