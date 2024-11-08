@@ -28,7 +28,6 @@ import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 import { Branch } from '@/types/branch';
 import { useBranches } from '@/api/useBranches';
-import { Combo } from '@/types/mock_combo';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'name',
@@ -152,8 +151,8 @@ export default function App() {
       statusFilter !== 'all' &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredcombo = filteredcombo.filter((foodData) =>
-        Array.from(statusFilter).includes(foodCombo.status),
+      filteredcombo = filteredcombo.filter((foodCombo) =>
+        Array.from(statusFilter).includes(foodCombo.status.toString()),
       );
     }
     if (
