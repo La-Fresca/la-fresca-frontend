@@ -263,6 +263,7 @@ const routes = createRoutesFromElements(
           />
         </Route>
       </Route>
+
       <Route path="branch-manager/*" element={<BranchManagerLayout />}>
         <Route
           index
@@ -408,6 +409,7 @@ const routes = createRoutesFromElements(
           }
         />
       </Route>
+
       <Route path="storekeeper/*" element={<StorekeeperLayout />}>
         <Route
           index
@@ -475,6 +477,7 @@ const routes = createRoutesFromElements(
           />
         </Route>
       </Route>
+
       <Route path="kitchen-manager/*" element={<KitchenManagerLayout />}>
         <Route
           index
@@ -497,6 +500,7 @@ const routes = createRoutesFromElements(
           />
         </Route>
       </Route>
+
       <Route path="waiter/*" element={<WaiterLayout />}>
         <Route
           index
@@ -517,6 +521,7 @@ const routes = createRoutesFromElements(
           }
         ></Route>
       </Route>
+
       <Route path="system-admin/*" element={<SystemAdminLayout />}>
         <Route
           index
@@ -556,6 +561,7 @@ const routes = createRoutesFromElements(
         />
         {/* -------------- Routes to add ---------------- */}
       </Route>
+
       <Route path="cashier/*" element={<CashierLayout />}>
         <Route
           index
@@ -576,6 +582,7 @@ const routes = createRoutesFromElements(
           }
         ></Route>
       </Route>
+
       <Route path="deliveryperson/*" element={<DeliveryLayout />}>
         <Route
           index
@@ -620,6 +627,7 @@ const routes = createRoutesFromElements(
           />
         </Route>
       </Route>
+      
       <Route path="top-level-manager/*" element={<TopManagerLayout />}>
         <Route
           index
