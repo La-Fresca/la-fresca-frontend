@@ -1,4 +1,4 @@
-import BranchesList from '@/components/TopLevelManager/Tables/FoodItems/FoodItemList';
+import BranchesList from '@/components/BranchManager/Tables/Complaints/ComplainList';
 
 const BranchList: React.FC = () => {
   return (

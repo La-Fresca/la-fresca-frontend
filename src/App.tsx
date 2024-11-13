@@ -37,6 +37,7 @@ import EditCategory from '@/pages/BranchManager/Categories/EditCategory';
 import ViewCategories from '@/pages/BranchManager/Categories/ViewCategories';
 import AddCombos from '@/pages/BranchManager/FoodCombos/Add';
 import Combos from '@/pages/BranchManager/FoodCombos';
+import Complaints from '@pages/BranchManager/Complaints/index';
 import Discount from '@/pages/Discount';
 import ContactUs from '@/pages/ContactUs';
 import EditCombos from '@/pages/BranchManager/FoodCombos/Edit';
@@ -399,6 +400,26 @@ const routes = createRoutesFromElements(
             }
           />
         </Route>
+        <Route path="complaints">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Branch Manager | Complaints" />
+                <Complaints />
+              </>
+            }
+          />
+          <Route
+            path="view/:complaintId"
+            element={
+              <>
+                <PageTitle title="Branch Manager | View Complaint" />
+                <UserAdd />
+              </>
+            }
+          />
+        </Route>
         <Route
           path="discountlist"
           element={
@@ -627,7 +648,7 @@ const routes = createRoutesFromElements(
           />
         </Route>
       </Route>
-      
+
       <Route path="top-level-manager/*" element={<TopManagerLayout />}>
         <Route
           index
