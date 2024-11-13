@@ -27,6 +27,7 @@ import { useFoods } from '@/api/useFoods';
 
 import { Branch } from '@/types/branch';
 import { useBranches } from '@/api/useBranches';
+import { useNavigate } from 'react-router-dom';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'name',
@@ -128,6 +129,12 @@ export default function App() {
       return sortDescriptor.direction === 'descending' ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
+
+  const navigate = useNavigate();
+
+  const handleViewComplaint = (id: string | undefined) => {
+    navigate(`view/${id}`);
+  };
 
   const renderCell = React.useCallback((foodData, columnKey) => {
     const cellValue = foodData[columnKey];
@@ -384,7 +391,7 @@ export default function App() {
       </TableHeader>
       <TableBody emptyContent={'No food found'} items={sortedItems}>
         {(item) => (
-          <TableRow key={item.id}>
+          <TableRow key={item.id} className='hover:dark:bg-[#ffffff13] hover:bg-[#00000016] cursor-pointer' onClick={() => handleViewComplaint(item.id)}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}
