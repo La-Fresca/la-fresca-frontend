@@ -87,6 +87,7 @@ import ViewInventoryByName_TLM from './pages/TopLevelManager/Inventory/viewByNam
 import Stock_TLM from '@/pages/TopLevelManager/Stock/view';
 import StockBranchList_TLM from '@/pages/TopLevelManager/Stock';
 import Backup from './pages/SystemAdmin/backup';
+import AssignBranch from './pages/Home/selectBranch'
 
 const { refresh } = useAuth();
 const cookieProtocol = (import.meta as any).env.VITE_COOKIE_PROTOCOL;
@@ -137,6 +138,15 @@ const routes = createRoutesFromElements(
           <>
             <PageTitle title="La Fresca | Unauthorized" />
             <Unauthorized />
+          </>
+        }
+      />
+      <Route
+        path="testbranchModal"
+        element={
+          <>
+            <PageTitle title="La Fresca | testModal" />
+            <AssignBranch />
           </>
         }
       />
