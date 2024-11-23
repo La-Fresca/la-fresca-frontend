@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Modal,
   ModalContent,
@@ -9,7 +9,7 @@ import {
 } from '@nextui-org/react';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react';
 import { SelectorIcon } from './SelectorIcon';
-// import WaiterCard from "./WaiterCard";
+import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 
 export const branches = [
     { label: 'Colombo', value: 'colombo', description: 'Main branch located in the capital city' },
@@ -26,14 +26,50 @@ export const branches = [
     { label: 'Polonnaruwa', value: 'polonnaruwa', description: 'Branch in the ancient royal city' },
     { label: 'Hambantota', value: 'hambantota', description: 'Branch in the southern development hub' },
   ];
+
+  const mapContainerStyle = {
+    width: '100%',
+    height: '300px',
+  };
+  
+  const center = {
+    lat: 6.9271, // Default latitude (Colombo)
+    lng: 79.8612, // Default longitude (Colombo)
+  };
+
+  const GOOGLE_MAPS_API_KEY = '';
   
 
 export default function AssignWaiter() {
   const { isOpen, onOpen, onClose } = useDisclosure(); // Fixed `useDisclosure` destructuring.
+  const [location, setLocation] = useState('');
+  const [markerPosition, setMarkerPosition] = useState(center);
   
   const handleSelectionChange = (selected: any) => {
     console.log('Selected branch:', selected);
   };
+
+  const handleLocationChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    setLocation(event.target.value);
+    console.log('Location:', event.target.value);
+  };
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+  });
+
+  // Handle marker drag end
+  const handleMarkerDragEnd = useCallback((event: any) => {
+    const newPosition = {
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng(),
+    };
+    setMarkerPosition(newPosition);
+    console.log('New Marker Position:', newPosition);
+  }, []);
+
+  if (!isLoaded) return <div>Loading...</div>;
+
 
   return (
     <>
@@ -79,6 +115,20 @@ export default function AssignWaiter() {
                   </AutocompleteItem>
                 )}
               </Autocomplete>
+            </div>
+            <div className="flex flex-col items-center rounded-3xl border-white">
+              <h3 className="text-white text-lg mb-2">Or Pick a Location</h3>
+              <GoogleMap
+                mapContainerStyle={mapContainerStyle}
+                center={markerPosition}
+                zoom={12}
+              >
+                <Marker
+                  position={markerPosition}
+                  draggable
+                  onDragEnd={handleMarkerDragEnd}
+                />
+              </GoogleMap>
             </div>
           </ModalBody>
         </ModalContent>
