@@ -21,7 +21,7 @@ function index() {
     fetchDiscount();
   }, []);
 
-  console.log(discount);
+  // console.log(discount);
 
   return (
     <div>
