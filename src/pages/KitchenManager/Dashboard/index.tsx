@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@nextui-org/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Order, OrderItemStatus } from '@/types/order';
-import { useOrders } from '@/api/useOrders';
+import { useOrders } from '@/api/useOrder';
 import timeAgo from '@/util/TimesAgo';
 
 const Dashboard: React.FC = () => {

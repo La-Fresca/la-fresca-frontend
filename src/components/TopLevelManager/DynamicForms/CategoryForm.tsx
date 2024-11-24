@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
-import { useCategories } from '@/api/useCategories';
+import { useCategories } from '@/api/useCategory';
 import { useNavigate } from 'react-router-dom';
 import { swalSuccess } from '@/components/UI/SwalSuccess';
 

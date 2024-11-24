@@ -6,7 +6,7 @@ import TableOne from '@/components/TopLevelManager/Tables/TableOne';
 import ChartSix from '@/components/TopLevelManager/Charts/ChartSix';
 
 import { BranchStat } from '@/types/branchStat';
-import { useBranches } from '@/api/useBranches';
+import { useBranches } from '@/api/useBranch';
 
 import DropDown from '@/components/TopLevelManager/BranchDropdown';
 import { useParams } from 'react-router-dom';

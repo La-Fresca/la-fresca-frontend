@@ -5,7 +5,7 @@ import {
   DropdownItem,
   Button,
 } from '@nextui-org/react';
-import { useBranches } from '@/api/useBranches';
+import { useBranches } from '@/api/useBranch';
 import { useQuery } from '@tanstack/react-query';
 import { Branch } from '@/types/branch';
 import { useNavigate } from 'react-router-dom';

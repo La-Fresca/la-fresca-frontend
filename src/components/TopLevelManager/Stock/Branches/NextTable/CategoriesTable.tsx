@@ -24,7 +24,7 @@ import { columns } from './columnCategories';
 import { capitalize } from './utils';
 import { useNavigate } from 'react-router-dom';
 import { Category } from '@/types/category';
-import { useCategories } from '@/api/useCategories';
+import { useCategories } from '@/api/useCategory';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 const INITIAL_VISIBLE_COLUMNS = ['name', 'status', 'description', 'actions'];

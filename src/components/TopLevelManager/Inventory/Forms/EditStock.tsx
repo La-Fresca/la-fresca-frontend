@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
-import { useStocks } from '@/api/useStocks';
+import { useStocks } from '@/api/useStock';
 import { Stock } from '@/types/stock';
 import { useInventory } from '@/api/useInventory';
 import { Inventory } from '@/types/inventory';

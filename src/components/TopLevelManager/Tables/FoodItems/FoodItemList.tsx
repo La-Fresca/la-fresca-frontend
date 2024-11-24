@@ -23,11 +23,11 @@ import {
 } from '@/components/TopLevelManager/Tables/FoodItems/Components/data';
 import { capitalize } from './utils';
 import { Food } from '@/types/food';
-import { useFoods } from '@/api/useFoods';
+import { useFoods } from '@/api/useFoodItem';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 import { Branch } from '@/types/branch';
-import { useBranches } from '@/api/useBranches';
+import { useBranches } from '@/api/useBranch';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'name',
@@ -73,8 +73,7 @@ export default function App() {
   }, []);
 
   const additionalBranches = [
-    { name: 'Branch 3', id: 'cafe 1' },
-    { name: 'Branch 4', id: 'cafe1' },
+    { name: 'Branch 3', id: 'cafe 1' }
   ];
 
   const branchOptions = branches

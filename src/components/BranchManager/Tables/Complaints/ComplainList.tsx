@@ -23,10 +23,10 @@ import {
 } from '@/components/BranchManager/Tables/Complaints/Components/data';
 import { capitalize } from './utils';
 import { Food } from '@/types/food';
-import { useFoods } from '@/api/useFoods';
+import { useFoods } from '@/api/useFoodItem';
 
 import { Branch } from '@/types/branch';
-import { useBranches } from '@/api/useBranches';
+import { useBranches } from '@/api/useBranch';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'name',
