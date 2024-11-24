@@ -78,6 +78,7 @@ function index() {
         favorite items.
       </div>
 
+
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 mx-auto max-w-screen-xl mt-10">
         {discount.map((_: any) => {
           return (
