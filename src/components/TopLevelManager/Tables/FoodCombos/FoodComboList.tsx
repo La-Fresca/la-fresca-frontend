@@ -73,8 +73,7 @@ export default function App() {
   }, []);
 
   const additionalBranches = [
-    { name: "Branch 3", id: "cafe 1" },
-    { name: "Branch 4", id: "cafe1" }
+    { name: "Branch 3", id: "cafe 1" }
   ];
   
   const branchOptions = branches.map((branch) => ({
