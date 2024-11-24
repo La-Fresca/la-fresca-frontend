@@ -19,7 +19,7 @@ import { VerticalDotsIcon } from './VerticalDotsIcon';
 import { SearchIcon } from './SearchIcon';
 import { useNavigate } from 'react-router-dom';
 import { Food } from '@/types/food';
-import { useFoods } from '@/api/useFoods';
+import { useFoods } from '@/api/useFoodItem';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 const INITIAL_VISIBLE_COLUMNS = [

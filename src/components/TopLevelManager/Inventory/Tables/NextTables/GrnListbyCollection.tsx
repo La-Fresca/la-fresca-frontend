@@ -24,7 +24,7 @@ import { columns } from './columnStocks';
 import { capitalize } from './utils';
 import { useNavigate } from 'react-router-dom';
 import { Stock } from '@/types/stock';
-import { useStocks } from '@/api/useStocks';
+import { useStocks } from '@/api/useStock';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
 

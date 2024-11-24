@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 import { Category } from '@/types/category';
-import { useCategories } from '@/api/useCategories';
+import { useCategories } from '@/api/useCategory';
 import { swalSuccess } from '@/components/UI/SwalSuccess';
 
 const FormSchema = z.object({

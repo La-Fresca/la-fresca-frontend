@@ -24,7 +24,7 @@ import { columns } from './columnCombos';
 import { capitalize } from './utils';
 import { useNavigate } from 'react-router-dom';
 import { FoodCombo } from '@/types/combo';
-import { useCombos } from '@/api/useCombos';
+import { useCombos } from '@/api/useFoodCombo';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 const INITIAL_VISIBLE_COLUMNS = ['name', 'price', 'items', 'actions'];

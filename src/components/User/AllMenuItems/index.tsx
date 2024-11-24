@@ -1,7 +1,7 @@
 import { Tabs, Tab, Card, CardBody } from '@nextui-org/react';
-import { useFoods } from '@/api/useFoods';
-import { useCombos } from '@/api/useCombos';
-import { useCategories } from '@/api/useCategories';
+import { useFoods } from '@/api/useFoodItem';
+import { useCombos } from '@/api/useFoodCombo';
+import { useCategories } from '@/api/useCategory';
 import { Food } from '@/types/food';
 import { FoodCombo } from '@/types/combo';
 import { useQuery } from '@tanstack/react-query';

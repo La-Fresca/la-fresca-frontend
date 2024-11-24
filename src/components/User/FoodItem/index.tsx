@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
-import { useFoods } from '@/api/useFoods';
+import { useFoods } from '@/api/useFoodItem';
 import { useCart } from '@/api/useCart';
 import { Food } from '@/types/food';
 import Star from './Star';

@@ -4,7 +4,7 @@ import { Checkbox, Button } from '@nextui-org/react';
 import QtySelector from './QtySelector';
 import { json, Link, useNavigate } from 'react-router-dom';
 import { useCart } from '@/api/useCart';
-import { useOrders } from '@/api/useOrders';
+import { useOrders } from '@/api/useOrder';
 import { CartItem } from '@/types/cartItem';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { swalConfirm } from '@/components/UI/SwalDelete';

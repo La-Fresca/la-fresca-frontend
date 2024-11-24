@@ -23,11 +23,11 @@ import {
 } from '@/components/TopLevelManager/Tables/FoodCombos/Components/data';
 import { capitalize } from './utils';
 import { FoodCombo } from '@/types/combo';
-import { useCombos } from '@/api/useCombos';
+import { useCombos } from '@/api/useFoodCombo';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 import { Branch } from '@/types/branch';
-import { useBranches } from '@/api/useBranches';
+import { useBranches } from '@/api/useBranch';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'name',

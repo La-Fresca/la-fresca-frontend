@@ -28,7 +28,7 @@ import { capitalize } from './utils';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { Branch } from '@/types/branch';
-import { useBranches } from '@/api/useBranches';
+import { useBranches } from '@/api/useBranch';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 const statusColorMap = {

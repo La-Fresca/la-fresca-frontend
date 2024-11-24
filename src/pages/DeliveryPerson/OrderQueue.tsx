@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { DatePicker } from '@nextui-org/react';
 import OrderCard from '@/pages/DeliveryPerson/OrderCard';
 import { title } from 'process';
-import { useOrders } from '@/api/useOrders';
+import { useOrders } from '@/api/useOrder';
 import { Order } from '@/types/order';
 import { useState } from 'react';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';

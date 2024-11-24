@@ -1,53 +1,72 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '@nextui-org/react';
-import Food from '../../../assets/food.jpg';
 import TextButton from './TextButton';
+import { useDiscount } from '@/api/useDiscount';
+import { Discount } from '@/types/discount';
 
 function index() {
+  const { getAllDiscounts } = useDiscount();
+  const [discount, setDiscount] = useState<Discount[]>([]);
 
-  const item = [
-    {
-      id: '01',
-      name: 'Cheese Pizza',
-      branch: 'Panadura',
-      rating: 4,
-      price: 3500,
-      limited: 1,
-    },
-    {
-      id: '02',
-      name: 'Saussage Pizza',
-      branch: 'Bambalapitiya',
-      rating: 5,
-      price: 4500,
-      limited: 0,
-    },
-    {
-      id: '03',
-      name: 'Margherita Pizza',
-      branch: 'Nugegoda',
-      rating: 3,
-      price: 3000,
-      limited: 1,
-    },
-    {
-      id: '04',
-      name: 'BBQ Chicken Pizza',
-      branch: 'Dehiwala',
-      rating: 3,
-      price: 4000,
-      limited: 1,
-    },
-    {
-      id: '04',
-      name: 'BBQ Chicken Pizza',
-      branch: 'Kalutara',
-      rating: 3,
-      price: 4000,
-      limited: 1,
-    },
-  ];
+  const fetchDiscount = async () => {
+    try {
+      const data = await getAllDiscounts();
+      setDiscount(data);
+    }
+    catch (error: any) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchDiscount();
+  }, []);
+
+  console.log(discount);
+
+  // const item = [
+  //   {
+  //     id: '01',
+  //     name: 'Cheese Pizza',
+  //     branch: 'Panadura',
+  //     rating: 4,
+  //     price: 3500,
+  //     limited: 1,
+  //   },
+  //   {
+  //     id: '02',
+  //     name: 'Sausage Pizza',
+  //     branch: 'Bambalapitiya',
+  //     rating: 5,
+  //     price: 4500,
+  //     limited: 0,
+  //   },
+  //   {
+  //     id: '03',
+  //     name: 'Margherita Pizza',
+  //     branch: 'Nugegoda',
+  //     rating: 3,
+  //     price: 3000,
+  //     limited: 1,
+  //   },
+  //   {
+  //     id: '04',
+  //     name: 'BBQ Chicken Pizza',
+  //     branch: 'Dehiwala',
+  //     rating: 3,
+  //     price: 4000,
+  //     limited: 1,
+  //   },
+  //   {
+  //     id: '04',
+  //     name: 'BBQ Chicken Pizza',
+  //     branch: 'Kalutara',
+  //     rating: 3,
+  //     price: 4000,
+  //     limited: 1,
+  //   },
+  // ];
+  
   
   return (
     <div>
@@ -60,7 +79,7 @@ function index() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 mx-auto max-w-screen-xl mt-10">
-        {item.map((_: any) => {
+        {discount.map((_: any) => {
           return (
             <Link
               to={`viewfood/${_.id}`}

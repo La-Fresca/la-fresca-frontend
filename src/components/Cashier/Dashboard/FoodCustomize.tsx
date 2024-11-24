@@ -6,7 +6,7 @@ import TextButton from '@components/User/FoodItem/TextButton';
 
 import QtySelector from '@components/User/FoodItem/QtySelector';
 import { Food } from '@/types/food';
-import { useFoods } from '@/api/useFoods';
+import { useFoods } from '@/api/useFoodItem';
 
 interface Props {
   id: string | undefined;

@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
-import { useStocks } from '@/api/useStocks';
+import { useStocks } from '@/api/useStock';
 import { useNavigate } from 'react-router-dom';
 import { useInventory } from '@/api/useInventory';
 import { Inventory } from '@/types/inventory';
