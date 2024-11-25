@@ -188,9 +188,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <NavLink
-                  to="/branch-manager/foods"
+                  to="/branch-manager/inventory"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/foods') &&
+                    pathname.includes('/branch-manager/inventory') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
@@ -201,9 +201,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <NavLink
-                  to="/branch-manager/food-combos"
+                  to="/branch-manager/stock"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/food-combos') &&
+                    pathname.includes('/branch-manager/stock') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >

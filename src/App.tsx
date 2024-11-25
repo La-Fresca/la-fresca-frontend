@@ -465,7 +465,9 @@ const routes = createRoutesFromElements(
               </>
             }
           />
-          <Route path="stock">
+        </Route>
+
+        <Route path="stock">
             <Route
               index
               element={
@@ -494,7 +496,6 @@ const routes = createRoutesFromElements(
               }
             />
           </Route>
-        </Route>
 
         <Route
           path="discountlist"
