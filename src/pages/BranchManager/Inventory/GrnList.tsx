@@ -1,4 +1,4 @@
-import GrnList from '@/components/Storekeeper/Tables/NextTables/GrnList';
+import GrnList from '@/components/BranchManager/Tables/Inventory/GrnList';
 
 const ViewGrns: React.FC = () => {
   return (
