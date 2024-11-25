@@ -1,4 +1,4 @@
-import StockListByCollection from '@/components/Storekeeper/Tables/NextTables/GrnListbyCollection';
+import StockListByCollection from '@/components/BranchManager/Tables/Inventory/GrnListbyCollection';
 import { useParams } from 'react-router-dom';
 
 const ViewGrnByCollection: React.FC = () => {
