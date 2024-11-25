@@ -1,4 +1,4 @@
-import InventoryList from '@/components/Storekeeper/Tables/NextTables/InventoryList';
+import InventoryList from '@/components/BranchManager/Tables/Inventory/InventoryList';
 
 const ViewInventory: React.FC = () => {
   return (
