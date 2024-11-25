@@ -1,4 +1,4 @@
-import StockEditForm from '@/components/Storekeeper/Forms/EditStock';
+import StockEditForm from '@/components/BranchManager/Forms/Inventory/EditStock';
 import { useParams } from 'react-router-dom';
 
 const EditGrn: React.FC = () => {
