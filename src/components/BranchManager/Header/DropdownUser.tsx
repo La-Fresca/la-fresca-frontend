@@ -13,6 +13,8 @@ const DropdownUser = () => {
   const clientSignOut = useSignOut();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const name = window.localStorage.getItem('name');
+
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <Link
@@ -25,7 +27,7 @@ const DropdownUser = () => {
         </span>
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Branch Manager
+            {name}
           </span>
         </span>
 

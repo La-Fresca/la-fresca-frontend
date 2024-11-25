@@ -25,8 +25,6 @@ import { capitalize } from './utils';
 import { Food } from '@/types/food';
 import { useFoods } from '@/api/useFoods';
 
-import { Branch } from '@/types/branch';
-import { useBranches } from '@/api/useBranches';
 import { useNavigate } from 'react-router-dom';
 
 const INITIAL_VISIBLE_COLUMNS = [
@@ -39,10 +37,7 @@ const INITIAL_VISIBLE_COLUMNS = [
 
 export default function App() {
   const [food, setFood] = useState<Food[]>([]);
-  const { getAllFoodsForTLM, approveFood, rejectFood } = useFoods();
-
-  const [branches, setBranch] = useState<Branch[]>([]);
-  const { getAllBranches } = useBranches();
+  const { getAllFoodsForTLM } = useFoods();
 
   const [loading, setLoading] = React.useState(true);
 
@@ -56,19 +51,8 @@ export default function App() {
     }
   };
 
-  const fetchBranch = async () => {
-    try {
-      const data = await getAllBranches();
-      setBranch(data);
-      setLoading(false);
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     fetchFood();
-    fetchBranch();
   }, []);
 
   console.log(food);
@@ -78,7 +62,7 @@ export default function App() {
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
   const [statusFilter, setStatusFilter] = React.useState('all');
-  const [branchFilter, setBranchFilter] = React.useState('all');
+  const [branchFilter] = React.useState('all');
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
     direction: 'ascending',
@@ -136,7 +120,7 @@ export default function App() {
     navigate(`view/${id}`);
   };
 
-  const renderCell = React.useCallback((foodData, columnKey) => {
+  const renderCell = React.useCallback((foodData: any, columnKey: any) => {
     const cellValue = foodData[columnKey];
     switch (columnKey) {
       case 'name':
@@ -160,21 +144,21 @@ export default function App() {
           <div>2024/11/13</div>
         );
       case 'status':
-        if (cellValue === 2) {
+        if (cellValue === 1) {
           return (
             <div className="text-warning bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full w-[80px]">
               Read
             </div>
           );
-        } else if (cellValue === 0) {
+        } else if (cellValue === 2) {
           return (
             <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full w-[90px]">
               Resolved
             </div>
           );
-        } else if (cellValue === 3) {
+        } else if (cellValue === 0) {
           return (
-            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center rounded-full">
+            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center rounded-full w-[80px]">
               Unread
             </div>
           );
@@ -198,12 +182,12 @@ export default function App() {
     }
   }, [page]);
 
-  const onRowsPerPageChange = React.useCallback((e) => {
+  const onRowsPerPageChange = React.useCallback((e: any) => {
     setRowsPerPage(Number(e.target.value));
     setPage(1);
   }, []);
 
-  const onSearchChange = React.useCallback((value) => {
+  const onSearchChange = React.useCallback((value: any) => {
     if (value) {
       setFilterValue(value);
       setPage(1);

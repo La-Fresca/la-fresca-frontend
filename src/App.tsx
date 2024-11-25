@@ -38,6 +38,7 @@ import ViewCategories from '@/pages/BranchManager/Categories/ViewCategories';
 import AddCombos from '@/pages/BranchManager/FoodCombos/Add';
 import Combos from '@/pages/BranchManager/FoodCombos';
 import Complaints from '@pages/BranchManager/Complaints/index';
+import ViewComplaint from '@pages/BranchManager/Complaints/view';
 import Discount from '@/pages/Discount';
 import ContactUs from '@/pages/ContactUs';
 import EditCombos from '@/pages/BranchManager/FoodCombos/Edit';
@@ -415,7 +416,7 @@ const routes = createRoutesFromElements(
             element={
               <>
                 <PageTitle title="Branch Manager | View Complaint" />
-                <UserAdd />
+                <ViewComplaint />
               </>
             }
           />
