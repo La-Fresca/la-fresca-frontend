@@ -21,7 +21,7 @@ function index() {
     fetchDiscount();
   }, []);
 
-  // console.log(discount);
+  console.log(discount);
 
   return (
     <div>
@@ -33,10 +33,10 @@ function index() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 mx-auto max-w-screen-xl mt-10">
-        {discount.map((_: any) => {
+        {discount.map((item: any) => {
           return (
             <Link
-              to={`viewfood/${_.id}`}
+              to={`/menuItems/${item[0].menuItemType === "Food Item" ? "viewfooditem" : "viewfoodcombo"}/${item[0].menuItemId}`}
               className="hover:scale-105 transition-transform duration-300 hover:cursor-pointer"
             >
               <div
@@ -46,7 +46,7 @@ function index() {
                   backgroundColor: 'rgba(255, 255, 255, 0.01)',
                 }}
               >
-                {_.limited === 1 && (
+                {item[0].limited === 1 && (
                   <div className="absolute p-2 w-[120px] h-2 rotate-[135deg] bg-gradient-to-r from-red-600 to-red-800 translate-x-[-35px] translate-y-[20px]">
                     <p className="rotate-180 text-xs translate-y-[-7.5px] translate-x-[-15px] text-white">
                       LIMITED TIME
@@ -55,17 +55,17 @@ function index() {
                 )}
 
                 <div className="h-50 bg-green rounded-xl">
-                  <img src={_.image} alt="" className="w-[100%]" />
+                  <img src={item[0].image} alt="" className="w-[100%]" />
                 </div>
 
                 <div className="flex justify-between px-3 mt-2">
                   <div className="">
                     <p>
                       <b className="dark:text-white text-foodbg text-xl">
-                        {_.name}
+                        {item[0].name}
                       </b>
                     </p>
-                    <p>{_.branch}</p>
+                    <p>{item[0].branch}</p>
                   </div>
 
                   <div className="pt-[7px] pb-[3px]">
