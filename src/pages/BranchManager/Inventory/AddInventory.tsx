@@ -1,4 +1,4 @@
-import InventoryForm from '@/components/Storekeeper/Forms/AddInventory';
+import InventoryForm from '@/components/BranchManager/Forms/Inventory/AddInventory';
 
 const AddInventory: React.FC = () => {
   return (
