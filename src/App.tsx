@@ -428,6 +428,7 @@ const routes = createRoutesFromElements(
           />
         </Route>
 
+
         <Route path="inventory">
           <Route
             index
