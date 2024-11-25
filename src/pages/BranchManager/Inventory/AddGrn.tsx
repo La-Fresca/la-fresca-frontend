@@ -1,4 +1,4 @@
-import StockForm from '@/components/Storekeeper/Forms/AddStock';
+import StockForm from '@/components/BranchManager/Forms/Inventory/AddStock';
 
 const AddGrn: React.FC = () => {
   return (
