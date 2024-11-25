@@ -39,12 +39,12 @@ const DiscountManagement: React.FC = () => {
             className="p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-yellow-500 transition duration-300"
           >
             <option value="All">All</option>
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
+            <option value="Precentage">Precentage</option>
+            <option value="">Fixed</option>
           </select>
           <button
             onClick={handleAddDiscount}
-            className="bg-yellow-600 hover:bg-orange-700 text-white px-4 py-2 rounded mt-2 md:mt-0 transition duration-300"
+            className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600 px-8 py-3"
           >
             Add Discount
           </button>
@@ -56,6 +56,6 @@ const DiscountManagement: React.FC = () => {
       </div>
     </div>
   );
-};
+};  
 
 export default DiscountManagement;

@@ -411,7 +411,7 @@ const routes = createRoutesFromElements(
             }
           />
           <Route
-            path="edit/:Id"
+            path="edit/:menuItemId"
             element={
               <>
                 <PageTitle title="Branch Manager | Edit Discounts" />
