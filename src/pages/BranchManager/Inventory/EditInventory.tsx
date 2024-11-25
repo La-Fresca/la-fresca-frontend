@@ -1,4 +1,4 @@
-import InventoryEditForm from '@/components/Storekeeper/Forms/EditInventory';
+import InventoryEditForm from '@/components/BranchManager/Forms/Inventory/EditInventory';
 import { useParams } from 'react-router-dom';
 
 const EditInventory: React.FC = () => {
