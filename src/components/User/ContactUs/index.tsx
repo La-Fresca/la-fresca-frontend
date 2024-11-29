@@ -1,26 +1,46 @@
 import React, { useEffect, useState } from 'react';
+import { useBranches } from '@/api/useBranch';
+import { Branch } from '@/types/branch';
+
 
 function index() {
-  const branches = [
-    {
-      name: 'Dehiwala',
-      address: '220 Galle Road Mount Lavinia, Sri Lanka 10370',
-      hours: '9am to 11pm',
-      phone: '1234',
-    },
-    {
-      name: 'Dehiwala',
-      address: '220 Galle Road Mount Lavinia, Sri Lanka 10370',
-      hours: '9am to 11pm',
-      phone: '1234',
-    },
-    {
-      name: 'Dehiwala',
-      address: '220 Galle Road Mount Lavinia, Sri Lanka 10370',
-      hours: '9am to 11pm',
-      phone: '1234',
+  const { getAllBranches } = useBranches();
+  const [branch, setBranch] = useState<Branch[]>([]);
+  // const branches = [
+  //   {
+  //     name: 'Dehiwala',
+  //     address: '220 Galle Road Mount Lavinia, Sri Lanka 10370',
+  //     hours: '9am to 11pm',
+  //     phone: '1234',
+  //   },
+  //   {
+  //     name: 'Dehiwala',
+  //     address: '220 Galle Road Mount Lavinia, Sri Lanka 10370',
+  //     hours: '9am to 11pm',
+  //     phone: '1234',
+  //   },
+  //   {
+  //     name: 'Dehiwala',
+  //     address: '220 Galle Road Mount Lavinia, Sri Lanka 10370',
+  //     hours: '9am to 11pm',
+  //     phone: '1234',
+  //   }
+  // ];
+
+  const fetchBranch = async () => {
+    try {
+      const data = await getAllBranches();
+      setBranch(data);
+    } catch (error: any) {
+      console.error(error);
     }
-  ];
+  };
+
+  useEffect(() => {
+    fetchBranch();
+  }, []);
+
+  console.log(branch);
 
   return (
     <div>
@@ -33,14 +53,14 @@ function index() {
 
       <div className="mx-auto max-w-screen-xl mt-10 flex">
         <div className="">
-          {branches.map((branch: any) => {
+          {branch.map((item: any) => {
             return (
               <div className="className">
-                <b>{branch.name}</b>
+                <b>{item.name}</b>
                 <br />
-                <p>{branch.address}</p>
-                <p>{branch.hours}</p>
-                <p>{branch.phone}</p>
+                <p>{item.address}</p>
+                <p>{item.hours}</p>
+                <p>{item.phone}</p>
                 <br />
               </div>
             );
@@ -110,5 +130,6 @@ function index() {
     </div>
   );
 }
+
 
 export default index;
