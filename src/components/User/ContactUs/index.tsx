@@ -52,22 +52,7 @@ function index() {
       </div>
 
       <div className="mx-auto max-w-screen-xl mt-10 flex">
-        <div className="">
-          {branch.map((item: any) => {
-            return (
-              <div className="className">
-                <b>{item.name}</b>
-                <br />
-                <p>{item.address}</p>
-                <p>{item.hours}</p>
-                <p>{item.phone}</p>
-                <br />
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="">
+      <div className="">
           <form className="max-w-lg mx-auto p-4 bg-white shadow-md rounded">
             <div className="mb-4">
               <label
@@ -125,6 +110,21 @@ function index() {
               </button>
             </div>
           </form>
+        </div>
+        
+        <div className="">
+          {branch.map((item: any) => {
+            return (
+              <div className="className">
+                <b>{item.name}</b>
+                <br />
+                <p>{item.address}</p>
+                <p>{item.hours}</p>
+                <p>{item.phone}</p>
+                <br />
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
