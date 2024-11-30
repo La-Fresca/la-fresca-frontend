@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
-import { useBranches } from '@/api/useBranches';
+import { useBranches } from '@/api/useBranch';
 import { User } from '@/types/user';
 import MultiSelect from '@components/Storekeeper/Forms/MultiCheckBox';
 

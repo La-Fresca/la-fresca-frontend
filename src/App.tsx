@@ -47,6 +47,9 @@ import StorekeeperLayout from '@/layouts/StorekeeperLayout';
 import ViewGrns from '@/pages/Storekeeper/GrnList';
 import AddGrn from '@/pages/Storekeeper/AddGrn';
 import EditGrn from '@/pages/Storekeeper/EditGrn';
+import ViewGrns_BM from '@/pages/BranchManager/Inventory/GrnList';
+import AddGrn_BM from '@/pages/BranchManager/Inventory/AddGrn';
+import EditGrn_BM from '@/pages/BranchManager/Inventory/EditGrn';
 import AssignWaiter from '@/pages/KitchenManager/AssignWaiters';
 import AssignDelivery from '@/pages/KitchenManager/AssignDelivery';
 import DeliveryLayout from '@/layouts/DeliveryLayout';
@@ -65,7 +68,11 @@ import OrderQueue from '@/pages/DeliveryPerson/OrderQueue';
 import ViewInventory from '@/pages/Storekeeper/InventoryList';
 import AddInventory from '@/pages/Storekeeper/AddInventory';
 import EditInventory from '@/pages/Storekeeper/EditInventory';
+import ViewInventory_BM from '@/pages/BranchManager/Inventory/InventoryList';
+import AddInventory_BM from '@/pages/BranchManager/Inventory/AddInventory';
+import EditInventory_BM from '@/pages/BranchManager/Inventory/EditInventory';
 import ViewGrnByCollection from '@/pages/Storekeeper/GrnListByCollection';
+import ViewGrnByCollection_BM from '@/pages/BranchManager/Inventory/GrnListByCollection';
 import FoodCombo from '@/pages/FoodCombo';
 import SystemAdminLayout from '@/layouts/SystemAdminLayout';
 import SystemLogs from '@/pages/SystemAdmin/systemLogs';
@@ -421,6 +428,76 @@ const routes = createRoutesFromElements(
             }
           />
         </Route>
+
+        <Route path="inventory">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Store Keeper | Inventory" />
+                <ViewInventory_BM />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Storekeeper | Add Inventory" />
+                <AddInventory_BM />
+              </>
+            }
+          />
+          <Route
+            path="view/:collection"
+            element={
+              <>
+                <PageTitle title="Storekeeper | Inventory" />
+                <ViewGrnByCollection_BM />
+              </>
+            }
+          />
+          <Route
+            path="edit/:inventoryId"
+            element={
+              <>
+                <PageTitle title="Storekeeper | Edit Inventory" />
+                <EditInventory_BM />
+              </>
+            }
+          />
+        </Route>
+
+        <Route path="stock">
+            <Route
+              index
+              element={
+                <>
+                  <PageTitle title="Storekeeper | GRN List" />
+                  <ViewGrns_BM />
+                </>
+              }
+            />
+            <Route
+              path="add"
+              element={
+                <>
+                  <PageTitle title="Store Keeper | Add Stock" />
+                  <AddGrn_BM />
+                </>
+              }
+            />
+            <Route
+              path="edit/:stockId"
+              element={
+                <>
+                  <PageTitle title="Store Keeper | Edit Stock" />
+                  <EditGrn_BM />
+                </>
+              }
+            />
+          </Route>
+
         <Route
           path="discountlist"
           element={

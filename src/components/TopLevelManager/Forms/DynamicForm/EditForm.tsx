@@ -9,9 +9,9 @@ import { Button } from '@nextui-org/react';
 import MultiSelect from '@components/BranchManager/Forms/MultiCheckBox';
 import { useNavigate } from 'react-router-dom';
 import { useUpload } from '@/api/useUpload';
-import { useFoods } from '@/api/useFoods';
+import { useFoods } from '@/api/useFoodItem';
 import { Food } from '@/types/food';
-import { useCategories } from '@/api/useCategories';
+import { useCategories } from '@/api/useCategory';
 import { Category } from '@/types/category';
 import { swalSuccess } from '@/components/UI/SwalSuccess';
 

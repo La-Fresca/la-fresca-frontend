@@ -23,7 +23,7 @@ import {
 } from '@/components/BranchManager/Tables/Complaints/Components/data';
 import { capitalize } from './utils';
 import { Food } from '@/types/food';
-import { useFoods } from '@/api/useFoods';
+import { useFoods } from '@/api/useFoodItem';
 
 import { useNavigate } from 'react-router-dom';
 

@@ -10,6 +10,8 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 const { testRefresh } = useAuth();
 
 const FormSchema = z.object({
+  firstName: z.string().min(1, { message: 'First Name is required' }),
+  lastName: z.string().min(1, { message: 'Last Name is required' }),
   email: z.string().min(1, { message: 'Email is required' }),
   contact: z.string().min(1, { message: 'Contact is required' }),
   password: z.string().min(1, { message: 'Password is required' }),
@@ -59,15 +61,17 @@ const LoginForm = () => {
           },
         });
       } else {
-        console.error('error occured');
+        console.error('error occurred');
         return;
       }
       navigate(from, { replace: true });
     } catch (error) {
-      console.error('Error occured', error);
+      console.error('Error occurred', error);
     }
   };
+
   const { errors } = formState;
+
   return (
     <div className="relative flex flex-row justify-center h-screen overflow-hidden">
       <div className="w-full p-6 m-auto lg:max-w-full bg-white bg-opacity-0">
@@ -79,22 +83,60 @@ const LoginForm = () => {
           <div>
             <input
               type="text"
+              placeholder="First Name"
+              className="w-full text-white border-b-2 rounded-lg border-white-700 bg-transparent focus:outline-none focus:ring-0"
+              {...register('firstName')}
+            />
+            {errors.firstName && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.firstName.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <input
+              type="text"
+              placeholder="Last Name"
+              className="w-full text-white border-b-2 rounded-lg border-white-700 bg-transparent focus:outline-none focus:ring-0"
+              {...register('lastName')}
+            />
+            {errors.lastName && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.lastName.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <input
+              type="text"
               placeholder="Email Address"
               className="w-full text-white border-b-2 rounded-lg border-white-700 bg-transparent focus:outline-none focus:ring-0"
               {...register('email')}
             />
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+          <div>
             <input
               type="text"
               placeholder="Contact Number"
-              className="w-full text-white border-b-2 rounded-lg mt-7 border-white-700 bg-transparent focus:outline-none focus:ring-0"
+              className="w-full text-white border-b-2 rounded-lg border-white-700 bg-transparent focus:outline-none focus:ring-0"
               {...register('contact')}
             />
+            {errors.contact && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.contact.message}
+              </p>
+            )}
           </div>
           <PassINput register={register} fieldname="password" />
           <ConfirmPassINput register={register} fieldname="confirmPassword" />
           <div className="space-y-6">
             <button
-              className="w-full py-2 mt-5 text-center  text-black font-extrabold bg-yellow-500 rounded-md hover:bg-yellow-600"
+              className="w-full py-2 mt-5 text-center text-black font-extrabold bg-yellow-500 rounded-md hover:bg-yellow-600"
               type="submit"
             >
               Register
