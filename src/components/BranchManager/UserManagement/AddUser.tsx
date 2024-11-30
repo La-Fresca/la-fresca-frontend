@@ -54,7 +54,7 @@ const AddUser: React.FC = () => {
   const { errors } = formState;
 
   return (
-    <div className="min-h-screen bg-transparent text-white">
+    <div className="min-h-screen bg-transparent text-white p-8">
       <h2 className="text-4xl mb-4 font-bold">Add User</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
@@ -175,7 +175,7 @@ const AddUser: React.FC = () => {
           <button
             type="button"
             onClick={() => navigate('/branch-manager/users')}
-            className="bg-gray-600 hover:bg-transparent border text-white px-4 py-2 rounded mr-2 transition duration-300"
+            className="bg-transparent hover:bg-transparent text-white px-8 py-4 border-2 rounded-lg transition duration-200"
           >
             Cancel
           </button>

@@ -6,24 +6,23 @@ const PaymentMethodSelector = () => {
   const methods = [
     { name: ' Cash', icon: '💵' },
     { name: ' Card', icon: '💳' },
-    { name: ' Wallet', icon: '👛' },
   ];
 
   return (
-    <div className=" space-x-4 p-2 rounded-xl my-5 ml-3 ">
+    <div className=" space-x-15 p-2 rounded-xl my-2 ml-11 ">
       {methods.map((method) => (
         <button
           key={method.name}
-          className={`flex-col items-center p-2 rounded-xl justify-center border  
+          className={`flex-col items-center p-2 rounded-xl justify-center border-2 
             ${
               selectedMethod === method.name
-                ? 'bg-white text-black'
-                : 'bg-gray-900 text-white hover:bg-gray-700 items-center'
+                ? 'bg-yellow-500 text-black font-medium border-2 border-white items-center'
+                : 'bg-gray-900 text-white hover:bg-gray-700 items-center font-medium '
             }`}
           onClick={() => setSelectedMethod(method.name)}
         >
-          <span className="text-2xl">{method.icon}</span>
-          <span className="mt-2">{method.name}</span>
+          <span className="text-2xl items-center">{method.icon}</span>
+          <span className="mt-2 items-center">{method.name}</span>
         </button>
       ))}
     </div>

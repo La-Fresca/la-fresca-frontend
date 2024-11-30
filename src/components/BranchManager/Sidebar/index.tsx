@@ -130,8 +130,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <img src={SalesIcon} alt="" className="w-6 h-6 dark:hidden block" />
-                  <img src={SalesIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  <img
+                    src={SalesIcon}
+                    alt=""
+                    className="w-6 h-6 dark:hidden block"
+                  />
+                  <img
+                    src={SalesIconWhite}
+                    alt=""
+                    className="w-6 h-6 dark:block hidden"
+                  />
                   Sales
                 </NavLink>
               </li>
@@ -155,8 +163,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <img src={BurgerIcon} alt="" className="w-6 h-6 dark:hidden block" />
-                  <img src={BurgerIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  <img
+                    src={BurgerIcon}
+                    alt=""
+                    className="w-6 h-6 dark:hidden block"
+                  />
+                  <img
+                    src={BurgerIconWhite}
+                    alt=""
+                    className="w-6 h-6 dark:block hidden"
+                  />
                   Food Items
                 </NavLink>
               </li>
@@ -168,8 +184,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <img src={BurgerFriesIcon} alt="" className="w-6 h-6 dark:hidden block" />
-                  <img src={BurgerFriesIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  <img
+                    src={BurgerFriesIcon}
+                    alt=""
+                    className="w-6 h-6 dark:hidden block"
+                  />
+                  <img
+                    src={BurgerFriesIconWhite}
+                    alt=""
+                    className="w-6 h-6 dark:block hidden"
+                  />
                   Food Combos
                 </NavLink>
               </li>
@@ -181,8 +205,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <img src={DiscountIcon} alt="" className="w-6 h-6 dark:hidden block" />
-                  <img src={DiscountIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  <img
+                    src={DiscountIcon}
+                    alt=""
+                    className="w-6 h-6 dark:hidden block"
+                  />
+                  <img
+                    src={DiscountIconWhite}
+                    alt=""
+                    className="w-6 h-6 dark:block hidden"
+                  />
                   Discount List
                 </NavLink>
               </li>
@@ -194,8 +226,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <img src={InventoryIcon} alt="" className="w-6 h-6 dark:hidden block" />
-                  <img src={InventoryIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  <img
+                    src={InventoryIcon}
+                    alt=""
+                    className="w-6 h-6 dark:hidden block"
+                  />
+                  <img
+                    src={InventoryIconWhite}
+                    alt=""
+                    className="w-6 h-6 dark:block hidden"
+                  />
                   Inventory
                 </NavLink>
               </li>
@@ -207,8 +247,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <img src={StockIcon} alt="" className="w-6 h-6 dark:hidden block" />
-                  <img src={StockIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  <img
+                    src={StockIcon}
+                    alt=""
+                    className="w-6 h-6 dark:hidden block"
+                  />
+                  <img
+                    src={StockIconWhite}
+                    alt=""
+                    className="w-6 h-6 dark:block hidden"
+                  />
                   Stocks
                 </NavLink>
               </li>
@@ -220,8 +268,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <img src={ComplaintIcon} alt="" className="w-6 h-6 dark:hidden block" />
-                  <img src={ComplaintIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  <img
+                    src={ComplaintIcon}
+                    alt=""
+                    className="w-6 h-6 dark:hidden block"
+                  />
+                  <img
+                    src={ComplaintIconWhite}
+                    alt=""
+                    className="w-6 h-6 dark:block hidden"
+                  />
                   Complaints
                 </NavLink>
               </li>
@@ -237,7 +293,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Manage Users
                 </NavLink>
               </li>
-              
+
+              <li>
+                <NavLink
+                  to="/branch-manager/discounts"
+                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    pathname.includes('/branch-manager/discounts') &&
+                    'bg-yellow-100 dark:bg-meta-4'
+                  }`}
+                >
+                  <StarIcon className="w-6 h-6" />
+                  Discount List
+                </NavLink>
+              </li>
             </ul>
           </div>
         </nav>

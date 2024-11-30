@@ -24,7 +24,7 @@ import FoodItem from '@/pages/FoodItem';
 import AllFoodItems from '@/pages/AllFoodItems';
 import FoodList from '@/pages/BranchManager/FoodList';
 import { Gallery } from '@/components/Gallery/Gallery';
-import DiscountList from '@/pages/BranchManager/FoodList/DiscountList';
+//import DiscountList from '@/pages/BranchManager/FoodList/DiscountList';
 import Cart from '@/pages/Cart';
 import Checkout from '@/pages/Checkout';
 import { OrderHistory } from '@/components/User/OrderHistory/OrderHistory';
@@ -32,6 +32,9 @@ import User from '@/pages/BranchManager/Users';
 import UserAdd from '@/pages/BranchManager/Users/AddUser';
 import UserEdit from '@/pages/BranchManager/Users/EditUser';
 import EditFoods from '@/pages/BranchManager/Foods/EditFood';
+import DiscountList from '@/pages//BranchManager/Discounts';
+import DiscountAdd from '@/pages/BranchManager/Discounts/AddDiscounts';
+import DiscountEdit from '@/pages/BranchManager/Discounts/EditDiscounts';
 import AddCategories from '@/pages/BranchManager/Categories/AddCategories';
 import EditCategory from '@/pages/BranchManager/Categories/EditCategory';
 import ViewCategories from '@/pages/BranchManager/Categories/ViewCategories';
@@ -94,7 +97,7 @@ import ViewInventoryByName_TLM from './pages/TopLevelManager/Inventory/viewByNam
 import Stock_TLM from '@/pages/TopLevelManager/Stock/view';
 import StockBranchList_TLM from '@/pages/TopLevelManager/Stock';
 import Backup from './pages/SystemAdmin/backup';
-import AssignBranch from './pages/Home/selectBranch'
+import AssignBranch from './pages/Home/selectBranch';
 
 const { refresh } = useAuth();
 const cookieProtocol = (import.meta as any).env.VITE_COOKIE_PROTOCOL;
@@ -478,44 +481,64 @@ const routes = createRoutesFromElements(
         </Route>
 
         <Route path="stock">
-            <Route
-              index
-              element={
-                <>
-                  <PageTitle title="Storekeeper | GRN List" />
-                  <ViewGrns_BM />
-                </>
-              }
-            />
-            <Route
-              path="add"
-              element={
-                <>
-                  <PageTitle title="Store Keeper | Add Stock" />
-                  <AddGrn_BM />
-                </>
-              }
-            />
-            <Route
-              path="edit/:stockId"
-              element={
-                <>
-                  <PageTitle title="Store Keeper | Edit Stock" />
-                  <EditGrn_BM />
-                </>
-              }
-            />
-          </Route>
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Storekeeper | GRN List" />
+                <ViewGrns_BM />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Store Keeper | Add Stock" />
+                <AddGrn_BM />
+              </>
+            }
+          />
+          <Route
+            path="edit/:stockId"
+            element={
+              <>
+                <PageTitle title="Store Keeper | Edit Stock" />
+                <EditGrn_BM />
+              </>
+            }
+          />
+        </Route>
 
-        <Route
-          path="discountlist"
-          element={
-            <>
-              <PageTitle title="Branch Manager | Discount List" />
-              <DiscountList />
-            </>
-          }
-        />
+        <Route path="discounts">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Branch Manager | DiscountList" />
+                <DiscountList />
+              </>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Add Discounts" />
+                <DiscountAdd />
+              </>
+            }
+          />
+          <Route
+            path="edit/:menuItemId"
+            element={
+              <>
+                <PageTitle title="Branch Manager | Edit Discounts" />
+                <DiscountEdit />
+              </>
+            }
+          />
+        </Route>
       </Route>
 
       <Route path="storekeeper/*" element={<StorekeeperLayout />}>
