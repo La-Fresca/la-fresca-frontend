@@ -13,20 +13,17 @@ import {
   DropdownMenu,
   DropdownItem,
   Pagination,
-  Selection,
-  SortDescriptor,
 } from '@nextui-org/react';
-import { PlusIcon } from '@components/BranchManager/Tables/NextTable/PlusIcon';
-import { VerticalDotsIcon } from '@components/BranchManager/Tables/NextTable/VerticalDotsIcon';
 import { ChevronDownIcon } from '@components/BranchManager/Tables/NextTable/ChevronDownIcon';
 import { SearchIcon } from '@components/BranchManager/Tables/NextTable/SearchIcon';
 import { columns } from './columnStocks';
 import { capitalize } from './utils';
-import { useNavigate } from 'react-router-dom';
 import { Stock } from '@/types/stock';
 import { useStocks } from '@/api/useStock';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
-import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
+
+import { Branch } from '@/types/branch';
+import { useBranches } from '@/api/useBranch';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'StockCollectionName',
@@ -42,11 +39,24 @@ export default function StockListByCollection() {
   const { getAllStocks, deleteStock } = useStocks();
   const [loading, setLoading] = useState(true);
 
+  const [branches, setBranch] = useState<Branch[]>([]);
+  const { getAllBranches } = useBranches();
+
   const fetchStocks = async () => {
     try {
       setLoading(true);
       const data = await getAllStocks();
       setStocks(data);
+      setLoading(false);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  const fetchBranch = async () => {
+    try {
+      const data = await getAllBranches();
+      setBranch(data);
       setLoading(false);
     } catch (error: any) {
       console.error(error);
@@ -68,7 +78,22 @@ export default function StockListByCollection() {
 
   useEffect(() => {
     fetchStocks();
+    fetchBranch();
   }, []);
+
+  const additionalBranches = [{ name: 'Branch 3', id: 'cafe 1' }];
+
+  const branchOptions = branches
+    .map((branch) => ({
+      name: branch.name,
+      uid: branch.id,
+    }))
+    .concat(
+      additionalBranches.map((branch) => ({
+        name: branch.name,
+        uid: branch.id,
+      })),
+    );
 
   console.log(stocks);
 
@@ -76,7 +101,7 @@ export default function StockListByCollection() {
   const [visibleColumns, setVisibleColumns] = useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [branchFilter, setBranchFilter] = React.useState('all');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortDescriptor, setSortDescriptor] = useState({
     column: 'age',
@@ -104,15 +129,15 @@ export default function StockListByCollection() {
       );
     }
     if (
-      statusFilter !== 'all' &&
-      Array.from(statusFilter).length !== statusOptions.length
+      branchFilter !== 'all' &&
+      Array.from(branchFilter).length !== branchOptions.length
     ) {
-      filteredstocks = filteredstocks.filter((stock) =>
-        Array.from(statusFilter).includes(stock.status),
+      filteredstocks = filteredstocks.filter((user) =>
+        Array.from(branchFilter).includes(user.cafeId),
       );
     }
     return filteredstocks;
-  }, [stocks, filterValue, statusFilter]);
+  }, [stocks, filterValue, branchFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -212,10 +237,35 @@ export default function StockListByCollection() {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Button className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]">
-              <ArrowSmallDownIcon className="w-6 h-6 border-b scale-75" />{' '}
-              Download All
-            </Button>
+          <Dropdown>
+              <DropdownTrigger className="hidden sm:flex">
+                <Button
+                  endContent={<ChevronDownIcon className="text-small" />}
+                  variant="flat"
+                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
+                >
+                  Branch
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                aria-label="Table Columns"
+                closeOnSelect={false}
+                selectedKeys={branchFilter}
+                selectionMode="multiple"
+                onSelectionChange={setBranchFilter}
+                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
+              >
+                {branchOptions.map((status) => (
+                  <DropdownItem
+                    key={status.uid}
+                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
+                  >
+                    {capitalize(status.name)}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
 
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
@@ -268,7 +318,6 @@ export default function StockListByCollection() {
     );
   }, [
     filterValue,
-    statusFilter,
     visibleColumns,
     onRowsPerPageChange,
     stocks.length,
