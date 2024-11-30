@@ -27,9 +27,6 @@ import { Category } from '@/types/category';
 import { useCategories } from '@/api/useCategory';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 
-import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
-import { AuthUser } from '@/types/authuser';
-
 const INITIAL_VISIBLE_COLUMNS = ['name', 'status', 'description', 'actions'];
 
 export default function CategoriesTable() {
@@ -38,14 +35,10 @@ export default function CategoriesTable() {
   const { getAllCategories, unsafeDeleteCategory } = useCategories();
   const [loading, setLoading] = useState(true);
 
-  const auth = useAuthUser();
-
-  const cafeId = (auth as AuthUser)?.cafeId;
-
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const data = await getAllCategories(cafeId);
+      const data = await getAllCategories();
       setCategories(data);
       setLoading(false);
     } catch (error: any) {

@@ -20,7 +20,6 @@ interface ourJwtPayload extends JwtPayload {
   userId?: string;
   username?: string;
   name?: string;
-  cafeId?: string;
 }
 
 const LoginForm = () => {
@@ -50,9 +49,9 @@ const LoginForm = () => {
         const userId = (jwtDecode(accessToken) as ourJwtPayload).userId;
         const username = (jwtDecode(accessToken) as ourJwtPayload).username;
         const name = (jwtDecode(accessToken) as ourJwtPayload).name;
-        const cafeId = (jwtDecode(accessToken) as ourJwtPayload).cafeId;
 
-        window.localStorage.setItem('name', name);
+        window.localStorage.setItem("name", name);
+
 
         signIn({
           auth: {
@@ -64,8 +63,7 @@ const LoginForm = () => {
             role: role,
             userId: userId,
             username: username,
-            name: name,
-            cafeId: cafeId,
+            name: name
           },
         });
       } else {

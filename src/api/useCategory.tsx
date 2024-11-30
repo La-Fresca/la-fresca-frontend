@@ -12,9 +12,9 @@ function getToken() {
 }
 
 export const useCategories = () => {
-  const getAllCategories = async (cafeId: string) => {
+  const getAllCategories = async () => {
     try {
-      const response = await fetch(`${API_URL}/category/${cafeId}`, {
+      const response = await fetch(`${API_URL}/category/cafe 1`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -7,9 +7,6 @@ import { useCategories } from '@/api/useCategory';
 import { useNavigate } from 'react-router-dom';
 import { swalSuccess } from '@/components/UI/SwalSuccess';
 
-import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
-import { AuthUser } from '@/types/authuser';
-
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Category name is required' }),
   description: z.string().optional(),
@@ -26,9 +23,6 @@ function CategoryForm() {
   const { register, handleSubmit, formState } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
   });
-  const auth = useAuthUser();
-
-  const cafeId = (auth as AuthUser)?.cafeId;
 
   const { errors } = formState;
 
@@ -40,11 +34,7 @@ function CategoryForm() {
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
-      const transformedData = {
-        ...data,
-        cafeId: cafeId,
-      };
-      await addCategory(transformedData);
+      await addCategory(data);
     } catch (error: any) {
       console.error(error);
     } finally {
