@@ -128,7 +128,7 @@ const App: React.FC = () => {
         ),
       );
     } else {
-      setOrder([...order, { ...item, quantity: 1 }]);
+      setOrder([...order, { ...item }]); 
     }
   };
 

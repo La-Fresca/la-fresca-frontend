@@ -3,6 +3,7 @@ import Card from '@components/Waiter/Dashboard/card';
 import Modal from '@components/Waiter/Dashboard/modal';
 import WaiterTop from '@/components/Waiter/Dashboard/waiterTop';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const initialOrders = [
   { id: 1, waiter: 'Waiter 01', order: '#01011', customer: 'John Doe', color: 'yellow-500' },
@@ -33,11 +34,30 @@ const Dashboard: React.FC = () => {
   };
 
   const handleServeOrder = (id: number) => {
-    const orderToServe = orders.find(order => order.id === id);
-    if (orderToServe) {
-      setOrders(orders.filter(order => order.id !== id));
-      setServedOrders([...servedOrders, orderToServe]);
-    }
+    Swal.fire({
+      title: 'Do you want to continue?',
+      text: "This action will mark the order as served.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const orderToServe = orders.find(order => order.id === id);
+        if (orderToServe) {
+          setOrders(orders.filter(order => order.id !== id));
+          setServedOrders([...servedOrders, orderToServe]);
+          Swal.fire(
+            'Order Served!',
+            'The order has been marked as served.',
+            'success'
+          );
+        }
+      } else {
+        navigate('/dashboard'); // Navigate back to the dashboard if the user clicks "No"
+      }
+    });
   };
 
   return (
@@ -50,8 +70,8 @@ const Dashboard: React.FC = () => {
           ))}
         </div>
         <button
-          onClick={() => navigate('waiter/served-orders')}
-          className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg"
+          onClick={() => navigate('./served-orders')}
+          className="text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600 px-12 py-4 rounded-lg transition duration-300 shadow-md mt-8"
         >
           View Served Orders
         </button>

@@ -1,118 +1,228 @@
+import { Button } from 'flowbite-react';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-
-interface User {
-  id: number;
+interface Discount {
   name: string;
-  email: string;
-  status: string;
-  location: string;
-  phone: string;
-  group: string;
+  description: string;
+  menuItemType: string;
+  menuItemId: string;
+  discountAmount: number;
+  discountType: string;
+  amount: number;
+  offerDetails: string;
+  startDate: string;
+  endDate: string;
 }
 
-const EditUser: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+const EditDiscount: React.FC = () => {
+  const { menuItemId } = useParams<{ menuItemId: string }>();
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null);
+  const [discount, setDiscount] = useState<Discount | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  // Sample data - replace with actual fetching logic
+  const mockDiscountData: Discount[] = [
+    {
+      name: 'Main Course Discount',
+      description: '10% off on main course',
+      menuItemType: 'Main Course',
+      menuItemId: 'MC001',
+      discountAmount: 10,
+      discountType: 'Percentage',
+      amount: 0,
+      offerDetails: 'Applicable to all main course items',
+      startDate: '2024-11-01',
+      endDate: '2024-12-01',
+    },
+    // Add more mock discounts as needed
+  ];
 
   useEffect(() => {
-    // Fetch user data by id and setUser
-    // Example:
-    setUser({ id: Number(id), name: 'Tom Cooper', email: 'cooper@gmail.com', status: 'Active', location: 'United States', phone: '+65 9308 4744', group: 'Design' });
-  }, [id]);
+    // Fetch discount data by menuItemId
+    const foundDiscount = mockDiscountData.find((d) => d.menuItemId === menuItemId);
+    setDiscount(foundDiscount || null);
+  }, [menuItemId]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+
+    if ((name === 'discountAmount' || name === 'amount') && parseFloat(value) < 0) {
+      setError(`${name} cannot be negative.`);
+      return;
+    }
+
+    setError(null); // Clear error when value is valid
+
+    setDiscount((prev) => prev ? ({
+      ...prev,
+      [name]: value,
+    }) : null);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle the form submission logic here
-    navigate('/branch-manager/users'); // Navigate back to home after submission
+
+    if (!discount) return; // If no discount data, return early
+
+    if (discount.discountAmount < 0 || discount.amount < 0) {
+      setError("Discount Amount and Amount cannot be negative.");
+      return;
+    }
+
+    // Handle form submission logic (e.g., API call or state update)
+    console.log('Updated Discount:', discount);
+
+    // Navigate back to the discount list page (or wherever you want after saving)
+    navigate('/branch-manager/discounts');
   };
 
-  if (!user) {
-    return <div className="text-black">Loading...</div>;
+  if (!discount) {
+    return <div className="text-white">Loading discount data...</div>;
   }
 
   return (
-    <div className="min-h-screen bg-transparent text-white p-8">
-      <h2 className="text-2xl mb-4">Edit User</h2>
+    <div className="min-h-screen bg-gray-900 text-white p-8">
+      <h2 className="text-2xl mb-4 font-bold mt-6">Edit Discount</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block mb-2">Name</label>
-          <input
-            type="text"
-            value={user.name}
-            onChange={(e) => setUser({ ...user, name: e.target.value })}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
-            required
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div className="mt-1">
+            <label className="block mb-2">Name</label>
+            <input
+              type="text"
+              name="name"
+              value={discount.name}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-500 rounded bg-gray text-white focus:outline-none focus:ring-2 focus:ring-orange-600"
+              required
+            />
+          </div>
+
+
+          {/* <div className="mt-1">
+            <label className="block mb-2">Description</label>
+            <input
+              type="text"
+              name="description"
+              value={discount.description}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-500 rounded bg-gray text-white focus:outline-none focus:ring-2 focus:ring-orange-600"
+              required
+            />
+          </div> */}
+
+          <div className="mt-1">
+            <label className="block mb-2">Menu Item Type</label>
+            <input
+              type="text"
+              name="menuItemType"
+              value={discount.menuItemType}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-500 rounded bg-gray text-white focus:outline-none focus:ring-2 focus:ring-orange-600"
+              required
+            />
+          </div>
+          
+          <div className="mt-1">
+            <label className="block mb-2">Menu Item ID</label>
+            <input
+              type="text"
+              name="menuItemId"
+              value={discount.menuItemId}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-500 rounded bg-gray text-white focus:outline-none focus:ring-2 focus:ring-orange-600"
+              required
+            />
+          </div>
+          <div className="mt-1">
+            <label className="block mb-2">Discount Amount (LKR)</label>
+            <input
+              type="number"
+              name="discountAmount"
+              value={discount.discountAmount}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-500 rounded bg-gray text-white focus:outline-none focus:ring-2 focus:ring-orange-600"
+              required
+            />
+          </div>
+          <div className="mt-1">
+            <label className="block mb-2">Discount Type</label>
+            <select
+              name="discountType"
+              value={discount.discountType}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-500 rounded bg-gray text-white focus:outline-none focus:ring-2 focus:ring-orange-600"
+              required
+            >
+              <option value="Percentage">Percentage</option>
+              <option value="Fixed Amount">Fixed</option>
+            </select>
+          </div>
+          <div className="mt-1">
+            <label className="block mb-2">Amount</label>
+            <input
+              type="number"
+              name="amount"
+              value={discount.amount}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-500 rounded bg-gray text-white focus:outline-none focus:ring-2 focus:ring-orange-600"
+              required
+            />
+          </div>
+          <div className="mt-1">
+            <label className="block mb-2">Offer Details</label>
+            <textarea
+              name="offerDetails"
+              value={discount.offerDetails}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-500 rounded bg-gray text-white focus:outline-none focus:ring-2 focus:ring-orange-600"
+              required
+            />
+          </div>
+          <div className="mt-1">
+            <label className="block mb-2">Start Date</label>
+            <input
+              type="date"
+              name="startDate"
+              value={discount.startDate}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-500 rounded bg-gray text-white focus:outline-none focus:ring-2 focus:ring-orange-600"
+              required
+            />
+          </div>
+          <div className="mt-1">
+            <label className="block mb-2">End Date</label>
+            <input
+              type="date"
+              name="endDate"
+              value={discount.endDate}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-500 rounded bg-gray text-white focus:outline-none focus:ring-2 focus:ring-orange-600"
+              required
+            />
+          </div>
         </div>
-        <div className="mb-4">
-          <label className="block mb-2">Email</label>
-          <input
-            type="email"
-            value={user.email}
-            onChange={(e) => setUser({ ...user, email: e.target.value })}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2">Status</label>
-          <select
-            value={user.status}
-            onChange={(e) => setUser({ ...user, status: e.target.value })}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
-            required
-          >
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-          </select>
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2">Location</label>
-          <input
-            type="text"
-            value={user.location}
-            onChange={(e) => setUser({ ...user, location: e.target.value })}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2">Phone</label>
-          <input
-            type="text"
-            value={user.phone}
-            onChange={(e) => setUser({ ...user, phone: e.target.value })}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2">Group</label>
-          <input
-            type="text"
-            value={user.group}
-            onChange={(e) => setUser({ ...user, group: e.target.value })}
-            className="w-2/3 p-2 border border-gray-500 rounded bg-gray-800 text-black focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
-            required
-          />
-        </div>
-        <div className="flex justify-end">
-          <button
+
+        {error && <div className="text-red-500">{error}</div>}
+
+        <div className="flex items-center justify-end gap-4 mt-6">
+          <Button
             type="button"
-            onClick={() => navigate('/branch-manager/users')}
-            className="bg-transparent hover:bg-yellow-500 text-white px-4 py-2 border rounded mr-2 transition duration-300"
+            onClick={() => navigate('/branch-manager/discounts')}
+            className="bg-transparent hover:bg-transparent text-white px-4 py-2 border-white border-2 rounded-lg transition duration-200"
           >
             Cancel
-          </button>
-          <button type="submit" className="bg-yellow-500 hover:bg-yellow-700 text-black px-4 py-2 rounded transition duration-300">
+          </Button>
+          <Button
+            type="submit"
+            onClick={handleSubmit}
+            className= "text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600 px-6 py-2 rounded-lg transition duration-300 shadow-md"
+          >
             Save
-          </button>
+          </Button>
         </div>
       </form>
     </div>
   );
 };
 
-export default EditUser;
+export default EditDiscount;

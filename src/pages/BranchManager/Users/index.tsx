@@ -32,7 +32,7 @@ const UserManagement: React.FC = () => {
           </select>
           <button
             onClick={handleAddUser}
-            className="bg-yellow-600 hover:bg-orange-700 text-white px-4 py-2 rounded mt-2 md:mt-0 transition duration-300"
+            className=" text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600 px-8 py-4 rounded-lg transition duration-300 shadow-md"
           >
             Add User
           </button>

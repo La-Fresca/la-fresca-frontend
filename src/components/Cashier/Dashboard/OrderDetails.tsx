@@ -5,7 +5,7 @@ import PaymentMethodSelector from '@components/Cashier/Dashboard/Payment';
 // import { CrossIcon } from 'node_modules/react-select/dist/declarations/src/components/indicators';
 
 interface OrderDetailsProps {
-  order: Item[];
+  order: Food[];
   removeItemFromOrder: (itemName: string) => void;
   calculateTotal: () => string;
 }

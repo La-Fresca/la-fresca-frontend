@@ -168,11 +168,11 @@ const EditUser: React.FC = () => {
             <option value="CASHIER">Cashier</option>
           </select>
         </div>
-        <div className="flex items-center mt-15">
+        <div className="flex items-center justify-end mt-4 gap-4">
           <button
             type="button"
             onClick={() => navigate('/branch-manager/users')}
-            className="bg-transparent hover:bg-yellow-500 text-white px-4 py-2 border rounded mr-2 transition duration-300"
+            className="bg-transparent hover:bg-transparent text-white px-8 py-4 border-2 rounded-lg transition duration-200"
           >
             Cancel
           </button>
