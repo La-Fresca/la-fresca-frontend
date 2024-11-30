@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 const API_URL = (import.meta as any).env.VITE_API_URL;
 import { Category } from '@/types/category';
+import { jwtDecode } from 'jwt-decode';
 
 function getToken() {
   try {
@@ -11,10 +12,17 @@ function getToken() {
   }
 }
 
+function getCafeId() {
+  const accessToken = getToken();
+  const cafeId = jwtDecode(accessToken).cafeId;
+  return cafeId;
+}
+
 export const useCategories = () => {
   const getAllCategories = async () => {
     try {
-      const response = await fetch(`${API_URL}/category/cafe 1`, {
+      const cafeId = getCafeId();
+      const response = await fetch(`${API_URL}/category/${cafeId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -40,7 +48,7 @@ export const useCategories = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${getToken()}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, cafeId: getCafeId() }),
       });
       if (!response.ok) {
         throw new Error('Failed to add category');
