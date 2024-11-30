@@ -179,16 +179,26 @@ export default function App() {
           </div>
         );
       case 'Status':
-        return (
-          <Chip
-            // className="capitalize"
-            color={statusColorMap[user.Status]}
-            size="sm"
-            variant="flat"
-          >
-            {cellValue}
-          </Chip>
-        );
+        if (cellValue === "Low stock") {
+          return (
+            <div className="text-warning bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full w-[90px]">
+              Low Stock
+            </div>
+          );
+        } else if (cellValue === "High stock") {
+          return (
+            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full w-[90px]">
+              High Stock
+            </div>
+          );
+        } else if (cellValue === "Out of stock") {
+          return (
+            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center rounded-full w-[105px]">
+              Out of Stock
+            </div>
+          );
+        }
+        return null;
       case 'actions':
         return (
           <div className="relative flex justify-end items-center gap-2">
