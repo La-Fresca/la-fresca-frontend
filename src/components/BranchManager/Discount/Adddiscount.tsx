@@ -203,13 +203,13 @@ const AddDiscount: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate('/branch-manager/discounts')}
-              className="bg-transparent hover:bg-transparent text-white px-8 py-4 border-2 rounded-lg transition duration-200"
+              className="bg-transparent hover:bg-transparent text-white px-6 py-2 border-2 rounded-lg transition duration-200"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-yellow-500 hover:bg-yellow-700 text-white px-4 py-2 rounded transition duration-300"
+              className="text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600 px-6 py-2 rounded-lg transition duration-300 shadow-md"
             >
               Save
             </button>
