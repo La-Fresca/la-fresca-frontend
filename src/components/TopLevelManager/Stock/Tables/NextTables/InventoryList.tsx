@@ -83,6 +83,8 @@ export default function StockListByCollection() {
 
   const additionalBranches = [{ name: 'Branch 3', id: 'cafe 1' }];
 
+  console.log(stocks);
+
   const branchOptions = branches
     .map((branch) => ({
       name: branch.name,
@@ -169,7 +171,9 @@ export default function StockListByCollection() {
               <p className="text-bold text-small capitalize dark:text-white text-foodbg">
                 {cellValue}
               </p>
-              <p className="text-bold text-[12px] capitalize">Batch ID: {stock.BatchId}</p>
+              <p className="text-bold text-[12px] capitalize">
+                Batch ID: {stock.BatchId}
+              </p>
             </div>
           </div>
         );
@@ -237,7 +241,7 @@ export default function StockListByCollection() {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-          <Dropdown>
+            <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
