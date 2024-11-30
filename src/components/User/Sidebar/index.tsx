@@ -2,8 +2,18 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '@images/logo/la-fresca.png';
-import { Bars3Icon, UserIcon, ClockIcon, Squares2X2Icon, PhotoIcon, ReceiptPercentIcon } from '@heroicons/react/24/outline';
-
+import {
+  Bars3Icon,
+  UserIcon,
+  ClockIcon,
+  Squares2X2Icon,
+  PhotoIcon,
+  ReceiptPercentIcon,
+} from '@heroicons/react/24/outline';
+import BurgerFriesIcon from '@images/icon/burger-fries.png';
+import BurgerFriesIconWhite from '@images/icon/burger-fries-white.png';
+import DiscountIcon from '@images/icon/discount.png';
+import DiscountIconWhite from '@images/icon/discount-white.png';
 import { CakeIcon } from '@heroicons/react/24/outline';
 import { QueueListIcon } from '@heroicons/react/24/outline';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
@@ -88,7 +98,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           aria-expanded={sidebarOpen}
           className="block lg:hidden"
         >
-          <Bars3Icon className="w-6 h-6" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            className="size-5 translate-y-1"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18 18 6M6 6l12 12"
+            />
+          </svg>
         </button>
       </div>
       {/* <!-- SIDEBAR HEADER --> */}
@@ -116,11 +139,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <NavLink
                   to="/menuItems"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/food-combos') &&
+                    pathname.includes('/menuItems') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <RectangleGroupIcon className="w-6 h-6" />
+                  <img
+                    src={BurgerFriesIcon}
+                    alt=""
+                    className="w-6 h-6 dark:hidden block"
+                  />
+                  <img
+                    src={BurgerFriesIconWhite}
+                    alt=""
+                    className="w-6 h-6 dark:block hidden"
+                  />
                   Foods
                 </NavLink>
               </li>
@@ -128,7 +160,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <NavLink
                   to="/orderhistory"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/users') &&
+                    pathname.includes('/orderhistory') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
@@ -140,7 +172,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <NavLink
                   to="/gallery"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/users') &&
+                    pathname.includes('/gallery') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
@@ -152,19 +184,28 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <NavLink
                   to="/promotions"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/users') &&
+                    pathname.includes('/promotions') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <ReceiptPercentIcon className="w-6 h-6" />
-                  Promotions
+                  <img
+                    src={DiscountIcon}
+                    alt=""
+                    className="w-6 h-6 dark:hidden block"
+                  />
+                  <img
+                    src={DiscountIconWhite}
+                    alt=""
+                    className="w-6 h-6 dark:block hidden"
+                  />
+                  Discount List
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/branch-manager/users"
+                  to="/contactUs"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/users') &&
+                    pathname.includes('/contactUs') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
