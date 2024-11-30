@@ -199,9 +199,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <NavLink
-                  to="/branch-manager/discountlist"
+                  to="/branch-manager/discounts"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/branch-manager/discountlist') &&
+                    pathname.includes('/branch-manager/discounts') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
@@ -295,7 +295,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
 
               <li>
-                <NavLink
+                {/* <NavLink
                   to="/branch-manager/discounts"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
                     pathname.includes('/branch-manager/discounts') &&
@@ -304,7 +304,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 >
                   <StarIcon className="w-6 h-6" />
                   Discount List
-                </NavLink>
+                </NavLink> */}
               </li>
             </ul>
           </div>
