@@ -5,4 +5,5 @@ export type Stock = {
   batchId: string;
   initialAmount: number;
   expiryDate: string;
+  cafeId: string;
 };

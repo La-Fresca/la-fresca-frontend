@@ -1,13 +1,12 @@
-import BranchListTable from '@/components/TopLevelManager/Stock/Branches/Table01/App';
+import React from 'react';
+import StockList from '@/components/TopLevelManager/Stock/Tables/NextTables/InventoryList';
 
-const BranchList: React.FC = () => {
+const Dashboard: React.FC = () => {
   return (
-    <>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-1 md:gap-6 xl:grid-cols-1 2xl:gap-7.5">
-        <BranchListTable />
-      </div>
-    </>
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-1 md:gap-6 xl:grid-cols-1 2xl:gap-7.5">
+      <StockList />
+    </div>
   );
 };
 
-export default BranchList;
+export default Dashboard;
