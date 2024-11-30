@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Item } from '@/types/item';
 import SearchBar from '@components/Cashier/Dashboard/Search';
 import ItemCustomCard from '@/components/User/FoodItem/index';
+import { Category } from '@/types/category';
+import { useCategories } from '@/api/useCategory';
+import { useQuery } from '@tanstack/react-query';
 
 interface MenuProps {
   items: Food[];
@@ -15,13 +18,21 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = ({
   items,
-  categories,
   searchTerm,
   setSearchTerm,
   selectedCategory,
   setSelectedCategory,
   addItemToOrder,
 }) => {
+  const { getAllCategories } = useCategories();
+
+  const categoryQuery = useQuery({
+    queryKey: ['categories'],
+    queryFn: getAllCategories,
+  });
+
+  const categories: Category[] = categoryQuery.data;
+
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
   const filteredItems = items.filter(
@@ -62,7 +73,9 @@ const Menu: React.FC<MenuProps> = ({
             key={category.id}
             onClick={() => setSelectedCategory(category.name)}
             className={`mr-2 mb-2 px-4 py-2 rounded-lg h-10 ${
-              selectedCategory === category.name ? 'bg-orange-500' : 'bg-yellow-500'
+              selectedCategory === category.name
+                ? 'bg-orange-500'
+                : 'bg-yellow-500'
             } hover:bg-orange-700 transition duration-300 text-md font-medium`}
           >
             {category.name}
@@ -78,31 +91,35 @@ const Menu: React.FC<MenuProps> = ({
             </div>
           </div>
         )}
-        {filteredItems.map((item) => (
-          item.categories && console.log(item.categories[0]),
-          <div
-            key={item.name}
-            className="p-4 shadow hover:bg-slate-950 bg-black bg-opacity-50 border-spacing-3 rounded-lg transform hover:scale-105 border hover:border-yellow-500 "
-            onClick={togglePopup}
-          >
-            <img
-              src={item.image}
-              alt={item.name}
-              className="mb-2 w-full h-32 object-cover rounded"
-            />
-            <h3 className="text-lg font-semibold h-15">{item.name}</h3>
-            <p className="text-orange-500">Rs.{item.price.toFixed(2)}</p>
-            <button
-              onClick={(event: React.SyntheticEvent) => {
-                event.stopPropagation();
-                addItemToOrder(item);
-              }}
-              className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400 text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700"
-            >
-              Add to Order
-            </button>
-          </div>
-        ))}
+        {filteredItems.map(
+          (item) => (
+            item.categories && console.log(item.categories[0]),
+            (
+              <div
+                key={item.name}
+                className="p-4 shadow hover:bg-slate-950 bg-black bg-opacity-50 border-spacing-3 rounded-lg transform hover:scale-105 border hover:border-yellow-500 "
+                onClick={togglePopup}
+              >
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="mb-2 w-full h-32 object-cover rounded"
+                />
+                <h3 className="text-lg font-semibold h-15">{item.name}</h3>
+                <p className="text-orange-500">Rs.{item.price.toFixed(2)}</p>
+                <button
+                  onClick={(event: React.SyntheticEvent) => {
+                    event.stopPropagation();
+                    addItemToOrder(item);
+                  }}
+                  className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400 text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700"
+                >
+                  Add to Order
+                </button>
+              </div>
+            )
+          ),
+        )}
       </div>
     </section>
   );
