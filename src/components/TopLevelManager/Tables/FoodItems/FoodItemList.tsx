@@ -254,6 +254,7 @@ export default function App() {
             </div>
           );
         }
+        return null;
       case 'features':
         return (
           <div>

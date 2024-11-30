@@ -177,15 +177,20 @@ export default function App() {
           </div>
         );
       case 'status':
-        return (
-          <Chip
-            color={statusColorMap[branchData.status]}
-            size="sm"
-            variant="flat"
-          >
-            {cellValue}
-          </Chip>
-        );
+        if (cellValue === "CLOSED") {
+          return (
+            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center rounded-full w-[80px]">
+              Closed
+            </div>
+          );
+        } else if (cellValue === "OPEN") {
+          return (
+            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center w-[70px] rounded-full">
+              Open
+            </div>
+          );
+        }
+        return null;
       case 'actions':
         return (
           <div className="relative flex justify-end items-center gap-2">

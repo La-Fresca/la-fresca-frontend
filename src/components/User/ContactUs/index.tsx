@@ -1,31 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useBranches } from '@/api/useBranch';
 import { Branch } from '@/types/branch';
-
+import { Button } from '@nextui-org/react';
+import { ClockIcon, MapPinIcon, PhoneIcon } from '@heroicons/react/24/solid';
 
 function index() {
   const { getAllBranches } = useBranches();
   const [branch, setBranch] = useState<Branch[]>([]);
-  // const branches = [
-  //   {
-  //     name: 'Dehiwala',
-  //     address: '220 Galle Road Mount Lavinia, Sri Lanka 10370',
-  //     hours: '9am to 11pm',
-  //     phone: '1234',
-  //   },
-  //   {
-  //     name: 'Dehiwala',
-  //     address: '220 Galle Road Mount Lavinia, Sri Lanka 10370',
-  //     hours: '9am to 11pm',
-  //     phone: '1234',
-  //   },
-  //   {
-  //     name: 'Dehiwala',
-  //     address: '220 Galle Road Mount Lavinia, Sri Lanka 10370',
-  //     hours: '9am to 11pm',
-  //     phone: '1234',
-  //   }
-  // ];
 
   const fetchBranch = async () => {
     try {
@@ -51,9 +32,9 @@ function index() {
         Reach out for any questions, feedback, or support—we’re here to help!
       </div>
 
-      <div className="mx-auto max-w-screen-xl mt-10 flex">
-      <div className="">
-          <form className="max-w-lg mx-auto p-4 bg-white shadow-md rounded">
+      <div className="mx-auto max-w-screen-xl flex w-[100%] rounded-xl py-10">
+        <div className="w-[50%] px-10 pr-20">
+          <form className="rounded h-[100%] px-10">
             <div className="mb-4">
               <label
                 htmlFor="name"
@@ -64,63 +45,76 @@ function index() {
               <input
                 type="text"
                 id="name"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 block w-full px-5 py-2 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm backdrop-blur-xl bg-[#28282877] border border-[rgb(174 183 192 / 1]"
               />
             </div>
             <div className="mb-4">
               <label
-                htmlFor="description"
+                htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
-                Description
-              </label>
-              <textarea
-                id="description"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              />
-            </div>
-            <div className="mb-4">
-              <label
-                htmlFor="price"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Price
+                Email
               </label>
               <input
-                type="number"
-                id="price"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                type="text"
+                id="email"
+                className="mt-1 block w-full px-5 py-2 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm backdrop-blur-xl bg-[#28282877] border border-[rgb(174 183 192 / 1]"
               />
             </div>
             <div className="mb-4">
               <label
-                htmlFor="available"
+                htmlFor="subject"
                 className="block text-sm font-medium text-gray-700"
               >
-                Available
+                Subject
               </label>
-              <input type="checkbox" id="available" className="mt-1" />
+              <input
+                type="text"
+                id="subject"
+                className="mt-1 block w-full px-5 py-2 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm backdrop-blur-xl bg-[#28282877] border border-[rgb(174 183 192 / 1]"
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Message
+              </label>
+              <textarea
+                id="name"
+                className="mt-1 block w-full px-5 py-2 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm backdrop-blur-xl bg-[#28282877] border border-[rgb(174 183 192 / 1]"
+              />
             </div>
             <div className="text-right">
-              <button
+              <Button
+                className="bg-gradient-to-r from-orange-600 hover:from-orange-400 to-orange-400 hover:to-orange-600 text-white shadow-lg rounded-lg h-8 mt-8 px-10"
                 type="submit"
-                className="px-4 py-2 bg-green-500 text-white rounded"
               >
-                Submit
-              </button>
+                Send
+              </Button>
             </div>
           </form>
         </div>
-        
-        <div className="">
+
+        <div className="w-[50%] px-10">
           {branch.map((item: any) => {
             return (
-              <div className="className">
-                <b>{item.name}</b>
+              <div className="leading-loose">
+                <b className="">{item.name}</b>
                 <br />
-                <p>{item.address}</p>
-                <p>{item.hours}</p>
-                <p>{item.phone}</p>
+                <p className="flex items-center">
+                  <MapPinIcon className="w-5 h-5" />
+                  &nbsp;{item.address}
+                </p>
+                <p className="flex items-center">
+                  <ClockIcon className="w-5 h-5" />
+                  &nbsp;9 am - 10 pm
+                </p>
+                <p className="flex items-center">
+                  <PhoneIcon className="w-5 h-5 pl-[2px]" />
+                  &nbsp;{item.phone}
+                </p>
                 <br />
               </div>
             );
@@ -130,6 +124,5 @@ function index() {
     </div>
   );
 }
-
 
 export default index;
