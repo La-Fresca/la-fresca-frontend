@@ -12,4 +12,5 @@ export type FoodCombo = {
   rating: number;
   foodNames?: string[];
   status: number;
+  deleted?: number;
 };

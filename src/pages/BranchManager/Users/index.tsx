@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserTable from '@components/BranchManager/UserManagement/UserTable';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  status: string;
-  location: string;
-  phone: string;
-  group: string;
-}
+import { User } from '@/types/user';
 
 const UserManagement: React.FC = () => {
   const [filterStatus, setFilterStatus] = useState('All');

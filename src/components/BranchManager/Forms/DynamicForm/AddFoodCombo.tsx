@@ -97,6 +97,8 @@ const ComboForm: FC = () => {
       cafeId: 'cafe 1',
       available: 0,
       deleted: 0,
+      rating: 5,
+      status: 1,
       ...data,
       image: imageUrl,
     };
