@@ -1,5 +1,6 @@
 import { Food } from '@/types/food';
 import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 const API_URL = (import.meta as any).env.VITE_API_URL;
 
@@ -12,10 +13,17 @@ function getToken() {
   }
 }
 
+function getCafeId() {
+  const accessToken = getToken();
+  const cafeId = jwtDecode(accessToken).cafeId;
+  return cafeId;
+}
+
 export const useFoods = () => {
   const getAllFoods = async () => {
     try {
-      const response = await fetch(`${API_URL}/foodItem/getAll/cafe 1`, {
+      const cafeId = getCafeId();
+      const response = await fetch(`${API_URL}/foodItem/getAll/${cafeId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +69,10 @@ export const useFoods = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${getToken()}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          cafeId: getCafeId(),
+        }),
       });
       if (!response.ok) {
         throw new Error('Failed to add food');
@@ -118,7 +129,7 @@ export const useFoods = () => {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${getToken()}`,
-        }
+        },
       });
       if (!response.ok) {
         throw new Error('Failed to approve food');
@@ -136,7 +147,7 @@ export const useFoods = () => {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${getToken()}`,
-        }
+        },
       });
       if (!response.ok) {
         throw new Error('Failed to reject food');

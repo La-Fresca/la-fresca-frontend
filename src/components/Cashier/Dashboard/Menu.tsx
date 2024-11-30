@@ -57,15 +57,23 @@ const Menu: React.FC<MenuProps> = ({
     <section className="w-2/3 p-4 bg-gray shadow-lg rounded-xl border-gray-700">
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div className="flex flex-wrap justify-start mb-4">
+        <button
+          onClick={() => setSelectedCategory('All')}
+          className={`mr-2 mb-2 px-4 py-2 rounded-lg h-10 ${
+            selectedCategory === 'All' ? 'bg-orange-500' : 'bg-yellow-500'
+          } hover:bg-orange-700 transition duration-300 text-md font-medium`}
+        >
+          All
+        </button>
         {categories.map((category) => (
           <button
-            key={category.id}
-            onClick={() => setSelectedCategory(category.name)}
+            key={category}
+            onClick={() => setSelectedCategory(category)}
             className={`mr-2 mb-2 px-4 py-2 rounded-lg h-10 ${
-              selectedCategory === category.name ? 'bg-orange-500' : 'bg-yellow-500'
+              selectedCategory === category ? 'bg-orange-500' : 'bg-yellow-500'
             } hover:bg-orange-700 transition duration-300 text-md font-medium`}
           >
-            {category.name}
+            {category}
           </button>
         ))}
       </div>
@@ -78,31 +86,35 @@ const Menu: React.FC<MenuProps> = ({
             </div>
           </div>
         )}
-        {filteredItems.map((item) => (
-          item.categories && console.log(item.categories[0]),
-          <div
-            key={item.name}
-            className="p-4 shadow hover:bg-slate-950 bg-black bg-opacity-50 border-spacing-3 rounded-lg transform hover:scale-105 border hover:border-yellow-500 "
-            onClick={togglePopup}
-          >
-            <img
-              src={item.image}
-              alt={item.name}
-              className="mb-2 w-full h-32 object-cover rounded"
-            />
-            <h3 className="text-lg font-semibold h-15">{item.name}</h3>
-            <p className="text-orange-500">Rs.{item.price.toFixed(2)}</p>
-            <button
-              onClick={(event: React.SyntheticEvent) => {
-                event.stopPropagation();
-                addItemToOrder(item);
-              }}
-              className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400 text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700"
-            >
-              Add to Order
-            </button>
-          </div>
-        ))}
+        {filteredItems.map(
+          (item) => (
+            item.categories && console.log(item.categories[0]),
+            (
+              <div
+                key={item.name}
+                className="p-4 shadow hover:bg-slate-950 bg-black bg-opacity-50 border-spacing-3 rounded-lg transform hover:scale-105 border hover:border-yellow-500 "
+                onClick={togglePopup}
+              >
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="mb-2 w-full h-32 object-cover rounded"
+                />
+                <h3 className="text-lg font-semibold h-15">{item.name}</h3>
+                <p className="text-orange-500">Rs.{item.price.toFixed(2)}</p>
+                <button
+                  onClick={(event: React.SyntheticEvent) => {
+                    event.stopPropagation();
+                    addItemToOrder(item);
+                  }}
+                  className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400 text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700"
+                >
+                  Add to Order
+                </button>
+              </div>
+            )
+          ),
+        )}
       </div>
     </section>
   );

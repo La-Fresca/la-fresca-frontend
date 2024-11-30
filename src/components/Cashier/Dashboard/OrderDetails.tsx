@@ -57,7 +57,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({
         </ul>
       </div>
       <div className="mt-4">
-        <p className="text-lg">Total:Rs.{calculateTotal()}</p>
+        <p className="text-lg">Total:LKR {calculateTotal()}</p>
         <p className="text-sm">Total Discount:None</p>
         <p className="text-sm">Number Of Items:None</p>
         <h2 className="mt-5 font-semibold">Payment Methods</h2>

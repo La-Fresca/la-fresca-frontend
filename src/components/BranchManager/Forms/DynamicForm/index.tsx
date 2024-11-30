@@ -122,7 +122,6 @@ const DynamicForm: FC = () => {
     }
 
     const transformedData: Food = {
-      cafeId: 'cafe 1',
       ...data,
       image: imageUrl,
       features:
@@ -133,8 +132,6 @@ const DynamicForm: FC = () => {
         })) || [],
       discountStatus: '',
       discountId: '',
-      available: 1,
-      deleted: 0,
     };
 
     try {
