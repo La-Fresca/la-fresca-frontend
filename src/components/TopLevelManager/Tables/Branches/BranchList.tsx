@@ -179,7 +179,7 @@ export default function App() {
       case 'status':
         if (cellValue === "CLOSED") {
           return (
-            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center w-[110px] rounded-full">
+            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center w-[110px] rounded-full w-[80px]">
               Closed
             </div>
           );
