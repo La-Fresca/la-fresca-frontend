@@ -32,7 +32,7 @@ function index() {
         Reach out for any questions, feedback, or support—we’re here to help!
       </div>
 
-      <div className="mx-auto max-w-screen-xl mt-10 flex">
+      <div className="mx-auto max-w-screen-xl flex w-[100%] rounded-xl py-10">
         <div className="w-[50%] px-10 pr-20">
           <form className="rounded h-[100%] px-10">
             <div className="mb-4">
@@ -103,9 +103,18 @@ function index() {
               <div className="leading-loose">
                 <b className="">{item.name}</b>
                 <br />
-                <p className="flex items-center"><MapPinIcon className="w-5 h-5"/>&nbsp;{item.address}</p>
-                <p className="flex items-center"><ClockIcon className="w-5 h-5"/>&nbsp;9 am - 10 pm</p>
-                <p className="flex items-center"><PhoneIcon className="w-5 h-5 pl-[2px]"/>&nbsp;{item.phone}</p>
+                <p className="flex items-center">
+                  <MapPinIcon className="w-5 h-5" />
+                  &nbsp;{item.address}
+                </p>
+                <p className="flex items-center">
+                  <ClockIcon className="w-5 h-5" />
+                  &nbsp;9 am - 10 pm
+                </p>
+                <p className="flex items-center">
+                  <PhoneIcon className="w-5 h-5 pl-[2px]" />
+                  &nbsp;{item.phone}
+                </p>
                 <br />
               </div>
             );
