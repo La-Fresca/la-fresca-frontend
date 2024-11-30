@@ -6,26 +6,6 @@ import { ClockIcon, MapPinIcon, PhoneIcon } from '@heroicons/react/24/solid';
 function index() {
   const { getAllBranches } = useBranches();
   const [branch, setBranch] = useState<Branch[]>([]);
-  // const branches = [
-  //   {
-  //     name: 'Dehiwala',
-  //     address: '220 Galle Road Mount Lavinia, Sri Lanka 10370',
-  //     hours: '9am to 11pm',
-  //     phone: '1234',
-  //   },
-  //   {
-  //     name: 'Dehiwala',
-  //     address: '220 Galle Road Mount Lavinia, Sri Lanka 10370',
-  //     hours: '9am to 11pm',
-  //     phone: '1234',
-  //   },
-  //   {
-  //     name: 'Dehiwala',
-  //     address: '220 Galle Road Mount Lavinia, Sri Lanka 10370',
-  //     hours: '9am to 11pm',
-  //     phone: '1234',
-  //   }
-  // ];
 
   const fetchBranch = async () => {
     try {
