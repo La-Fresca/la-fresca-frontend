@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useBranches } from '@/api/useBranch';
 import { Branch } from '@/types/branch';
-
+import { ClockIcon, MapPinIcon, PhoneIcon } from '@heroicons/react/24/solid';
 
 function index() {
   const { getAllBranches } = useBranches();
