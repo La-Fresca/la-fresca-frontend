@@ -1,26 +1,30 @@
 import React from 'react';
 
-const WaiterTop: React.FC = () => {
+const waiterColorMap: Record<string, string> = {
+  'Waiter 1': 'red',
+  'Waiter 2': 'green',
+  'Waiter 3': 'blue',
+  'Waiter 4': 'yellow',
+  'Waiter 5': 'purple',
+};
+
+const WaiterColorLegend: React.FC = () => {
   return (
-    <div className="flex space-x-10">
-      <div className="flex items-center space-x-2">
-        <div className="w-4 h-4 bg-yellow-500 border-2"></div>
-        <span>Waiter 01</span>
-      </div>
-      <div className="flex items-center space-x-2">
-        <div className="w-4 h-4 bg-violet-900 border-2"></div>
-        <span>Waiter 02</span>
-      </div>
-      <div className="flex items-center space-x-2">
-        <div className="w-4 h-4 bg-red-500 border-2"></div>
-        <span>Waiter 03</span>
-      </div>
-      <div className="flex items-center space-x-2">
-        <div className="w-4 h-4 bg-blue-500 border-2"></div>
-        <span>Waiter 04</span>
-      </div>  
+    <div className="flex items-center space-x-4 p-4">
+      {Object.entries(waiterColorMap).map(([waiter, color]) => (
+        <div 
+          key={waiter} 
+          className="flex items-center space-x-2"
+        >
+          <div 
+            className="w-4 h-4 rounded-full" 
+            style={{ backgroundColor: color }} 
+          />
+          <span className="text-gray-800">{waiter}</span>
+        </div>
+      ))}
     </div>
   );
 };
 
-export default WaiterTop;
+export default WaiterColorLegend;
