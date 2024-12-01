@@ -118,28 +118,48 @@ const App: React.FC = () => {
   const categories = categoriesObject.map((category) => category.name);
 
   const addItemToOrder = (item: Item) => {
-    const itemInOrder = order.find((orderItem) => orderItem.name === item.name);
-    if (itemInOrder) {
-      setOrder(
-        order.map((orderItem) =>
+    setOrder((prevOrder) => {
+      const itemInOrder = prevOrder.find((orderItem) => orderItem.name === item.name);
+  
+      if (itemInOrder) {
+        // Increment the quantity of the existing item
+        return prevOrder.map((orderItem) =>
           orderItem.name === item.name
             ? { ...orderItem, quantity: orderItem.quantity + 1 }
-            : orderItem,
-        ),
-      );
-    } else {
-      setOrder([...order, { ...item }]); 
-    }
+            : orderItem
+        );
+      }
+  
+      // Add the item to the order with a default quantity of 1
+      return [...prevOrder, { ...item, quantity: 1 }];
+    });
   };
+  
 
   const removeItemFromOrder = (itemName: string) => {
     setOrder(order.filter((item) => item.name !== itemName));
   };
 
+  const reduceItemQuantity = (itemName: string) => {
+    setOrder((prevOrder) =>
+      prevOrder
+        .map((item) =>
+          item.name === itemName
+            ? { ...item, quantity: item.quantity - 1 }
+            : item,
+        )
+        .filter((item) => item.quantity > 0) // Remove items with quantity <= 0
+    );
+  };
+  
   const calculateTotal = () => {
     return order
       .reduce((total, item) => total + item.price * item.quantity, 0)
       .toFixed(2);
+  };
+
+  const calculateItemCount = () => {
+    return order.reduce((total, item) => total + item.quantity, 0);
   };
 
   return (
@@ -159,6 +179,8 @@ const App: React.FC = () => {
           order={order}
           removeItemFromOrder={removeItemFromOrder}
           calculateTotal={calculateTotal}
+          reduceItemQuantity={reduceItemQuantity}
+          calculateItemCount={calculateItemCount}
         />
       </main>
     </div>

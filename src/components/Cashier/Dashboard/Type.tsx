@@ -1,6 +1,6 @@
 // types.ts
 export interface Item {
-  image: string;
+    image: string;
     name: string;
     price: number;
     category: string;
