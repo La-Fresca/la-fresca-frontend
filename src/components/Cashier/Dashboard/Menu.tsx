@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Item } from '@/types/item';
 import SearchBar from '@components/Cashier/Dashboard/Search';
-import ItemCustomCard from '@/components/User/FoodItem/index';
+import ItemCustomCard from '@/components/Cashier/FoodItem/index';
 
 interface MenuProps {
   items: Food[];

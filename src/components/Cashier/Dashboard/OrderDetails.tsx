@@ -36,8 +36,8 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({
       <div className="width-[100%] mt-2 !overflow-scroll h-[60vh] px-2">
         <ul>
           {order.length === 0 && (
-            <h2 className="text-2xl text-gray-400">
-              No items in the order yet
+            <h2 className="text-2xl text-yellow-500 italic text-center">
+              "No items in the order yet"
             </h2>
           )}
           {order.map((item, index) => (
