@@ -3,6 +3,7 @@ import { Item } from '@/types/item';
 import SearchBar from '@components/Cashier/Dashboard/Search';
 import ItemCustomCard from '@/components/User/FoodItem/index';
 
+
 interface MenuProps {
   items: Food[];
   searchTerm: string;
