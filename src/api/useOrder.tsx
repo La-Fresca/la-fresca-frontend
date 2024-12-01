@@ -19,6 +19,12 @@ function getCafeId() {
   return cafeId;
 }
 
+function getUserId() {
+  const accessToken = getToken();
+  const userId = jwtDecode(accessToken).userId;
+  return userId;
+}
+
 export const useOrders = () => {
   const getAllOrders = async () => {
     try {
@@ -190,6 +196,29 @@ export const useOrders = () => {
     }
   };
 
+  const getOrdersByUserId = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/order/specificorderbycustomerid/${getUserId()}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+          },
+        },
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch orders');
+      } else {
+        return response.json();
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   return {
     getAllOrders,
     createOrder,
@@ -199,5 +228,6 @@ export const useOrders = () => {
     getPendingOrdersByDeliveryPersonId,
     getCompletedOrdersByDeliveryPersonId,
     updateOrderItemStatus,
+    getOrdersByUserId,
   };
 };
