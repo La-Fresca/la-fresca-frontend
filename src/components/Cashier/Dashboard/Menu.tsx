@@ -3,7 +3,6 @@ import { Item } from '@/types/item';
 import SearchBar from '@components/Cashier/Dashboard/Search';
 import ItemCustomCard from '@/components/User/FoodItem/index';
 
-
 interface MenuProps {
   items: Food[];
   searchTerm: string;
@@ -83,7 +82,7 @@ const Menu: React.FC<MenuProps> = ({
         {isPopupOpen && (
           <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md">
             <div ref={popupRef}>
-              <ItemCustomCard id="66a7e6d47c9e8377f1d95d90" />
+              <ItemCustomCard id="66a91f06a690b6194a3a2727" />
             </div>
           </div>
         )}

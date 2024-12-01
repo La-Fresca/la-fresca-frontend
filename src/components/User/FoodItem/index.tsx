@@ -121,6 +121,7 @@ function FoodForm({ id }: Props) {
 
   const onBuyNow = async (data: FormSchemaType) => {
     const orderItem: OrderItem = {
+      menuItemType: 'Food Item',
       foodId: food?.id || '',
       name: food?.name || '',
       price: basePrice,

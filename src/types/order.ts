@@ -18,6 +18,7 @@ export type Order = {
 };
 
 export type OrderItem = {
+  menuItemType: string;
   foodId: string;
   name: string;
   price: number;
