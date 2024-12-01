@@ -22,8 +22,8 @@ import {
   statusOptions,
 } from '@/components/TopLevelManager/Tables/FoodItems/Components/data';
 import { capitalize } from './utils';
-import { Food } from '@/types/food';
-import { useFoods } from '@/api/useFoodItem';
+import { Discount } from '@/types/discount';
+import { useDiscount } from '@/api/useDiscount';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 import { Branch } from '@/types/branch';
@@ -39,18 +39,18 @@ const INITIAL_VISIBLE_COLUMNS = [
 
 export default function App() {
   const { showSwalApprove, showSwalReject } = swalConfirm();
-  const [food, setFood] = useState<Food[]>([]);
-  const { getAllFoodsForTLM, approveFood, rejectFood } = useFoods();
+  const [discount, setDiscount] = useState<Discount[]>([]);
+  const { getAllDiscounts } = useDiscount();
 
   const [branches, setBranch] = useState<Branch[]>([]);
   const { getAllBranches } = useBranches();
 
   const [loading, setLoading] = React.useState(true);
 
-  const fetchFood = async () => {
+  const fetchDiscount = async () => {
     try {
-      const data = await getAllFoodsForTLM();
-      setFood(data);
+      const data = await getAllDiscounts();
+      setDiscount(data);
       setLoading(true);
     } catch (error: any) {
       console.error(error);
@@ -68,13 +68,11 @@ export default function App() {
   };
 
   useEffect(() => {
-    fetchFood();
+    fetchDiscount();
     fetchBranch();
   }, []);
 
-  const additionalBranches = [
-    { name: 'Branch 3', id: 'cafe 1' }
-  ];
+  const additionalBranches = [{ name: 'Branch 3', id: 'cafe 1' }];
 
   const branchOptions = branches
     .map((branch) => ({
@@ -88,37 +86,7 @@ export default function App() {
       })),
     );
 
-    console.log(food);
-
-  // Approve food item
-  const handleApproveFood = async (id: string) => {
-    try {
-      await approveFood(id);
-      fetchFood();
-    } catch (error: any) {
-      console.error('Failed to approve food:', error);
-    }
-  };
-
-  const handleConfirmApprove = (id: string) => {
-    showSwalApprove(() => handleApproveFood(id));
-  };
-
-  // Reject food item
-  const handleRejectFood = async (id: string) => {
-    try {
-      await rejectFood(id);
-      fetchFood();
-    } catch (error: any) {
-      console.error('Failed to reject food:', error);
-    }
-  };
-
-  const handleConfirmReject = (id: string) => {
-    showSwalReject(() => handleRejectFood(id));
-  };
-
-  console.log(food);
+  console.log(discount);
 
   const [filterValue, setFilterValue] = React.useState('');
   const [visibleColumns, setVisibleColumns] = React.useState(
@@ -143,30 +111,30 @@ export default function App() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredfood = [...food];
+    let filteredDiscount = [...discount];
     if (hasSearchFilter) {
-      filteredfood = filteredfood.filter((foodData) =>
-        foodData.name.toLowerCase().includes(filterValue.toLowerCase()),
+      filteredDiscount = filteredDiscount.filter((discountData) =>
+        discountData.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
     if (
       statusFilter !== 'all' &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredfood = filteredfood.filter((foodData) =>
-        Array.from(statusFilter).includes(foodData.status.toString()),
+      filteredDiscount = filteredDiscount.filter((discountData) =>
+        Array.from(statusFilter).includes(discountData.status.toString()),
       );
     }
     if (
       branchFilter !== 'all' &&
       Array.from(branchFilter).length !== branchOptions.length
     ) {
-      filteredfood = filteredfood.filter((foodData) =>
-        Array.from(branchFilter).includes(foodData.cafeId),
+      filteredDiscount = filteredDiscount.filter((discountData) =>
+        Array.from(branchFilter).includes(discountData.cafeId),
       );
     }
-    return filteredfood;
-  }, [food, filterValue, statusFilter, branchFilter]);
+    return filteredDiscount;
+  }, [discount, filterValue, statusFilter, branchFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -185,21 +153,21 @@ export default function App() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((foodData, columnKey) => {
-    const cellValue = foodData[columnKey];
+  const renderCell = React.useCallback((discountData, columnKey) => {
+    const cellValue = discountData[columnKey];
     switch (columnKey) {
       case 'name':
         return (
           <div className="flex items-center">
             <div className="w-[40px] h-[40px] flex justify-center overflow-hidden rounded-full">
-              <img src={foodData.image} alt="" />
+              <img src={discountData.image} alt="" />
             </div>
             <div className="ml-5">
               <p className="text-bold text-small capitalize dark:text-white text-foodbg">
                 {cellValue}
               </p>
               <p className="text-bold text-[12px] capitalize">
-                ID: {foodData.id}
+                ID: {discountData.id}
               </p>
             </div>
           </div>
@@ -258,81 +226,13 @@ export default function App() {
       case 'features':
         return (
           <div>
-            {foodData.features.map((feature: any) => (
+            {discountData.features.map((feature: any) => (
               <div key={feature.name}>
                 <strong>{feature.name}</strong>: {feature.levels.join(', ')}
               </div>
             ))}
           </div>
         );
-      case 'actions':
-        if (foodData.status === 2) {
-          return (
-            <div className="relative flex justify-center items-center gap-2">
-              <Button
-                className="rounded-full dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] scale-90 min-w-[20px] max-h-[30px] px-1"
-                onClick={() => handleConfirmApprove(foodData.id)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="m4.5 12.75 6 6 9-13.5"
-                  />
-                </svg>
-              </Button>
-              <Button
-                className="rounded-full text-danger bg-[#ff000027] border border-[#ff000078] scale-90 min-w-[20px] max-h-[30px] px-1"
-                onClick={() => handleConfirmReject(foodData.id)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18 18 6M6 6l12 12"
-                  />
-                </svg>
-              </Button>
-            </div>
-          );
-        } else if (foodData.status === 0) {
-          return (
-            <Button
-              className="rounded-full text-danger bg-[#ff000027] border border-[#ff000078] scale-90 min-w-[20px] max-h-[30px] px-1"
-              onClick={() => handleConfirmReject(foodData.id)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M6 18 18 6M6 6l12 12"
-                />
-              </svg>
-            </Button>
-          );
-        }
-        return null;
       default:
         return cellValue;
     }
