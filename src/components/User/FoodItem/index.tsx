@@ -128,7 +128,7 @@ function FoodForm({ id }: Props) {
       quantity: data.quantity,
       totalPrice: totalPrice,
       orderStatus: 'PENDING',
-      addedFeature: data.customFeatures.map((feature) => ({
+      addedFeatures: data.customFeatures.map((feature) => ({
         name: feature.name,
         level: feature.level?.toString() || '0',
         additionalPrice:

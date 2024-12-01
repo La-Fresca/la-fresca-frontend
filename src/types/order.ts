@@ -25,7 +25,7 @@ export type OrderItem = {
   quantity: number;
   totalPrice: number;
   orderStatus: string;
-  addedFeature: AddedFeature[];
+  addedFeatures: AddedFeature[];
 };
 
 export type AddedFeature = {
