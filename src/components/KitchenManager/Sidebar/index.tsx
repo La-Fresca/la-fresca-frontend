@@ -135,9 +135,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <NavLink
-                  to="/kitchen-manager/delivery-person"
+                  to="/kitchen-manager/deliveryPersons"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/kitchen-manager/delivery-person') &&
+                    pathname.includes('/kitchen-manager/deliveryPersons') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
