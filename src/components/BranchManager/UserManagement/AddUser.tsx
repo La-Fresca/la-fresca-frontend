@@ -36,7 +36,6 @@ const AddUser: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     const transformedData: User = {
-      cafeId: 'cafe 1',
       ...data,
     };
     try {
@@ -62,7 +61,7 @@ const AddUser: React.FC = () => {
             <label className="block mb-2">First Name</label>
             <input
               type="text"
-              placeholder='First Name'
+              placeholder="First Name"
               className="w-full p-2 border border-gray-500 rounded bg-black text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
               {...register('firstName')}
             />
@@ -76,7 +75,7 @@ const AddUser: React.FC = () => {
             <label className="block mb-2">Last Name</label>
             <input
               type="text"
-              placeholder='Last Name'
+              placeholder="Last Name"
               className="w-full p-2 border border-gray-500 rounded bg-black text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
               {...register('lastName')}
             />
@@ -90,7 +89,7 @@ const AddUser: React.FC = () => {
             <label className="block mb-2">Username</label>
             <input
               type="text"
-              placeholder='Username'
+              placeholder="Username"
               className="w-full p-2 border border-gray-500 rounded bg-black text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
               {...register('username')}
             />
@@ -104,19 +103,21 @@ const AddUser: React.FC = () => {
             <label className="block mb-2">Email</label>
             <input
               type="email"
-              placeholder='abc@gmail.com'
+              placeholder="abc@gmail.com"
               className="w-full p-2 border border-gray-500 rounded bg-black text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
               {...register('email')}
             />
             {errors.email && (
-              <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
           <div className="mb-2">
             <label className="block mb-2">Address</label>
             <input
               type="text"
-              placeholder='Address'
+              placeholder="Address"
               className="w-full p-2 border border-gray-500 rounded bg-black text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
               {...register('address')}
             />
@@ -130,7 +131,7 @@ const AddUser: React.FC = () => {
             <label className="block mb-2">Phone</label>
             <input
               type="text"
-              placeholder='Eg: 1234567890'
+              placeholder="Eg: 1234567890"
               className="w-full p-2 border border-gray-500 rounded bg-black text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
               {...register('phoneNumber')}
             />
@@ -156,7 +157,7 @@ const AddUser: React.FC = () => {
             <label className="block mb-2">Password</label>
             <input
               type="password"
-              placeholder='Type strong password'
+              placeholder="Type strong password"
               className="w-full p-2 border border-gray-500 rounded bg-black text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
               {...register('password')}
             />
@@ -170,7 +171,7 @@ const AddUser: React.FC = () => {
             <label className="block mb-2">Confirm Password</label>
             <input
               type="password"
-              placeholder='Confirm Password'
+              placeholder="Confirm Password"
               className="w-full p-2 border border-gray-500 rounded bg-black text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
               {...register('confirmPassword')}
             />

@@ -25,6 +25,10 @@ const FormSchema = z.object({
     .number()
     .multipleOf(0.01)
     .min(0, { message: 'Price must be at least 0' }),
+  cost: z.coerce
+    .number()
+    .multipleOf(0.01)
+    .min(0, { message: 'Cost must be at least 0' }),
   image: z.coerce
     .string({ message: 'Should be a string' })
     .optional()
@@ -119,10 +123,8 @@ function ComboEditForm({ id = '' }: { id?: string }) {
     }
 
     const transformedData: FoodCombo = {
-      cafeId: 'cafe 1',
-      available: 0,
-      deleted: 0,
       ...data,
+      available: 1,
       image: imageUrl,
     };
 
@@ -193,6 +195,17 @@ function ComboEditForm({ id = '' }: { id?: string }) {
                 />
                 {errors.price && (
                   <p className="text-red-600">{errors.price.message}</p>
+                )}
+              </label>
+              <label className="mb-6 block text-black dark:text-white">
+                <span className="block mb-1 text-gray-600">Cost</span>
+                <input
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark  dark:text-white dark:focus:border-primary"
+                  type="number"
+                  {...register('cost')}
+                />
+                {errors.cost && (
+                  <p className="text-red-600">{errors.cost.message}</p>
                 )}
               </label>
               <label className="mb-3 block text-black dark:text-white">

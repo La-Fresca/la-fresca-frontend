@@ -111,7 +111,10 @@ export const useFoods = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${getToken()}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          cafeId: getCafeId(),
+        }),
       });
       if (!response.ok) {
         throw new Error('Failed to update food');

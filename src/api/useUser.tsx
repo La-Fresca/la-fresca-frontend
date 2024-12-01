@@ -1,6 +1,7 @@
 import { User } from '@/types/user';
 import Cookies from 'js-cookie';
 const API_URL = (import.meta as any).env.VITE_API_URL;
+import { jwtDecode } from 'jwt-decode';
 
 function getToken() {
   try {
@@ -9,6 +10,12 @@ function getToken() {
     console.error(error);
     return null;
   }
+}
+
+function getCafeId() {
+  const accessToken = getToken();
+  const cafeId = jwtDecode(accessToken).cafeId;
+  return cafeId;
 }
 
 export const useUsers = () => {
@@ -40,7 +47,10 @@ export const useUsers = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${getToken()}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          cafeId: getCafeId(),
+        }),
       });
       if (!response.ok) {
         throw new Error('Failed to add food');
@@ -59,7 +69,10 @@ export const useUsers = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${getToken()}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          cafeId: getCafeId(),
+        }),
       });
       if (!response.ok) {
         throw new Error('Failed to update User');

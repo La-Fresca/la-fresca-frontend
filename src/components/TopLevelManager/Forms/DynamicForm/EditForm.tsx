@@ -152,7 +152,6 @@ function EditForm({ id = '' }: { id?: string }) {
     }
 
     const transformedData: Food = {
-      cafeId: 'cafe 1',
       ...data,
       image: imageUrl,
       features:

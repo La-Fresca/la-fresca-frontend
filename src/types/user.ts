@@ -6,8 +6,8 @@ export type User = {
     phoneNumber: string;
     address: string;
     role: string;
-    cafeId: string;
+    cafeId?: string;
     deleted?: string;
-    username: string;
+    username?: string;
     status?: string;
   };

@@ -1,5 +1,6 @@
 import { FoodCombo } from '@/types/combo';
 import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 const API_URL = (import.meta as any).env.VITE_API_URL;
 
@@ -10,6 +11,12 @@ function getToken() {
     console.error(error);
     return null;
   }
+}
+
+function getCafeId() {
+  const accessToken = getToken();
+  const cafeId = jwtDecode(accessToken).cafeId;
+  return cafeId;
 }
 
 export const useCombos = () => {
@@ -61,7 +68,10 @@ export const useCombos = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${getToken()}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          cafeId: getCafeId(),
+        }),
       });
       if (!response.ok) {
         throw new Error('Failed to add combo');
@@ -100,7 +110,10 @@ export const useCombos = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${getToken()}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          cafeId: getCafeId(),
+        }),
       });
       if (!response.ok) {
         throw new Error('Failed to update combo');
@@ -118,7 +131,7 @@ export const useCombos = () => {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${getToken()}`,
-        }
+        },
       });
       if (!response.ok) {
         throw new Error('Failed to approve food combo');
@@ -136,7 +149,7 @@ export const useCombos = () => {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${getToken()}`,
-        }
+        },
       });
       if (!response.ok) {
         throw new Error('Failed to reject food combo');
@@ -195,6 +208,6 @@ export const useCombos = () => {
     unsafeDeleteCombo,
     getAllCombosForTLM,
     approveCombo,
-    rejectCombo
+    rejectCombo,
   };
 };

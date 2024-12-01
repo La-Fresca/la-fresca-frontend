@@ -39,7 +39,6 @@ const EditUser: React.FC = () => {
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     const transformedData: User = {
       id: userId,
-      cafeId: 'cafe 1',
       ...data,
     };
     try {
@@ -117,7 +116,9 @@ const EditUser: React.FC = () => {
               onChange={(e) => setUser({ ...user, email: e.target.value })}
             />
             {errors.email && (
-              <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
           <div className="mb-4">
@@ -149,7 +150,9 @@ const EditUser: React.FC = () => {
               value={user?.phoneNumber}
               className="w-full p-2 border border-gray-500 rounded bg-black text-white focus:outline-none focus:ring-2 focus:ring-orange-600 transition duration-300"
               {...register('phoneNumber')}
-              onChange={(e) => setUser({ ...user, phoneNumber: e.target.value })}
+              onChange={(e) =>
+                setUser({ ...user, phoneNumber: e.target.value })
+              }
             />
           </div>
           <div className="mb-4">

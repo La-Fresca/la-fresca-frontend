@@ -7,11 +7,12 @@ export type Food = {
   cost?: number;
   price: number;
   available?: number;
-  status: number;
-  cafeId: string;
+  status?: number;
+  cafeId?: string;
   categories: string[];
   discountStatus?: string;
   discountId?: string;
-  rating: number;
+  rating?: number;
   features: { name: string; levels: string[]; additionalPrices: number[] }[];
+  deleted?: number;
 };
