@@ -199,29 +199,29 @@ export default function App() {
           );
         }
         return null;
-      case 'actions':
-        return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]">
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => viewItem(user.Name)}>
-                  View
-                </DropdownItem>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => UpdateItem(user.id)}>
-                  Edit
-                </DropdownItem>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => handleConfirmDelete(user.id)}>
-                  Delete
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        );
+        case 'actions':
+          return (
+            <div className="relative flex justify-end items-center gap-2">
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button isIconOnly size="sm" variant="light">
+                    <VerticalDotsIcon className="text-default-300" />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]">
+                  <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => viewItem(user.Name)}>
+                    View
+                  </DropdownItem>
+                  <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => UpdateItem(user.id)}>
+                    Edit
+                  </DropdownItem>
+                  <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => handleConfirmDelete(user.id)}>
+                    Delete
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+          );
       default:
         return cellValue;
     }

@@ -15,12 +15,12 @@ import {
   Chip,
   Pagination,
 } from '@nextui-org/react';
-import { SearchIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/SearchIcon';
-import { ChevronDownIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/ChevronDownIcon';
+import { SearchIcon } from '@/components/TopLevelManager/Inventory/Tables/NextTables/stockCollection/SearchIcon';
+import { ChevronDownIcon } from '@/components/TopLevelManager/Inventory/Tables/NextTables/stockCollection/ChevronDownIcon';
 import {
   columns,
   statusOptions,
-} from '@/components/Storekeeper/Tables/NextTables/stockCollection/data';
+} from '@/components/TopLevelManager/Inventory/Tables/NextTables/stockCollection/data';
 import { capitalize } from './utils';
 
 import { Link, useNavigate } from 'react-router-dom';
@@ -42,7 +42,6 @@ const INITIAL_VISIBLE_COLUMNS = [
   'AvailableAmount',
   'PredictedStockoutDate',
   'Status',
-  'actions',
 ];
 
 export default function App() {
@@ -114,7 +113,7 @@ export default function App() {
 
   const viewItem = (collectionName: String | null) => {
     if (collectionName) {
-      navigate(`../viewCollections/${collectionName}`);
+      navigate(`viewCollections/${collectionName}`);
     }
   };
 
@@ -230,15 +229,6 @@ export default function App() {
           );
         }
         return null;
-      case 'actions':
-        return (
-          <Button
-            className="rounded-lg text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600 w-[50px] h-[30px]"
-            onClick={() => viewItem(user.Name)}
-          >
-            View
-          </Button>
-        );
       default:
         return cellValue;
     }
@@ -473,7 +463,11 @@ export default function App() {
       </TableHeader>
       <TableBody emptyContent={'No inventory found'} items={sortedItems}>
         {(item) => (
-          <TableRow key={item.id}>
+          <TableRow
+            key={item.id}
+            className="hover:dark:bg-[#ffffff13] hover:bg-[#00000016] cursor-pointer"
+            onClick={() => viewItem(item.Name)}
+          >
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}
