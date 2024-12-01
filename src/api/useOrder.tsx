@@ -1,5 +1,6 @@
 import { Order, OrderItemStatus } from '@/types/order';
 import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 const API_URL = (import.meta as any).env.VITE_API_URL;
 
@@ -10,6 +11,12 @@ function getToken() {
     console.error(error);
     return null;
   }
+}
+
+function getCafeId() {
+  const accessToken = getToken();
+  const cafeId = jwtDecode(accessToken).cafeId;
+  return cafeId;
 }
 
 export const useOrders = () => {
@@ -41,7 +48,10 @@ export const useOrders = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${getToken()}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          cafeId: getCafeId(),
+        }),
       });
       if (!response.ok) {
         throw new Error('Failed to add order');

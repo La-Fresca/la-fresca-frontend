@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Item } from '@/types/item';
 import SearchBar from '@components/Cashier/Dashboard/Search';
 import ItemCustomCard from '@/components/Cashier/FoodItem/index';
+import { Food } from '@/types/food';
 
 interface MenuProps {
   items: Food[];
@@ -9,8 +10,12 @@ interface MenuProps {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   selectedCategory: string;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
-  addItemToOrder: (item: Item) => void;
+  addItemToOrder: (item: Item, customId?: string) => void;
   categories: string[];
+  onCustomize: (itemId: string, price: number, features: any) => void;
+  customizedItems: Record<string, number>;
+  customizedFeatures: Record<string, any>;
+  onAddToOrder: (orderItem: OrderItem) => void;
 }
 
 const Menu: React.FC<MenuProps> = ({
@@ -21,8 +26,16 @@ const Menu: React.FC<MenuProps> = ({
   selectedCategory,
   setSelectedCategory,
   addItemToOrder,
+  onCustomize,
+  customizedItems,
+  customizedFeatures,
+  onAddToOrder,
 }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState<string>('');
+  const [customizedPrices, setCustomizedPrices] = useState<
+    Record<string, number>
+  >({});
   const popupRef = useRef<HTMLDivElement | null>(null);
   const filteredItems = items.filter(
     (item) =>
@@ -31,7 +44,8 @@ const Menu: React.FC<MenuProps> = ({
         item.categories.includes(selectedCategory)),
   );
 
-  const togglePopup = () => {
+  const togglePopup = (itemId: string) => {
+    setSelectedItemId(itemId);
     setIsPopupOpen(!isPopupOpen);
   };
 
@@ -39,6 +53,21 @@ const Menu: React.FC<MenuProps> = ({
     if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
       setIsPopupOpen(false);
     }
+  };
+
+  const handleCustomizedPrice = (
+    itemId: string,
+    newPrice: number,
+    features: any,
+  ) => {
+    const customId = `${itemId}-custom-${Date.now()}`;
+    onCustomize(customId, newPrice, features);
+    setIsPopupOpen(false);
+  };
+
+  const handleCustomization = (orderItem: OrderItem) => {
+    onAddToOrder(orderItem);
+    setIsPopupOpen(false);
   };
 
   useEffect(() => {
@@ -79,41 +108,41 @@ const Menu: React.FC<MenuProps> = ({
       </div>
       <h2 className="text-xl font-semibold mb-4">Menu Items</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        {filteredItems.map((item) => (
+          <div
+            key={item.id}
+            className="p-4 shadow hover:bg-slate-950 bg-black bg-opacity-50 border-spacing-3 rounded-lg transform hover:scale-105 border hover:border-yellow-500 "
+            onClick={() => togglePopup(item.id)}
+          >
+            <img
+              src={item.image}
+              alt={item.name}
+              className="mb-2 w-full h-32 object-cover rounded"
+            />
+            <h3 className="text-lg font-semibold h-15">{item.name}</h3>
+            <p className="text-orange-500">
+              Rs.{(customizedItems[item.id] || item.price).toFixed(2)}
+            </p>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                togglePopup(item.id);
+              }}
+              className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400 text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700"
+            >
+              Add to Order
+            </button>
+          </div>
+        ))}
         {isPopupOpen && (
           <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md">
             <div ref={popupRef}>
-              <ItemCustomCard id="66a91f06a690b6194a3a2727" />
+              <ItemCustomCard
+                id={selectedItemId}
+                onConfirm={handleCustomization}
+              />
             </div>
           </div>
-        )}
-        {filteredItems.map(
-          (item) => (
-            item.categories && console.log(item.categories[0]),
-            (
-              <div
-                key={item.name}
-                className="p-4 shadow hover:bg-slate-950 bg-black bg-opacity-50 border-spacing-3 rounded-lg transform hover:scale-105 border hover:border-yellow-500 "
-                onClick={togglePopup}
-              >
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="mb-2 w-full h-32 object-cover rounded"
-                />
-                <h3 className="text-lg font-semibold h-15">{item.name}</h3>
-                <p className="text-orange-500">Rs.{item.price.toFixed(2)}</p>
-                <button
-                  onClick={(event: React.SyntheticEvent) => {
-                    event.stopPropagation();
-                    addItemToOrder(item);
-                  }}
-                  className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400 text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700"
-                >
-                  Add to Order
-                </button>
-              </div>
-            )
-          ),
         )}
       </div>
     </section>

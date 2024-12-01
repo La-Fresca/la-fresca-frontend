@@ -5,18 +5,21 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
 import { useFoods } from '@/api/useFoodItem';
 import { useCart } from '@/api/useCart';
+import { useOrders } from '@/api/useOrder';
 import { Food } from '@/types/food';
 import Star from './Star';
 import TextButtonGroup from './TextButtonGroup';
-import TextButton from './TextButton';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { Cart } from '@/types/cart';
+import { Order } from '@/types/order';
+import { OrderItem } from '@/types/order';
 import { useNavigate } from 'react-router-dom';
 import { swalSuccess } from '@/components/UI/SwalSuccess';
 import QtySelector from './QtySelector';
 
 interface Props {
   id: string | undefined;
+  onConfirm: (orderItem: OrderItem) => void;
 }
 
 const FormSchema = z.object({
@@ -31,16 +34,18 @@ const FormSchema = z.object({
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-function FoodForm({ id }: Props) {
+function FoodForm({ id, onConfirm }: Props) {
   const { showSwal } = swalSuccess({
-    message: 'Item Customized Successfully!',
+    message: 'Item Added to cart successfully',
   });
   const navigate = useNavigate();
   const userId = (useAuthUser() as { userId: string }).userId;
   const { getFoodById } = useFoods();
   const { addCartItem } = useCart();
+  const { createOrder } = useOrders();
   const [food, setFood] = useState<Food>();
-  const [price, setPrice] = useState<number>(1);
+  const [basePrice, setBasePrice] = useState<number>(0);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
   const [additionalPrices, setAdditionalPrices] = useState<number>(0);
 
   const {
@@ -58,6 +63,8 @@ function FoodForm({ id }: Props) {
     },
   });
 
+  // console.log(errors);
+
   const { fields, append } = useFieldArray({
     control,
     name: 'customFeatures',
@@ -67,7 +74,8 @@ function FoodForm({ id }: Props) {
     try {
       const food = await getFoodById(id?.toString() || '');
       setFood(food);
-      setPrice(food.price);
+      setBasePrice(food.price);
+      setTotalPrice(food.price);
       setValue(
         'customFeatures',
         food.features.map((feature: any) => ({
@@ -83,6 +91,11 @@ function FoodForm({ id }: Props) {
   useEffect(() => {
     fetchFood();
   }, [id]);
+
+  useEffect(() => {
+    const quantity = watch('quantity') || 1;
+    setTotalPrice((basePrice + additionalPrices) * quantity);
+  }, [watch('quantity'), additionalPrices, basePrice]);
 
   const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
     const transformedData: Cart = {
@@ -102,13 +115,74 @@ function FoodForm({ id }: Props) {
     } finally {
       setTimeout(() => {
         showSwal();
-        navigate('/cashier');
+        navigate('/cart');
       }, 2000);
     }
   };
 
+  const onBuyNow = async (data: FormSchemaType) => {
+    const orderItem: OrderItem = {
+      menuItemType: 'Food Item',
+      foodId: food?.id || '',
+      name: food?.name || '',
+      price: basePrice,
+      image: food?.image || '',
+      quantity: data.quantity,
+      totalPrice: totalPrice,
+      orderStatus: 'PENDING',
+      addedFeatures: data.customFeatures.map((feature) => ({
+        name: feature.name,
+        level: feature.level?.toString() || '0',
+        additionalPrice:
+          food?.features.find((f) => f.name === feature.name)?.additionalPrices[
+            feature.level || 0
+          ] || 0,
+      })),
+    };
+
+    const orderData: Order = {
+      orderType: 'ONLINE',
+      totalAmount: totalPrice,
+      orderStatus: 'PENDING',
+      cafeId: food?.cafeId || '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      orderItems: [orderItem],
+      customerId: userId,
+    };
+
+    navigate('/checkout', { state: { orderData } });
+  };
+
   const adjustAdditionalPrice = (priceDelta: number) => {
     setAdditionalPrices((prev) => prev + priceDelta);
+  };
+
+  const handleConfirmOrder = () => {
+    const customFeatures = watch('customFeatures');
+    const quantity = watch('quantity') || 1;
+    const totalWithCustomizations = (basePrice + additionalPrices) * quantity;
+
+    const orderItem: OrderItem = {
+      menuItemType: 'Food Item',
+      foodId: food?.id || '',
+      name: food?.name || '',
+      price: basePrice + additionalPrices, // Changed to include additional prices
+      image: food?.image || '',
+      quantity: quantity,
+      totalPrice: totalWithCustomizations, // Total price with quantity and customizations
+      orderStatus: 'PENDING',
+      addedFeatures: customFeatures.map((feature) => ({
+        name: feature.name,
+        level: feature.level?.toString() || '0',
+        additionalPrice:
+          food?.features.find((f) => f.name === feature.name)?.additionalPrices[
+            feature.level || 0
+          ] || 0,
+      })),
+    };
+
+    onConfirm(orderItem);
   };
 
   if (!food) {
@@ -125,8 +199,12 @@ function FoodForm({ id }: Props) {
           backgroundColor: 'rgba(255, 255, 255, 0.01)',
         }}
       >
-        <div className='w-[50%] h-[100%] p-10'>
-          <img src={food.image} alt="" className="w-[100%] h-[100%] rounded-xl" />
+        <div className="w-[50%] h-[100%] p-10">
+          <img
+            src={food.image}
+            alt=""
+            className="w-[100%] h-[100%] rounded-xl"
+          />
         </div>
 
         <div className="w-[50%]">
@@ -140,15 +218,15 @@ function FoodForm({ id }: Props) {
           </div>
 
           <div className="font-bold text-white pt-5 text-2xl">
-            <span className="pr-2 text-orange-500">LKR.</span>
-            {price * (watch('quantity') || 1) + additionalPrices}
+            <span className="pr-2 text-orange-500">Rs.</span>
+            {totalPrice}
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
-            {/* <QtySelector
+            <QtySelector
               count={watch('quantity') || 1}
               setCount={(newCount) => setValue('quantity', newCount)}
-            /> */}
+            />
 
             <div className="mt-8">
               {fields.map((field, index) => (
@@ -167,24 +245,32 @@ function FoodForm({ id }: Props) {
             </div>
 
             <div className="flex justify-between items-center w-80 md:w-90 mt-2">
-              <Button
-                className=" bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600 text-white shadow-lg rounded-lg h-8 mt-8 px-10 mr-3"
+              {/* <Button
+                className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 mt-8 px-10"
                 type="submit"
               >
-                Customize Food Item
+                Add to Cart
               </Button>
-
               <Button
-                className="bg-transparent border hover:text-black hover:bg-white text-white shadow-lg rounded-lg h-8 mt-8 px-10 "
-                onClick={() => navigate('/cashier')}
+                className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 mt-8 px-10"
+                onClick={() => handleSubmit(onBuyNow)()}
               >
-                Cancel
-              </Button>
-              
-              
-
+                Buy Now
+              </Button> */}
             </div>
           </form>
+          <div className="flex justify-between items-center">
+            {/* <QtySelector
+              count={watch('quantity') || 1}
+              setCount={(newCount) => setValue('quantity', newCount)}
+            /> */}
+            <Button
+              onClick={handleConfirmOrder}
+              className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 mt-8 px-10"
+            >
+              Confirm Order
+            </Button>
+          </div>
         </div>
       </div>
     </div>

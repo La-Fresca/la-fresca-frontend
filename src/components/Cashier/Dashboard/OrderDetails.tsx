@@ -6,14 +6,13 @@ import PaymentMethodSelector from '@components/Cashier/Dashboard/Payment';
 // import { CrossIcon } from 'node_modules/react-select/dist/declarations/src/components/indicators';
 
 interface OrderDetailsProps {
-  order: Food[];
+  order: OrderItem[];
   removeItemFromOrder: (itemName: string) => void;
   calculateTotal: () => string;
   reduceItemQuantity: (itemName: string) => void;
   calculateItemCount: () => number;
+  onSubmitOrder: () => void;
 }
-
-
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({
   order,
@@ -21,7 +20,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({
   reduceItemQuantity,
   calculateTotal,
   calculateItemCount,
-  
+  onSubmitOrder,
 }) => {
   return (
     <section className="w-1/3 p-4 rounded-xl shadow-lg bg-gray ml-5 h-[120vh]">
@@ -52,21 +51,38 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({
                     x{item.quantity}
                   </span>
                 </h3>
-                <p className="text-orange-600">LKR {item.price.toFixed(2)}</p>
+                <p className="text-orange-600">
+                  LKR {(item.price * item.quantity).toFixed(2)}
+                </p>
+                {item.addedFeatures && item.addedFeatures.length > 0 && (
+                  <div className="text-xs text-gray-400">
+                    {item.addedFeatures.map(
+                      (feature, idx) =>
+                        feature.level !== '0' &&
+                        feature.level !== '-1' && (
+                          <div key={idx}>
+                            {feature.name}: Level {feature.level} (+
+                            {feature.additionalPrice})
+                          </div>
+                        ),
+                    )}
+                  </div>
+                )}
               </div>
-              <div className='flex justify-end'>
-              <button
-                onClick={() => removeItemFromOrder(item.name)}
-                className="bg-red-600 hover:bg-red-700 text-white py-1 px-2 rounded transition duration-300 mr-3"
-              >
-                <XMarkIcon className="w-5 h-5" />
-              </button>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => removeItemFromOrder(item.name)}
+                  className="bg-red-600 hover:bg-red-700 text-white py-1 px-2 rounded transition duration-300 mr-3"
+                >
+                  <XMarkIcon className="w-5 h-5" />
+                </button>
 
-              <button
-                onClick={() => reduceItemQuantity(item.name)}
-                className="bg-orange-400 hover:bg-orange-300 text-white py-1 px-2 rounded transition duration-300" >
-                < MinusIcon className="w-5 h-5" />
-              </button>
+                <button
+                  onClick={() => reduceItemQuantity(item.name)}
+                  className="bg-orange-400 hover:bg-orange-300 text-white py-1 px-2 rounded transition duration-300"
+                >
+                  <MinusIcon className="w-5 h-5" />
+                </button>
               </div>
             </li>
           ))}
@@ -78,9 +94,18 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({
         <p className="text-sm">Number Of Items:{calculateItemCount()}</p>
         <h2 className="mt-5 font-semibold">Payment Methods</h2>
         <PaymentMethodSelector />
-        <button className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400  text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700">
+        <button
+          onClick={onSubmitOrder}
+          className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400  text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700"
+        >
           Pay LKR.{calculateTotal()}
         </button>
+        {/* <button
+          
+          className="mt-2 w-full bg-gradient-to-r from-orange-600 to-orange-400 text-white py-2 rounded-lg shadow-lg transition duration-300 hover:from-orange-950 hover:to-orange-700"
+        >
+          Submit Order
+        </button> */}
       </div>
     </section>
   );

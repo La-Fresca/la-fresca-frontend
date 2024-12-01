@@ -7,89 +7,39 @@ import { useCategories } from '@/api/useCategory';
 import { useQuery } from '@tanstack/react-query';
 import { Item } from '@/types/item';
 import { Category } from '@/types/category';
-
-// const initialItems: Item[] = [
-//   {
-//     name: 'Cheese Pizza',
-//     price: 1100,
-//     category: 'Pizza',
-//     quantity: 1,
-//     image:
-//       'https://simple-uploadddddddddd.iamtrazy.eu.org/uploads/1722279635684-bdba90a67b204831.png',
-//   },
-//   {
-//     name: 'BBQ pizza',
-//     price: 1100,
-//     category: 'Pizza',
-//     quantity: 1,
-//     image:
-//       'https://simple-uploadddddddddd.iamtrazy.eu.org/uploads/1722279635684-bdba90a67b204831.png',
-//   },
-//   {
-//     name: 'Ramen',
-//     price: 800,
-//     category: 'Pasta',
-//     quantity: 1,
-//     image:
-//       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs2paowiODEqEOJ082fLEWgrlBjvBlGd2GrQ&s',
-//   },
-//   {
-//     name: 'Egg Fried Rice',
-//     price: 900,
-//     category: 'Side Dish',
-//     quantity: 1,
-//     image:
-//       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4o2hOc9AC-1kziBlLQke6RPIPYcqkKVSm5Q&s',
-//   },
-//   {
-//     name: 'Cheese Burger',
-//     price: 750,
-//     category: 'Burgers',
-//     quantity: 1,
-//     image:
-//       'https://images.immediate.co.uk/production/volatile/sites/30/2021/03/Hasselback-Potatoes-a818dcb.jpg?quality=90&resize=556,505',
-//   },
-//   {
-//     name: 'Egg Soup ',
-//     price: 600,
-//     category: 'Soup',
-//     quantity: 1,
-//     image:
-//       'https://www.inspiredtaste.net/wp-content/uploads/2022/01/Creamy-Chicken-Noodle-Soup-3-1200-1200x800.jpg',
-//   },
-//   {
-//     name: 'Indomie Soto',
-//     price: 1300,
-//     category: 'Noodles',
-//     quantity: 1,
-//     image:
-//       'https://tiffycooks.com/wp-content/uploads/2021/09/Screen-Shot-2021-09-21-at-5.21.37-PM.png',
-//   },
-//   {
-//     name: 'Red Noodles',
-//     price: 700,
-//     category: 'Noodles',
-//     quantity: 1,
-//     image:
-//       'https://www.nigella.com/assets/uploads/recipes/public-thumbnail/rubynoodles-5fbfd2f95f852.jpg',
-//   },
-//   {
-//     name: 'Bread Toast with Egg',
-//     price: 800,
-//     category: 'Side Dish',
-//     quantity: 1,
-//     image:
-//       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvMDB6p1Jw3OkjqrOCPI5YH6E9SS3p95vUCQ&s',
-//   },
-// ];
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import { useOrders } from '@/api/useOrder';
+import { swalSuccess } from '@/components/UI/SwalSuccess';
 
 const App: React.FC = () => {
   const { getAllFoods } = useFoods();
   const { getAllCategories } = useCategories();
-  // const items = initialItems;
-  const [order, setOrder] = useState<Item[]>([]);
+  const { createOrder } = useOrders();
+
+  const [order, setOrder] = useState<OrderItem[]>([]);
+  const userId = (useAuthUser() as { userId: string }).userId;
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [customizedItems, setCustomizedItems] = useState<
+    Record<string, number>
+  >({});
+  const [customizedFeatures, setCustomizedFeatures] = useState<
+    Record<string, any>
+  >({});
+
+  const { showSwal } = swalSuccess({
+    message: 'Order Billed Successfully',
+  });
+
+  const handleCustomizedItem = (
+    itemId: string,
+    newPrice: number,
+    features: any,
+  ) => {
+    const customId = `${itemId}-custom-${Date.now()}`;
+    setCustomizedFeatures((prev) => ({ ...prev, [customId]: features }));
+    setCustomizedItems((prev) => ({ ...prev, [customId]: newPrice }));
+  };
 
   const foodQuery = useQuery({
     queryKey: ['foods'],
@@ -117,49 +67,77 @@ const App: React.FC = () => {
   const categoriesObject: Category[] = categoryQuery.data;
   const categories = categoriesObject.map((category) => category.name);
 
-  const addItemToOrder = (item: Item) => {
+  const addItemToOrder = (item: Item, customId?: string) => {
     setOrder((prevOrder) => {
-      const itemInOrder = prevOrder.find((orderItem) => orderItem.name === item.name);
-  
-      if (itemInOrder) {
-        // Increment the quantity of the existing item
-        return prevOrder.map((orderItem) =>
-          orderItem.name === item.name
-            ? { ...orderItem, quantity: orderItem.quantity + 1 }
-            : orderItem
+      const orderItem = {
+        ...item,
+        id: customId || item.id,
+        name: customId ? `${item.name} (Customized)` : item.name,
+        price: customId ? customizedItems[customId] : item.price,
+        customFeatures: customId ? customizedFeatures[customId] : undefined,
+        quantity: 1,
+      };
+
+      const existingItem = prevOrder.find((i) => i.id === orderItem.id);
+
+      if (existingItem) {
+        return prevOrder.map((i) =>
+          i.id === orderItem.id ? { ...i, quantity: i.quantity + 1 } : i,
         );
       }
-  
-      // Add the item to the order with a default quantity of 1
-      return [...prevOrder, { ...item, quantity: 1 }];
+
+      return [...prevOrder, orderItem];
     });
   };
-  
 
   const removeItemFromOrder = (itemName: string) => {
     setOrder(order.filter((item) => item.name !== itemName));
   };
 
   const reduceItemQuantity = (itemName: string) => {
-    setOrder((prevOrder) =>
-      prevOrder
-        .map((item) =>
-          item.name === itemName
-            ? { ...item, quantity: item.quantity - 1 }
-            : item,
-        )
-        .filter((item) => item.quantity > 0) // Remove items with quantity <= 0
+    setOrder(
+      (prevOrder) =>
+        prevOrder
+          .map((item) =>
+            item.name === itemName
+              ? { ...item, quantity: item.quantity - 1 }
+              : item,
+          )
+          .filter((item) => item.quantity > 0), // Remove items with quantity <= 0
     );
   };
-  
+
   const calculateTotal = () => {
     return order
-      .reduce((total, item) => total + item.price * item.quantity, 0)
+      .reduce((total, item) => total + item.totalPrice, 0) // Changed to use totalPrice
       .toFixed(2);
   };
 
   const calculateItemCount = () => {
     return order.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const handleAddToOrder = (orderItem: OrderItem) => {
+    setOrder((prev) => [...prev, orderItem]);
+  };
+
+  const handleSubmitOrder = async () => {
+    try {
+      const orderData = {
+        orderType: 'OFFLINE',
+        totalAmount: order.reduce((sum, item) => sum + item.totalPrice, 0),
+        orderStatus: 'PENDING',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        orderItems: order,
+        cashierId: userId,
+      };
+      await createOrder(orderData);
+      setOrder([]);
+      showSwal();
+    } catch (error) {
+      console.error('Error submitting order:', error);
+    }
   };
 
   return (
@@ -174,6 +152,10 @@ const App: React.FC = () => {
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
           addItemToOrder={addItemToOrder}
+          onCustomize={handleCustomizedItem}
+          customizedItems={customizedItems}
+          customizedFeatures={customizedFeatures}
+          onAddToOrder={handleAddToOrder}
         />
         <OrderDetails
           order={order}
@@ -181,6 +163,7 @@ const App: React.FC = () => {
           calculateTotal={calculateTotal}
           reduceItemQuantity={reduceItemQuantity}
           calculateItemCount={calculateItemCount}
+          onSubmitOrder={handleSubmitOrder}
         />
       </main>
     </div>
