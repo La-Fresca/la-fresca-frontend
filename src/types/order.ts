@@ -1,5 +1,5 @@
 export type Order = {
-  id: string;
+  id?: string;
   orderType: string;
   totalAmount: number;
   orderStatus: string;
@@ -8,7 +8,7 @@ export type Order = {
   updatedAt: string;
   orderItems: OrderItem[];
 
-  CustomerId?: string;
+  customerId?: string;
   deliveryPersonId?: string;
   location?: string;
   contactNo?: string;

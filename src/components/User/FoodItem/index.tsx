@@ -5,12 +5,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
 import { useFoods } from '@/api/useFoodItem';
 import { useCart } from '@/api/useCart';
+import { useOrders } from '@/api/useOrder';
 import { Food } from '@/types/food';
 import Star from './Star';
 import TextButtonGroup from './TextButtonGroup';
-import TextButton from './TextButton';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { Cart } from '@/types/cart';
+import { Order } from '@/types/order';
+import { OrderItem } from '@/types/order';
 import { useNavigate } from 'react-router-dom';
 import { swalSuccess } from '@/components/UI/SwalSuccess';
 import QtySelector from './QtySelector';
@@ -39,8 +41,10 @@ function FoodForm({ id }: Props) {
   const userId = (useAuthUser() as { userId: string }).userId;
   const { getFoodById } = useFoods();
   const { addCartItem } = useCart();
+  const { createOrder } = useOrders();
   const [food, setFood] = useState<Food>();
-  const [price, setPrice] = useState<number>(1);
+  const [basePrice, setBasePrice] = useState<number>(0);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
   const [additionalPrices, setAdditionalPrices] = useState<number>(0);
 
   const {
@@ -58,6 +62,8 @@ function FoodForm({ id }: Props) {
     },
   });
 
+  console.log(errors);
+
   const { fields, append } = useFieldArray({
     control,
     name: 'customFeatures',
@@ -67,7 +73,8 @@ function FoodForm({ id }: Props) {
     try {
       const food = await getFoodById(id?.toString() || '');
       setFood(food);
-      setPrice(food.price);
+      setBasePrice(food.price);
+      setTotalPrice(food.price);
       setValue(
         'customFeatures',
         food.features.map((feature: any) => ({
@@ -83,6 +90,11 @@ function FoodForm({ id }: Props) {
   useEffect(() => {
     fetchFood();
   }, [id]);
+
+  useEffect(() => {
+    const quantity = watch('quantity') || 1;
+    setTotalPrice((basePrice + additionalPrices) * quantity);
+  }, [watch('quantity'), additionalPrices, basePrice]);
 
   const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
     const transformedData: Cart = {
@@ -107,6 +119,39 @@ function FoodForm({ id }: Props) {
     }
   };
 
+  const onBuyNow = async (data: FormSchemaType) => {
+    const orderItem: OrderItem = {
+      foodId: food?.id || '',
+      name: food?.name || '',
+      price: basePrice,
+      image: food?.image || '',
+      quantity: data.quantity,
+      totalPrice: totalPrice,
+      orderStatus: 'PENDING',
+      addedFeature: data.customFeatures.map((feature) => ({
+        name: feature.name,
+        level: feature.level?.toString() || '0',
+        additionalPrice:
+          food?.features.find((f) => f.name === feature.name)?.additionalPrices[
+            feature.level || 0
+          ] || 0,
+      })),
+    };
+
+    const orderData: Order = {
+      orderType: 'ONLINE',
+      totalAmount: totalPrice,
+      orderStatus: 'PENDING',
+      cafeId: food?.cafeId || '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      orderItems: [orderItem],
+      customerId: userId,
+    };
+
+    navigate('/checkout', { state: { orderData } });
+  };
+
   const adjustAdditionalPrice = (priceDelta: number) => {
     setAdditionalPrices((prev) => prev + priceDelta);
   };
@@ -125,8 +170,12 @@ function FoodForm({ id }: Props) {
           backgroundColor: 'rgba(255, 255, 255, 0.01)',
         }}
       >
-        <div className='w-[50%] h-[100%] p-10'>
-          <img src={food.image} alt="" className="w-[100%] h-[100%] rounded-xl" />
+        <div className="w-[50%] h-[100%] p-10">
+          <img
+            src={food.image}
+            alt=""
+            className="w-[100%] h-[100%] rounded-xl"
+          />
         </div>
 
         <div className="w-[50%]">
@@ -141,7 +190,7 @@ function FoodForm({ id }: Props) {
 
           <div className="font-bold text-white pt-5 text-2xl">
             <span className="pr-2 text-orange-500">Rs.</span>
-            {price * (watch('quantity') || 1) + additionalPrices}
+            {totalPrice}
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
@@ -173,7 +222,12 @@ function FoodForm({ id }: Props) {
               >
                 Add to Cart
               </Button>
-              <TextButton value="Buy Now" />
+              <Button
+                className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 mt-8 px-10"
+                onClick={() => handleSubmit(onBuyNow)()}
+              >
+                Buy Now
+              </Button>
             </div>
           </form>
         </div>

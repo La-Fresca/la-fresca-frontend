@@ -1,14 +1,57 @@
 import { Button } from '@nextui-org/react';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useOrders } from '@/api/useOrder';
+import { Order } from '@/types/order';
+import { OrderItem } from '../OrderHistory/OrderItem';
 
-function index() {
+function Checkout() {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const { createOrder } = useOrders();
   const [isEditable, setIsEditable] = useState(false);
+  const [address, setAddress] = useState({
+    street: '',
+    city: '',
+    phoneNumber: '',
+  });
+
+  const orderData: Order = location.state?.orderData;
+
+  if (!orderData) {
+    navigate('/');
+    return null;
+  }
 
   const handleButtonClick = () => {
     setIsEditable((prev) => !prev);
+  };
+
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setAddress((prev) => ({
+      ...prev,
+      [id === 'street_address'
+        ? 'street'
+        : id === 'city'
+          ? 'city'
+          : 'phoneNumber']: value,
+    }));
+  };
+
+  const handleSubmitOrder = async () => {
+    try {
+      const finalOrderData = {
+        ...orderData,
+        location: `${address.street}, ${address.city}`,
+        contactNo: `0${address.phoneNumber}`,
+      };
+
+      await createOrder(finalOrderData);
+      navigate('/orderhistory');
+    } catch (error) {
+      console.error('Error submitting order:', error);
+    }
   };
 
   return (
@@ -108,7 +151,7 @@ function index() {
                     className="block w-full rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
                     placeholder="Bonnie Green"
                     required
-                    disabled={!isEditable}
+                    disabled={isEditable}
                     style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
                   />
                 </div>
@@ -123,7 +166,7 @@ function index() {
                     className="block w-full rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
                     placeholder="Bonnie Green"
                     required
-                    disabled={!isEditable}
+                    disabled={isEditable}
                     style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
                   />
                 </div>
@@ -138,7 +181,9 @@ function index() {
                     className="block w-full rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
                     placeholder="Street Address"
                     required
-                    disabled={!isEditable}
+                    disabled={isEditable}
+                    value={address.street}
+                    onChange={handleAddressChange}
                     style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
                   />
                 </div>
@@ -153,7 +198,9 @@ function index() {
                     className="block w-full rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
                     placeholder="City"
                     required
-                    disabled={!isEditable}
+                    disabled={isEditable}
+                    value={address.city}
+                    onChange={handleAddressChange}
                     style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
                   />
                 </div>
@@ -233,7 +280,9 @@ function index() {
                       className="rounded-e-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg block w-full p-2.5 text-sm text-gray-900 outline-none dark:text-white focus:dark:border-white hover:dark:border-white duration-200"
                       placeholder="Phone Number"
                       required
-                      disabled={!isEditable}
+                      disabled={isEditable}
+                      value={address.phoneNumber}
+                      onChange={handleAddressChange}
                       style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
                     />
                   </div>
@@ -391,7 +440,7 @@ function index() {
                     Subtotal
                   </dt>
                   <dd className="text-base font-medium text-gray-900 dark:text-white">
-                    Rs. 0
+                    LKR {orderData?.totalAmount}
                   </dd>
                 </dl>
 
@@ -418,7 +467,7 @@ function index() {
                     Total
                   </dt>
                   <dd className="text-base font-bold text-gray-900 dark:text-white">
-                    Rs. 0
+                    LKR {orderData?.totalAmount}
                   </dd>
                 </dl>
               </div>
@@ -427,9 +476,9 @@ function index() {
             <div className="space-y-3">
               <Button
                 className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 px-10 py-5 inline-flex w-full items-center justify-center focus:outline-none focus:ring-4 focus:ring-primary-300 mt-2"
-                onClick={() => navigate('/checkout')}
+                onClick={handleSubmitOrder}
               >
-                Proceed to Payment
+                Confirm Order
               </Button>
             </div>
           </div>
@@ -439,4 +488,4 @@ function index() {
   );
 }
 
-export default index;
+export default Checkout;
