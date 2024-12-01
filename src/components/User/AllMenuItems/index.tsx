@@ -48,9 +48,7 @@ function index() {
   const combos: FoodCombo[] = comboQuery.data;
   const categoriesObject: Category[] = categoryQuery.data;
 
-  console.log(foods);
-
-  const categories = ['Burger', 'Pizza', 'Coffee', 'Tea'];
+  // console.log(foods);
 
   return (
     <div className="mx-auto max-w-screen-xl flex w-full flex-col">
@@ -68,7 +66,8 @@ function index() {
                   <b>Food Items</b>
                 </div>
                 <div className="mt-2 mx-auto max-w-screen px-4 2xl:px-0">
-                  Deliciously crafted meals and treats to complement every coffee moment.
+                  Deliciously crafted meals and treats to complement every
+                  coffee moment.
                 </div>
 
                 <Tabs
@@ -105,15 +104,15 @@ function index() {
                     </Card>
                   </Tab>
 
-                  {categories.map((category) => {
+                  {categoriesObject.map((category) => {
                     return (
-                      <Tab key={category} title={category}>
+                      <Tab key={category.name} title={category.name}>
                         <Card>
                           <CardBody>
                             <div>
                               <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols- gap-5">
                                 {foods.map((_: Food) => {
-                                  if (_.categories.includes(category)) {
+                                  if (_.categories.includes(category.name)) {
                                     return (
                                       <Item
                                         key={_.id}
@@ -150,7 +149,8 @@ function index() {
                   <b>Food Combos</b>
                 </div>
                 <div className="mt-2 mx-auto max-w-screen px-4 2xl:px-0">
-                  Perfectly paired meals created for maximum flavor and satisfaction.
+                  Perfectly paired meals created for maximum flavor and
+                  satisfaction.
                 </div>
 
                 <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols- gap-5">
