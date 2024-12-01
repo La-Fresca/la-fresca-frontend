@@ -419,7 +419,7 @@ export default function App() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {food.length} delivery persons
+            Total {food.length} waiters
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:&nbsp;
