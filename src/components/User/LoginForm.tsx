@@ -20,6 +20,7 @@ interface ourJwtPayload extends JwtPayload {
   userId?: string;
   username?: string;
   name?: string;
+  email?: string;
 }
 
 const LoginForm = () => {
@@ -49,9 +50,9 @@ const LoginForm = () => {
         const userId = (jwtDecode(accessToken) as ourJwtPayload).userId;
         const username = (jwtDecode(accessToken) as ourJwtPayload).username;
         const name = (jwtDecode(accessToken) as ourJwtPayload).name;
+        const email = (jwtDecode(accessToken) as ourJwtPayload).sub;
 
-        window.localStorage.setItem("name", name);
-
+        window.localStorage.setItem('name', name);
 
         signIn({
           auth: {
@@ -63,7 +64,8 @@ const LoginForm = () => {
             role: role,
             userId: userId,
             username: username,
-            name: name
+            name: name,
+            email: email,
           },
         });
       } else {

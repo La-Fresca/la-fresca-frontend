@@ -4,12 +4,24 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useOrders } from '@/api/useOrder';
 import { Order } from '@/types/order';
 import { OrderItem } from '../OrderHistory/OrderItem';
+import PaymentGateway from '../PaymentGateway';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
 function Checkout() {
+  const auth = useAuthUser();
   const navigate = useNavigate();
   const location = useLocation();
   const { createOrder } = useOrders();
   const [isEditable, setIsEditable] = useState(false);
+
+  console.log(auth);
+
+  // Add state for user details
+  const [userDetails, setUserDetails] = useState({
+    email: auth?.email || '',
+    name: auth?.name || '',
+  });
+
   const [address, setAddress] = useState({
     street: '',
     city: '',
@@ -143,13 +155,20 @@ function Checkout() {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
-                    First name*
+                    Email*
                   </label>
                   <input
-                    type="text"
-                    id="first_name"
+                    type="email"
+                    id="email"
+                    value={userDetails.email}
+                    onChange={(e) =>
+                      setUserDetails((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
                     className="block w-full rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
-                    placeholder="Bonnie Green"
+                    placeholder="example@email.com"
                     required
                     disabled={isEditable}
                     style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
@@ -158,13 +177,20 @@ function Checkout() {
 
                 <div>
                   <label className="mb-2 block text-sm font-medium text-foodbg dark:text-white">
-                    Last name*
+                    Customer Name*
                   </label>
                   <input
                     type="text"
-                    id="last_name"
+                    id="name"
+                    value={userDetails.name}
+                    onChange={(e) =>
+                      setUserDetails((prev) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
+                    }
                     className="block w-full rounded-lg border border-[rgba(0,0,0,0.3)] hover:border-foodbg focus:border-foodbg dark:border-foodbg dark:bg-foodbg p-2.5 text-sm dark:text-white outline-none focus:dark:border-white hover:dark:border-white duration-200"
-                    placeholder="Bonnie Green"
+                    placeholder="Full Name"
                     required
                     disabled={isEditable}
                     style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
@@ -432,7 +458,10 @@ function Checkout() {
             </div>
           </div>
 
-          <div className="mt-6 w-full space-y-6 sm:mt-8 lg:mt-0 lg:max-w-xs xl:max-w-md">
+          <div
+            id="payhere-modal"
+            className="mt-6 w-full space-y-6 sm:mt-8 lg:mt-0 lg:max-w-xs xl:max-w-md"
+          >
             <div className="flow-root">
               <div className="-my-3 divide-y divide-gray-200 dark:divide-gray-800">
                 <dl className="flex items-center justify-between gap-4 py-3">
@@ -474,12 +503,26 @@ function Checkout() {
             </div>
 
             <div className="space-y-3">
-              <Button
+              {/* <Button
                 className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 px-10 py-5 inline-flex w-full items-center justify-center focus:outline-none focus:ring-4 focus:ring-primary-300 mt-2"
                 onClick={handleSubmitOrder}
               >
                 Confirm Order
-              </Button>
+              </Button> */}
+              <PaymentGateway
+                orderData={{
+                  id: orderData?.id,
+                  location: `${address.street}, ${address.city}`,
+                  contactNo: `0${address.phoneNumber}`,
+                  totalAmount: orderData?.totalAmount,
+                  items: orderData?.items || [],
+                }}
+                customerDetails={{
+                  name: userDetails.name,
+                  email: userDetails.email,
+                }}
+                onOrderSubmit={handleSubmitOrder} // Add this prop
+              />
             </div>
           </div>
         </div>
