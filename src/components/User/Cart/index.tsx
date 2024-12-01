@@ -45,28 +45,40 @@ function Index() {
 
   const newOrder = async () => {
     try {
-      const transformedData: Order = {
-        orderType: 'ONLINE',
+      // Only include selected items from the cart
+      const selectedCartItems = cartItems.filter(
+        (item) => selectedItems[item.id],
+      );
+
+      const orderItems = selectedCartItems.map((item) => ({
+        menuItemType: item.menuItemType,
+        foodId: item.menuItemId || '',
+        name: item.name || '',
+        price: item.itemPrice,
+        image: item.image || '',
+        quantity: selectedItems[item.id]?.quantity || 1,
+        totalPrice:
+          (selectedItems[item.id]?.quantity || 1) * item.itemTotalPrice,
         orderStatus: 'PENDING',
-        totalAmount: price,
-        location: 'Colombo',
-        cafeId: '1',
-        contactNo: '0712345678',
-        customerId: userId,
-        orderItems: cartItems.map((item) => ({
-          name: item.name,
-          quantity: item.quantity,
-          totalPrice: item.itemTotalPrice,
-          foodId: item.menuItemId,
-          addedFeatures: item.customFeatures.map((feature) => ({
-            name: feature.name,
-            level: feature.level,
-          })),
-          menuItemType: item.menuItemType,
+        addedFeatures: item.customFeatures.map((feature) => ({
+          name: feature.name,
+          level: feature.level?.toString() || '0',
+          additionalPrice: 0, // You may need to calculate this if available
         })),
+      }));
+
+      const orderData: Order = {
+        orderType: 'ONLINE',
+        totalAmount: price,
+        orderStatus: 'PENDING',
+        cafeId: cartItems[0]?.cafeId || '',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        orderItems: orderItems,
+        customerId: userId,
       };
-      createOrder(transformedData);
-      console.log(JSON.stringify(transformedData));
+
+      navigate('/checkout', { state: { orderData } });
     } catch (error) {
       console.error(error);
     }
@@ -395,10 +407,7 @@ function Index() {
 
                 <Button
                   className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 px-10 inline-flex w-full items-center justify-center focus:outline-none focus:ring-4 focus:ring-primary-300 mt-8"
-                  onClick={() => {
-                    newOrder();
-                    navigate('/checkout');
-                  }}
+                  onClick={newOrder}
                 >
                   Proceed to Checkout
                 </Button>
