@@ -32,6 +32,26 @@ export const useDiscount = () => {
     }
   };
 
+  const getAllDiscounts_TLM = async () => {
+    try {
+      const response = await fetch(`${API_URL}/discount`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch discount');
+      } else {
+        return response.json();
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   const addDiscount = async (data: Discount) => {
     try {
       const response = await fetch(`${API_URL}/discount`, {
@@ -116,6 +136,7 @@ export const useDiscount = () => {
     getAllDiscounts,
     getDiscountByMenuItemId,
     updateDiscount,
-    deleteDiscount
+    deleteDiscount,
+    getAllDiscounts_TLM,
   };
 };

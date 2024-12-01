@@ -91,7 +91,7 @@ import BranchList from '@/pages/TopLevelManager/Branches/BranchList';
 import EditBranch from './pages/TopLevelManager/Branches/EditBranch';
 import AddBranches from '@/pages/TopLevelManager/Branches/AddBranch';
 import Inventory_TLM from '@/pages/TopLevelManager/Inventory';
-
+import Discount_TLM from '@/pages/TopLevelManager/Discount';
 import FoodList_TLM from './pages/TopLevelManager/Foods/index';
 import ComboList_TLM from './pages/TopLevelManager/FoodCombos/index';
 
@@ -836,6 +836,7 @@ const routes = createRoutesFromElements(
             }
           />
         </Route>
+
         <Route
           path="sales"
           element={
@@ -845,6 +846,7 @@ const routes = createRoutesFromElements(
             </>
           }
         />
+
         <Route path="categories">
           <Route
             index
@@ -874,6 +876,7 @@ const routes = createRoutesFromElements(
             }
           />
         </Route>
+
         <Route path="foods">
           <Route
             index
@@ -885,6 +888,7 @@ const routes = createRoutesFromElements(
             }
           />
         </Route>
+
         <Route path="food-combos">
           <Route
             index
@@ -896,6 +900,7 @@ const routes = createRoutesFromElements(
             }
           />
         </Route>
+
         <Route path="users">
           <Route
             index
@@ -925,6 +930,7 @@ const routes = createRoutesFromElements(
             }
           />
         </Route>
+
         <Route path="inventory">
           <Route
             index
@@ -954,6 +960,7 @@ const routes = createRoutesFromElements(
             }
           />
         </Route>
+
         <Route path="stock">
           <Route
             index
@@ -983,12 +990,13 @@ const routes = createRoutesFromElements(
             }
           />
         </Route>
+
         <Route
           path="discountlist"
           element={
             <>
               <PageTitle title="Top Level Manager | Discount List" />
-              <DiscountList />
+              <Discount_TLM />
             </>
           }
         />
