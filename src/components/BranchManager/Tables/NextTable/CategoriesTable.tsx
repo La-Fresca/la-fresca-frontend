@@ -26,7 +26,7 @@ import { useNavigate } from 'react-router-dom';
 import { Category } from '@/types/category';
 import { useCategories } from '@/api/useCategory';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const INITIAL_VISIBLE_COLUMNS = ['name', 'status', 'description', 'actions'];
 
@@ -34,6 +34,8 @@ export default function CategoriesTable() {
   const { showSwal } = swalConfirm();
   const { getAllCategories, unsafeDeleteCategory } = useCategories();
   const [loading, setLoading] = useState(true);
+
+  const queryClient = useQueryClient();
 
   const { data: categories = [], isLoading } = useQuery({
     queryKey: ['categories'],

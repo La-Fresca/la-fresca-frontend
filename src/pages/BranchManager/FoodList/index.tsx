@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import { Food } from '@/types/food';
 import { useFoods } from '@/api/useFoodItem';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'foodId',
@@ -69,6 +69,8 @@ export default function FoodList() {
     queryKey: ['foods'],
     queryFn: getAllFoods,
   });
+
+  const queryClient = useQueryClient();
 
   const handleDeleteFood = async (id: string) => {
     try {

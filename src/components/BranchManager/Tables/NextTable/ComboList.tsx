@@ -26,7 +26,7 @@ import { useNavigate } from 'react-router-dom';
 import { FoodCombo } from '@/types/combo';
 import { useCombos } from '@/api/useFoodCombo';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const INITIAL_VISIBLE_COLUMNS = ['name', 'price', 'items', 'actions'];
 
@@ -34,6 +34,8 @@ export default function ComboList() {
   const { showSwal } = swalConfirm();
   const { getAllCombos, deleteCombo } = useCombos();
   const [loading, setLoading] = useState(true);
+
+  const queryClient = useQueryClient();
 
   const { data: combos = [], isLoading } = useQuery({
     queryKey: ['combos'],
