@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Table,
   TableHeader,
@@ -22,8 +22,6 @@ import {
   statusOptions,
 } from '@/components/TopLevelManager/Tables/Discounts/Components/data';
 import { capitalize } from './utils';
-import { Food } from '@/types/food';
-import { useFoods } from '@/api/useFoodItem';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 import { Branch } from '@/types/branch';
@@ -41,22 +39,18 @@ const INITIAL_VISIBLE_COLUMNS = [
 ];
 
 export default function App() {
-  const { showSwalApprove, showSwalReject } = swalConfirm();
-  const [food, setFood] = useState<Food[]>([]);
-  const { getAllFoodsForTLM, approveFood, rejectFood } = useFoods();
+  const [discount, setDiscount] = useState<Discount[]>([]);
+  const { getAllDiscounts_TLM } = useDiscount();
 
   const [branches, setBranch] = useState<Branch[]>([]);
   const { getAllBranches } = useBranches();
 
-  const [discounts, setDiscount] = useState<Discount[]>([]);
-  const { getAllDiscounts_TLM } = useDiscount();
-
   const [loading, setLoading] = React.useState(true);
 
-  const fetchFood = async () => {
+  const fetchDiscounts = async () => {
     try {
-      const data = await getAllFoodsForTLM();
-      setFood(data);
+      const data = await getAllDiscounts_TLM();
+      setDiscount(data);
       setLoading(true);
     } catch (error: any) {
       console.error(error);
@@ -73,37 +67,26 @@ export default function App() {
     }
   };
 
-  const fetchDiscount = async () => {
-    try {
-      const data = await getAllDiscounts_TLM();
-      setDiscount(data);
-      setLoading(false);
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    fetchFood();
+    fetchDiscounts();
     fetchBranch();
-    fetchDiscount();
   }, []);
 
-  const additionalBranches = [{ name: 'Branch 3', id: 'cafe 1' }];
+  const additionalBranches = [
+    { name: "Branch 3", id: "cafe 1" }
+  ];
+  
+  const branchOptions = branches.map((branch) => ({
+    name: branch.name,
+    uid: branch.id
+  })).concat(additionalBranches.map((branch) => ({
+    name: branch.name,
+    uid: branch.id
+  })));
+  
 
-  const branchOptions = branches
-    .map((branch) => ({
-      name: branch.name,
-      uid: branch.id,
-    }))
-    .concat(
-      additionalBranches.map((branch) => ({
-        name: branch.name,
-        uid: branch.id,
-      })),
-    );
-
-  console.log(discounts);
+  console.log(branchOptions);
+  console.log(discount);
 
   const [filterValue, setFilterValue] = React.useState('');
   const [visibleColumns, setVisibleColumns] = React.useState(
@@ -128,22 +111,30 @@ export default function App() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredDiscount = [...discounts];
+    let filtereddiscount = [...discount];
     if (hasSearchFilter) {
-      filteredDiscount = filteredDiscount.filter((discountData) =>
-        discountData.name.toLowerCase().includes(filterValue.toLowerCase()),
+      filtereddiscount = filtereddiscount.filter((discount) =>
+        discount.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
+    // if (
+    //   statusFilter !== 'all' &&
+    //   Array.from(statusFilter).length !== statusOptions.length
+    // ) {
+    //   filtereddiscount = filtereddiscount.filter((discount) =>
+    //     Array.from(statusFilter).includes(discount.status.toString()),
+    //   );
+    // }
     if (
       branchFilter !== 'all' &&
       Array.from(branchFilter).length !== branchOptions.length
     ) {
-      filteredDiscount = filteredDiscount.filter((discountData) =>
-        Array.from(branchFilter).includes(discountData.cafeId),
+      filtereddiscount = filtereddiscount.filter((discount) =>
+        Array.from(branchFilter).includes(discount.cafeId),
       );
     }
-    return filteredDiscount;
-  }, [food, filterValue, branchFilter]);
+    return filtereddiscount;
+  }, [discount, filterValue, statusFilter, branchFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -162,23 +153,29 @@ export default function App() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((foodData, columnKey) => {
-    const cellValue = foodData[columnKey];
+  const renderCell = React.useCallback((discount, columnKey) => {
+    const cellValue = discount[columnKey];
     switch (columnKey) {
       case 'name':
         return (
           <div className="flex items-center">
             <div className="w-[40px] h-[40px] flex justify-center overflow-hidden rounded-full">
-              <img src={foodData.image} alt="" />
+              <img src={discount.image} alt="" />
             </div>
             <div className="ml-5">
               <p className="text-bold text-small capitalize dark:text-white text-foodbg">
                 {cellValue}
               </p>
               <p className="text-bold text-[12px] capitalize">
-                ID: {foodData.id}
+                ID: {discount.menuItemId}
               </p>
             </div>
+          </div>
+        );
+        case 'price':
+        return (
+          <div className="flex items-center">
+            Rs. {cellValue}
           </div>
         );
       case 'available':
@@ -235,81 +232,13 @@ export default function App() {
       case 'features':
         return (
           <div>
-            {foodData.features.map((feature: any) => (
+            {discount.features.map((feature: any) => (
               <div key={feature.name}>
                 <strong>{feature.name}</strong>: {feature.levels.join(', ')}
               </div>
             ))}
           </div>
         );
-      case 'actions':
-        if (foodData.status === 2) {
-          return (
-            <div className="relative flex justify-center items-center gap-2">
-              <Button
-                className="rounded-full dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] scale-90 min-w-[20px] max-h-[30px] px-1"
-                onClick={() => handleConfirmApprove(foodData.id)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="m4.5 12.75 6 6 9-13.5"
-                  />
-                </svg>
-              </Button>
-              <Button
-                className="rounded-full text-danger bg-[#ff000027] border border-[#ff000078] scale-90 min-w-[20px] max-h-[30px] px-1"
-                onClick={() => handleConfirmReject(foodData.id)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18 18 6M6 6l12 12"
-                  />
-                </svg>
-              </Button>
-            </div>
-          );
-        } else if (foodData.status === 0) {
-          return (
-            <Button
-              className="rounded-full text-danger bg-[#ff000027] border border-[#ff000078] scale-90 min-w-[20px] max-h-[30px] px-1"
-              onClick={() => handleConfirmReject(foodData.id)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M6 18 18 6M6 6l12 12"
-                />
-              </svg>
-            </Button>
-          );
-        }
-        return null;
       default:
         return cellValue;
     }
@@ -353,7 +282,7 @@ export default function App() {
           <Input
             isClearable
             className="w-full sm:max-w-[44%] dark:bg-[#ffffff14] rounded-lg border bg-[#aaaaaa14] border-[#aaaaaa66] dark:border-[#54545466]"
-            placeholder="Search by food name..."
+            placeholder="Search by discount name..."
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={onClear}
@@ -361,7 +290,7 @@ export default function App() {
           />
           <div className="flex gap-3">
             <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
+            <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
@@ -457,7 +386,7 @@ export default function App() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {food.length} foods
+            Total {discount.length} discounts
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:&nbsp;
@@ -479,7 +408,7 @@ export default function App() {
     branchFilter,
     visibleColumns,
     onRowsPerPageChange,
-    food.length,
+    discount.length,
     onSearchChange,
     hasSearchFilter,
   ]);
@@ -548,9 +477,9 @@ export default function App() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No food found'} items={sortedItems}>
+      <TableBody emptyContent={'No discount found'} items={sortedItems}>
         {(item) => (
-          <TableRow key={item.id}>
+          <TableRow key={item.menuItemId}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}
