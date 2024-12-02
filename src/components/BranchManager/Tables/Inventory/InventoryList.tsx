@@ -29,7 +29,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Inventory } from '@/types/inventory';
 import { useInventory } from '@/api/useInventory';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const statusColorMap = {
   'High stock': 'success',
@@ -54,6 +54,8 @@ export default function App() {
     queryKey: ['inventory'],
     queryFn: getAllInventory,
   });
+
+  const queryClient = useQueryClient();
 
   const handleDeleteInventory = async (id: string) => {
     try {

@@ -27,7 +27,7 @@ import { Stock } from '@/types/stock';
 import { useStocks } from '@/api/useStock';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'StockCollectionName',
@@ -45,6 +45,7 @@ export default function StockListByCollection({
   const { showSwal } = swalConfirm();
   const { getAllStocks, deleteStock } = useStocks();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   // Move all hooks to the top
   const [filterValue, setFilterValue] = useState('');
