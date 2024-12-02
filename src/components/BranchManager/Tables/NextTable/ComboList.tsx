@@ -122,8 +122,16 @@ export default function ComboList() {
     switch (columnKey) {
       case 'name':
         return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
+          <div className="flex items-center">
+            <div className="w-[40px] h-[40px] flex justify-center overflow-hidden rounded-full">
+              <img src={combo.image} alt="" />
+            </div>
+            <div className="ml-5">
+              <p className="text-bold text-small capitalize dark:text-white text-foodbg">
+                {cellValue}
+              </p>
+              <p className="text-bold text-[12px] capitalize">ID: {combo.id}</p>
+            </div>
           </div>
         );
       case 'price':

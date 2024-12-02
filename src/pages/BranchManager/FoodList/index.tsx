@@ -137,7 +137,19 @@ export default function FoodList() {
 
     switch (columnKey) {
       case 'name':
-        return cellValue;
+        return (
+          <div className="flex items-center">
+            <div className="w-[40px] h-[40px] flex justify-center overflow-hidden rounded-full">
+              <img src={food.image} alt="" />
+            </div>
+            <div className="ml-5">
+              <p className="text-bold text-small capitalize dark:text-white text-foodbg">
+                {cellValue}
+              </p>
+              <p className="text-bold text-[12px] capitalize">ID: {food.id}</p>
+            </div>
+          </div>
+        );
       case 'price':
         return `Rs.${cellValue}`;
       case 'availability':
