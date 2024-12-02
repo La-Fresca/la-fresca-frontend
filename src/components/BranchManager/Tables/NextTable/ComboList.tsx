@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import {
   Table,
   TableHeader,
@@ -26,30 +26,25 @@ import { useNavigate } from 'react-router-dom';
 import { FoodCombo } from '@/types/combo';
 import { useCombos } from '@/api/useFoodCombo';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
+import { useQuery } from '@tanstack/react-query';
 
 const INITIAL_VISIBLE_COLUMNS = ['name', 'price', 'items', 'actions'];
 
 export default function ComboList() {
   const { showSwal } = swalConfirm();
-  const [combos, setCombos] = useState<FoodCombo[]>([]);
   const { getAllCombos, deleteCombo } = useCombos();
   const [loading, setLoading] = useState(true);
 
-  const fetchCombos = async () => {
-    try {
-      setLoading(true);
-      const data = await getAllCombos();
-      setCombos(data);
-      setLoading(false);
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
+  const { data: combos = [], isLoading } = useQuery({
+    queryKey: ['combos'],
+    queryFn: getAllCombos,
+  });
 
   const handleDeleteCombo = async (id: string) => {
     try {
       await deleteCombo(id);
-      fetchCombos();
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['combos'] });
     } catch (error: any) {
       console.error(error);
     }
@@ -59,9 +54,6 @@ export default function ComboList() {
     showSwal(() => handleDeleteCombo(id));
   };
 
-  useEffect(() => {
-    fetchCombos();
-  }, []);
   const navigate = useNavigate();
   const [filterValue, setFilterValue] = useState('');
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
@@ -354,7 +346,7 @@ export default function ComboList() {
     [],
   );
 
-  if (loading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
   return (

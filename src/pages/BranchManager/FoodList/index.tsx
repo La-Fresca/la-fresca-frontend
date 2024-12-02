@@ -21,6 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import { Food } from '@/types/food';
 import { useFoods } from '@/api/useFoodItem';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
+import { useQuery } from '@tanstack/react-query';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'foodId',
@@ -50,11 +51,8 @@ const columns = [
 export default function FoodList() {
   const { showSwal } = swalConfirm();
   const [inputValue, setInputValue] = React.useState('');
-  const { getAllFoods } = useFoods();
-  const [loading, setLoading] = React.useState(true);
-  const { deleteFood } = useFoods();
+  const { getAllFoods, deleteFood } = useFoods();
   const navigate = useNavigate();
-  const [foods, setFoods] = React.useState<Food[]>([]);
   const [filterValue, setFilterValue] = React.useState('');
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
@@ -67,21 +65,16 @@ export default function FoodList() {
   const [page, setPage] = React.useState(1);
   const hasSearchFilter = Boolean(filterValue);
 
-  const fetchItems = async () => {
-    setLoading(true);
-    try {
-      const data = await getAllFoods();
-      setFoods(data);
-      setLoading(false);
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
+  const { data: foods = [], isLoading } = useQuery({
+    queryKey: ['foods'],
+    queryFn: getAllFoods,
+  });
 
   const handleDeleteFood = async (id: string) => {
     try {
       await deleteFood(id);
-      fetchItems();
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['foods'] });
     } catch (error: any) {
       console.error('Failed to delete food:', error);
     }
@@ -90,10 +83,6 @@ export default function FoodList() {
   const handleConfirmDelete = (id: string) => {
     showSwal(() => handleDeleteFood(id));
   };
-
-  React.useEffect(() => {
-    fetchItems();
-  }, []);
 
   const headerColumns = React.useMemo(() => {
     return columns.filter((column) =>
@@ -342,7 +331,7 @@ export default function FoodList() {
     [],
   );
 
-  if (loading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
   return (

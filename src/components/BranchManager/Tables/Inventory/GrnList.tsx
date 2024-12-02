@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   Table,
   TableHeader,
@@ -27,6 +27,7 @@ import { Stock } from '@/types/stock';
 import { useStocks } from '@/api/useStock';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
+import { useQuery } from '@tanstack/react-query';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'StockCollectionName',
@@ -42,53 +43,10 @@ export default function StockListByCollection({
   collectionName?: string;
 }) {
   const { showSwal } = swalConfirm();
-  const [stocks, setStocks] = useState<Stock[]>([]);
   const { getAllStocks, deleteStock } = useStocks();
-  const [loading, setLoading] = useState(true);
-
-  const fetchStocks = async () => {
-    try {
-      setLoading(true);
-      const data = await getAllStocks();
-      setStocks(data);
-      setLoading(false);
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
-
-  const handleDeleteStock = async (id: string) => {
-    try {
-      await deleteStock(id);
-      fetchStocks();
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
-
-  const handleConfirmDelete = (id: any) => {
-    showSwal(() => handleDeleteStock(id));
-  };
-
-  useEffect(() => {
-    fetchStocks();
-  }, []);
-
-
-  console.log(stocks);
-
   const navigate = useNavigate();
 
-  const handleAddUser = () => {
-    navigate('add');
-  };
-
-  const UpdateItem = (id: String | null) => {
-    if (id) {
-      navigate(`edit/${id}`);
-    }
-  };
-
+  // Move all hooks to the top
   const [filterValue, setFilterValue] = useState('');
   const [visibleColumns, setVisibleColumns] = useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
@@ -100,6 +58,36 @@ export default function StockListByCollection({
     direction: 'ascending',
   });
   const [page, setPage] = useState(1);
+
+  const { data: stocks = [], isLoading } = useQuery({
+    queryKey: ['stocks'],
+    queryFn: getAllStocks,
+  });
+
+  const handleDeleteStock = async (id: string) => {
+    try {
+      await deleteStock(id);
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['stocks'] });
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  // Move all handlers up here
+  const handleConfirmDelete = (id: any) => {
+    showSwal(() => handleDeleteStock(id));
+  };
+
+  const handleAddUser = () => {
+    navigate('add');
+  };
+
+  const UpdateItem = (id: String | null) => {
+    if (id) {
+      navigate(`edit/${id}`);
+    }
+  };
 
   const hasSearchFilter = Boolean(filterValue);
 
@@ -161,7 +149,9 @@ export default function StockListByCollection({
               <p className="text-bold text-small capitalize dark:text-white text-foodbg">
                 {cellValue}
               </p>
-              <p className="text-bold text-[12px] capitalize">Batch ID: {stock.BatchId}</p>
+              <p className="text-bold text-[12px] capitalize">
+                Batch ID: {stock.BatchId}
+              </p>
             </div>
           </div>
         );
@@ -188,11 +178,20 @@ export default function StockListByCollection({
                   <VerticalDotsIcon className="text-default-300" />
                 </Button>
               </DropdownTrigger>
-              <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]" onClick={() => viewItem(stock.Id)}>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => UpdateItem(stock.id)}>
+              <DropdownMenu
+                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
+                onClick={() => viewItem(stock.Id)}
+              >
+                <DropdownItem
+                  className="hover:bg-[#aaaaaa17] rounded-lg"
+                  onClick={() => UpdateItem(stock.id)}
+                >
                   Edit
                 </DropdownItem>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => handleConfirmDelete(stock.id)}>
+                <DropdownItem
+                  className="hover:bg-[#aaaaaa17] rounded-lg"
+                  onClick={() => handleConfirmDelete(stock.id)}
+                >
                   Delete
                 </DropdownItem>
               </DropdownMenu>

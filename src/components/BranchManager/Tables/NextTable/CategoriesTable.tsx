@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import {
   Table,
   TableHeader,
@@ -26,30 +26,25 @@ import { useNavigate } from 'react-router-dom';
 import { Category } from '@/types/category';
 import { useCategories } from '@/api/useCategory';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
+import { useQuery } from '@tanstack/react-query';
 
 const INITIAL_VISIBLE_COLUMNS = ['name', 'status', 'description', 'actions'];
 
 export default function CategoriesTable() {
   const { showSwal } = swalConfirm();
-  const [categories, setCategories] = useState<Category[]>([]);
   const { getAllCategories, unsafeDeleteCategory } = useCategories();
   const [loading, setLoading] = useState(true);
 
-  const fetchCategories = async () => {
-    try {
-      setLoading(true);
-      const data = await getAllCategories();
-      setCategories(data);
-      setLoading(false);
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
+  const { data: categories = [], isLoading } = useQuery({
+    queryKey: ['categories'],
+    queryFn: getAllCategories,
+  });
 
   const handleDeleteCategory = async (id: string) => {
     try {
       await unsafeDeleteCategory(id);
-      fetchCategories();
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
     } catch (error: any) {
       console.error(error);
     }
@@ -58,10 +53,6 @@ export default function CategoriesTable() {
   const handleConfirmDelete = (id: any) => {
     showSwal(() => handleDeleteCategory(id));
   };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
 
   const navigate = useNavigate();
   const [filterValue, setFilterValue] = useState('');
@@ -335,7 +326,7 @@ export default function CategoriesTable() {
     [],
   );
 
-  if (loading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   Table,
   TableHeader,
@@ -25,12 +25,11 @@ import {
   statusOptions,
 } from '@/components/BranchManager/Tables/Inventory/stockCollection/data';
 import { capitalize } from './utils';
-
-
 import { Link, useNavigate } from 'react-router-dom';
 import { Inventory } from '@/types/inventory';
 import { useInventory } from '@/api/useInventory';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
+import { useQuery } from '@tanstack/react-query';
 
 const statusColorMap = {
   'High stock': 'success',
@@ -38,29 +37,29 @@ const statusColorMap = {
   'Low stock': 'warning',
 };
 
-const INITIAL_VISIBLE_COLUMNS = ['Name', 'AvailableAmount', 'PredictedStockoutDate', 'Status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = [
+  'Name',
+  'AvailableAmount',
+  'PredictedStockoutDate',
+  'Status',
+  'actions',
+];
 
 export default function App() {
-
   const { showSwal } = swalConfirm();
-  const [inventory, setInventory] = useState<Inventory[]>([]);
   const { getAllInventory, deleteInventory } = useInventory();
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const fetchInventory = async () => {
-    try {
-      const data = await getAllInventory();
-      setInventory(data);
-      setLoading(false);
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
+  const { data: inventory = [], isLoading } = useQuery({
+    queryKey: ['inventory'],
+    queryFn: getAllInventory,
+  });
 
   const handleDeleteInventory = async (id: string) => {
     try {
       await deleteInventory(id);
-      fetchInventory();
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['inventory'] });
     } catch (error: any) {
       console.error(error);
     }
@@ -70,14 +69,7 @@ export default function App() {
     showSwal(() => handleDeleteInventory(id));
   };
 
-  useEffect(() => {
-    fetchInventory();
-  }, []);
-
-
   console.log(inventory);
-
-  const navigate = useNavigate();
 
   const handleAddUser = () => {
     navigate('add');
@@ -179,19 +171,19 @@ export default function App() {
           </div>
         );
       case 'Status':
-        if (cellValue === "Low stock") {
+        if (cellValue === 'Low stock') {
           return (
             <div className="text-warning bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full w-[90px]">
               Low Stock
             </div>
           );
-        } else if (cellValue === "High stock") {
+        } else if (cellValue === 'High stock') {
           return (
             <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full w-[90px]">
               High Stock
             </div>
           );
-        } else if (cellValue === "Out of stock") {
+        } else if (cellValue === 'Out of stock') {
           return (
             <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center rounded-full w-[105px]">
               Out of Stock
@@ -209,13 +201,22 @@ export default function App() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]">
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => viewItem(user.Name)}>
+                <DropdownItem
+                  className="hover:bg-[#aaaaaa17] rounded-lg"
+                  onClick={() => viewItem(user.Name)}
+                >
                   View
                 </DropdownItem>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => UpdateItem(user.id)}>
+                <DropdownItem
+                  className="hover:bg-[#aaaaaa17] rounded-lg"
+                  onClick={() => UpdateItem(user.id)}
+                >
                   Edit
                 </DropdownItem>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => handleConfirmDelete(user.id)}>
+                <DropdownItem
+                  className="hover:bg-[#aaaaaa17] rounded-lg"
+                  onClick={() => handleConfirmDelete(user.id)}
+                >
                   Delete
                 </DropdownItem>
               </DropdownMenu>
@@ -409,6 +410,10 @@ export default function App() {
       </div>
     );
   }, [page, pages, hasSearchFilter]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Table
