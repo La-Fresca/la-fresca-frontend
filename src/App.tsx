@@ -83,7 +83,7 @@ import SystemAdminLayout from '@/layouts/SystemAdminLayout';
 import SystemLogs from '@/pages/SystemAdmin/systemLogs';
 import TopManagerLayout from '@/layouts/TopManagerLayout';
 import { OrderHistoryDetails } from '@/components/User/OrderHistory/OrderHistoryDetails';
-import Sss from '@/components/Waiter/sss';
+import WaiterComponent from './components/Waiter/WaiterComponent';
 
 // Top level manager
 import Dashboard_TLM from '@/pages/TopLevelManager/Dashboard';
@@ -687,7 +687,7 @@ const routes = createRoutesFromElements(
           element={
             <>
               <PageTitle title="Waiter | sss" />
-              <Sss />
+              <WaiterComponent />
             </>
           }
         ></Route>

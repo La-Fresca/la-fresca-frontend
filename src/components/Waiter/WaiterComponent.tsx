@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import Swal from "sweetalert2";
-import image from "@images/cover/forgotpass.jpg";
+import React, { useState } from 'react';
+import Swal from 'sweetalert2';
+import image from '@images/cover/forgotpass.jpg';
 
-const Sss = () => {
-  const [email, setEmail] = useState("");
+const WaiterComponent = () => {
+  const [email, setEmail] = useState('');
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     Swal.fire({
-      title: "Success!",
-      text: "We have sent a link to your email. Check your inbox.",
-      icon: "success",
-      confirmButtonText: "OK",
+      title: 'Success!',
+      text: 'We have sent a link to your email. Check your inbox.',
+      icon: 'success',
+      confirmButtonText: 'OK',
     });
   };
 
@@ -55,7 +55,7 @@ const Sss = () => {
           </div>
         </form>
         <p className="mt-6 text-sm text-center text-gray-500">
-          Remembered your password?{" "}
+          Remembered your password?{' '}
           <a href="/login" className="text-yellow-500 hover:underline">
             Log In
           </a>
@@ -65,4 +65,4 @@ const Sss = () => {
   );
 };
 
-export default Sss;
+export default WaiterComponent;
