@@ -12,6 +12,7 @@ import { useCombos } from '@/api/useFoodCombo';
 import { useFoods } from '@/api/useFoodItem';
 import { Food } from '@/types/food';
 import { swalSuccess } from '@/components/UI/SwalSuccess';
+import { useQueryClient } from '@tanstack/react-query';
 
 type ComboPicker = {
   key: string;
@@ -39,6 +40,7 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 function ComboEditForm({ id = '' }: { id?: string }) {
+  const queryClient = useQueryClient();
   const { showSwal } = swalSuccess({
     message: 'Item Added successfully',
   });
@@ -131,14 +133,14 @@ function ComboEditForm({ id = '' }: { id?: string }) {
     };
 
     try {
-      updateCombo(id, transformedData);
-    } catch (error) {
-      console.error('Error adding food combo:', error);
-    } finally {
+      await updateCombo(id, transformedData);
+      await queryClient.invalidateQueries({ queryKey: ['combos'] });
       setTimeout(() => {
         showSwal();
         Navigate('/branch-manager/food-combos');
       }, 2000);
+    } catch (error) {
+      console.error('Error adding food combo:', error);
     }
   };
 

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { Category } from '@/types/category';
 import { useCategories } from '@/api/useCategory';
 import { swalSuccess } from '@/components/UI/SwalSuccess';
+import { useQueryClient } from '@tanstack/react-query';
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Category name is required' }),
@@ -16,6 +17,7 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 function CategoryEditForm({ id = '' }: { id?: string }) {
+  const queryClient = useQueryClient();
   const { showSwal } = swalSuccess({
     message: 'Item Added successfully',
   });
@@ -54,13 +56,13 @@ function CategoryEditForm({ id = '' }: { id?: string }) {
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
       await updateCategory(id, data);
-    } catch (error: any) {
-      console.error(error);
-    } finally {
+      await queryClient.invalidateQueries({ queryKey: ['categories'] });
       setTimeout(() => {
         showSwal();
         Navigate('/branch-manager/categories');
       }, 2000);
+    } catch (error: any) {
+      console.error(error);
     }
   };
 
