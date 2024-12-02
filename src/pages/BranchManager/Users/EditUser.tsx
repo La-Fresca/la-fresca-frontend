@@ -1,4 +1,4 @@
-import EditUser from '@/components/BranchManager/UserManagement/EditUser';
+import EditUser from '@/components/BranchManager/Tables/UserManagement/EditUser';
 
 const UserEdit: React.FC = () => {
   return (

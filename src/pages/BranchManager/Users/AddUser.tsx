@@ -1,4 +1,4 @@
-import AddUser from '@/components/BranchManager/UserManagement/AddUser';
+import AddUser from '@/components/BranchManager/Tables/UserManagement/AddUser';
 
 const UserAdd: React.FC = () => {
   return (
