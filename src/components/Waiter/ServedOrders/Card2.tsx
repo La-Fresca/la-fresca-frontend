@@ -1,34 +1,65 @@
 import React from 'react';
-import {Button} from "@nextui-org/react";
+import { Button } from '@nextui-org/react';
 
 interface CardProps {
+  id: number;
   waiter: string;
   order: string;
   customer: string;
-  color: string;
   onMoreDetails: (order: any) => void;
+  onServeOrder: (id: number) => void;
 }
 
-const Card: React.FC<CardProps> = ({ waiter, order, customer, color, onMoreDetails }) => {
+const colours = [
+  'red',
+  'green',
+  'blue',
+  'yellow',
+  'white',
+  'purple',
+  'orange',
+  'pink',
+  'brown',
+  'grey',
+];
+
+const waiterColorMap: Record<string, string> = {}; // Map for waiter-color association
+let colorIndex = 0;
+
+const assignColorToWaiter = (waiter: string): string => {
+  if (!waiterColorMap[waiter]) {
+    waiterColorMap[waiter] = colours[colorIndex % colours.length];
+    colorIndex++;
+  }
+  return waiterColorMap[waiter];
+};
+
+const Card: React.FC<CardProps> = ({ id, waiter, order, customer, onMoreDetails, onServeOrder }) => {
+  const borderColor = assignColorToWaiter(waiter); // Get or assign color for the waiter
+
   return (
-    <div className={`bg-${color} p-4 rounded-lg shadow-lg text-white transition transform hover:scale-105`}>
+    <div
+      className={`bg-black p-4 rounded-lg shadow-lg text-white transition transform hover:scale-105 border-4`}
+      style={{ borderColor }}
+    >
       <div className="font-bold text-lg">{waiter}</div>
-      <div className="text-sm text-gray-700">Served</div>
+      <div className="text-sm text-gray-500">Served</div>
       <div className="mt-2">
         <div>Order: {order}</div>
         <div>Customer: {customer}</div>
       </div>
       <div className="mt-4 flex justify-between space-x-2 flex-wrap gap-4 items-center">
-        <Button 
+        <Button
           className="text-white px-4 py-2 rounded-lg transition transform hover:bg-gray-700 hover:-translate-y-1 border-2"
-          onClick={() => onMoreDetails({ waiter, order, customer, color })}
+          onClick={() => onMoreDetails({ id, waiter, order, customer })}
         >
           More Details
         </Button>
-        <Button 
-          className="bg-green text-white px-4 py-2 rounded-lg transition  border-2"
+        <Button
+          className="text-white bg-gradient-to-r from-green to-lime-500 hover:from-lime-500 hover:to-green px-12 py-4 rounded-lg transition duration-300 shadow-md"
+          onClick={() => onServeOrder(id)}
         >
-          finish served
+          Served
         </Button>
       </div>
     </div>

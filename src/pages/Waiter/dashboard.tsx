@@ -69,12 +69,7 @@ const Dashboard: React.FC = () => {
             <Card key={order.id} {...order} onMoreDetails={handleMoreDetails} onServeOrder={handleServeOrder} />
           ))}
         </div>
-        <button
-          onClick={() => navigate('./served-orders')}
-          className="text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600 px-12 py-4 rounded-lg transition duration-300 shadow-md mt-8"
-        >
-          View Served Orders
-        </button>
+        
       </div>
       {isModalOpen && <Modal order={selectedOrder} onClose={handleCloseModal} />}
     </div>

@@ -30,6 +30,7 @@ const ServedOrders: React.FC = () => {
     setSelectedOrder(null);
   };
 
+
   return (
     <div className="min-h-screen text-white flex">
       <div className="flex-1 p-4">
