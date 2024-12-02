@@ -61,17 +61,17 @@ export default function App() {
     }
   };
 
-  // const handleDeleteBranch = async (id: string) => {
+  // const handleDeleteUser = async (id: string) => {
   //   try {
-  //     await deleteBranch(id);
-  //     fetchBranch();
+  //     await deleteUser(id);
+  //     fetchUser();
   //   } catch (error: any) {
   //     console.error(error);
   //   }
   // };
 
   // const handleConfirmDelete = (id: any) => {
-  //   showSwal(() => handleDeleteBranch(id));
+  //   showSwal(() => handleDeleteUser(id));
   // };
 
   useEffect(() => {
@@ -82,17 +82,17 @@ export default function App() {
 
   const navigate = useNavigate();
 
-  const handleAddBranch = () => {
+  const handleAddUser = () => {
     navigate('add');
   };
 
-  const viewBranch = (branchId: string | null) => {
-    if (branchId) {
-      navigate(`/top-level-manager/branches/view/${branchId}`);
+  const viewUser = (UserId: string | null) => {
+    if (UserId) {
+      navigate(`/branch-manager/users/view/${UserId}`);
     }
   };
 
-  const updateBranch = (id: String | null) => {
+  const updateUser = (id: String | null) => {
     console.log(id);
     if (id) {
       navigate(`edit/${id}`);
@@ -122,14 +122,14 @@ export default function App() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredbranch = [...users];
+    let filteredUser = [...users];
     if (hasSearchFilter) {
-      filteredbranch = filteredbranch.filter((userData) =>
+      filteredUser = filteredUser.filter((userData) =>
         userData.firstName.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
     
-    return filteredbranch;
+    return filteredUser;
   }, [users, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
@@ -151,8 +151,8 @@ export default function App() {
 
   const colours = ["#ff7171", "#b9b037", "#37b939", "#4e4ee3", "#e34ecd", "#e3914e"];
 
-  const renderCell = React.useCallback((branchData, columnKey) => {
-    const cellValue = branchData[columnKey];
+  const renderCell = React.useCallback((userData, columnKey) => {
+    const cellValue = userData[columnKey];
     switch (columnKey) {
       case 'firstName':
         return (
@@ -162,10 +162,10 @@ export default function App() {
             </div>
             <div className="ml-5">
               <p className="text-bold text-small capitalize dark:text-white text-foodbg">
-                {branchData.firstName} {branchData.lastName}
+                {userData.firstName} {userData.lastName}
               </p>
               <p className="text-bold text-[12px] capitalize">
-                ID: {branchData.id}
+                ID: {userData.id}
               </p>
             </div>
           </div>
@@ -197,19 +197,19 @@ export default function App() {
               <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]">
                 <DropdownItem
                   className="hover:bg-[#aaaaaa17] rounded-lg"
-                  onClick={() => viewBranch(branchData.id)}
+                  onClick={() => viewUser(userData.id)}
                 >
                   View
                 </DropdownItem>
                 <DropdownItem
                   className="hover:bg-[#aaaaaa17] rounded-lg"
-                  onClick={() => updateBranch(branchData.id)}
+                  onClick={() => updateUser(userData.id)}
                 >
                   Edit
                 </DropdownItem>
-                <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => handleConfirmDelete(branchData.id)}>
+                {/* <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => handleConfirmDelete(userData.id)}>
                   Delete
-                </DropdownItem>
+                </DropdownItem> */}
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -331,7 +331,7 @@ export default function App() {
             <Button
               endContent={<PlusIcon />}
               className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600"
-              onClick={() => handleAddBranch()}
+              onClick={() => handleAddUser()}
             >
               Add New
             </Button>
