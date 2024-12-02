@@ -9,6 +9,7 @@ import { CartItem } from '@/types/cartItem';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { swalConfirm } from '@/components/UI/SwalDelete';
 import { Order } from '@/types/order';
+import { useQuery } from '@tanstack/react-query';
 
 function Index() {
   const { showSwal } = swalConfirm({
@@ -19,73 +20,21 @@ function Index() {
   const navigate = useNavigate();
   const userId = (useAuthUser() as { userId: string }).userId;
   const { getCartByUserId, removeCartItem } = useCart();
-  const [Loading, setLoading] = useState<boolean>(true);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const { createOrder } = useOrders();
-  // const [items, setItems] = useState<Cart[]>([]);
   const [selectedItems, setSelectedItems] = useState<
     Record<string, { price: number; quantity: number }>
   >({});
   const [price, setPrice] = useState<number>(0);
 
-  const fetchCart = async () => {
-    try {
-      const cart = await getCartByUserId(userId);
-      setCartItems(cart);
-      setLoading(false);
-      console.log(cart);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const cartQuery = useQuery({
+    queryKey: ['cart', userId],
+    queryFn: () => getCartByUserId(userId),
+  });
 
-  useEffect(() => {
-    fetchCart();
-  }, []);
-
-  const newOrder = async () => {
-    try {
-      // Only include selected items from the cart
-      const selectedCartItems = cartItems.filter(
-        (item) => selectedItems[item.id],
-      );
-
-      const orderItems = selectedCartItems.map((item) => ({
-        menuItemType: item.menuItemType,
-        foodId: item.menuItemId || '',
-        name: item.name || '',
-        price: item.itemPrice,
-        image: item.image || '',
-        quantity: selectedItems[item.id]?.quantity || 1,
-        totalPrice:
-          (selectedItems[item.id]?.quantity || 1) * item.itemTotalPrice,
-        orderStatus: 'PENDING',
-        addedFeatures: item.customFeatures.map((feature) => ({
-          name: feature.name,
-          level: feature.level?.toString() || '0',
-          additionalPrice: 0, // You may need to calculate this if available
-        })),
-      }));
-
-      const orderData: Order = {
-        orderType: 'ONLINE',
-        totalAmount: price,
-        orderStatus: 'PENDING',
-        cafeId: cartItems[0]?.cafeId || '',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        orderItems: orderItems,
-        customerId: userId,
-      };
-
-      navigate('/checkout', { state: { orderData } });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleConfirmDelete = (id: any) => {
-    showSwal(() => removeCartItem(id));
+  const handleConfirmDelete = async (id: string) => {
+    await showSwal(() => removeCartItem(id));
+    // Invalidate cart query to trigger refetch
+    cartQuery.refetch();
   };
 
   // Function to calculate the total price
@@ -132,44 +81,49 @@ function Index() {
     calculateTotalPrice();
   }, [selectedItems, calculateTotalPrice]);
 
-  // const items = [
-  //   {
-  //     id: '01',
-  //     name: 'Cheese Pizza',
-  //     description: 'Indulge in our classic Cheese Pizza',
-  //     price: 3500,
-  //   },
-  //   {
-  //     id: '02',
-  //     name: 'Saussage Pizza',
-  //     description: 'Indulge in our classic Saussage Pizza',
-  //     price: 4500,
-  //   },
-  //   {
-  //     id: '03',
-  //     name: 'Margherita Pizza',
-  //     description: 'Indulge in our classic Margherita Pizza',
-  //     price: 3000,
-  //   },
-  //   {
-  //     id: '04',
-  //     name: 'BBQ Chicken Pizza',
-  //     description: 'Indulge in our BBQ Chicken Pizza',
-  //     price: 4000,
-  //   },
-  //   {
-  //     id: '05',
-  //     name: 'Black Chicken Pizza',
-  //     description: 'Indulge in our Black Chicken Pizza',
-  //     price: 4000,
-  //   },
-  //   {
-  //     id: '06',
-  //     name: 'Hot & Spicy Chicken Pizza',
-  //     description: 'Indulge in our Hot & Spicy Chicken Pizza',
-  //     price: 4000,
-  //   },
-  // ];
+  const newOrder = async () => {
+    try {
+      const cartItems = cartQuery.data;
+      if (!cartItems) return;
+
+      // Only include selected items from the cart
+      const selectedCartItems = cartItems.filter(
+        (item) => selectedItems[item.id],
+      );
+
+      const orderItems = selectedCartItems.map((item) => ({
+        menuItemType: item.menuItemType,
+        foodId: item.menuItemId || '',
+        name: item.name || '',
+        price: item.itemPrice,
+        image: item.image || '',
+        quantity: selectedItems[item.id]?.quantity || 1,
+        totalPrice:
+          (selectedItems[item.id]?.quantity || 1) * item.itemTotalPrice,
+        orderStatus: 'PENDING',
+        addedFeatures: item.customFeatures.map((feature) => ({
+          name: feature.name,
+          level: feature.level?.toString() || '0',
+          additionalPrice: 0,
+        })),
+      }));
+
+      const orderData: Order = {
+        orderType: 'ONLINE',
+        totalAmount: price,
+        orderStatus: 'PENDING',
+        cafeId: cartItems[0]?.cafeId || '',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        orderItems: orderItems,
+        customerId: userId,
+      };
+
+      navigate('/checkout', { state: { orderData } });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const alsoBoughtItems = [
     {
@@ -192,9 +146,16 @@ function Index() {
     },
   ];
 
-  if (Loading) {
+  if (cartQuery.isLoading) {
     return <div>Loading...</div>;
   }
+
+  if (!cartQuery.data || cartQuery.data.length === 0) {
+    return <div>Your cart is empty</div>;
+  }
+
+  const cartItems = cartQuery.data;
+
   return (
     <div>
       <div className="text-4xl dark:text-white text-foodbg mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -273,7 +234,7 @@ function Index() {
                           onClick={() => {
                             handleConfirmDelete(item.id);
                             setTimeout(() => {
-                              fetchCart();
+                              cartQuery.refetch();
                             }, 2000);
                           }}
                         >

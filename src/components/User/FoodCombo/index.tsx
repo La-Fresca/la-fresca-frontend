@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
-import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@nextui-org/react';
 import { useCombos } from '@/api/useFoodCombo';
 import { useCart } from '@/api/useCart';
 import { FoodCombo } from '@/types/combo';
 import Star from './Star';
-import TextButtonGroup from './TextButtonGroup';
 import TextButton from './TextButton';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { Cart } from '@/types/cart';
 import { useNavigate } from 'react-router-dom';
 import { swalSuccess } from '@/components/UI/SwalSuccess';
 import QtySelector from './QtySelector';
+import { Order, OrderItem } from '@/types/order';
 
 interface Props {
   id: string | undefined;
@@ -21,12 +21,6 @@ interface Props {
 
 const FormSchema = z.object({
   quantity: z.number().min(1, { message: 'Quantity must be at least 1' }),
-  customFeatures: z.array(
-    z.object({
-      name: z.string(),
-      level: z.number().nullable(),
-    }),
-  ),
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
@@ -44,8 +38,6 @@ function FoodComboForm({ id }: Props) {
   const [additionalPrices, setAdditionalPrices] = useState<number>(0);
 
   const {
-    register,
-    control,
     handleSubmit,
     watch,
     formState: { errors },
@@ -54,14 +46,8 @@ function FoodComboForm({ id }: Props) {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       quantity: 1,
-      customFeatures: [],
     },
   });
-
-  // const { fields, append } = useFieldArray({
-  //   control,
-  //   name: 'customFeatures',
-  // });
 
   const fetchFoodCombo = async () => {
     try {
@@ -69,13 +55,6 @@ function FoodComboForm({ id }: Props) {
       const combo = await getComboById(id || '');
       setFoodCombo(combo);
       setPrice(combo.price);
-      setValue(
-        'customFeatures',
-        combo.features.map((feature: any) => ({
-          name: feature.name,
-          level: -1,
-        })),
-      );
     } catch (error) {
       console.error('Error fetching item:', error);
     }
@@ -90,11 +69,8 @@ function FoodComboForm({ id }: Props) {
       ...data,
       userId: userId,
       menuItemId: combo?.id,
-      menuItemType: 'FoodCombo Item',
-      customFeatures: data.customFeatures.map((feature) => ({
-        ...feature,
-        level: feature.level || 0,
-      })),
+      menuItemType: 'Food Combo',
+      customFeatures: [],
     };
     try {
       addCartItem(transformedData);
@@ -106,6 +82,33 @@ function FoodComboForm({ id }: Props) {
         navigate('/cart');
       }, 2000);
     }
+  };
+
+  const onBuyNow = async (data: FormSchemaType) => {
+    const orderItem: OrderItem = {
+      menuItemType: 'Food Combo',
+      foodId: combo?.id || '',
+      name: combo?.name || '',
+      price: price,
+      image: combo?.image || '',
+      quantity: data.quantity,
+      totalPrice: price * data.quantity,
+      orderStatus: 'PENDING',
+      addedFeatures: [],
+    };
+
+    const orderData: Order = {
+      orderType: 'ONLINE',
+      totalAmount: price * data.quantity,
+      orderStatus: 'PENDING',
+      cafeId: combo?.cafeId || '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      orderItems: [orderItem],
+      customerId: userId,
+    };
+
+    navigate('/checkout', { state: { orderData } });
   };
 
   const adjustAdditionalPrice = (priceDelta: number) => {
@@ -157,22 +160,6 @@ function FoodComboForm({ id }: Props) {
               setCount={(newCount) => setValue('quantity', newCount)}
             />
 
-            {/* <div className="mt-8">
-              {fields.map((field, index) => (
-                <TextButtonGroup
-                  key={field.id}
-                  name={field.name}
-                  levels={combo.features[index].levels}
-                  prices={combo.features[index].additionalPrices}
-                  defaultPrice={combo.price}
-                  setSelectedIndex={(level) => {
-                    setValue(`customFeatures.${index}.level`, level);
-                  }}
-                  adjustPrice={adjustAdditionalPrice}
-                />
-              ))}
-            </div> */}
-
             <div className="flex justify-between items-center w-80 md:w-90 mt-2">
               <Button
                 className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 mt-8 px-10"
@@ -180,7 +167,12 @@ function FoodComboForm({ id }: Props) {
               >
                 Add to Cart
               </Button>
-              <TextButton value="Buy Now" />
+              <Button
+                className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 mt-8 px-10"
+                onClick={() => handleSubmit(onBuyNow)()}
+              >
+                Buy Now
+              </Button>
             </div>
           </form>
         </div>

@@ -72,9 +72,7 @@ export default function App() {
     fetchBranch();
   }, []);
 
-  const additionalBranches = [
-    { name: 'Branch 3', id: 'cafe 1' }
-  ];
+  const additionalBranches = [{ name: 'Branch 3', id: 'cafe 1' }];
 
   const branchOptions = branches
     .map((branch) => ({
@@ -88,7 +86,7 @@ export default function App() {
       })),
     );
 
-    console.log(food);
+  console.log(food);
 
   // Approve food item
   const handleApproveFood = async (id: string) => {
@@ -485,12 +483,19 @@ export default function App() {
           <label className="flex items-center text-default-400 text-small">
             Rows per page:&nbsp;
             <select
-              className="bg-transparent outline-none text-default-400 text-small"
+              className="bg-transparent outline-none text-default-400 text-small hover:bg-[#373737]"
               onChange={onRowsPerPageChange}
+              value={rowsPerPage}
             >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
+              <option value="5" className="bg-[#373737] text-white">
+                5
+              </option>
+              <option value="10" className="bg-[#373737] text-white">
+                10
+              </option>
+              <option value="15" className="bg-[#373737] text-white">
+                15
+              </option>
             </select>
           </label>
         </div>
@@ -505,6 +510,7 @@ export default function App() {
     food.length,
     onSearchChange,
     hasSearchFilter,
+    rowsPerPage,
   ]);
 
   const bottomContent = React.useMemo(() => {
