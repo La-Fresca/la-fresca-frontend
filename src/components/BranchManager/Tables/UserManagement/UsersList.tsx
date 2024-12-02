@@ -39,7 +39,6 @@ const statusColorMap = {
 
 const INITIAL_VISIBLE_COLUMNS = [
   'firstName',
-  'lastName',
   'email',
   'phoneNumber',
   'role',
@@ -155,7 +154,7 @@ export default function App() {
   const renderCell = React.useCallback((branchData, columnKey) => {
     const cellValue = branchData[columnKey];
     switch (columnKey) {
-      case 'name':
+      case 'firstName':
         return (
           <div className="flex items-center">
             <div className="w-[40px] h-[40px] flex justify-center overflow-hidden">
@@ -163,7 +162,7 @@ export default function App() {
             </div>
             <div className="ml-5">
               <p className="text-bold text-small capitalize dark:text-white text-foodbg">
-                {cellValue}
+                {branchData.firstName} {branchData.lastName}
               </p>
               <p className="text-bold text-[12px] capitalize">
                 ID: {branchData.id}
