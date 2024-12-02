@@ -195,12 +195,12 @@ export default function App() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]">
-                <DropdownItem
+                {/* <DropdownItem
                   className="hover:bg-[#aaaaaa17] rounded-lg"
                   onClick={() => viewUser(userData.id)}
                 >
                   View
-                </DropdownItem>
+                </DropdownItem> */}
                 <DropdownItem
                   className="hover:bg-[#aaaaaa17] rounded-lg"
                   onClick={() => updateUser(userData.id)}
