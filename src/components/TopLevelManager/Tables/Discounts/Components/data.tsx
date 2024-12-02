@@ -11,9 +11,9 @@ const columns = [
   {name: "Status", uid: "status", sortable: true}
 ];
 
-const statusOptions = [
-  {name: "Approved", uid: 0},
-  {name: "Pending", uid: 2},
+const menuItemTypeOptions = [
+  {name: "Food Item", uid: "Food Item"},
+  {name: "Food Combo", uid: "Food Combo"},
 ];
 
-export {columns, statusOptions};
+export {columns, menuItemTypeOptions};

@@ -19,10 +19,9 @@ import { ChevronDownIcon } from '@/components/TopLevelManager/Tables/Discounts/C
 import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
 import {
   columns,
-  statusOptions,
+  menuItemTypeOptions,
 } from '@/components/TopLevelManager/Tables/Discounts/Components/data';
 import { capitalize } from './utils';
-import { swalConfirm } from '@/components/UI/SwalConfirm';
 
 import { Branch } from '@/types/branch';
 import { useBranches } from '@/api/useBranch';
@@ -32,10 +31,10 @@ import { useDiscount } from '@/api/useDiscount';
 
 const INITIAL_VISIBLE_COLUMNS = [
   'name',
-  'available',
-  'price',
-  'status',
-  'actions',
+  'description',
+  'discountType',
+  'menuItemType',
+  'endDate',
 ];
 
 export default function App() {
@@ -117,14 +116,14 @@ export default function App() {
         discount.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    // if (
-    //   statusFilter !== 'all' &&
-    //   Array.from(statusFilter).length !== statusOptions.length
-    // ) {
-    //   filtereddiscount = filtereddiscount.filter((discount) =>
-    //     Array.from(statusFilter).includes(discount.status.toString()),
-    //   );
-    // }
+    if (
+      statusFilter !== 'all' &&
+      Array.from(statusFilter).length !== menuItemTypeOptions.length
+    ) {
+      filtereddiscount = filtereddiscount.filter((discount) =>
+        Array.from(statusFilter).includes(discount.menuItemType.toString()),
+      );
+    }
     if (
       branchFilter !== 'all' &&
       Array.from(branchFilter).length !== branchOptions.length
@@ -153,14 +152,16 @@ export default function App() {
     });
   }, [sortDescriptor, items]);
 
+  const colours = ["#ff7171", "#b9b037", "#37b939", "#4e4ee3", "#e34ecd", "#e3914e"];
+
   const renderCell = React.useCallback((discount, columnKey) => {
     const cellValue = discount[columnKey];
     switch (columnKey) {
       case 'name':
         return (
           <div className="flex items-center">
-            <div className="w-[40px] h-[40px] flex justify-center overflow-hidden rounded-full">
-              <img src={discount.image} alt="" />
+            <div className="w-[40px] h-[40px] flex justify-center overflow-hidden">
+              <div className="rounded-full w-full h-full flex justify-center items-center text-white font-bold" style={{backgroundColor: `${colours[Math.floor(Math.random() * 6)]}`}}>{cellValue.split(" ").map(word => word.charAt(0)).join("")}</div>
             </div>
             <div className="ml-5">
               <p className="text-bold text-small capitalize dark:text-white text-foodbg">
@@ -338,7 +339,7 @@ export default function App() {
                 onSelectionChange={setStatusFilter}
                 className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
               >
-                {statusOptions.map((status) => (
+                {menuItemTypeOptions.map((status) => (
                   <DropdownItem
                     key={status.uid}
                     className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
