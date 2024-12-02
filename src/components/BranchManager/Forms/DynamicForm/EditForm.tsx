@@ -14,6 +14,7 @@ import { Food } from '@/types/food';
 import { useCategories } from '@/api/useCategory';
 import { Category } from '@/types/category';
 import { swalSuccess } from '@/components/UI/SwalSuccess';
+import { useQueryClient } from '@tanstack/react-query';
 
 type CategoryPicker = {
   key: string;
@@ -53,6 +54,7 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 function EditForm({ id = '' }: { id?: string }) {
+  const queryClient = useQueryClient();
   const { showSwal } = swalSuccess({
     message: 'Item Added successfully',
   });
@@ -168,14 +170,14 @@ function EditForm({ id = '' }: { id?: string }) {
     };
 
     try {
-      updateFood(id, transformedData);
-    } catch (error) {
-      console.error('Error adding food item:', error);
-    } finally {
+      await updateFood(id, transformedData);
+      await queryClient.invalidateQueries({ queryKey: ['foods'] });
       setTimeout(() => {
         showSwal();
         Navigate('/branch-manager/foods');
       }, 2000);
+    } catch (error) {
+      console.error('Error adding food item:', error);
     }
   };
 
