@@ -25,6 +25,39 @@ const App: FC<AppProps> = ({ categories, register, fieldname, setValue }) => {
   };
 
   const customStyles = {
+    control: (provided: any) => ({
+      ...provided,
+      border: 'none',
+      boxShadow: 'none',
+      background: 'transparent',
+      color: 'white',
+    }),
+    menu: (provided: any) => ({
+      ...provided,
+      backgroundColor: '#1e1e1e',
+      border: '1px solid #3f3f46',
+      borderRadius: '0.5rem',
+      boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.5)',
+      marginTop: '0.5rem',
+      zIndex: 1000,
+    }),
+    option: (provided: any, state: any) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? '#27272a' : '#1e1e1e',
+      color: 'white',
+      padding: '0.5rem 1rem',
+      '&:hover': {
+        backgroundColor: '#27272a',
+      },
+    }),
+    placeholder: (provided: any) => ({
+      ...provided,
+      color: '#71717a',
+    }),
+    singleValue: (provided: any) => ({
+      ...provided,
+      color: 'white',
+    }),
     multiValue: (provided: any) => ({
       ...provided,
       display: 'none',
@@ -43,7 +76,7 @@ const App: FC<AppProps> = ({ categories, register, fieldname, setValue }) => {
     <div className="relative">
       <div className="flex flex-col items-center">
         <div className="w-full">
-          <div className="mb-2 flex rounded border border-stroke py-2 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark bg-inherit">
+          <div className="mb-2 flex rounded border border-stroke py-2 px-2 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-boxdark">
             <Select
               isMulti
               options={categories.map((category) => ({
@@ -51,7 +84,7 @@ const App: FC<AppProps> = ({ categories, register, fieldname, setValue }) => {
                 label: category.label,
               }))}
               placeholder="Select an option"
-              className="w-full pl-4 pr-4"
+              className="w-full"
               classNamePrefix="react-select"
               unstyled
               styles={customStyles}
