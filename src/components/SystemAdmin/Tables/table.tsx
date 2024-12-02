@@ -62,18 +62,7 @@ const INITIAL_VISIBLE_COLUMNS = ['dateTime', 'email', 'description'];
 export default function LogsTable() {
   const { getAllReadableLogs } = useLogs();
 
-  const logsQuery = useQuery({
-    queryKey: ['logs'],
-    queryFn: getAllReadableLogs,
-  });
-
-  if (logsQuery.isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  // Parse the log strings into structured data
-  const logs = parseLogData(logsQuery.data);
-
+  // 1. Define all state hooks at the top
   const [filterValue, setFilterValue] = React.useState<string>('');
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([]),
@@ -82,15 +71,27 @@ export default function LogsTable() {
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all');
-  const [rowsPerPage, setRowsPerPage] = React.useState<number>(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState<number>(20);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: 'age',
     direction: 'ascending',
   });
   const [page, setPage] = React.useState<number>(1);
 
-  const pages = Math.ceil(logs.length / rowsPerPage);
+  // 2. Query data
+  const logsQuery = useQuery({
+    queryKey: ['logs'],
+    queryFn: getAllReadableLogs,
+  });
 
+  // 3. Memoize parsed logs
+  const logs = React.useMemo(() => {
+    if (!logsQuery.data) return [];
+    return parseLogData(logsQuery.data);
+  }, [logsQuery.data]);
+
+  // 4. Define all other memoized values and callbacks
+  const pages = Math.ceil(logs.length / rowsPerPage);
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
@@ -185,7 +186,7 @@ export default function LogsTable() {
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable
-            className="w-full sm:max-w-[44%]"
+            className="w-full sm:max-w-[44%] dark:bg-[#ffffff14] rounded-lg border bg-[#aaaaaa14] border-[#aaaaaa66] dark:border-[#54545466]"
             placeholder="Search by description..."
             startContent={<SearchIcon />}
             value={filterValue}
@@ -197,8 +198,8 @@ export default function LogsTable() {
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
-                  size="sm"
                   variant="flat"
+                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
                 >
                   Columns
                 </Button>
@@ -210,7 +211,7 @@ export default function LogsTable() {
                 selectedKeys={visibleColumns}
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
-                className="bg-black text-white"
+                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
               >
                 {columns.map((column) => (
                   <DropdownItem key={column.uid} className="capitalize">
@@ -228,9 +229,9 @@ export default function LogsTable() {
               className="bg-transparent outline-none text-default-400 text-small"
               onChange={onRowsPerPageChange}
             >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
             </select>
           </label>
         </div>
@@ -252,6 +253,8 @@ export default function LogsTable() {
           page={page}
           total={pages}
           onChange={setPage}
+          radius="full"
+          className="text-[#c6c6c6]"
         />
         <div className="hidden sm:flex w-[30%] justify-end gap-2">
           <Button
@@ -259,6 +262,7 @@ export default function LogsTable() {
             size="sm"
             variant="flat"
             onPress={onPreviousPage}
+            className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040] py-[18px]"
           >
             Previous
           </Button>
@@ -267,6 +271,7 @@ export default function LogsTable() {
             size="sm"
             variant="flat"
             onPress={onNextPage}
+            className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040] py-[18px]"
           >
             Next
           </Button>
@@ -278,7 +283,7 @@ export default function LogsTable() {
   const classNames = React.useMemo(
     () => ({
       wrapper: ['max-h-[382px]', 'max-w-3xl'],
-      th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],
+      th: ['bg-[#373737]', 'text-white'], // Removed border-b and border-divider
       td: [
         'group-data-[first=true]:first:before:rounded-none',
         'group-data-[first=true]:last:before:rounded-none',
@@ -290,6 +295,12 @@ export default function LogsTable() {
     [],
   );
 
+  // 5. Show loading state after all hooks are defined
+  if (logsQuery.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  // 6. Return the table component
   return (
     <Table
       isCompact
@@ -314,6 +325,7 @@ export default function LogsTable() {
             key={column.uid}
             align={column.uid === 'actions' ? 'center' : 'start'}
             allowsSorting={column.uid !== 'actions'}
+            className="dark:bg-[#373737] translate-y-[-16px] bg-[#aaaaaa20] dark:text-white text-[#3a3a3a] h-[45px]"
           >
             {column.name}
           </TableColumn>
