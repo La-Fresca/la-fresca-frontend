@@ -55,6 +55,8 @@ import AddGrn_BM from '@/pages/BranchManager/Inventory/AddGrn';
 import EditGrn_BM from '@/pages/BranchManager/Inventory/EditGrn';
 import AssignWaiter from '@/pages/KitchenManager/AssignWaiters';
 import AssignDelivery from '@/pages/KitchenManager/AssignDelivery';
+import DeliveryPersonsList from '@/pages/KitchenManager/DeliveryPersons/index';
+import WaiterList from '@/pages/KitchenManager/Waiter/index';
 import DeliveryLayout from '@/layouts/DeliveryLayout';
 import { OnDelivery } from '@/pages/DeliveryPerson/OnDelivery';
 import KitchenManagerDashboard from '@/pages/KitchenManager/Dashboard';
@@ -124,6 +126,7 @@ const routes = createRoutesFromElements(
         }
       />
     </Route>
+
     <Route path="/">
       <Route
         path="login"
@@ -180,6 +183,7 @@ const routes = createRoutesFromElements(
         }
       />
     </Route>
+
     <Route element={<RequireAuth allowedRoles={['ADMIN']} />}>
       <Route path="/" element={<UserLayout />}>
         <Route
@@ -627,6 +631,30 @@ const routes = createRoutesFromElements(
               <>
                 <PageTitle title="Storekeeper | GRN List" />
                 <ViewGrns />
+              </>
+            }
+          />
+        </Route>
+
+        <Route path="deliveryPersons">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Kitchen Manager | Delivery Persons List" />
+                <DeliveryPersonsList />
+              </>
+            }
+          />
+        </Route>
+
+        <Route path="waiters">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Kitchen Manager | Waiters List" />
+                <WaiterList />
               </>
             }
           />

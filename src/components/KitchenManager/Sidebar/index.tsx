@@ -1,21 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '@images/logo/la-fresca.png';
-import { Bars3Icon, UserIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon } from '@heroicons/react/24/outline';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
 import WaiterIcon from '@images/icon/waiter.png';
 import WaiterIconWhite from '@images/icon/waiter-white.png';
 import DeliveryIcon from '@images/icon/delivery.png';
 import DeliveryIconWhite from '@images/icon/delivery-white.png';
-import { CakeIcon } from '@heroicons/react/24/outline';
-import { QueueListIcon } from '@heroicons/react/24/outline';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
-import {
-  ChartBarSquareIcon,
-  RectangleGroupIcon,
-  TagIcon,
-} from '@heroicons/react/24/solid';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -135,9 +126,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               <li>
                 <NavLink
-                  to="/kitchen-manager/delivery-person"
+                  to="/kitchen-manager/deliveryPersons"
                   className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
-                    pathname.includes('/kitchen-manager/delivery-person') &&
+                    pathname.includes('/kitchen-manager/deliveryPersons') &&
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >

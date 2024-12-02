@@ -68,7 +68,7 @@ export default function CategoriesTable() {
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: 'name',
     direction: 'ascending',
@@ -196,10 +196,11 @@ export default function CategoriesTable() {
   const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
+        <h1 className="text-2xl text-white font-bold">Categories List</h1>
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable
-            className="w-full sm:max-w-[44%]"
+            className="w-full sm:max-w-[44%] dark:bg-[#ffffff14] rounded-lg border bg-[#aaaaaa14] border-[#aaaaaa66] dark:border-[#54545466]"
             placeholder="Search by name..."
             startContent={<SearchIcon />}
             value={filterValue}
@@ -212,29 +213,32 @@ export default function CategoriesTable() {
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
+                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
                 >
                   Columns
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
-                className="bg-black text-white"
                 disallowEmptySelection
                 aria-label="Table Columns"
                 closeOnSelect={false}
                 selectedKeys={visibleColumns}
                 selectionMode="multiple"
                 onSelectionChange={setVisibleColumns}
+                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
               >
                 {columns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
+                  <DropdownItem
+                    key={column.uid}
+                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
+                  >
                     {capitalize(column.name)}
                   </DropdownItem>
                 ))}
               </DropdownMenu>
             </Dropdown>
             <Button
-              className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg"
-              color="primary"
+              className="text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600 rounded-xl"
               endContent={<PlusIcon />}
               onClick={() => navigate('add')}
             >
@@ -242,16 +246,26 @@ export default function CategoriesTable() {
             </Button>
           </div>
         </div>
-        <div className="flex justify-end items-center">
+        <div className="flex justify-between items-center">
+          <span className="text-default-400 text-small">
+            Total {categories.length} categories
+          </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
-              className="bg-transparent outline-none text-default-400 text-small"
+              className="bg-transparent outline-none text-default-400 text-small hover:bg-[#373737]"
               onChange={onRowsPerPageChange}
+              value={rowsPerPage}
             >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
+              <option value="5" className="bg-[#373737] text-white">
+                5
+              </option>
+              <option value="10" className="bg-[#373737] text-white">
+                10
+              </option>
+              <option value="15" className="bg-[#373737] text-white">
+                15
+              </option>
             </select>
           </label>
         </div>
@@ -263,23 +277,22 @@ export default function CategoriesTable() {
     onSearchChange,
     onRowsPerPageChange,
     categories.length,
-    hasSearchFilter,
+    rowsPerPage,
   ]);
 
   const bottomContent = useMemo(() => {
     return (
       <div className="py-2 px-2 flex justify-between items-center">
-        <span className="w-[30%] text-small text-default-400">
-          {`Total ${filteredItems.length} Categories`}
-        </span>
         <Pagination
           isCompact
           showControls
           showShadow
+          color="primary"
           page={page}
           total={pages}
-          color="primary"
           onChange={setPage}
+          radius="full"
+          className="text-[#c6c6c6]"
         />
         <div className="hidden sm:flex w-[30%] justify-end gap-2">
           <Button
@@ -287,6 +300,7 @@ export default function CategoriesTable() {
             size="sm"
             variant="flat"
             onPress={onPreviousPage}
+            className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040] py-[18px]"
           >
             Previous
           </Button>
@@ -295,6 +309,7 @@ export default function CategoriesTable() {
             size="sm"
             variant="flat"
             onPress={onNextPage}
+            className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040] py-[18px]"
           >
             Next
           </Button>
@@ -306,15 +321,13 @@ export default function CategoriesTable() {
   const classNames = useMemo(
     () => ({
       wrapper: ['max-h-[382px]', 'max-w-3xl'],
-      th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],
+      th: [
+        'dark:bg-[#373737] translate-y-[-16px] bg-[#aaaaaa20] dark:text-white text-[#3a3a3a] h-[45px]',
+      ],
       td: [
-        // changing the rows border radius
-        // first
         'group-data-[first=true]:first:before:rounded-none',
         'group-data-[first=true]:last:before:rounded-none',
-        // middle
         'group-data-[middle=true]:before:rounded-none',
-        // last
         'group-data-[last=true]:first:before:rounded-none',
         'group-data-[last=true]:last:before:rounded-none',
       ],

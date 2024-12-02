@@ -1,163 +1,79 @@
 import React, { useState } from 'react';
 import { OrderCard } from './OrderCard';
 import { OrderDetails } from './OrderDetails';
-import { set } from 'zod';
-
-var Orders = [
-  {
-    orderId: 1,
-    orderDate: '2021-10-10',
-    deliveryDate: '2021-10-11',
-    orderStatus: 'Cooking',
-    completionTimes: ['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM'],
-    orderItems: [
-      {
-        name: 'Chocolate Milkshake',
-        description: 'Rich and creamy chocolate milkshake.',
-        price: 3900,
-        quantity: 30,
-        image:
-          'https://www.seriouseats.com/recipes/images/2013/07/chocolate-milkshake-hero.jpg', // Image of Chocolate Milkshake
-      },
-      {
-        name: 'Vanilla Ice Cream',
-        description: 'Smooth vanilla ice cream made with real vanilla beans.',
-        price: 1200,
-        quantity: 20,
-        image:
-          'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60', // Existing image seems relevant
-      },
-      {
-        name: 'Strawberry Smoothie',
-        description: 'Refreshing strawberry smoothie with fresh strawberries.',
-        price: 1500,
-        quantity: 15,
-        image:
-          'https://www.inspiredtaste.net/wp-content/uploads/2020/01/Strawberry-Smoothie-2-1200x800.jpg', // Image of Strawberry Smoothie
-      },
-    ],
-    payment: {
-      method: 'Visa',
-      cardNumber: '****1156',
-    },
-    delivery: {
-      address: '847 Jewess Bridge Apt. 174, London, UK, 474-769-3919',
-    },
-    orderSummary: {
-      subtotal: 5554,
-      shipping: 0,
-      discount: 1109.4,
-      total: 4443.6,
-    },
-  },
-  {
-    orderId: 2,
-    orderDate: '2021-10-17',
-    deliveryDate: '2021-10-11',
-    orderStatus: 'Delivered',
-    completionTimes: ['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM'],
-    orderItems: [
-      {
-        name: 'Cheeseburger',
-        description:
-          'Juicy cheeseburger with cheddar cheese and fresh vegetables.',
-        price: 900,
-        quantity: 1,
-        image:
-          'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
-      },
-      {
-        name: 'Chicken Sandwich',
-        description: 'Grilled chicken sandwich with lettuce and tomato.',
-        price: 3900,
-        quantity: 5,
-        image:
-          'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
-      },
-      {
-        name: 'French Fries',
-        description: 'Crispy french fries with a side of ketchup.',
-        price: 2900,
-        quantity: 3,
-        image:
-          'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
-      },
-    ],
-    payment: {
-      method: 'Visa',
-      cardNumber: '****9016',
-    },
-    delivery: {
-      address: '847 Jewess Bridge Apt. 174, London, UK, 474-769-3919',
-    },
-    orderSummary: {
-      subtotal: 5554,
-      shipping: 0,
-      discount: 1109.4,
-      total: 4443.6,
-    },
-  },
-  {
-    orderId: 3,
-    orderDate: '2021-10-10',
-    deliveryDate: '2021-10-11',
-    orderStatus: 'Delivering',
-    completionTimes: ['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM'],
-    orderItems: [
-      {
-        name: 'Margherita Pizza',
-        description:
-          'Classic margherita pizza with fresh basil and mozzarella.',
-        price: 3900,
-        quantity: 30,
-        image:
-          'https://images.unsplash.com/photo-1592417815420-19657db8b86c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
-      },
-      {
-        name: 'Pepperoni Pizza',
-        description:
-          'Pepperoni pizza with a crispy crust and savory pepperoni.',
-        price: 3900,
-        quantity: 30,
-        image:
-          'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
-      },
-      {
-        name: 'Vegetarian Pizza',
-        description: 'Vegetarian pizza loaded with fresh vegetables.',
-        price: 3900,
-        quantity: 30,
-        image:
-          'https://images.unsplash.com/photo-1590879051073-d2f328a3a685?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60',
-      },
-    ],
-    payment: {
-      method: 'Visa',
-      cardNumber: '****9056',
-    },
-    delivery: {
-      address: '847 Jewess Bridge Apt. 174, London, UK, 474-769-3919',
-    },
-    orderSummary: {
-      subtotal: 5554,
-      shipping: 0,
-      discount: 1109.4,
-      total: 4443.6,
-    },
-  },
-];
-
-var selectedOrder = Orders[0];
+import { useOrders } from '@/api/useOrder';
+import { useQuery } from '@tanstack/react-query';
 
 const steps = ['Order Confirmed', 'Cooking', 'Delivering', 'Delivered'];
-// var completionTimes = ['10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM']; // Example times
+
+// Helper function to get completion times based on order status and created date
+const getCompletionTimes = (createdAt: string, status: string) => {
+  const baseTime = new Date(createdAt);
+  const times = [];
+
+  // Add confirmation time
+  times.push(
+    baseTime.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+    }),
+  );
+
+  // Add subsequent times based on status
+  for (let i = 1; i < steps.length; i++) {
+    if (
+      (status === 'PENDING' && i === 0) ||
+      (status === 'PREPARING' && i <= 1) ||
+      (status === 'DELIVERING' && i <= 2) ||
+      (status === 'COMPLETED' && i <= 3)
+    ) {
+      const nextTime = new Date(baseTime);
+      nextTime.setMinutes(baseTime.getMinutes() + 30 * i);
+      times.push(
+        nextTime.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+        }),
+      );
+    } else {
+      times.push('');
+    }
+  }
+  return times;
+};
 
 export const OrderHistory = () => {
-  const [item, setItem] = useState(0);
+  const { getOrdersByUserId } = useOrders();
+  const [selectedOrderIndex, setSelectedOrderIndex] = useState(0);
 
-  const clickFunction = (order: number) => {
-    setItem(order);
-    // console.log("Item",order);
+  const orderQuery = useQuery({
+    queryKey: ['orders', 'userId'],
+    queryFn: getOrdersByUserId,
+  });
+
+  if (orderQuery.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!orderQuery.data || orderQuery.data.length === 0) {
+    return <div>No orders found</div>;
+  }
+
+  const orders = orderQuery.data;
+
+  const getStageIndex = (status: string) => {
+    switch (status) {
+      case 'PENDING':
+        return 1;
+      case 'PREPARING':
+        return 2;
+      case 'DELIVERING':
+        return 3;
+      case 'COMPLETED':
+        return 4;
+      default:
+        return 1;
+    }
   };
 
   return (
@@ -170,35 +86,44 @@ export const OrderHistory = () => {
         quick and simple.
       </div>
       <div className="flex flex-col-reverse lg:flex-row w-full lg:w-screen px-4 lg:px-10 mt-10">
-        {/* For smaller screens, set the width to 100% and for larger screens, use 40% width */}
         <div className="w-full lg:w-[40%] flex flex-col space-y-4 mx-2 lg:mx-10 mb-4 lg:mb-0">
-          {Orders.map((order, index) => {
-            let stageIndex = 1;
-            if (order.orderStatus === 'Cooking') {
-              stageIndex = 2;
-            } else if (order.orderStatus === 'Delivering') {
-              stageIndex = 3;
-            } else if (order.orderStatus === 'Delivered') {
-              stageIndex = 4;
-            }
-
-            const completionTimesArray = steps.map((_, i) =>
-              i < stageIndex ? order.completionTimes[i] : '',
+          {orders.map((order, index) => {
+            const stageIndex = getStageIndex(order.orderStatus);
+            const completionTimesArray = getCompletionTimes(
+              order.createdAt,
+              order.orderStatus,
             );
 
             return (
-              <div onClick={() => clickFunction(index)} key={order.orderId}>
+              <div onClick={() => setSelectedOrderIndex(index)} key={order.id}>
                 <OrderCard
-                  order={{ order, completionTimesArray, stageIndex }}
+                  order={{
+                    order: {
+                      orderId: order.id,
+                      orderDate: order.createdAt,
+                      orderStatus: order.orderStatus,
+                      orderItems: order.orderItems,
+                      orderSummary: {
+                        subtotal: order.totalAmount,
+                        shipping: 0,
+                        discount: order.discount,
+                        total: order.totalAmount - order.discount,
+                      },
+                      delivery: {
+                        address: order.location,
+                      },
+                    },
+                    completionTimesArray,
+                    stageIndex,
+                  }}
                 />
               </div>
             );
           })}
         </div>
 
-        {/* For smaller screens, set the width to 100% and for larger screens, use 60% width */}
         <div className="hidden lg:block w-full lg:w-[60%] flex flex-col mx-2 lg:mx-10 mt-4 lg:mt-0">
-          <OrderDetails order={Orders[item]} />
+          <OrderDetails order={orders[selectedOrderIndex]} />
         </div>
       </div>
     </>

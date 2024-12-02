@@ -59,7 +59,7 @@ export default function FoodList() {
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10); // Changed from 5 to 10
   const [sortDescriptor, setSortDescriptor] = React.useState({
     column: 'price',
     direction: 'ascending',
@@ -137,7 +137,19 @@ export default function FoodList() {
 
     switch (columnKey) {
       case 'name':
-        return cellValue;
+        return (
+          <div className="flex items-center">
+            <div className="w-[40px] h-[40px] flex justify-center overflow-hidden rounded-full">
+              <img src={food.image} alt="" />
+            </div>
+            <div className="ml-5">
+              <p className="text-bold text-small capitalize dark:text-white text-foodbg">
+                {cellValue}
+              </p>
+              <p className="text-bold text-[12px] capitalize">ID: {food.id}</p>
+            </div>
+          </div>
+        );
       case 'price':
         return `Rs.${cellValue}`;
       case 'availability':
@@ -224,7 +236,7 @@ export default function FoodList() {
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable
-            className="w-full sm:max-w-[44%]"
+            className="w-full sm:max-w-[44%] dark:bg-[#ffffff14] rounded-lg border bg-[#aaaaaa14] border-[#aaaaaa66] dark:border-[#54545466]"
             placeholder="Search by name..."
             startContent={<SearchIcon />}
             value={filterValue}
@@ -232,7 +244,7 @@ export default function FoodList() {
             onValueChange={onSearchChange}
           />
           <Button
-            className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg h-8 mt-8 px-10"
+            className="text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600 rounded-xl"
             onClick={() => navigate('add')}
           >
             Add New Item
@@ -245,44 +257,62 @@ export default function FoodList() {
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
-              className="bg-transparent outline-none text-default-400 text-small"
+              className="bg-transparent outline-none text-default-400 text-small hover:bg-[#373737]"
               onChange={onRowsPerPageChange}
+              value={rowsPerPage}
             >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
+              <option value="5" className="bg-[#373737] text-white">
+                5
+              </option>
+              <option value="10" className="bg-[#373737] text-white">
+                10
+              </option>
+              <option value="15" className="bg-[#373737] text-white">
+                15
+              </option>
             </select>
           </label>
         </div>
       </div>
     );
-  }, [filterValue, onSearchChange, onRowsPerPageChange, foods.length]);
+  }, [
+    filterValue,
+    onSearchChange,
+    onRowsPerPageChange,
+    foods.length,
+    rowsPerPage,
+  ]);
 
   const bottomContent = React.useMemo(() => {
     return (
-      <div className="py-2 px-2 flex justify-center items-center">
-        <div className="hidden sm:flex w-[50%] justify-center gap-5">
+      <div className="py-2 px-2 flex justify-between items-center">
+        <Pagination
+          isCompact
+          showControls
+          showShadow
+          color="primary"
+          page={page}
+          total={pages}
+          onChange={setPage}
+          radius="full"
+          className="text-[#c6c6c6]"
+        />
+        <div className="hidden sm:flex w-[30%] justify-end gap-2">
           <Button
             isDisabled={pages === 1}
             size="sm"
             variant="flat"
             onPress={onPreviousPage}
+            className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040] py-[18px]"
           >
             Previous
           </Button>
-          <Pagination
-            isCompact
-            showShadow
-            color="primary"
-            page={page}
-            total={pages}
-            onChange={setPage}
-          />
           <Button
             isDisabled={pages === 1}
             size="sm"
             variant="flat"
             onPress={onNextPage}
+            className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040] py-[18px]"
           >
             Next
           </Button>
@@ -294,7 +324,9 @@ export default function FoodList() {
   const classNames = React.useMemo(
     () => ({
       wrapper: ['max-h-[382px]', 'max-w-3xl'],
-      th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],
+      th: [
+        'dark:bg-[#373737] translate-y-[-16px] bg-[#aaaaaa20] dark:text-white text-[#3a3a3a] h-[45px]',
+      ],
       td: [
         // changing the rows border radius
         // first

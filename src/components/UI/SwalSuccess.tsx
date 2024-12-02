@@ -13,10 +13,6 @@ export const swalSuccess = ({ message }: SwalSuccessProps) => {
       title: message,
       icon: 'success',
       confirmButtonText: 'OK',
-      customClass: {
-        popup: 'swal2-popup',
-        confirmButton: 'swal2-confirm',
-      },
     });
   };
 

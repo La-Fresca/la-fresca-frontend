@@ -16,35 +16,31 @@ import {
 } from '@nextui-org/react';
 import { SearchIcon } from '@/components/BranchManager/Tables/Complaints/Components/SearchIcon';
 import { ChevronDownIcon } from '@/components/BranchManager/Tables/Complaints/Components/ChevronDownIcon';
-import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
-import {
-  columns,
-  statusOptions,
-} from '@/components/BranchManager/Tables/Complaints/Components/data';
+import { columns } from '@/components/BranchManager/Tables/Complaints/Components/data';
 import { capitalize } from './utils';
-import { Food } from '@/types/food';
-import { useFoods } from '@/api/useFoodItem';
+
+import { Complaint } from '@/types/complaint';
+import { useComplaint } from '@/api/useComplaint';
 
 import { useNavigate } from 'react-router-dom';
 
 const INITIAL_VISIBLE_COLUMNS = [
-  'name',
-  'available',
-  'price',
-  'status',
+  'topic',
+  'description',
+  'date',
   'actions',
 ];
 
 export default function App() {
-  const [food, setFood] = useState<Food[]>([]);
-  const { getAllFoodsForTLM } = useFoods();
+  const [complaints, setComplaints] = useState<Complaint[]>([]);
+  const { getAllComplaintsForTLM } = useComplaint();
 
   const [loading, setLoading] = React.useState(true);
 
-  const fetchFood = async () => {
+  const fetchComplaints = async () => {
     try {
-      const data = await getAllFoodsForTLM();
-      setFood(data);
+      const data = await getAllComplaintsForTLM();
+      setComplaints(data);
       setLoading(true);
     } catch (error: any) {
       console.error(error);
@@ -52,17 +48,16 @@ export default function App() {
   };
 
   useEffect(() => {
-    fetchFood();
+    fetchComplaints();
   }, []);
 
-  console.log(food);
+  console.log(complaints);
 
   const [filterValue, setFilterValue] = React.useState('');
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
-  const [statusFilter, setStatusFilter] = React.useState('all');
-  const [branchFilter] = React.useState('all');
+
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
     direction: 'ascending',
@@ -80,22 +75,14 @@ export default function App() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredfood = [...food];
+    let filteredcomplaints = [...complaints];
     if (hasSearchFilter) {
-      filteredfood = filteredfood.filter((foodData) =>
-        foodData.name.toLowerCase().includes(filterValue.toLowerCase()),
+      filteredcomplaints = filteredcomplaints.filter((complaintData) =>
+        complaintData.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    if (
-      statusFilter !== 'all' &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
-      filteredfood = filteredfood.filter((foodData) =>
-        Array.from(statusFilter).includes(foodData.status.toString()),
-      );
-    }
-    return filteredfood;
-  }, [food, filterValue, statusFilter]);
+    return filteredcomplaints;
+  }, [complaints, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -120,51 +107,53 @@ export default function App() {
     navigate(`view/${id}`);
   };
 
-  const renderCell = React.useCallback((foodData: any, columnKey: any) => {
-    const cellValue = foodData[columnKey];
+  const colours = ["#ff7171", "#b9b037", "#37b939", "#4e4ee3", "#e34ecd", "#e3914e"];
+
+  function timeAgo(timestamp: string): string {
+    const currentTime = new Date();
+    const pastTime = new Date(timestamp);
+    const differenceInMilliseconds = currentTime.getTime() - pastTime.getTime();
+
+    const seconds = Math.floor(differenceInMilliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const weeks = Math.floor(days / 7);
+
+    if (seconds < 60) {
+        return `${seconds} second${seconds !== 1 ? 's' : ''} ago`;
+    } else if (minutes < 60) {
+        return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+    } else if (hours < 24) {
+        return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+    } else if (days < 7) {
+        return `${days} day${days !== 1 ? 's' : ''} ago`;
+    } else {
+        return `${weeks} week${weeks !== 1 ? 's' : ''} ago`;
+    }
+}
+
+  const renderCell = React.useCallback((complaintData: any, columnKey: any) => {
+    const cellValue = complaintData[columnKey];
     switch (columnKey) {
-      case 'name':
+      case 'topic':
         return (
           <div className="flex items-center">
-            <div className="w-[40px] h-[40px] flex justify-center overflow-hidden rounded-full">
-              <img src={foodData.image} alt="" />
+            <div className="w-[40px] h-[40px] flex justify-center overflow-hidden">
+              <div className="rounded-full w-full h-full flex justify-center items-center text-white font-bold" style={{backgroundColor: `${colours[Math.floor(Math.random() * 6)]}`}}>{cellValue.split(" ").map(word => word.charAt(0)).join("")}</div>
             </div>
             <div className="ml-5">
               <p className="text-bold text-small capitalize dark:text-white text-foodbg">
                 {cellValue}
               </p>
               <p className="text-bold text-[12px] capitalize">
-                ID: {foodData.id}
+                ID: {complaintData.id}
               </p>
             </div>
           </div>
         );
-      case 'available':
-        return(
-          <div>2024/11/13</div>
-        );
-      case 'status':
-        if (cellValue === 1) {
-          return (
-            <div className="text-warning bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full w-[80px]">
-              Read
-            </div>
-          );
-        } else if (cellValue === 2) {
-          return (
-            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full w-[90px]">
-              Resolved
-            </div>
-          );
-        } else if (cellValue === 0) {
-          return (
-            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center rounded-full w-[80px]">
-              Unread
-            </div>
-          );
-        } else {
-          return null;
-        }
+      case 'date':
+        return timeAgo(complaintData.date);
       default:
         return cellValue;
     }
@@ -222,36 +211,6 @@ export default function App() {
                   variant="flat"
                   className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
                 >
-                  Status
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem
-                    key={status.uid}
-                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
-                  >
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
-                >
                   Columns
                 </Button>
               </DropdownTrigger>
@@ -274,15 +233,11 @@ export default function App() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600">
-              <ArrowSmallDownIcon className="w-6 h-6 border-b scale-75" />{' '}
-              Download All
-            </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {food.length} complaints
+            Total {complaints.length} complaints
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:&nbsp;
@@ -300,11 +255,9 @@ export default function App() {
     );
   }, [
     filterValue,
-    statusFilter,
-    branchFilter,
     visibleColumns,
     onRowsPerPageChange,
-    food.length,
+    complaints.length,
     onSearchChange,
     hasSearchFilter,
   ]);
@@ -373,9 +326,13 @@ export default function App() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No food found'} items={sortedItems}>
+      <TableBody emptyContent={'No complaint found'} items={sortedItems}>
         {(item) => (
-          <TableRow key={item.id} className='hover:dark:bg-[#ffffff13] hover:bg-[#00000016] cursor-pointer' onClick={() => handleViewComplaint(item.id)}>
+          <TableRow
+            key={item.id}
+            className="hover:dark:bg-[#ffffff13] hover:bg-[#00000016] cursor-pointer"
+            onClick={() => handleViewComplaint(item.id)}
+          >
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}

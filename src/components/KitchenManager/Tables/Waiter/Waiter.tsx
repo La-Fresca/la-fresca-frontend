@@ -72,22 +72,6 @@ export default function App() {
     fetchBranch();
   }, []);
 
-  const additionalBranches = [{ name: 'Branch 3', id: 'cafe 1' }];
-
-  const branchOptions = branches
-    .map((branch) => ({
-      name: branch.name,
-      uid: branch.id,
-    }))
-    .concat(
-      additionalBranches.map((branch) => ({
-        name: branch.name,
-        uid: branch.id,
-      })),
-    );
-
-  console.log(food);
-
   // Approve food item
   const handleApproveFood = async (id: string) => {
     try {
@@ -123,7 +107,6 @@ export default function App() {
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
   const [statusFilter, setStatusFilter] = React.useState('all');
-  const [branchFilter, setBranchFilter] = React.useState('all');
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
     direction: 'ascending',
@@ -155,16 +138,8 @@ export default function App() {
         Array.from(statusFilter).includes(foodData.status.toString()),
       );
     }
-    if (
-      branchFilter !== 'all' &&
-      Array.from(branchFilter).length !== branchOptions.length
-    ) {
-      filteredfood = filteredfood.filter((foodData) =>
-        Array.from(branchFilter).includes(foodData.cafeId),
-      );
-    }
     return filteredfood;
-  }, [food, filterValue, statusFilter, branchFilter]);
+  }, [food, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -374,43 +349,13 @@ export default function App() {
           <Input
             isClearable
             className="w-full sm:max-w-[44%] dark:bg-[#ffffff14] rounded-lg border bg-[#aaaaaa14] border-[#aaaaaa66] dark:border-[#54545466]"
-            placeholder="Search by food name..."
+            placeholder="Search by name..."
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={onClear}
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
-                >
-                  Branch
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={branchFilter}
-                selectionMode="multiple"
-                onSelectionChange={setBranchFilter}
-                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
-              >
-                {branchOptions.map((status) => (
-                  <DropdownItem
-                    key={status.uid}
-                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
-                  >
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -470,32 +415,21 @@ export default function App() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600">
-              <ArrowSmallDownIcon className="w-6 h-6 border-b scale-75" />{' '}
-              Download All
-            </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {food.length} foods
+            Total {food.length} waiters
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:&nbsp;
             <select
-              className="bg-transparent outline-none text-default-400 text-small hover:bg-[#373737]"
+              className="bg-transparent outline-none text-default-400 text-small"
               onChange={onRowsPerPageChange}
-              value={rowsPerPage}
             >
-              <option value="5" className="bg-[#373737] text-white">
-                5
-              </option>
-              <option value="10" className="bg-[#373737] text-white">
-                10
-              </option>
-              <option value="15" className="bg-[#373737] text-white">
-                15
-              </option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
             </select>
           </label>
         </div>
@@ -504,13 +438,11 @@ export default function App() {
   }, [
     filterValue,
     statusFilter,
-    branchFilter,
     visibleColumns,
     onRowsPerPageChange,
     food.length,
     onSearchChange,
     hasSearchFilter,
-    rowsPerPage,
   ]);
 
   const bottomContent = React.useMemo(() => {
