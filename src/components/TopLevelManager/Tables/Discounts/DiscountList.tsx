@@ -20,6 +20,7 @@ import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
 import {
   columns,
   menuItemTypeOptions,
+  discountTypeOptions,
 } from '@/components/TopLevelManager/Tables/Discounts/Components/data';
 import { capitalize } from './utils';
 
@@ -92,6 +93,7 @@ export default function App() {
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
   const [statusFilter, setStatusFilter] = React.useState('all');
+  const [discountTypeFilter, setDiscountTypeFilter] = React.useState('all');
   const [branchFilter, setBranchFilter] = React.useState('all');
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
@@ -124,16 +126,26 @@ export default function App() {
         Array.from(statusFilter).includes(discount.menuItemType.toString()),
       );
     }
+
+    if (
+      discountTypeFilter !== 'all' &&
+      Array.from(discountTypeFilter).length !== menuItemTypeOptions.length
+    ) {
+      filtereddiscount = filtereddiscount.filter((discount) =>
+        Array.from(discountTypeFilter).includes(discount.discountType.toString()),
+      );
+    }
+
     if (
       branchFilter !== 'all' &&
       Array.from(branchFilter).length !== branchOptions.length
     ) {
       filtereddiscount = filtereddiscount.filter((discount) =>
-        Array.from(branchFilter).includes(discount.cafeId),
+        Array.from(branchFilter).includes(discount.cafeID),
       );
     }
     return filtereddiscount;
-  }, [discount, filterValue, statusFilter, branchFilter]);
+  }, [discount, filterValue, statusFilter, branchFilter, discountTypeFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -282,7 +294,7 @@ export default function App() {
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable
-            className="w-full sm:max-w-[44%] dark:bg-[#ffffff14] rounded-lg border bg-[#aaaaaa14] border-[#aaaaaa66] dark:border-[#54545466]"
+            className="w-full sm:max-w-[30%] dark:bg-[#ffffff14] rounded-lg border bg-[#aaaaaa14] border-[#aaaaaa66] dark:border-[#54545466]"
             placeholder="Search by discount name..."
             startContent={<SearchIcon />}
             value={filterValue}
@@ -327,7 +339,7 @@ export default function App() {
                   variant="flat"
                   className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
                 >
-                  Status
+                  Menu Item Type
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -345,6 +357,36 @@ export default function App() {
                     className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
                   >
                     {capitalize(status.name)}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+
+            <Dropdown>
+              <DropdownTrigger className="hidden sm:flex">
+                <Button
+                  endContent={<ChevronDownIcon className="text-small" />}
+                  variant="flat"
+                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
+                >
+                  Discount Type
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                aria-label="Table Columns"
+                closeOnSelect={false}
+                selectedKeys={discountTypeFilter}
+                selectionMode="multiple"
+                onSelectionChange={setDiscountTypeFilter}
+                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
+              >
+                {discountTypeOptions.map((discountType) => (
+                  <DropdownItem
+                    key={discountType.uid}
+                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
+                  >
+                    {capitalize(discountType.name)}
                   </DropdownItem>
                 ))}
               </DropdownMenu>
@@ -407,6 +449,7 @@ export default function App() {
     filterValue,
     statusFilter,
     branchFilter,
+    discountTypeFilter,
     visibleColumns,
     onRowsPerPageChange,
     discount.length,

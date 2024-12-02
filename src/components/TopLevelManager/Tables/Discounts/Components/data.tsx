@@ -16,4 +16,9 @@ const menuItemTypeOptions = [
   {name: "Food Combo", uid: "Food Combo"},
 ];
 
-export {columns, menuItemTypeOptions};
+const discountTypeOptions = [
+  {name: "Price Offer", uid: "Price Offer"},
+  {name: "Promotional Offer", uid: "Promotional Offer"},
+];
+
+export {columns, menuItemTypeOptions, discountTypeOptions};
