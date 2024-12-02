@@ -110,7 +110,7 @@ const store = createStore({
   authType: 'cookie',
   cookieDomain: window.location.hostname,
   cookieSecure: window.location.protocol === cookieProtocol,
-  // refresh: refresh,
+  refresh: refresh,
 });
 
 const routes = createRoutesFromElements(

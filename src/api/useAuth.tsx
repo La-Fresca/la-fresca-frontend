@@ -22,7 +22,7 @@ function getAuthToken() {
 
 export const useAuth = () => {
   const refresh = createRefresh({
-    interval: 60,
+    interval: 240,
     refreshApiCallback: async (): Promise<any> => {
       try {
         const response = await fetch(`${API_URL}/user/refresh_token`, {
