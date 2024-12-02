@@ -1,0 +1,1 @@
+export type BackupInterval = 'daily' | 'weekly' | 'monthly';

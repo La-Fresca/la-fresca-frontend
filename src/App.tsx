@@ -100,7 +100,7 @@ import ViewInventory_TLM from './pages/TopLevelManager/Inventory/view';
 import ViewInventoryByName_TLM from './pages/TopLevelManager/Inventory/viewByName';
 import Stock_TLM from '@/pages/TopLevelManager/Stock/view';
 import StockBranchList_TLM from '@/pages/TopLevelManager/Stock';
-import Backup from './pages/SystemAdmin/backup';
+import Backup from '@/pages/SystemAdmin/backup';
 import AssignBranch from './pages/Home/selectBranch';
 
 const { refresh } = useAuth();
