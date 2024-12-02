@@ -38,10 +38,11 @@ const statusColorMap = {
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
-  'name',
-  'address',
-  'contactNo',
-  'status',
+  'firstName',
+  'lastName',
+  'email',
+  'phoneNumber',
+  'role',
   'actions',
 ];
 
