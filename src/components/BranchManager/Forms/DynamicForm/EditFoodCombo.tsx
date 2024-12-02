@@ -236,7 +236,10 @@ function ComboEditForm({ id = '' }: { id?: string }) {
                 />
               </label>
               <div className="flex justify-center gap-12 mt-16">
-                <Button className="flex w-full justify-center rounded-lg bg-[#b1bfd0] text-white shadow-lg min-w-0 h-16">
+                <Button
+                  className="flex w-full justify-center rounded-lg bg-[#b1bfd0] text-white shadow-lg min-w-0 h-16"
+                  onClick={() => Navigate(-1)}
+                >
                   Cancel
                 </Button>
                 <Button
