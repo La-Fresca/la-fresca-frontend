@@ -22,13 +22,16 @@ function getCafeId() {
 export const useCombos = () => {
   const getAllCombos = async () => {
     try {
-      const response = await fetch(`${API_URL}/foodCombo/getAll/${getCafeId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getToken()}`,
+      const response = await fetch(
+        `${API_URL}/foodCombo/getAll/${getCafeId()}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+          },
         },
-      });
+      );
       if (!response.ok) {
         throw new Error('Failed to fetch item');
       } else {
