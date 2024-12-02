@@ -17,6 +17,7 @@ import {
 import { SearchIcon } from '../Tables/NextTable/SearchIcon';
 import { swalConfirm } from '@/components/UI/SwalConfirm';
 import { ChevronDownIcon } from '../Tables/NextTable/ChevronDownIcon';
+import { VerticalDotsIcon } from '../Tables/NextTable/VerticalDotsIcon';
 import { useNavigate } from 'react-router-dom';
 
 const columns = [
@@ -121,19 +122,22 @@ const DiscountTable: React.FC<DiscountTableProps> = ({
       switch (columnKey) {
         case 'actions':
           return (
-            <div className="flex gap-4">
-              <Button
-                className="bg-yellow-600 hover:bg-orange-700 text-white rounded-xl transition duration-300"
-                onClick={() => toggleEditModal(discount)}
-              >
-                Edit
-              </Button>
-              <Button
-                className="bg-red-600 hover:bg-red-500 text-white rounded-xl transition duration-300"
-                onClick={() => handleDelete(discount)}
-              >
-                Delete
-              </Button>
+            <div className="relative flex justify-end items-center gap-2">
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button isIconOnly size="sm" variant="light">
+                    <VerticalDotsIcon className="text-default-300" />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu className="bg-black text-white">
+                  <DropdownItem onClick={() => toggleEditModal(discount)}>
+                    Edit
+                  </DropdownItem>
+                  <DropdownItem onClick={() => handleDelete(discount)}>
+                    Delete
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
             </div>
           );
         case 'startDate':
