@@ -9,5 +9,5 @@ export type Discount = {
   startDate: string;
   endDate: string;
   offerDetails: string;
-  cafeId: string;
+  cafeID: string;
 };   
