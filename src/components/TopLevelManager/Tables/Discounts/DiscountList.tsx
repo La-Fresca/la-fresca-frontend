@@ -12,98 +12,89 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Chip,
   Pagination,
 } from '@nextui-org/react';
-import { PlusIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/PlusIcon';
-import { VerticalDotsIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/VerticalDotsIcon';
-import { SearchIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/SearchIcon';
-import { ChevronDownIcon } from '@/components/Storekeeper/Tables/NextTables/stockCollection/ChevronDownIcon';
+import { SearchIcon } from '@/components/TopLevelManager/Tables/Discounts/Components/SearchIcon';
+import { ChevronDownIcon } from '@/components/TopLevelManager/Tables/Discounts/Components/ChevronDownIcon';
 import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
 import {
   columns,
-  statusOptions,
-} from '@/components/Storekeeper/Tables/NextTables/stockCollection/data';
+  menuItemTypeOptions,
+} from '@/components/TopLevelManager/Tables/Discounts/Components/data';
 import { capitalize } from './utils';
 
+import { Branch } from '@/types/branch';
+import { useBranches } from '@/api/useBranch';
 
-import { Link, useNavigate } from 'react-router-dom';
-import { Inventory } from '@/types/inventory';
-import { useInventory } from '@/api/useInventory';
-import { swalConfirm } from '@/components/UI/SwalConfirm';
+import { Discount } from '@/types/discount';
+import { useDiscount } from '@/api/useDiscount';
 
-const statusColorMap = {
-  'High stock': 'success',
-  'Out of stock': 'danger',
-  'Low stock': 'warning',
-};
-
-const INITIAL_VISIBLE_COLUMNS = ['Name', 'AvailableAmount', 'PredictedStockoutDate', 'Status', 'actions'];
+const INITIAL_VISIBLE_COLUMNS = [
+  'name',
+  'description',
+  'discountType',
+  'menuItemType',
+  'endDate',
+];
 
 export default function App() {
+  const [discount, setDiscount] = useState<Discount[]>([]);
+  const { getAllDiscounts_TLM } = useDiscount();
 
-  const { showSwal } = swalConfirm();
-  const [inventory, setInventory] = useState<Inventory[]>([]);
-  const { getAllInventory, deleteInventory } = useInventory();
-  const [loading, setLoading] = useState(true);
+  const [branches, setBranch] = useState<Branch[]>([]);
+  const { getAllBranches } = useBranches();
 
-  const fetchInventory = async () => {
+  const [loading, setLoading] = React.useState(true);
+
+  const fetchDiscounts = async () => {
     try {
-      const data = await getAllInventory();
-      setInventory(data);
+      const data = await getAllDiscounts_TLM();
+      setDiscount(data);
+      setLoading(true);
+    } catch (error: any) {
+      console.error(error);
+    }
+  };
+
+  const fetchBranch = async () => {
+    try {
+      const data = await getAllBranches();
+      setBranch(data);
       setLoading(false);
     } catch (error: any) {
       console.error(error);
     }
   };
 
-  const handleDeleteInventory = async (id: string) => {
-    try {
-      await deleteInventory(id);
-      fetchInventory();
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
-
-  const handleConfirmDelete = (id: any) => {
-    showSwal(() => handleDeleteInventory(id));
-  };
-
   useEffect(() => {
-    fetchInventory();
+    fetchDiscounts();
+    fetchBranch();
   }, []);
 
+  const additionalBranches = [
+    { name: "Branch 3", id: "cafe 1" }
+  ];
+  
+  const branchOptions = branches.map((branch) => ({
+    name: branch.name,
+    uid: branch.id
+  })).concat(additionalBranches.map((branch) => ({
+    name: branch.name,
+    uid: branch.id
+  })));
+  
 
-  console.log(inventory);
-
-  const navigate = useNavigate();
-
-  const handleAddUser = () => {
-    navigate('add');
-  };
-
-  const viewItem = (id: String | null) => {
-    if (id) {
-      navigate(`view/${id}`);
-    }
-  };
-
-  const UpdateItem = (id: String | null) => {
-    console.log(id);
-    if (id) {
-      navigate(`edit/${id}`);
-    }
-  };
+  console.log(branchOptions);
+  console.log(discount);
 
   const [filterValue, setFilterValue] = React.useState('');
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
   const [statusFilter, setStatusFilter] = React.useState('all');
+  const [branchFilter, setBranchFilter] = React.useState('all');
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
-    column: 'age',
     direction: 'ascending',
   });
   const [page, setPage] = React.useState(1);
@@ -119,22 +110,30 @@ export default function App() {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredinventory = [...inventory];
+    let filtereddiscount = [...discount];
     if (hasSearchFilter) {
-      filteredinventory = filteredinventory.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase()),
+      filtereddiscount = filtereddiscount.filter((discount) =>
+        discount.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
     if (
       statusFilter !== 'all' &&
-      Array.from(statusFilter).length !== statusOptions.length
+      Array.from(statusFilter).length !== menuItemTypeOptions.length
     ) {
-      filteredinventory = filteredinventory.filter((user) =>
-        Array.from(statusFilter).includes(user.Status),
+      filtereddiscount = filtereddiscount.filter((discount) =>
+        Array.from(statusFilter).includes(discount.menuItemType.toString()),
       );
     }
-    return filteredinventory;
-  }, [inventory, filterValue, statusFilter]);
+    if (
+      branchFilter !== 'all' &&
+      Array.from(branchFilter).length !== branchOptions.length
+    ) {
+      filtereddiscount = filtereddiscount.filter((discount) =>
+        Array.from(branchFilter).includes(discount.cafeId),
+      );
+    }
+    return filtereddiscount;
+  }, [discount, filterValue, statusFilter, branchFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -153,75 +152,94 @@ export default function App() {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
+  const colours = ["#ff7171", "#b9b037", "#37b939", "#4e4ee3", "#e34ecd", "#e3914e"];
+
+  const renderCell = React.useCallback((discount, columnKey) => {
+    const cellValue = discount[columnKey];
     switch (columnKey) {
-      case 'Name':
+      case 'name':
         return (
           <div className="flex items-center">
             <div className="w-[40px] h-[40px] flex justify-center overflow-hidden">
-              <img src={user.Image} alt="" className="rounded-full" />
+              <div className="rounded-full w-full h-full flex justify-center items-center text-white font-bold" style={{backgroundColor: `${colours[Math.floor(Math.random() * 6)]}`}}>{cellValue.split(" ").map(word => word.charAt(0)).join("")}</div>
             </div>
             <div className="ml-5">
               <p className="text-bold text-small capitalize dark:text-white text-foodbg">
                 {cellValue}
               </p>
-              <p className="text-bold text-[12px] capitalize">ID: {user.id}</p>
+              <p className="text-bold text-[12px] capitalize">
+                ID: {discount.menuItemId}
+              </p>
             </div>
           </div>
         );
-      case 'AvailableAmount':
+        case 'price':
         return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small">
-              {cellValue} {user.Unit}
-            </p>
+          <div className="flex items-center">
+            Rs. {cellValue}
           </div>
         );
-      case 'Status':
-        if (cellValue === "Low stock") {
+      case 'available':
+        if (cellValue === 0) {
           return (
-            <div className="text-warning bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full w-[90px]">
-              Low Stock
+            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center w-[110px] rounded-full">
+              Not Available
             </div>
           );
-        } else if (cellValue === "High stock") {
+        } else if (cellValue === 1) {
           return (
-            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full w-[90px]">
-              High Stock
-            </div>
-          );
-        } else if (cellValue === "Out of stock") {
-          return (
-            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center rounded-full w-[105px]">
-              Out of Stock
+            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center w-[80px] rounded-full">
+              Available
             </div>
           );
         }
         return null;
-        case 'actions':
+      case 'discountStatus':
+        if (cellValue === 0) {
           return (
-            <div className="relative flex justify-end items-center gap-2">
-              <Dropdown>
-                <DropdownTrigger>
-                  <Button isIconOnly size="sm" variant="light">
-                    <VerticalDotsIcon className="text-default-300" />
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]">
-                  <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => viewItem(user.Name)}>
-                    View
-                  </DropdownItem>
-                  <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => UpdateItem(user.id)}>
-                    Edit
-                  </DropdownItem>
-                  <DropdownItem className="hover:bg-[#aaaaaa17] rounded-lg" onClick={() => handleConfirmDelete(user.id)}>
-                    Delete
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+            <div className="text-warning bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full w-[120px]">
+              Not Applicable
             </div>
           );
+        } else if (cellValue === 1) {
+          return (
+            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full w-[90px]">
+              Applicable
+            </div>
+          );
+        }
+        return null;
+      case 'status':
+        if (cellValue === 2) {
+          return (
+            <div className="text-warning bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full w-[80px]">
+              Pending
+            </div>
+          );
+        } else if (cellValue === 0) {
+          return (
+            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full w-[90px]">
+              Approved
+            </div>
+          );
+        } else if (cellValue === 3) {
+          return (
+            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center rounded-full">
+              Rejected
+            </div>
+          );
+        }
+        return null;
+      case 'features':
+        return (
+          <div>
+            {discount.features.map((feature: any) => (
+              <div key={feature.name}>
+                <strong>{feature.name}</strong>: {feature.levels.join(', ')}
+              </div>
+            ))}
+          </div>
+        );
       default:
         return cellValue;
     }
@@ -265,17 +283,42 @@ export default function App() {
           <Input
             isClearable
             className="w-full sm:max-w-[44%] dark:bg-[#ffffff14] rounded-lg border bg-[#aaaaaa14] border-[#aaaaaa66] dark:border-[#54545466]"
-            placeholder="Search by item name..."
+            placeholder="Search by discount name..."
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={onClear}
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Button className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]">
-              <ArrowSmallDownIcon className="w-6 h-6 border-b scale-75" />{' '}
-              Download All
-            </Button>
+            <Dropdown>
+            <DropdownTrigger className="hidden sm:flex">
+                <Button
+                  endContent={<ChevronDownIcon className="text-small" />}
+                  variant="flat"
+                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
+                >
+                  Branch
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                aria-label="Table Columns"
+                closeOnSelect={false}
+                selectedKeys={branchFilter}
+                selectionMode="multiple"
+                onSelectionChange={setBranchFilter}
+                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
+              >
+                {branchOptions.map((status) => (
+                  <DropdownItem
+                    key={status.uid}
+                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
+                  >
+                    {capitalize(status.name)}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
 
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
@@ -296,7 +339,7 @@ export default function App() {
                 onSelectionChange={setStatusFilter}
                 className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
               >
-                {statusOptions.map((status) => (
+                {menuItemTypeOptions.map((status) => (
                   <DropdownItem
                     key={status.uid}
                     className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
@@ -306,6 +349,7 @@ export default function App() {
                 ))}
               </DropdownMenu>
             </Dropdown>
+
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -335,21 +379,18 @@ export default function App() {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              endContent={<PlusIcon />}
-              className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600"
-              onClick={() => handleAddUser()}
-            >
-              Add New
+            <Button className="rounded-xl text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600">
+              <ArrowSmallDownIcon className="w-6 h-6 border-b scale-75" />{' '}
+              Download All
             </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {inventory.length} collections
+            Total {discount.length} discounts
           </span>
           <label className="flex items-center text-default-400 text-small">
-            Rows per page:
+            Rows per page:&nbsp;
             <select
               className="bg-transparent outline-none text-default-400 text-small"
               onChange={onRowsPerPageChange}
@@ -365,9 +406,10 @@ export default function App() {
   }, [
     filterValue,
     statusFilter,
+    branchFilter,
     visibleColumns,
     onRowsPerPageChange,
-    inventory.length,
+    discount.length,
     onSearchChange,
     hasSearchFilter,
   ]);
@@ -436,9 +478,9 @@ export default function App() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No inventory found'} items={sortedItems}>
+      <TableBody emptyContent={'No discount found'} items={sortedItems}>
         {(item) => (
-          <TableRow key={item.id}>
+          <TableRow key={item.menuItemId}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
             )}
