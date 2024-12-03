@@ -95,6 +95,9 @@ import Inventory_TLM from '@/pages/TopLevelManager/Inventory';
 import Discount_TLM from '@/pages/TopLevelManager/Discount';
 import FoodList_TLM from './pages/TopLevelManager/Foods/index';
 import ComboList_TLM from './pages/TopLevelManager/FoodCombos/index';
+import AddBm from '@pages/TopLevelManager/ManageBM/AddBm';
+import EditBm from '@pages/TopLevelManager/ManageBM/EditBm';
+import BranchManagers from '@pages/TopLevelManager/ManageBM/index';
 
 import ViewInventory_TLM from './pages/TopLevelManager/Inventory/view';
 import ViewInventoryByName_TLM from './pages/TopLevelManager/Inventory/viewByName';
@@ -912,13 +915,13 @@ const routes = createRoutesFromElements(
           />
         </Route>
 
-        <Route path="users">
+        <Route path="branchmanagers">
           <Route
             index
             element={
               <>
-                <PageTitle title="Top Level Manager | Users" />
-                <User />
+                <PageTitle title="Top Level Manager | Branch Managers" />
+                <BranchManagers />
               </>
             }
           />
@@ -926,8 +929,8 @@ const routes = createRoutesFromElements(
             path="add"
             element={
               <>
-                <PageTitle title="Top Level Manager | Add User" />
-                <UserAdd />
+                <PageTitle title="Top Level Manager | Add Bm" />
+                <AddBm />
               </>
             }
           />
@@ -935,8 +938,8 @@ const routes = createRoutesFromElements(
             path="edit/:userId"
             element={
               <>
-                <PageTitle title="Top Level Manager | Edit User" />
-                <UserEdit />
+                <PageTitle title="Top Level Manager | Edit Bm" />
+                <EditBm />
               </>
             }
           />
