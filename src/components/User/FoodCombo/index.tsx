@@ -36,6 +36,7 @@ function FoodComboForm({ id }: Props) {
   const [combo, setFoodCombo] = useState<FoodCombo>();
   const [price, setPrice] = useState<number>(1);
   const [additionalPrices, setAdditionalPrices] = useState<number>(0);
+  const [currentRating, setCurrentRating] = useState<number>(4);
 
   const {
     handleSubmit,
@@ -115,6 +116,11 @@ function FoodComboForm({ id }: Props) {
     setAdditionalPrices((prev) => prev + priceDelta);
   };
 
+  const handleStarClick = (starIndex: number) => {
+    setCurrentRating(starIndex + 1);
+    showSwal();
+  };
+
   if (!combo) {
     return <div>Loading...</div>;
   }
@@ -123,8 +129,17 @@ function FoodComboForm({ id }: Props) {
 
   return (
     <div className="flex items-center h-110vh lg:h-[calc(100vh-120px)]">
+      <Button
+        className="bg-gradient-to-r from-orange-600 to-orange-400 text-white 
+        shadow-lg rounded-full min-w-[50px] h-[50px] absolute left-[8%] top-[120px] z-10 
+        hover:opacity-90 transition-all text-2xl flex items-center justify-center p-0"
+        onClick={() => navigate(-1)}
+      >
+        &#8249;
+      </Button>
+
       <div
-        className="ml-[10%] flex flex-col lg:flex-row flex-grow items-center justify-between px-4 py-4 rounded-2xl border border-combobg bg-combobg backdrop-blur-md h-[calc(100vh - 20px)]"
+        className="ml-[10%] flex flex-col lg:flex-row flex-grow items-center justify-between px-4 py-4 rounded-2xl border border-foodbg bg-foodbg backdrop-blur-md h-[calc(100vh - 20px)]"
         style={{
           marginLeft: '10%',
           marginRight: '10%',
@@ -143,9 +158,15 @@ function FoodComboForm({ id }: Props) {
           <div className="text-4xl font-bold text-white">{combo.name}</div>
           <div className="pt-3">{combo.description}</div>
 
-          <div className="flex items-center pt-3">
+          <div className="flex items-center pt-3 gap-2">
             {Array.from({ length: 5 }).map((_, i) => (
-              <Star key={`star-${i}`} highlight={i !== 4} />
+              <div
+                key={`star-${i}`}
+                className="cursor-pointer transform scale-150 hover:scale-[1.6] transition-transform"
+                onClick={() => handleStarClick(i)}
+              >
+                <Star highlight={i <= currentRating - 1} />
+              </div>
             ))}
           </div>
 

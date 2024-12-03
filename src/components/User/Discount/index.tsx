@@ -1,25 +1,38 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import TextButton from './TextButton';
-import { useDiscount } from '@/api/useDiscount';
-import { Discount } from '@/types/discount';
+import { useQuery } from '@tanstack/react-query';
+import { useFoods } from '@/api/useFoodItem';
+import { useCombos } from '@/api/useFoodCombo';
+import { Food } from '@/types/food';
+import { FoodCombo } from '@/types/combo';
+import Item from '../AllMenuItems/ItemList';
 
 function index() {
-  const { getAllDiscounts } = useDiscount();
-  const [discount, setDiscount] = useState<Discount[]>([]);
+  const { getAllFoods } = useFoods();
+  const { getAllCombos } = useCombos();
 
-  const fetchDiscount = async () => {
-    try {
-      const data = await getAllDiscounts();
-      setDiscount(data);
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
+  const foodQuery = useQuery({
+    queryKey: ['foods'],
+    queryFn: getAllFoods,
+  });
 
-  useEffect(() => {
-    fetchDiscount();
-  }, []);
+  const comboQuery = useQuery({
+    queryKey: ['combos'],
+    queryFn: getAllCombos,
+  });
+
+  if (foodQuery.isLoading || comboQuery.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (foodQuery.isError || comboQuery.isError) {
+    return <div>Error loading items</div>;
+  }
+
+  const foods: Food[] = foodQuery.data.filter(
+    (food: Food) => food.discountStatus,
+  );
+  const combos: FoodCombo[] = comboQuery.data.filter(
+    (combo: FoodCombo) => combo.discountStatus,
+  );
 
   return (
     <div>
@@ -27,53 +40,38 @@ function index() {
         <b>Promotions</b>
       </div>
       <div className="mt-2 mx-auto max-w-screen-xl px-4 2xl:px-0">
-        Enjoy great savings with exclusive deals and offers available on your favorite items.
+        Enjoy great savings with exclusive deals and offers available on your
+        favorite items.
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 mx-auto max-w-screen-xl mt-10">
-        {discount.map((item: any) => {
-          return (
-            <Link
-              to={`/menuItems/${item[0].menuItemType === "Food Item" ? "viewfooditem" : "viewfoodcombo"}/${item[0].menuItemId}`}
-              className="hover:scale-105 transition-transform duration-300 hover:cursor-pointer"
-            >
-              <div
-                className="dark:border rounded-2xl border-foodbg bg-foodbg backdrop-blur-md xl:w-[500px] lg:w-[450px] h-[280px] p-2 py-2 mx-[10%] mb-10 overflow-hidden"
-                style={{
-                  boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.12)',
-                  backgroundColor: 'rgba(255, 255, 255, 0.01)',
-                }}
-              >
-                {item[0].limited === 1 && (
-                  <div className="absolute p-2 w-[120px] h-2 rotate-[135deg] bg-gradient-to-r from-red-600 to-red-800 translate-x-[-35px] translate-y-[20px]">
-                    <p className="rotate-180 text-xs translate-y-[-7.5px] translate-x-[-15px] text-white">
-                      LIMITED TIME
-                    </p>
-                  </div>
-                )}
-
-                <div className="h-50 bg-green rounded-xl">
-                  <img src={item[0].image} alt="" className="w-[100%]" />
-                </div>
-
-                <div className="flex justify-between px-3 mt-2">
-                  <div className="">
-                    <p>
-                      <b className="dark:text-white text-foodbg text-xl">
-                        {item[0].name}
-                      </b>
-                    </p>
-                    <p>{item[0].branch}</p>
-                  </div>
-
-                  <div className="pt-[7px] pb-[3px]">
-                    <TextButton value="Buy Now" />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          );
-        })}
+      <div className="mx-auto max-w-screen-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-5 mt-10">
+        {foods.map((food: Food) => (
+          <Item
+            key={food.id}
+            id={food.id}
+            name={food.name}
+            rating={food.rating}
+            price={food.price}
+            image={food.image}
+            categories={food.categories}
+            discountStatus={food.discountStatus}
+            available={food.available}
+            type={'fooditem'}
+          />
+        ))}
+        {combos.map((combo: FoodCombo) => (
+          <Item
+            key={combo.id}
+            id={combo.id}
+            name={combo.name}
+            rating={combo.rating}
+            price={combo.price}
+            image={combo.image}
+            discountStatus={combo.discountStatus}
+            available={combo.available}
+            type={'foodcombo'}
+          />
+        ))}
       </div>
     </div>
   );
