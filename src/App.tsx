@@ -83,6 +83,7 @@ import SystemAdminLayout from '@/layouts/SystemAdminLayout';
 import SystemLogs from '@/pages/SystemAdmin/systemLogs';
 import TopManagerLayout from '@/layouts/TopManagerLayout';
 import { OrderHistoryDetails } from '@/components/User/OrderHistory/OrderHistoryDetails';
+import WaiterComponent from './components/Waiter/WaiterComponent';
 
 // Top level manager
 import Dashboard_TLM from '@/pages/TopLevelManager/Dashboard';
@@ -99,7 +100,7 @@ import ViewInventory_TLM from './pages/TopLevelManager/Inventory/view';
 import ViewInventoryByName_TLM from './pages/TopLevelManager/Inventory/viewByName';
 import Stock_TLM from '@/pages/TopLevelManager/Stock/view';
 import StockBranchList_TLM from '@/pages/TopLevelManager/Stock';
-import Backup from './pages/SystemAdmin/backup';
+import Backup from '@/pages/SystemAdmin/backup';
 import AssignBranch from './pages/Home/selectBranch';
 
 const { refresh } = useAuth();
@@ -184,7 +185,9 @@ const routes = createRoutesFromElements(
       />
     </Route>
 
-    <Route element={<RequireAuth allowedRoles={['ADMIN']} />}>
+    <Route
+      element={<RequireAuth allowedRoles={['ADMIN', 'DELIVERY_PERSON']} />}
+    >
       <Route path="/" element={<UserLayout />}>
         <Route
           path="gallery"
@@ -677,6 +680,16 @@ const routes = createRoutesFromElements(
             <>
               <PageTitle title="Waiter | served-orders" />
               <ServedOrders />
+            </>
+          }
+        ></Route>
+
+        <Route
+          path="sss"
+          element={
+            <>
+              <PageTitle title="Waiter | sss" />
+              <WaiterComponent />
             </>
           }
         ></Route>

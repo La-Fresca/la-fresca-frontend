@@ -104,10 +104,58 @@ export const useUsers = () => {
     }
   };
 
+  const getWaiterById = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/user/getWaiters/${getCafeId()}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+          },
+        },
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch waiters');
+      } else {
+        return response.json();
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
+  const getDeliveryPersonById = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/user/getDeliveryPersons/${getCafeId()}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+          },
+        },
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch delivery persons');
+      } else {
+        return response.json();
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   return {
     getAllUsers,
     addUser,
     updateUser,
     getUserById,
+    getWaiterById,
+    getDeliveryPersonById,
   };
 };
