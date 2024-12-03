@@ -15,7 +15,7 @@ import StockIconWhite from '@images/icon/stock-white.png';
 import ReportIcon from '@images/icon/report.png';
 import ReportIconWhite from '@images/icon/report-white.png';
 import { BuildingOffice2Icon } from '@heroicons/react/24/outline';
-import { Bars3Icon } from '@heroicons/react/24/outline';
+import { Bars3Icon, UserIcon } from '@heroicons/react/24/outline';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
  
 interface SidebarProps {
@@ -231,8 +231,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <img src={ReportIcon} alt="" className="w-6 h-6 dark:hidden block" />
-                  <img src={ReportIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  <UserIcon className="w-6 h-6" />
                   Branch Managers
                 </NavLink>
               </li>
