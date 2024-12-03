@@ -9,4 +9,5 @@ export type Branch = {
     longitude: number;
     deleted?: boolean;
     status?: string;
+    cafeId: string;
   };
