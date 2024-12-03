@@ -38,7 +38,9 @@ const AddUser: React.FC = () => {
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     const transformedData: User = {
       ...data,
-      status: data.role === 'DELIVERY_PERSON' ? 'AVAILABLE' : undefined,
+      status: ['DELIVERY_PERSON', 'WAITER'].includes(data.role)
+        ? 'AVAILABLE'
+        : undefined,
     };
     try {
       addUser(transformedData);
