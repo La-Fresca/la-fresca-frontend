@@ -219,6 +219,29 @@ export const useOrders = () => {
     }
   };
 
+  const getAssignedToWaiterOrders = async (cafeId: string) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/order/getAssignedToWaiterOrders/${cafeId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+          },
+        },
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch waiter orders');
+      } else {
+        return response.json();
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   return {
     getAllOrders,
     createOrder,
@@ -229,5 +252,6 @@ export const useOrders = () => {
     getCompletedOrdersByDeliveryPersonId,
     updateOrderItemStatus,
     getOrdersByUserId,
+    getAssignedToWaiterOrders,
   };
 };

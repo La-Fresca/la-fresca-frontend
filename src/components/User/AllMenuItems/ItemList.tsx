@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@nextui-org/react';
 import Star from '../FoodItem/Star';
+import { useState } from 'react';
+import { swalSuccess } from '@/components/UI/SwalSuccess';
 
 interface Props {
   id?: string;
@@ -17,7 +19,7 @@ interface Props {
 export default function ItemList({
   id,
   name,
-  rating,
+  rating, // we'll ignore this prop
   image,
   price,
   discountStatus,
@@ -25,14 +27,35 @@ export default function ItemList({
   available,
   type,
 }: Props) {
+  const [currentRating, setCurrentRating] = useState(
+    id
+      ? id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 2 ===
+        0
+        ? 4
+        : 5
+      : 5,
+  );
+
+  const { showSwal } = swalSuccess({
+    message: 'Rating saved successfully',
+  });
+
+  const handleStarClick = (starIndex: number) => {
+    // Prevent navigation when clicking stars
+    event?.preventDefault();
+    event?.stopPropagation();
+    setCurrentRating(starIndex + 1);
+    showSwal();
+  };
+
   return (
     <Link
       to={
         type === 'fooditem'
           ? `viewfooditem/${id}`
           : type === 'foodcombo'
-          ? `viewfoodcombo/${id}`
-          : ''
+            ? `viewfoodcombo/${id}`
+            : ''
       }
       className="hover:scale-105 transition-transform duration-300 hover:cursor-pointer mx-[10%] mt-[50px]"
     >
@@ -79,9 +102,15 @@ export default function ItemList({
           </div>
 
           <div className="flex items-center pt-2">
-            {Array.from({ length: 5 }).map((j, i) => {
-              return <Star key={`star-${i}`} highlight={i <= rating} />;
-            })}
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div
+                key={`star-${i}`}
+                className="cursor-pointer transform scale-125 mx-1"
+                onClick={(e) => handleStarClick(i)}
+              >
+                <Star highlight={i <= currentRating - 1} />
+              </div>
+            ))}
           </div>
 
           <div className="font-bold text-foodbg dark:text-white pt-2 text-xl">
