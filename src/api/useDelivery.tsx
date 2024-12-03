@@ -1,3 +1,4 @@
+import { OrderStatus } from '@/types/order';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 
@@ -23,7 +24,7 @@ export const useDelivery = () => {
     try {
       const userId = getUserId();
       const response = await fetch(
-        `${API_URL}/order/pendingordersbydeliverypersonid/${getUserId()}`,
+        `${API_URL}/order/pendingordersbydeliverypersonid/674f23beaef35d28e4d75261`,
         {
           method: 'GET',
           headers: {
@@ -43,7 +44,29 @@ export const useDelivery = () => {
     }
   };
 
+  const changestatus = async (data: OrderStatus) => {
+    try {
+      const response = await fetch(`${API_URL}/order/changestatus`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify({
+          ...data,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to change order status');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   return {
     getOrders,
+    changestatus
   };
 };

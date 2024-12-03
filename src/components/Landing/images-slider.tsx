@@ -43,7 +43,7 @@ export const ImagesSlider = ({
     const loadPromises = images.map((image) => {
       return new Promise((resolve, reject) => {
         const img = new Image();
-        img.src = image;
+        img.src = "./public/gallery-img/"+image+".avif";
         img.onload = () => resolve(image);
         img.onerror = reject;
       });
