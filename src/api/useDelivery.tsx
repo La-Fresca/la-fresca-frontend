@@ -24,7 +24,7 @@ export const useDelivery = () => {
     try {
       const userId = getUserId();
       const response = await fetch(
-        `${API_URL}/order/pendingordersbydeliverypersonid/674f23beaef35d28e4d75261`,
+        `${API_URL}/order/pendingordersbydeliverypersonid/${userId}`,
         {
           method: 'GET',
           headers: {
@@ -65,8 +65,33 @@ export const useDelivery = () => {
     }
   };
 
+  const Dashboard = async () => {
+    try {
+      const userId = getUserId();
+      const response = await fetch(
+        `${API_URL}/order/deliveryPersonDashboard/${userId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch delivery orders');
+      }
+      return response.json();
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   return {
     getOrders,
-    changestatus
+    changestatus,
+    Dashboard
   };
 };

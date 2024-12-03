@@ -45,3 +45,9 @@ export type OrderStatus = {
   id: string;
   orderStatus: string;
 };
+
+
+export type Deliverystat = {
+  queue: number;
+  history: number;
+};
