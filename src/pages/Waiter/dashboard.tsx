@@ -55,7 +55,7 @@ const Dashboard: React.FC = () => {
           );
         }
       } else {
-        navigate('/dashboard'); // Navigate back to the dashboard if the user clicks "No"
+        navigate('/waiter'); // Navigate back to the dashboard if the user clicks "No"
       }
     });
   };
