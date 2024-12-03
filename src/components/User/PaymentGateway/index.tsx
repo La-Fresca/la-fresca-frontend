@@ -65,10 +65,11 @@ const PaymentGateway: React.FC<PaymentProps> = ({
     const merchant_id = '1226577';
     const formattedAmount = orderData.totalAmount.toString();
     const currency = 'LKR';
+    const randomOrderId = Math.floor(Math.random() * 1000000).toString();
 
     const hash = generatePaymentHash(
       merchant_id,
-      orderData.id,
+      randomOrderId,
       formattedAmount,
       currency,
     );
@@ -101,12 +102,12 @@ const PaymentGateway: React.FC<PaymentProps> = ({
         return_url: undefined, // Important: set to undefined for onCompleted to work
         cancel_url: undefined, // Important: set to undefined for onDismissed to work
         notify_url: 'http://localhost:8080/swagger-ui/index.html',
-        order_id: orderData.id,
+        order_id: randomOrderId, // Using random order ID instead of orderData.id
         items: orderData.items.map((item) => item.name).join(', '),
         amount: formattedAmount,
         currency,
         hash,
-        first_name: customerDetails.name.split('  ')[0],
+        first_name: customerDetails.name.split(' ')[0],
         last_name: customerDetails.name.split(' ')[1] || '',
         email: customerDetails.email,
         phone: orderData.contactNo,

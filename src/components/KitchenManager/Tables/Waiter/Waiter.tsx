@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import {
   Table,
   TableHeader,
@@ -7,139 +8,60 @@ import {
   TableRow,
   TableCell,
   Input,
-  Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
   Pagination,
+  Button, // Add this
 } from '@nextui-org/react';
 import { SearchIcon } from '@/components/TopLevelManager/Tables/FoodItems/Components/SearchIcon';
-import { ChevronDownIcon } from '@/components/TopLevelManager/Tables/FoodItems/Components/ChevronDownIcon';
-import { ArrowSmallDownIcon } from '@heroicons/react/24/outline';
-import {
-  columns,
-  statusOptions,
-} from '@/components/TopLevelManager/Tables/FoodItems/Components/data';
-import { capitalize } from './utils';
-import { Food } from '@/types/food';
-import { useFoods } from '@/api/useFoodItem';
-import { swalConfirm } from '@/components/UI/SwalConfirm';
+import { useUsers } from '@/api/useUser';
 
-import { Branch } from '@/types/branch';
-import { useBranches } from '@/api/useBranch';
-
-const INITIAL_VISIBLE_COLUMNS = [
-  'name',
-  'available',
-  'price',
-  'status',
-  'actions',
+const columns = [
+  { name: 'NAME', uid: 'firstName', sortable: true },
+  { name: 'EMAIL', uid: 'email', sortable: true },
+  { name: 'PHONE', uid: 'phoneNumber', sortable: true },
+  { name: 'STATUS', uid: 'status', sortable: true },
 ];
 
+const INITIAL_VISIBLE_COLUMNS = ['firstName', 'email', 'phoneNumber', 'status'];
+
 export default function App() {
-  const { showSwalApprove, showSwalReject } = swalConfirm();
-  const [food, setFood] = useState<Food[]>([]);
-  const { getAllFoodsForTLM, approveFood, rejectFood } = useFoods();
-
-  const [branches, setBranch] = useState<Branch[]>([]);
-  const { getAllBranches } = useBranches();
-
-  const [loading, setLoading] = React.useState(true);
-
-  const fetchFood = async () => {
-    try {
-      const data = await getAllFoodsForTLM();
-      setFood(data);
-      setLoading(true);
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
-
-  const fetchBranch = async () => {
-    try {
-      const data = await getAllBranches();
-      setBranch(data);
-      setLoading(false);
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchFood();
-    fetchBranch();
-  }, []);
-
-  // Approve food item
-  const handleApproveFood = async (id: string) => {
-    try {
-      await approveFood(id);
-      fetchFood();
-    } catch (error: any) {
-      console.error('Failed to approve food:', error);
-    }
-  };
-
-  const handleConfirmApprove = (id: string) => {
-    showSwalApprove(() => handleApproveFood(id));
-  };
-
-  // Reject food item
-  const handleRejectFood = async (id: string) => {
-    try {
-      await rejectFood(id);
-      fetchFood();
-    } catch (error: any) {
-      console.error('Failed to reject food:', error);
-    }
-  };
-
-  const handleConfirmReject = (id: string) => {
-    showSwalReject(() => handleRejectFood(id));
-  };
-
-  console.log(food);
-
   const [filterValue, setFilterValue] = React.useState('');
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
-  const [statusFilter, setStatusFilter] = React.useState('all');
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = React.useState(1);
   const [sortDescriptor, setSortDescriptor] = React.useState({
+    column: 'firstName',
     direction: 'ascending',
   });
-  const [page, setPage] = React.useState(1);
+
+  const { getWaiterById } = useUsers();
+
+  const { data: waiters = [], isLoading } = useQuery({
+    queryKey: ['waiters'],
+    queryFn: () => getWaiterById(),
+  });
+
+  const colours = [
+    '#ff7171',
+    '#b9b037',
+    '#37b939',
+    '#4e4ee3',
+    '#e34ecd',
+    '#e3914e',
+  ];
 
   const hasSearchFilter = Boolean(filterValue);
 
-  const headerColumns = React.useMemo(() => {
-    if (visibleColumns instanceof Set && visibleColumns.size === columns.length)
-      return columns;
-    return columns.filter((column) =>
-      Array.from(visibleColumns).includes(column.uid),
-    );
-  }, [visibleColumns]);
-
   const filteredItems = React.useMemo(() => {
-    let filteredfood = [...food];
+    let filtered = [...waiters];
     if (hasSearchFilter) {
-      filteredfood = filteredfood.filter((foodData) =>
-        foodData.name.toLowerCase().includes(filterValue.toLowerCase()),
+      filtered = filtered.filter((waiter) =>
+        waiter.firstName.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    if (
-      statusFilter !== 'all' &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
-      filteredfood = filteredfood.filter((foodData) =>
-        Array.from(statusFilter).includes(foodData.status.toString()),
-      );
-    }
-    return filteredfood;
-  }, [food, filterValue, statusFilter]);
+    return filtered;
+  }, [waiters, filterValue]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -149,183 +71,45 @@ export default function App() {
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
-  const sortedItems = React.useMemo(() => {
-    return [...items].sort((a, b) => {
-      const first = a[sortDescriptor.column];
-      const second = b[sortDescriptor.column];
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
-      return sortDescriptor.direction === 'descending' ? -cmp : cmp;
-    });
-  }, [sortDescriptor, items]);
-
-  const renderCell = React.useCallback((foodData, columnKey) => {
-    const cellValue = foodData[columnKey];
+  const renderCell = React.useCallback((waiter, columnKey) => {
+    const cellValue = waiter[columnKey];
     switch (columnKey) {
-      case 'name':
+      case 'firstName':
         return (
           <div className="flex items-center">
-            <div className="w-[40px] h-[40px] flex justify-center overflow-hidden rounded-full">
-              <img src={foodData.image} alt="" />
+            <div className="w-[40px] h-[40px] flex justify-center overflow-hidden">
+              <div
+                className="rounded-full w-full h-full flex justify-center items-center text-white font-bold"
+                style={{
+                  backgroundColor: `${colours[Math.floor(Math.random() * 6)]}`,
+                }}
+              >
+                {waiter.firstName.charAt(0)}
+              </div>
             </div>
             <div className="ml-5">
               <p className="text-bold text-small capitalize dark:text-white text-foodbg">
-                {cellValue}
+                {waiter.firstName} {waiter.lastName}
               </p>
               <p className="text-bold text-[12px] capitalize">
-                ID: {foodData.id}
+                ID: {waiter.id}
               </p>
             </div>
           </div>
         );
-      case 'available':
-        if (cellValue === 0) {
-          return (
-            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center w-[110px] rounded-full">
-              Not Available
-            </div>
-          );
-        } else if (cellValue === 1) {
-          return (
-            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center w-[80px] rounded-full">
-              Available
-            </div>
-          );
-        }
-        return null;
-      case 'discountStatus':
-        if (cellValue === 0) {
-          return (
-            <div className="text-warning bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full w-[120px]">
-              Not Applicable
-            </div>
-          );
-        } else if (cellValue === 1) {
-          return (
-            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full w-[90px]">
-              Applicable
-            </div>
-          );
-        }
-        return null;
       case 'status':
-        if (cellValue === 2) {
-          return (
-            <div className="text-warning bg-[#ffa60020] border border-[#ffa6003b] flex justify-center rounded-full w-[80px]">
-              Pending
-            </div>
-          );
-        } else if (cellValue === 0) {
-          return (
-            <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center rounded-full w-[90px]">
-              Approved
-            </div>
-          );
-        } else if (cellValue === 3) {
-          return (
-            <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center rounded-full">
-              Rejected
-            </div>
-          );
-        }
-        return null;
-      case 'features':
-        return (
-          <div>
-            {foodData.features.map((feature: any) => (
-              <div key={feature.name}>
-                <strong>{feature.name}</strong>: {feature.levels.join(', ')}
-              </div>
-            ))}
+        return waiter.status === 'AVAILABLE' ? (
+          <div className="dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] flex justify-center w-[80px] rounded-full">
+            Available
+          </div>
+        ) : (
+          <div className="text-danger bg-[#ff000018] border border-[#ff000044] flex justify-center w-[110px] rounded-full">
+            Not Available
           </div>
         );
-      case 'actions':
-        if (foodData.status === 2) {
-          return (
-            <div className="relative flex justify-center items-center gap-2">
-              <Button
-                className="rounded-full dark:text-success dark:bg-[#00ff2213] border dark:border-[#43ff3952] text-[#067c00c5] bg-[#0d9e2113] border-[#10860a52] scale-90 min-w-[20px] max-h-[30px] px-1"
-                onClick={() => handleConfirmApprove(foodData.id)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="m4.5 12.75 6 6 9-13.5"
-                  />
-                </svg>
-              </Button>
-              <Button
-                className="rounded-full text-danger bg-[#ff000027] border border-[#ff000078] scale-90 min-w-[20px] max-h-[30px] px-1"
-                onClick={() => handleConfirmReject(foodData.id)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18 18 6M6 6l12 12"
-                  />
-                </svg>
-              </Button>
-            </div>
-          );
-        } else if (foodData.status === 0) {
-          return (
-            <Button
-              className="rounded-full text-danger bg-[#ff000027] border border-[#ff000078] scale-90 min-w-[20px] max-h-[30px] px-1"
-              onClick={() => handleConfirmReject(foodData.id)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M6 18 18 6M6 6l12 12"
-                />
-              </svg>
-            </Button>
-          );
-        }
-        return null;
       default:
         return cellValue;
     }
-  }, []);
-
-  const onNextPage = React.useCallback(() => {
-    if (page < pages) {
-      setPage(page + 1);
-    }
-  }, [page, pages]);
-
-  const onPreviousPage = React.useCallback(() => {
-    if (page > 1) {
-      setPage(page - 1);
-    }
-  }, [page]);
-
-  const onRowsPerPageChange = React.useCallback((e) => {
-    setRowsPerPage(Number(e.target.value));
-    setPage(1);
   }, []);
 
   const onSearchChange = React.useCallback((value) => {
@@ -335,11 +119,6 @@ export default function App() {
     } else {
       setFilterValue('');
     }
-  }, []);
-
-  const onClear = React.useCallback(() => {
-    setFilterValue('');
-    setPage(1);
   }, []);
 
   const topContent = React.useMemo(() => {
@@ -352,98 +131,29 @@ export default function App() {
             placeholder="Search by name..."
             startContent={<SearchIcon />}
             value={filterValue}
-            onClear={onClear}
             onValueChange={onSearchChange}
           />
-          <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
-                >
-                  Status
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem
-                    key={status.uid}
-                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
-                  >
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                  className="rounded-xl dark:bg-[#ffffff1e] border bg-[#aaaaaa20] border-[#aaaaaa66] dark:text-[#bcbcbc] text-black hover:bg-[#aaaaaa49] hover:dark:bg-[#404040]"
-                >
-                  Columns
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-                className="dark:bg-[#373737] bg-whiten rounded-lg dark:text-white text-[#3a3a3a] border border-[#b3b3b360]"
-              >
-                {columns.map((column) => (
-                  <DropdownItem
-                    key={column.uid}
-                    className="capitalize hover:bg-[#aaaaaa17] rounded-lg"
-                  >
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-          </div>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {food.length} waiters
+            Total {waiters.length} waiters
           </span>
-          <label className="flex items-center text-default-400 text-small">
-            Rows per page:&nbsp;
-            <select
-              className="bg-transparent outline-none text-default-400 text-small"
-              onChange={onRowsPerPageChange}
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-            </select>
-          </label>
         </div>
       </div>
     );
-  }, [
-    filterValue,
-    statusFilter,
-    visibleColumns,
-    onRowsPerPageChange,
-    food.length,
-    onSearchChange,
-    hasSearchFilter,
-  ]);
+  }, [filterValue, waiters.length]);
+
+  const onNextPage = React.useCallback(() => {
+    if (page < pages) {
+      setPage(page + 1);
+    }
+  }, [page, pages]);
+
+  const onPreviousPage = React.useCallback(() => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  }, [page]);
 
   const bottomContent = React.useMemo(() => {
     return (
@@ -481,11 +191,28 @@ export default function App() {
         </div>
       </div>
     );
-  }, [page, pages, hasSearchFilter]);
+  }, [page, pages]);
+
+  const headerColumns = React.useMemo(() => {
+    if (visibleColumns instanceof Set && visibleColumns.size === columns.length)
+      return columns;
+    return columns.filter((column) =>
+      Array.from(visibleColumns).includes(column.uid),
+    );
+  }, [visibleColumns]);
+
+  const sortedItems = React.useMemo(() => {
+    return [...items].sort((a: any, b: any) => {
+      const first = a[sortDescriptor.column];
+      const second = b[sortDescriptor.column];
+      const cmp = first < second ? -1 : first > second ? 1 : 0;
+      return sortDescriptor.direction === 'descending' ? -cmp : cmp;
+    });
+  }, [sortDescriptor, items]);
 
   return (
     <Table
-      aria-label="Example table with custom cells, pagination and sorting"
+      aria-label="Waiters table"
       isHeaderSticky
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
@@ -509,7 +236,12 @@ export default function App() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'No food found'} items={sortedItems}>
+      <TableBody
+        emptyContent={'No waiters found'}
+        items={sortedItems}
+        loadingContent={isLoading ? 'Loading...' : null}
+        isLoading={isLoading}
+      >
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

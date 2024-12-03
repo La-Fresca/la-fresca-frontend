@@ -33,6 +33,7 @@ jobs:
           envkey_VITE_UPLOAD_URL: ${{ secrets.UPLOAD_URL }}
           envkey_COOKIE_PROTOCOL: 'https:'
           file_name: .env
+          envkey_VITE_BACKUP_API_URL: 'https://lafresca-backup.ucsc.eu.org'
       - name: Build
         run: pnpm build
       - name: Upload artifact
