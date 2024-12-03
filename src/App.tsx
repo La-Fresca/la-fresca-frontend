@@ -95,6 +95,9 @@ import Inventory_TLM from '@/pages/TopLevelManager/Inventory';
 import Discount_TLM from '@/pages/TopLevelManager/Discount';
 import FoodList_TLM from './pages/TopLevelManager/Foods/index';
 import ComboList_TLM from './pages/TopLevelManager/FoodCombos/index';
+import BranchManagerList from './pages/TopLevelManager/BrancheManager/index';
+import AddBranchManager from './pages/TopLevelManager/BrancheManager/AddBranchManager';
+import EditBranchManager from './pages/TopLevelManager/BrancheManager/EditBranchManager';
 
 import ViewInventory_TLM from './pages/TopLevelManager/Inventory/view';
 import ViewInventoryByName_TLM from './pages/TopLevelManager/Inventory/viewByName';
@@ -920,7 +923,7 @@ const routes = createRoutesFromElements(
             element={
               <>
                 <PageTitle title="Top Level Manager | Users" />
-                <User />
+                <BranchManagerList />
               </>
             }
           />
@@ -929,7 +932,7 @@ const routes = createRoutesFromElements(
             element={
               <>
                 <PageTitle title="Top Level Manager | Add User" />
-                <UserAdd />
+                <AddBranchManager />
               </>
             }
           />
@@ -938,7 +941,7 @@ const routes = createRoutesFromElements(
             element={
               <>
                 <PageTitle title="Top Level Manager | Edit User" />
-                <UserEdit />
+                <EditBranchManager />
               </>
             }
           />

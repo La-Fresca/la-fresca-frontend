@@ -40,6 +40,26 @@ export const useUsers = () => {
     }
   };
 
+  const getAllBranchManagers = async () => {
+    try {
+      const response = await fetch(`${API_URL}/user/availableBranchManagers`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch item');
+      } else {
+        return response.json();
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   const addUser = async (data: User) => {
     try {
       const response = await fetch(`${API_URL}/user`, {
@@ -157,5 +177,6 @@ export const useUsers = () => {
     getUserById,
     getWaiterById,
     getDeliveryPersonById,
+    getAllBranchManagers,
   };
 };
