@@ -129,8 +129,18 @@ const EditUser: React.FC = () => {
               {...register('status')}
               onChange={(e) => setUser({ ...user, status: e.target.value })}
             >
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
+              {user?.role === 'DELIVERY_PERSON' ? (
+                <>
+                  <option value="AVAILABLE">Available</option>
+                  <option value="ON_DELIVERY">On Delivery</option>
+                  <option value="OFFLINE">Offline</option>
+                </>
+              ) : (
+                <>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </>
+              )}
             </select>
           </div>
           <div className="mb-4">
@@ -167,6 +177,7 @@ const EditUser: React.FC = () => {
               <option value="KITCHEN MANAGER">Kitchen Manager</option>
               <option value="STOREKEEPER">Store Keeper</option>
               <option value="CASHIER">Cashier</option>
+              <option value="DELIVERY_PERSON">Delivery Person</option>
             </select>
           </div>
         </div>

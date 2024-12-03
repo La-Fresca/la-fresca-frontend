@@ -19,6 +19,7 @@ const FormSchema = z.object({
   confirmPassword: z
     .string()
     .min(1, { message: 'Confirm Password is required' }),
+  status: z.string().optional(),
 });
 
 type FormSchemaType = z.infer<typeof FormSchema>;
@@ -37,6 +38,7 @@ const AddUser: React.FC = () => {
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     const transformedData: User = {
       ...data,
+      status: data.role === 'DELIVERY_PERSON' ? 'AVAILABLE' : undefined,
     };
     try {
       addUser(transformedData);
@@ -151,6 +153,7 @@ const AddUser: React.FC = () => {
               <option value="KITCHEN MANAGER">Kitchen Manager</option>
               <option value="STOREKEEPER">Store Keeper</option>
               <option value="CASHIER">Cashier</option>
+              <option value="DELIVERY_PERSON">Delivery Person</option>
             </select>
           </div>
           <div className="mb-2">
