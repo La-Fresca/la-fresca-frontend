@@ -1,6 +1,7 @@
 import { Order, OrderItemStatus } from '@/types/order';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
+import { get } from 'react-hook-form';
 
 const API_URL = (import.meta as any).env.VITE_API_URL;
 
@@ -242,6 +243,29 @@ export const useOrders = () => {
     }
   };
 
+  const getServedToWaiterOrders = async (cafeId: string) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/order/getServedToWaiterOrders/${cafeId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+          },
+        },
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch waiter orders');
+      } else {
+        return response.json();
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   return {
     getAllOrders,
     createOrder,
@@ -253,5 +277,6 @@ export const useOrders = () => {
     updateOrderItemStatus,
     getOrdersByUserId,
     getAssignedToWaiterOrders,
+    getServedToWaiterOrders,
   };
 };
