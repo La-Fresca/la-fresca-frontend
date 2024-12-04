@@ -114,7 +114,7 @@ const ChartFour: React.FC = () => {
           <h4 className="text-xl font-semibold text-black dark:text-white">
             Revenue
           </h4>
-          <p className="text-lg text-white mt-3 font-bold">RS 7,852.00</p>
+          <p className="text-lg text-white mt-3 font-bold">LKR 7,852.00</p>
           <p className="text-sm font-medium text-meta-3">
             <span className="text-success">▲ 2.1%</span> vs last week
           </p>

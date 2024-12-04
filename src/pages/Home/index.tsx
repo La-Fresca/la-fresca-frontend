@@ -7,9 +7,7 @@ import Gallery from '@/components/Landing/Gallery';
 import Menus from '@/components/Landing/Menus';
 import { ReadMore } from '@/components/User/NavbarHome/readMore';
 import { Link } from 'react-router-dom';
-import FB from '@images/footer/FB.svg';
-import IG from '@images/footer/IG.svg';
-import X from '@images/footer/X.svg';
+import Logo from '@/images/logo/la-fresca.png';
 
 const HomePage: React.FC = () => {
   const [isLightMode, setIsLightMode] = useState(true); // Local state for light/dark mode
@@ -97,39 +95,78 @@ const HomePage: React.FC = () => {
       </Container>
 
       <Container>
-        <div className="grid bg-[black] w-[100vw] h-[350px] absolute left-0">
-          <div className="flex text-[#e3e3e3]">
-            <div className="w-[30vw] grid justify-center m-auto bg-[black] leading-loose">
-              <div className="text-5xl font-black">GET IN TOUCH</div>
-              <div className="mt-4">Phone: 0123456789</div>
-              <div>
-                or <Link to="">send us an email</Link>
-              </div>
-              <div className="flex mt-4">
-                <div className="rounded-full h-[35px] w-[35px] bg-foodbg flex justify-center items-center mx-1">
-                  <img className="w-[20px] h-[20px]" src={FB} alt="" />
-                </div>
-                <div className="rounded-full h-[35px] w-[35px] bg-foodbg flex justify-center items-center mx-1">
-                  <img className="w-[20px] h-[20px]" src={IG} alt="" />
-                </div>
-                <div className="rounded-full h-[35px] w-[35px] bg-foodbg flex justify-center items-center mx-1">
-                  <img className="w-[20px] h-[20px]" src={X} alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="w-[70vw] bg-[url('@images/footer/footer.jpg')] bg-no-repeat bg-cover bg-center">
-              <div className="bg-gradient-to-r from-[black] to-[#00000084] w-[100%] h-[100%] pt-[85px] pl-[200px]">
-                <div className="text-5xl font-black">WE'RE HIRING!</div>
-                <div className="mt-4">
-                  Want a job?{' '}
-                  <Link to="mailto:" className="italic underline text-warning">
-                    Email your CV
-                  </Link>
-                </div>
-              </div>
-            </div>
+      <div className="grid bg-black w-full h-[350px] absolute left-0">
+  <div className="flex text-gray-300 h-full">
+    {/* Branding Section (Left) */}
+    <div className="w-1/3 flex flex-col justify-center items-center bg-black">
+      <img
+        src={Logo}
+        alt="La Fresca Logo"
+        className="w-28 h-28"
+      />
+      <div className="text-5xl font-bold mt-4 uppercase text-white">La Fresca</div>
+      <div className="mt-2 text-base italic text-gray-400">
+      Where Every Sip is a Fresh Start 
+      </div>
+      <p className=''>©2024  <span className='text-yellow-500'>2024 Lafresca cafe</span> </p>
+    </div>
+
+    {/* Info Section with Footer Image */}
+    <div className="w-2/3 relative">
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 bg-[url('@images/footer/footer.jpg')] bg-no-repeat bg-cover bg-center"
+        aria-hidden="true"
+      ></div>
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent"></div>
+
+      {/* Content Over the Image */}
+      <div className="relative p-10 grid grid-cols-2 gap-8">
+        {/* Contact Information */}
+        <div className="bg-black/50 p-6 rounded-md">
+          <div className="text-4xl font-bold uppercase tracking-wide text-white">
+            Contact Us
+          </div>
+          <div className="mt-4 text-lg text-white">Phone: +94 112 345 678</div>
+          <div className="text-lg">
+            <Link to="mailto:thecafe.lafresca@gmail.com" className="text-yellow-400 underline">
+            thecafe.lafresca@gmail.com
+            </Link>
+          </div>
+          <div className="mt-4 text-lg text-gray-300">
+            <p className='text-white'>Address:</p>
+            <p>No. 25, Coffee Lane, Colombo 7</p>
           </div>
         </div>
+
+        {/* Café Info */}
+        <div className="bg-black/50 p-6 rounded-md">
+          <div className="text-4xl font-bold uppercase tracking-wide text-white">
+            Café Info
+          </div>
+          <div className="mt-4 text-lg text-gray-300">
+            <p>Opening Hours:</p>
+            <p>Mon - Fri: 7:00 AM - 10:00 PM</p>
+            <p>Sat - Sun: 8:00 AM - 11:00 PM</p>
+          </div>
+          <div className="mt-4">
+            <Link to="/menuItems" className="text-yellow-400 underline text-lg">
+              View Our Menu
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
         {/* <div className="flex items-center justify-center w-full lg:w-1/2 mb-5 lg:mb-0">
       <img src={ContactUs} alt="contact us" width={450} height={450} className="w-full max-w-xs sm:max-w-md lg:max-w-lg" />
     </div>
