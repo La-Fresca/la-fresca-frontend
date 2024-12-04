@@ -14,7 +14,7 @@ import StockIcon from '@images/icon/stock.png';
 import StockIconWhite from '@images/icon/stock-white.png';
 import ReportIcon from '@images/icon/report.png';
 import ReportIconWhite from '@images/icon/report-white.png';
-import { BuildingOffice2Icon, UserIcon } from '@heroicons/react/24/outline';
+import { BuildingOffice2Icon } from '@heroicons/react/24/outline';
 import { Bars3Icon, UserIcon } from '@heroicons/react/24/outline';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
 
