@@ -12,6 +12,7 @@ function index() {
     try {
       const data = await getAllBranches();
       setBranch(data);
+      console.log(data[0].contactNo)
     } catch (error: any) {
       console.error(error);
     }
@@ -113,7 +114,7 @@ function index() {
                 </p>
                 <p className="flex items-center">
                   <PhoneIcon className="w-5 h-5 pl-[2px]" />
-                  &nbsp;{item.phone}
+                  &nbsp;{item.contactNo}
                 </p>
                 <br />
               </div>

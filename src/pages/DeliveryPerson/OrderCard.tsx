@@ -1,46 +1,73 @@
-import React from "react";
-import { Card, CardHeader, CardBody, Divider, Image } from "@nextui-org/react";
-import { Button } from "flowbite-react";
+import React from 'react';
+import OrderCard from '@/pages/DeliveryPerson/OrderCard';
+import { useDelivery } from '@/api/useDelivery';
+import { useQuery } from '@tanstack/react-query';
 
-interface OrderCardProps {
-    title: string;
-    subtitle: string | undefined;
-    cardImage: string;
-    text: string;
-    buttonTitle?: string;
-}
+const OrderQueue = () => {
+  const { getOrders, changestatus } = useDelivery();
 
-const OrderCard: React.FC<OrderCardProps> = ({ title, subtitle, cardImage, text, buttonTitle }) => {
-    return (
-        <Card className="max-w-[400px] border rounded-xl border-warning py-3">
-            <CardHeader className="flex gap-3">
-                <Image
-                    alt="waiter"
-                    height={100}
-                    radius="sm"
-                    src={cardImage}
-                    width={100}
-                    style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                />
+  // Fetch orders using react-query
+  const { data: orders = [], isLoading, refetch } = useQuery({
+    queryKey: ['pendingOrders'],
+    queryFn: () => getOrders(),
+  });
 
-                <div className="flex flex-col">
-                    <p className="text-xl font-medium">{title}</p>
-                    <p className="text-slate-300 text-small text-default-500">Destination: {subtitle}</p>
-                    <p className="text-slate-300 text-small text-default-500">{text}</p>
-                </div>
-            </CardHeader>
-            
-            <Divider />
-            <CardBody>
-                {buttonTitle && (
-                    <Button
-                        className="bg-gradient-to-r from-orange-600 to-orange-400 text-white shadow-lg rounded-lg px-10 !text-4xl">
-                        {buttonTitle}
-                    </Button>
-                )}
-            </CardBody>
-        </Card>
-    );
+  // Function to format order ID for display
+  function formatOrderId(orderId: string | any): string {
+    return `Order #${orderId.slice(0, 6).toUpperCase()}${orderId.slice(-4).toUpperCase()}`;
+  }
+
+  // Button click handler to change status
+  const buttonFunction = async (orderId: string) => {
+    try {
+      console.log(`Changing status for order: ${orderId}`);
+      const newStatus = "DELIVERED"; // Status change
+      const data = {
+        id: orderId,
+        orderStatus: newStatus // Send the status as string
+      };
+
+      // Call API to change status
+      await changestatus(data);
+
+      console.log('Status updated successfully!');
+
+      // After status change, refetch orders to update the UI
+      refetch(); // Re-fetch orders after status change
+
+    } catch (error) {
+      console.error('Failed to update status:', error);
+    }
+  };
+
+  return (
+    <div className="mx-10 my-5 flex flex-col gap-5">
+      <div className="relative">
+        <p className="text-xl font-bold text-white">Delivery Orders Queue</p>
+      </div>
+
+      <div className="flex flex-col h-[70%] overflow-auto gap-2">
+        {isLoading ? (
+          <p className="text-white">Loading orders...</p>
+        ) : orders.length === 0 ? (
+          <p className="text-white">No pending orders</p>
+        ) : (
+          orders.map((order) => (
+            <OrderCard
+              key={order.id}
+              title={formatOrderId(order.id)}
+              orderId={order.id}
+              subtitle={order.location}
+              cardImage={order.orderItems[0]?.image || 'default-image-url'}
+              buttonTitle="Pick Order"
+              text={`Created: ${order.createdAt}`}
+              onButtonClick={buttonFunction}
+            />
+          ))
+        )}
+      </div>
+    </div>
+  );
 };
 
-export default OrderCard;
+export default OrderQueue;

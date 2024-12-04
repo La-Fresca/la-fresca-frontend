@@ -40,3 +40,14 @@ export type OrderItemStatus = {
   itemId: string;
   status: string;
 };
+
+export type OrderStatus = {
+  id: string;
+  orderStatus: string;
+};
+
+
+export type Deliverystat = {
+  queue: number;
+  history: number;
+};

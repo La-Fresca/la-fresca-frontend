@@ -1,4 +1,4 @@
-import { Order, OrderItemStatus } from '@/types/order';
+import { Order, OrderItemStatus, OrderStatus } from '@/types/order';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import { get } from 'react-hook-form';
@@ -170,7 +170,9 @@ export const useOrders = () => {
       if (!response.ok) {
         throw new Error('Failed to fetch orders');
       } else {
-        return response.json();
+        const data = await response.json(); // Await the resolved JSON data
+        console.log('Result:', data); // Log the data after resolving
+        return data;
       }
     } catch (error: any) {
       console.error(error);
@@ -243,6 +245,27 @@ export const useOrders = () => {
     }
   };
 
+  const changestatus = async (data: OrderStatus) => {
+    try {
+      const response = await fetch(`${API_URL}/order/changestatus`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify({
+          ...data,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to change order status');
+      }
+    } catch (error: any) {
+      console.error(error);
+      throw new Error(error);
+    }
+  };
+
   const getServedToWaiterOrders = async (cafeId: string) => {
     try {
       const response = await fetch(
@@ -278,5 +301,6 @@ export const useOrders = () => {
     getOrdersByUserId,
     getAssignedToWaiterOrders,
     getServedToWaiterOrders,
+    changestatus,
   };
 };

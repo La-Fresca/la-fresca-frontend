@@ -27,7 +27,7 @@ const Menus = () => {
                 subtitle="la Fresca cafe"
                 button="EXPLORE Now"
                 ClassName="absolute md:right-20 md:top-20 w-[95%] md:w-[50%] h-[40%] md:h-[50%] bg-yellow-500 p-4 md:p-8 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 md:translate-y-0 md:translate-x-0"
-                URLLink="/gallery"
+                URLLink="/menuItems"
             />
 
             {/* Second TitleBox hidden on small screens */}
