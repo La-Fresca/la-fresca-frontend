@@ -191,9 +191,7 @@ const routes = createRoutesFromElements(
       />
     </Route>
 
-    <Route
-      element={<RequireAuth allowedRoles={['ADMIN', 'DELIVERY_PERSON']} />}
-    >
+    <Route element={<RequireAuth allowedRoles={['USER']} />}>
       <Route path="/" element={<UserLayout />}>
         <Route
           path="gallery"
