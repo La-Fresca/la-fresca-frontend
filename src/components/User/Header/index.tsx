@@ -69,7 +69,7 @@ const Header = (props: {
             className="text-black font-bold pl-2 pr-12 dark:text-white mr-4 flex items-center"
             style={{ fontFamily: '', fontSize: '30px' }}
           >
-            {/* <img className="h-[40px] w-[40px]" src={LogoIcon} alt="Background" /> */}
+             <img className="h-[40px] w-[40px]" src={LogoIcon} alt="Background" />
             <span className="ml-5">La Fresca</span>
           </div>
         </div>

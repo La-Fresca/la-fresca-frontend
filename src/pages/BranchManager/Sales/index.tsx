@@ -11,7 +11,7 @@ const Sales: React.FC = () => {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats
           title="Total Revenue"
-          total="$3.456K"
+          total="LKR 3.456K"
           rate="0.43%"
           levelUp
         >
@@ -33,7 +33,7 @@ const Sales: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Profit" total="$45,2K" rate="4.35%" levelUp>
+        <CardDataStats title="Total Profit" total="LKR 45,2K" rate="4.35%" levelUp>
           <svg
             // className="fill-primary"
             width="20"

@@ -142,7 +142,7 @@ export default function FoodList() {
           </div>
         );
       case 'price':
-        return `Rs.${cellValue}`;
+        return `LKR${cellValue}`;
       case 'availability':
         return cellValue === 1 ? 'Available' : 'Not Available';
       case 'discountStatus':

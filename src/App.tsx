@@ -95,6 +95,9 @@ import Inventory_TLM from '@/pages/TopLevelManager/Inventory';
 import Discount_TLM from '@/pages/TopLevelManager/Discount';
 import FoodList_TLM from './pages/TopLevelManager/Foods/index';
 import ComboList_TLM from './pages/TopLevelManager/FoodCombos/index';
+import AddBm from '@pages/TopLevelManager/ManageBM/AddBm';
+import EditBm from '@pages/TopLevelManager/ManageBM/EditBm';
+import BranchManagers from '@pages/TopLevelManager/ManageBM/index';
 import BranchManagerList from './pages/TopLevelManager/BrancheManager/index';
 import AddBranchManager from './pages/TopLevelManager/BrancheManager/AddBranchManager';
 import EditBranchManager from './pages/TopLevelManager/BrancheManager/EditBranchManager';
@@ -917,7 +920,7 @@ const routes = createRoutesFromElements(
           />
         </Route>
 
-        <Route path="users">
+        <Route path="branchmanagers">
           <Route
             index
             element={

@@ -131,7 +131,7 @@ export default function ComboList() {
       case 'price':
         return (
           <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
+            <p className="text-bold text-small capitalize">LKR{cellValue}</p>
           </div>
         );
       case 'items':

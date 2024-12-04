@@ -14,10 +14,10 @@ import StockIcon from '@images/icon/stock.png';
 import StockIconWhite from '@images/icon/stock-white.png';
 import ReportIcon from '@images/icon/report.png';
 import ReportIconWhite from '@images/icon/report-white.png';
-import { BuildingOffice2Icon } from '@heroicons/react/24/outline';
+import { BuildingOffice2Icon, UserIcon } from '@heroicons/react/24/outline';
 import { Bars3Icon, UserIcon } from '@heroicons/react/24/outline';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
- 
+
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -153,8 +153,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <img src={BurgerIcon} alt="" className="w-6 h-6 dark:hidden block" />
-                  <img src={BurgerIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  <img
+                    src={BurgerIcon}
+                    alt=""
+                    className="w-6 h-6 dark:hidden block"
+                  />
+                  <img
+                    src={BurgerIconWhite}
+                    alt=""
+                    className="w-6 h-6 dark:block hidden"
+                  />
                   Food Items
                 </NavLink>
               </li>
@@ -166,8 +174,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <img src={BurgerFriesIcon} alt="" className="w-6 h-6 dark:hidden block" />
-                  <img src={BurgerFriesIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  <img
+                    src={BurgerFriesIcon}
+                    alt=""
+                    className="w-6 h-6 dark:hidden block"
+                  />
+                  <img
+                    src={BurgerFriesIconWhite}
+                    alt=""
+                    className="w-6 h-6 dark:block hidden"
+                  />
                   Food Combos
                 </NavLink>
               </li>
@@ -179,8 +195,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <img src={DiscountIcon} alt="" className="w-6 h-6 dark:hidden block" />
-                  <img src={DiscountIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  <img
+                    src={DiscountIcon}
+                    alt=""
+                    className="w-6 h-6 dark:hidden block"
+                  />
+                  <img
+                    src={DiscountIconWhite}
+                    alt=""
+                    className="w-6 h-6 dark:block hidden"
+                  />
                   Discount List
                 </NavLink>
               </li>
@@ -192,8 +216,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <img src={InventoryIcon} alt="" className="w-6 h-6 dark:hidden block" />
-                  <img src={InventoryIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  <img
+                    src={InventoryIcon}
+                    alt=""
+                    className="w-6 h-6 dark:hidden block"
+                  />
+                  <img
+                    src={InventoryIconWhite}
+                    alt=""
+                    className="w-6 h-6 dark:block hidden"
+                  />
                   Inventory
                 </NavLink>
               </li>
@@ -205,9 +237,29 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <img src={StockIcon} alt="" className="w-6 h-6 dark:hidden block" />
-                  <img src={StockIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  <img
+                    src={StockIcon}
+                    alt=""
+                    className="w-6 h-6 dark:hidden block"
+                  />
+                  <img
+                    src={StockIconWhite}
+                    alt=""
+                    className="w-6 h-6 dark:block hidden"
+                  />
                   Stocks
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/top-level-manager/branchmanagers"
+                  className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-medium  text-black dark:text-white duration-300 ease-in-out hover:bg-yellow-100 dark:hover:bg-meta-4 ${
+                    pathname.includes('/top-level-manager/branchmanagers') &&
+                    'bg-yellow-100 dark:bg-meta-4'
+                  }`}
+                >
+                  <UserIcon className="w-6 h-6" />
+                  Manage BMs
                 </NavLink>
               </li>
               <li>
@@ -218,8 +270,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-yellow-100 dark:bg-meta-4'
                   }`}
                 >
-                  <img src={ReportIcon} alt="" className="w-6 h-6 dark:hidden block" />
-                  <img src={ReportIconWhite} alt="" className="w-6 h-6 dark:block hidden" />
+                  <img
+                    src={ReportIcon}
+                    alt=""
+                    className="w-6 h-6 dark:hidden block"
+                  />
+                  <img
+                    src={ReportIconWhite}
+                    alt=""
+                    className="w-6 h-6 dark:block hidden"
+                  />
                   Reports
                 </NavLink>
               </li>

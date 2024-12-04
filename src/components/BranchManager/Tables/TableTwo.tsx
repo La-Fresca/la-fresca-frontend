@@ -87,7 +87,7 @@ const TableTwo = () => {
             </div>
             <div className="col-span-1 flex items-center">
               <p className="text-sm text-black dark:text-white">
-                ${product.remaining}
+                LKR {product.remaining}
               </p>
             </div>
             <div className="col-span-1 flex items-center">

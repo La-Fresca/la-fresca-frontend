@@ -84,7 +84,7 @@ const Card: React.FC<CardProps> = ({
           className="text-white bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-400 hover:to-orange-600 px-12 py-4 rounded-lg transition duration-300 shadow-md"
           onClick={() => onServeOrder(id)}
         >
-          Served
+          Serve
         </Button>
       </div>
     </div>
