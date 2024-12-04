@@ -146,11 +146,24 @@ const DynamicForm: FC = () => {
     }
   };
 
-  // const [categories] = useState<Category[]>([
-  //   { key: 'Non-Vegetarian', label: 'Non-Vegetarian' },
-  //   { key: 'Vegetarian', label: 'Vegetarian' },
-  //   { key: 'Other', label: 'Other' },
-  // ]);
+  const addSubCategory = (featureIndex: number) => {
+    const currentFeature = fields[featureIndex];
+    update(featureIndex, {
+      name: currentFeature.name, // Preserve the feature name
+      subCategories: [...currentFeature.subCategories, { name: '', price: 0 }],
+    });
+  };
+
+  const removeSubCategory = (featureIndex: number, subIndex: number) => {
+    const currentFeature = fields[featureIndex];
+    update(featureIndex, {
+      name: currentFeature.name, // Preserve the feature name
+      subCategories: currentFeature.subCategories.filter(
+        (_, i) => i !== subIndex,
+      ),
+    });
+  };
+
   if (!categories.length) {
     return <div>Loading...</div>;
   }
@@ -320,14 +333,7 @@ const DynamicForm: FC = () => {
                       <button
                         type="button"
                         className="flex w-1/4 ml-3 sm:mb-0 mb-4 sm:mt-2 justify-center rounded-3xl bg-transparent p-3 font-medium text-gray hover:bg-opacity-90"
-                        onClick={() =>
-                          update(index, {
-                            ...fields[index],
-                            subCategories: fields[index].subCategories.filter(
-                              (_, i) => i !== subIndex,
-                            ),
-                          })
-                        }
+                        onClick={() => removeSubCategory(index, subIndex)}
                       >
                         <TrashIcon className="h-7 w-7 text-red-500 dark:text-[#ffffff]" />
                       </button>
@@ -336,15 +342,7 @@ const DynamicForm: FC = () => {
                   <Button
                     type="button"
                     className="flex w-full mt-3 mb-3 justify-center rounded-lg border-2 border-solid text-black p-3 font-medium dark:text-white hover:bg-opacity-90"
-                    onClick={() =>
-                      update(index, {
-                        ...fields[index],
-                        subCategories: [
-                          ...fields[index].subCategories,
-                          { name: '', price: 0 },
-                        ],
-                      })
-                    }
+                    onClick={() => addSubCategory(index)}
                   >
                     Add Sub Category
                   </Button>
