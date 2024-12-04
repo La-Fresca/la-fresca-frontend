@@ -39,7 +39,6 @@ const HomePage: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:space-x-4 items-start sm:items-center space-y-3 sm:space-y-0">
               <a
                 href="/menuItems"
-                target="_blank"
                 rel="noopener"
                 className="px-5 py-2.5 text-lg font-medium text-center text-white bg-yellow-500 rounded-md"
               >
