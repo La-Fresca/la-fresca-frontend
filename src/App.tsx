@@ -189,20 +189,20 @@ const routes = createRoutesFromElements(
           }
         />
       </Route>
+      <Route
+        path="gallery"
+        element={
+          <>
+            <PageTitle title="La Fresca | Gallery" />
+            <Gallery />
+          </>
+        }
+      />
     </Route>
 
     {/* Protected Routes */}
     <Route element={<RequireAuth allowedRoles={['USER', 'ADMIN']} />}>
       <Route path="/" element={<UserLayout />}>
-        <Route
-          path="gallery"
-          element={
-            <>
-              <PageTitle title="La Fresca | Gallery" />
-              <Gallery />
-            </>
-          }
-        />
         <Route
           path="cart"
           element={
@@ -503,7 +503,11 @@ const routes = createRoutesFromElements(
 
     {/* Kitchen Manager Routes */}
     <Route
-      element={<RequireAuth allowedRoles={['KITCHEN_MANAGER', 'ADMIN']} />}
+      element={
+        <RequireAuth
+          allowedRoles={['KITCHEN_MANAGER', 'ADMIN', 'BRANCH_MANAGER']}
+        />
+      }
     >
       <Route path="kitchen-manager/*" element={<KitchenManagerLayout />}>
         <Route
@@ -554,7 +558,13 @@ const routes = createRoutesFromElements(
     </Route>
 
     {/* Storekeeper Routes */}
-    <Route element={<RequireAuth allowedRoles={['STORE_KEEPER', 'ADMIN']} />}>
+    <Route
+      element={
+        <RequireAuth
+          allowedRoles={['STORE_KEEPER', 'ADMIN', 'BRANCH_MANAGER']}
+        />
+      }
+    >
       <Route path="storekeeper/*" element={<StorekeeperLayout />}>
         <Route
           index
@@ -625,7 +635,11 @@ const routes = createRoutesFromElements(
     </Route>
 
     {/* Waiter Routes */}
-    <Route element={<RequireAuth allowedRoles={['WAITER', 'ADMIN']} />}>
+    <Route
+      element={
+        <RequireAuth allowedRoles={['WAITER', 'ADMIN', 'BRANCH_MANAGER']} />
+      }
+    >
       <Route path="waiter/*" element={<WaiterLayout />}>
         <Route
           index
@@ -702,7 +716,11 @@ const routes = createRoutesFromElements(
     </Route>
 
     {/* Cashier Routes */}
-    <Route element={<RequireAuth allowedRoles={['CASHIER', 'ADMIN']} />}>
+    <Route
+      element={
+        <RequireAuth allowedRoles={['CASHIER', 'ADMIN', 'BRANCH_MANAGER']} />
+      }
+    >
       <Route path="cashier/*" element={<CashierLayout />}>
         <Route
           index
@@ -727,7 +745,11 @@ const routes = createRoutesFromElements(
 
     {/* Delivery Person Routes */}
     <Route
-      element={<RequireAuth allowedRoles={['DELIVERY_PERSON', 'ADMIN']} />}
+      element={
+        <RequireAuth
+          allowedRoles={['DELIVERY_PERSON', 'ADMIN', 'BRANCH_MANAGER']}
+        />
+      }
     >
       <Route path="deliveryperson/*" element={<DeliveryLayout />}>
         <Route
@@ -776,9 +798,7 @@ const routes = createRoutesFromElements(
     </Route>
 
     {/* Top Level Manager Routes */}
-    <Route
-      element={<RequireAuth allowedRoles={['TOP_LEVEL_MANAGER', 'ADMIN']} />}
-    >
+    <Route element={<RequireAuth allowedRoles={['ADMIN']} />}>
       <Route path="top-level-manager/*" element={<TopManagerLayout />}>
         <Route
           index
