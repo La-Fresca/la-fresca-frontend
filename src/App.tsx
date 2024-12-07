@@ -122,6 +122,7 @@ const store = createStore({
 
 const routes = createRoutesFromElements(
   <Route>
+    {/* Public Routes */}
     <Route path="/" element={<UserLayout />}>
       <Route
         index
@@ -132,9 +133,6 @@ const routes = createRoutesFromElements(
           </>
         }
       />
-    </Route>
-
-    <Route path="/">
       <Route
         path="login"
         element={
@@ -162,55 +160,49 @@ const routes = createRoutesFromElements(
           </>
         }
       />
+      <Route path="menuitems">
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="La Fresca | Menu Items" />
+              <AllFoodItems />
+            </>
+          }
+        />
+        <Route
+          path="viewfooditem/:itemId"
+          element={
+            <>
+              <PageTitle title="La Fresca | Food Item" />
+              <FoodItem />
+            </>
+          }
+        />
+        <Route
+          path="viewfoodcombo/:comboId"
+          element={
+            <>
+              <PageTitle title="La Fresca | Food Item" />
+              <FoodCombo />
+            </>
+          }
+        />
+      </Route>
       <Route
-        path="testbranchModal"
+        path="gallery"
         element={
           <>
-            <PageTitle title="La Fresca | testModal" />
-            <AssignBranch />
-          </>
-        }
-      />
-      <Route
-        path="testwaiterModal"
-        element={
-          <>
-            <PageTitle title="La Fresca | testModal" />
-            <AssignWaiter />
-          </>
-        }
-      />
-      <Route
-        path="testdeliveryModal"
-        element={
-          <>
-            <PageTitle title="La Fresca | Food Items" />
-            <AssignDelivery />
+            <PageTitle title="La Fresca | Gallery" />
+            <Gallery />
           </>
         }
       />
     </Route>
 
-    <Route>
+    {/* Protected Routes */}
+    <Route element={<RequireAuth allowedRoles={['USER', 'ADMIN']} />}>
       <Route path="/" element={<UserLayout />}>
-        <Route
-          path="gallery"
-          element={
-            <>
-              <PageTitle title="La Fresca | Gallery" />
-              <Gallery />
-            </>
-          }
-        />
-        <Route
-          path="viewcombo/:comboId"
-          element={
-            <>
-              <PageTitle title="La Fresca | Food Combo" />
-              <FoodItem />
-            </>
-          }
-        />
         <Route
           path="cart"
           element={
@@ -221,20 +213,11 @@ const routes = createRoutesFromElements(
           }
         />
         <Route
-          path="promotions"
+          path="checkout"
           element={
             <>
-              <PageTitle title="La Fresca | Promotions" />
-              <Discount />
-            </>
-          }
-        />
-        <Route
-          path="contactUs"
-          element={
-            <>
-              <PageTitle title="La Fresca | Contact Us" />
-              <ContactUs />
+              <PageTitle title="La Fresca | Checkout" />
+              <Checkout />
             </>
           }
         />
@@ -256,47 +239,11 @@ const routes = createRoutesFromElements(
             </>
           }
         />
-
-        <Route
-          path="checkout"
-          element={
-            <>
-              <PageTitle title="La Fresca | Checkout" />
-              <Checkout />
-            </>
-          }
-        />
-        <Route path="menuitems">
-          <Route
-            index
-            element={
-              <>
-                <PageTitle title="La Fresca | Menu Items" />
-                <AllFoodItems />
-              </>
-            }
-          />
-          <Route
-            path="viewfooditem/:itemId"
-            element={
-              <>
-                <PageTitle title="La Fresca | Food Item" />
-                <FoodItem />
-              </>
-            }
-          />
-          <Route
-            path="viewfoodcombo/:comboId"
-            element={
-              <>
-                <PageTitle title="La Fresca | Food Item" />
-                <FoodCombo />
-              </>
-            }
-          />
-        </Route>
       </Route>
+    </Route>
 
+    {/* Branch Manager Routes */}
+    <Route element={<RequireAuth allowedRoles={['BRANCH_MANAGER', 'ADMIN']} />}>
       <Route path="branch-manager/*" element={<BranchManagerLayout />}>
         <Route
           index
@@ -552,7 +499,72 @@ const routes = createRoutesFromElements(
           />
         </Route>
       </Route>
+    </Route>
 
+    {/* Kitchen Manager Routes */}
+    <Route
+      element={
+        <RequireAuth
+          allowedRoles={['KITCHEN_MANAGER', 'ADMIN', 'BRANCH_MANAGER']}
+        />
+      }
+    >
+      <Route path="kitchen-manager/*" element={<KitchenManagerLayout />}>
+        <Route
+          index
+          element={
+            <>
+              <PageTitle title="La Fresca | Kitchen Manager" />
+              <KitchenManagerDashboard />
+            </>
+          }
+        />
+        <Route path="d">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Storekeeper | GRN List" />
+                <ViewGrns />
+              </>
+            }
+          />
+        </Route>
+
+        <Route path="deliveryPersons">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Kitchen Manager | Delivery Persons List" />
+                <DeliveryPersonsList />
+              </>
+            }
+          />
+        </Route>
+
+        <Route path="waiters">
+          <Route
+            index
+            element={
+              <>
+                <PageTitle title="Kitchen Manager | Waiters List" />
+                <WaiterList />
+              </>
+            }
+          />
+        </Route>
+      </Route>
+    </Route>
+
+    {/* Storekeeper Routes */}
+    <Route
+      element={
+        <RequireAuth
+          allowedRoles={['STORE_KEEPER', 'ADMIN', 'BRANCH_MANAGER']}
+        />
+      }
+    >
       <Route path="storekeeper/*" element={<StorekeeperLayout />}>
         <Route
           index
@@ -620,54 +632,14 @@ const routes = createRoutesFromElements(
           />
         </Route>
       </Route>
+    </Route>
 
-      <Route path="kitchen-manager/*" element={<KitchenManagerLayout />}>
-        <Route
-          index
-          element={
-            <>
-              <PageTitle title="La Fresca | Kitchen Manager" />
-              <KitchenManagerDashboard />
-            </>
-          }
-        />
-        <Route path="d">
-          <Route
-            index
-            element={
-              <>
-                <PageTitle title="Storekeeper | GRN List" />
-                <ViewGrns />
-              </>
-            }
-          />
-        </Route>
-
-        <Route path="deliveryPersons">
-          <Route
-            index
-            element={
-              <>
-                <PageTitle title="Kitchen Manager | Delivery Persons List" />
-                <DeliveryPersonsList />
-              </>
-            }
-          />
-        </Route>
-
-        <Route path="waiters">
-          <Route
-            index
-            element={
-              <>
-                <PageTitle title="Kitchen Manager | Waiters List" />
-                <WaiterList />
-              </>
-            }
-          />
-        </Route>
-      </Route>
-
+    {/* Waiter Routes */}
+    <Route
+      element={
+        <RequireAuth allowedRoles={['WAITER', 'ADMIN', 'BRANCH_MANAGER']} />
+      }
+    >
       <Route path="waiter/*" element={<WaiterLayout />}>
         <Route
           index
@@ -698,7 +670,10 @@ const routes = createRoutesFromElements(
           }
         ></Route>
       </Route>
+    </Route>
 
+    {/* System Admin Routes */}
+    <Route element={<RequireAuth allowedRoles={['SYSTEM_ADMIN', 'ADMIN']} />}>
       <Route path="system-admin/*" element={<SystemAdminLayout />}>
         <Route
           index
@@ -738,7 +713,14 @@ const routes = createRoutesFromElements(
         />
         {/* -------------- Routes to add ---------------- */}
       </Route>
+    </Route>
 
+    {/* Cashier Routes */}
+    <Route
+      element={
+        <RequireAuth allowedRoles={['CASHIER', 'ADMIN', 'BRANCH_MANAGER']} />
+      }
+    >
       <Route path="cashier/*" element={<CashierLayout />}>
         <Route
           index
@@ -759,7 +741,16 @@ const routes = createRoutesFromElements(
           }
         ></Route>
       </Route>
+    </Route>
 
+    {/* Delivery Person Routes */}
+    <Route
+      element={
+        <RequireAuth
+          allowedRoles={['DELIVERY_PERSON', 'ADMIN', 'BRANCH_MANAGER']}
+        />
+      }
+    >
       <Route path="deliveryperson/*" element={<DeliveryLayout />}>
         <Route
           index
@@ -804,7 +795,10 @@ const routes = createRoutesFromElements(
           />
         </Route>
       </Route>
+    </Route>
 
+    {/* Top Level Manager Routes */}
+    <Route element={<RequireAuth allowedRoles={['ADMIN']} />}>
       <Route path="top-level-manager/*" element={<TopManagerLayout />}>
         <Route
           index
