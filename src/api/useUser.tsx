@@ -70,11 +70,11 @@ export const useUsers = () => {
         },
         body: JSON.stringify({
           ...data,
-          cafeId: getCafeId(),
+          cafeId: data.cafeId === null ? null : getCafeId(), // Only get cafeId if not explicitly set to null
         }),
       });
       if (!response.ok) {
-        throw new Error('Failed to add food');
+        throw new Error('Failed to add user');
       }
     } catch (error: any) {
       console.error(error);

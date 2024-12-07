@@ -37,17 +37,15 @@ const AddBm: React.FC = () => {
     const transformedData: User = {
       ...data,
       role: 'Branch Manager',
-      address: ''
+      address: '',
+      cafeId: null,
     };
     try {
-      addUser(transformedData);
+      await addUser(transformedData);
+      showSwal();
+      navigate('/top-level-manager/branchmanagers');
     } catch (error) {
       console.error('Error adding Branch Manager', error);
-    } finally {
-      setTimeout(() => {
-        showSwal();
-        navigate('/top-level-manager/branchmanagers');
-      }, 2000);
     }
   };
 

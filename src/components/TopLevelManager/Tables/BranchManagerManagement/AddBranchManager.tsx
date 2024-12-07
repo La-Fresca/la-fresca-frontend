@@ -37,6 +37,7 @@ const AddUser: React.FC = () => {
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     const transformedData: User = {
       ...data,
+      cafeId: null,
     };
     try {
       addUser(transformedData);
