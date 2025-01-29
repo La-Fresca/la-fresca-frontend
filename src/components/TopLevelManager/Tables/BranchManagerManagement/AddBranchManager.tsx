@@ -46,7 +46,7 @@ const AddUser: React.FC = () => {
     } finally {
       setTimeout(() => {
         showSwal();
-        navigate('/top-level-manager/users');
+        navigate('/top-level-manager/branchmanagers');
       }, 2000);
     }
   };
